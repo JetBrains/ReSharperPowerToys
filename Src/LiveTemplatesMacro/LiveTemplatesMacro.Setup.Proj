@@ -1,0 +1,43 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<!-- Home folder for the PowerToys build site. -->
+		<PowerToysHomeDir>$(MSBuildProjectDirectory)/../..</PowerToysHomeDir>
+		<!-- Binaries dir; redirect the build output by setting it externally. -->
+		<PowerToysBinariesDir Condition="'$(PowerToysBinariesDir)'==''">$(PowerToysHomeDir)/Bin</PowerToysBinariesDir>
+	</PropertyGroup>
+	
+	<PropertyGroup>
+		 
+		<!-- Name of the plugin product and of the plugin folder in the R# plugins store, as well. -->
+		<ProductName>LiveTemplatesMacro PowerToy</ProductName>
+		
+		<!-- Version of the plugin, to be specified in the installer. -->
+		<ProductVersion>5.0.0.0</ProductVersion>
+
+		<!-- Version of R# (two components only) that the plugin is targeting. -->
+		<ReSharperVersion2>5.0</ReSharperVersion2>
+		
+		<!-- Plugin vendor name. -->
+		<CompanyName>JetBrains Inc</CompanyName>
+		
+		<!-- Upgrade code for the plugin. -->
+		<!-- Should be unique for each of the plugins, but should not change within the plugin lifetime. All of the plugin versions should feature the same Upgrade Code. -->
+		<UpgradeCode>{DED3F372-A5C7-43db-9EAD-954391FED7B7}</UpgradeCode>
+		
+		<!-- Version of Visual Studio we're installing for. -->
+		<!-- Can be overridden on the command line when running the installation. -->
+		<VsVersion>9.0</VsVersion>
+
+		<!-- The plugin assembly file. -->
+		<AssemblyFile>$(PowerToysBinariesDir)/LiveTemplatesMacro.dll</AssemblyFile>
+
+    <!-- Additional setup wix file -->
+    <SetupFile>LiveTemplatesMacro.Setup.wxs</SetupFile>
+
+    <!-- The GUIDs that must be unique for each of the plugins. -->
+		<MsiComponentGuid00>{9911f271-511d-4127-b9ac-1481d6b3cbf1}</MsiComponentGuid00>
+		<MsiComponentGuid01>{22165f83-5749-40de-90fc-a481d3fba9e2}</MsiComponentGuid01>
+	</PropertyGroup>
+
+	<Import Project="$(PowerToysHomeDir)/Setup/ReSharperPowerToySetup.Targets"/>
+</Project>

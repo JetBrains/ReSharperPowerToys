@@ -1,0 +1,43 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<!-- Home folder for the PowerToys build site. -->
+		<PowerToysHomeDir>$(MSBuildProjectDirectory)/../..</PowerToysHomeDir>
+		<!-- Binaries dir; redirect the build output by setting it externally. -->
+		<PowerToysBinariesDir Condition="'$(PowerToysBinariesDir)'==''">$(PowerToysHomeDir)/Bin</PowerToysBinariesDir>
+	</PropertyGroup>
+	
+	<PropertyGroup>
+		 
+		<!-- Name of the plugin product and of the plugin folder in the R# plugins store, as well. -->
+		<ProductName>MenuItem PowerToy</ProductName>
+		
+		<!-- Version of the plugin, to be specified in the installer. -->
+		<ProductVersion>5.0.0.0</ProductVersion>
+
+		<!-- Version of R# (two components only) that the plugin is targeting. -->
+		<ReSharperVersion2>5.0</ReSharperVersion2>
+		
+		<!-- Plugin vendor name. -->
+		<CompanyName>JetBrains Inc</CompanyName>
+		
+		<!-- Upgrade code for the plugin. -->
+		<!-- Should be unique for each of the plugins, but should not change within the plugin lifetime. All of the plugin versions should feature the same Upgrade Code. -->
+		<UpgradeCode>{24657A43-00D9-4c04-A88B-A98F56E215CE}</UpgradeCode>
+		
+		<!-- Version of Visual Studio we're installing for. -->
+		<!-- Can be overridden on the command line when running the installation. -->
+		<VsVersion>9.0</VsVersion>
+
+		<!-- The plugin assembly file. -->
+		<AssemblyFile>$(PowerToysBinariesDir)/MenuItem.dll</AssemblyFile>
+
+    <!-- Additional setup wix file -->
+    <SetupFile>MenuItem.Setup.wxs</SetupFile>
+
+    <!-- The GUIDs that must be unique for each of the plugins. -->
+		<MsiComponentGuid00>{262bf420-06ff-41ad-a900-e198abfd6fa8}</MsiComponentGuid00>
+		<MsiComponentGuid01>{b644aa4d-df88-4dae-951a-6a8fd638a89f}</MsiComponentGuid01>
+	</PropertyGroup>
+
+	<Import Project="$(PowerToysHomeDir)/Setup/ReSharperPowerToySetup.Targets"/>
+</Project>
