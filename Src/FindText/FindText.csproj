@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <PowerToysHomeDir>$(MSBuildProjectDirectory)/../..</PowerToysHomeDir>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1B67E377-04E5-45A6-A8D9-7A82313BD0AF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>JetBrains.ReSharper.PowerToys.FindText</RootNamespace>
+    <AssemblyName>FindText</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <Import Project="$(PowerToysHomeDir)/Src/PowerToys.Common.Targets" />
+  <ItemGroup>
+    <Reference Include="JetBrains.Platform.ReSharper.ActionManagement">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.ActionManagement.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.IDE">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.IDE.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.DocumentManager">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.DocumentManager.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.DocumentModel">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.DocumentModel.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Feature.Services">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperBinariesDir)\JetBrains.ReSharper.Feature.Services.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.ProjectModel">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.ProjectModel.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Psi">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperBinariesDir)\JetBrains.ReSharper.Psi.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Features.Common">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperBinariesDir)\JetBrains.ReSharper.Features.Common.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Features.Finding">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperBinariesDir)\JetBrains.ReSharper.Features.Finding.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.Shell">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.Shell.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.UI">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.UI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.Util">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.Util.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="EnterSearchStringDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EnterSearchStringDialog.Designer.cs">
+      <DependentUpon>EnterSearchStringDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FindTextAction.cs" />
+    <Compile Include="FindTextDescriptor.cs" />
+    <Compile Include="FindTextSearchFlags.cs" />
+    <Compile Include="FindTextSearchRequest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Actions.xml" />
+    <EmbeddedResource Include="EnterSearchStringDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EnterSearchStringDialog.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FindText.Setup.Proj" />
+    <None Include="FindText.Setup.wxs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

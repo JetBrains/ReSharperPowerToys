@@ -1,0 +1,245 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0B9EEC3B-131D-4AA9-98E6-1FD307A1E269}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>JetBrains.ReSharper.PowerToys.ZenCoding</RootNamespace>
+    <AssemblyName>ZenCoding</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <PowerToysHomeDir>$(MSBuildProjectDirectory)/../..</PowerToysHomeDir>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <Import Project="$(PowerToysHomeDir)/Src/PowerToys.Common.Targets" />
+  <ItemGroup>
+    <Reference Include="DevExpress.Data.v7.1, Version=7.1.3.0, Culture=neutral, PublicKeyToken=ac81f19954537d54, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperBinariesDir)\DevExpress.Data.v7.1.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v7.1, Version=7.1.3.0, Culture=neutral, PublicKeyToken=ac81f19954537d54, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperBinariesDir)\DevExpress.Utils.v7.1.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v7.1, Version=7.1.3.0, Culture=neutral, PublicKeyToken=ac81f19954537d54, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperBinariesDir)\DevExpress.XtraEditors.v7.1.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraTreeList.v7.1, Version=7.1.3.0, Culture=neutral, PublicKeyToken=ac81f19954537d54, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperBinariesDir)\DevExpress.XtraTreeList.v7.1.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="IronPython, Version=2.6.10920.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <DontRemapToReSharper>True</DontRemapToReSharper>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>libs\IronPython.dll</HintPath>
+    </Reference>
+    <Reference Include="IronPython.Modules, Version=2.6.10920.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <DontRemapToReSharper>True</DontRemapToReSharper>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>libs\IronPython.Modules.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.ActionManagement">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.ActionManagement.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.DocumentManager">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.DocumentManager.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.DocumentModel">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.DocumentModel.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.IDE">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.IDE.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.Interop.WinApi">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.Interop.WinApi.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.ProjectModel">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.ProjectModel.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.Shell">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.Shell.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.TextControl">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.TextControl.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.UI">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.UI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.Util">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.Util.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Features.Common">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperBinariesDir)\JetBrains.ReSharper.Features.Common.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Psi">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperBinariesDir)\JetBrains.ReSharper.Psi.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Psi.Services">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperBinariesDir)\JetBrains.ReSharper.Psi.Services.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Dynamic, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <DontRemapToReSharper>True</DontRemapToReSharper>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>libs\Microsoft.Dynamic.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Scripting, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <DontRemapToReSharper>True</DontRemapToReSharper>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>libs\Microsoft.Scripting.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Scripting.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <DontRemapToReSharper>True</DontRemapToReSharper>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>libs\Microsoft.Scripting.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Options\FileAssociationPresenter.cs" />
+    <Compile Include="Options\FileAssociationsTreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Options\FileAssociationViewController.cs" />
+    <Compile Include="Options\EditFileAssociationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Options\EditFileAssociationForm.Designer.cs">
+      <DependentUpon>EditFileAssociationForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Options\Model\Handlers\FileExtensionPatternHandler.cs" />
+    <Compile Include="Options\Model\Handlers\IPatternHandler.cs" />
+    <Compile Include="Options\Model\Handlers\RegexPatternHandler.cs" />
+    <Compile Include="Options\Model\PatternType.cs" />
+    <Compile Include="Options\EditFileAssociationControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Options\EditFileAssociationControl.Designer.cs">
+      <DependentUpon>EditFileAssociationControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Options\ZenCodingOptionsPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Options\ZenCodingOptionsPage.Designer.cs">
+      <DependentUpon>ZenCodingOptionsPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Options\Model\FileAssociation.cs" />
+    <Compile Include="Options\Model\Settings.cs" />
+    <Compile Include="ZenCodingActionBase.cs" />
+    <Compile Include="ZenCodingWrapAction.cs" />
+    <Compile Include="ZenCodingAction.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ZenCodingEngine.cs" />
+    <Compile Include="ZenCodingWrapForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\Actions.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ZenCoding.Setup.wxs" />
+    <None Include="ZenCoding.Setup.Proj" />
+    <Content Include="zencoding\zen_core.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="zencoding\__init__.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="license.txt" />
+    <EmbeddedResource Include="Options\EditFileAssociationForm.resx">
+      <DependentUpon>EditFileAssociationForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Options\EditFileAssociationControl.resx">
+      <DependentUpon>EditFileAssociationControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\zencoding.png" />
+    <EmbeddedResource Include="Options\ZenCodingOptionsPage.resx">
+      <DependentUpon>ZenCodingOptionsPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <Content Include="sys\copy.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sys\types.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="zencoding\htmlparser.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="zencoding\html_matcher.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="zencoding\my_zen_settings.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="zencoding\stparser.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="zencoding\zen_settings.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

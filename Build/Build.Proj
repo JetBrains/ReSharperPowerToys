@@ -1,0 +1,70 @@
+﻿<Project InitialTargets="CheckExternalProps" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<!-- Properties that can be set externally:
+	• ReSharperBinariesDir — used by the sources build (solution) for locating the R# DLL references, overrides the setting defined in Src/PowerToys.Common.Targets. Must be an absolute path, no relative paths allowed.
+	• PowerToysBinariesDir — outdir for the sources build, files for the installer builds. Must be an absolute path, no relative paths allowed.
+	• VsVersion — version of Visual Studio that the installers will be targeting. Example: “9.0”.
+	-->
+
+	<PropertyGroup>
+		<PowerToysHomeDir>$(MSBuildProjectDirectory)/..</PowerToysHomeDir>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<!-- Point to the local Bin folder by default. -->
+		<PowerToysBinariesDir Condition="'$(PowerToysBinariesDir)'==''">$(PowerToysHomeDir)/Bin</PowerToysBinariesDir>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<BuildDependsOn>
+			$(BuildDependsOn);
+			InvokeSolutionBuild;
+			InvokeSetupsBuild;
+		</BuildDependsOn>
+		<CleanDependsOn>
+			$(CleanDependsOn);
+			InvokeSolutionClean;
+			InvokeSetupsClean;
+		</CleanDependsOn>
+	</PropertyGroup>
+
+	<!-- Anchor targets. -->
+	<Target Name="Build" DependsOnTargets="$(BuildDependsOn)"/>
+	<Target Name="Clean" DependsOnTargets="$(CleanDependsOn)"/>
+	<Target Name="Rebuild" DependsOnTargets="Clean;Build"/>
+
+	<!-- Builds the powertoys solution. -->
+	<PropertyGroup>
+		<SolutionBuildProperties>
+			$(SolutionBuildProperties);
+			PowerToysBinariesDir=$(PowerToysBinariesDir);
+		</SolutionBuildProperties>
+	</PropertyGroup>
+	<Target Name="InvokeSolutionBuild">
+		<MSBuild Projects="$(PowerToysHomeDir)/Src/PowerToys.sln" Targets="Build" Properties="$(SolutionBuildProperties)"  />
+	</Target>
+	<Target Name="InvokeSolutionClean">
+		<MSBuild Projects="$(PowerToysHomeDir)/Src/PowerToys.sln" Targets="Clean" Properties="$(SolutionBuildProperties)"  />
+	</Target>
+
+	<!-- Builds the installers for the individual powertoys. -->
+	<PropertyGroup>
+		<SetupsBuildProperties>
+			$(SetupsBuildProperties);
+			PowerToysBinariesDir=$(PowerToysBinariesDir);
+		</SetupsBuildProperties>
+	</PropertyGroup>
+	<ItemGroup>
+		<SetupProject Include="$(PowerToysHomeDir)/Src/*/*.Setup.Proj" />
+	</ItemGroup>
+	<Target Name="InvokeSetupsBuild">
+		<MSBuild Projects="@(SetupProject)" Targets="Build" Properties="$(SetupsBuildProperties)" />
+	</Target>
+	<Target Name="InvokeSetupsClean">
+		<MSBuild Projects="@(SetupProject)" Targets="Clean" Properties="$(SetupsBuildProperties)" />
+	</Target>
+
+	<!-- Launch conditions. -->
+	<Target Name="CheckExternalProps">
+	</Target>
+
+</Project>

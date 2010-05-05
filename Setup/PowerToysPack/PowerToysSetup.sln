@@ -1,0 +1,17 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerToysSetup", "PowerToysSetup.csproj", "{7F601E05-638B-4CFC-8DB1-105C93CA0B44}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7F601E05-638B-4CFC-8DB1-105C93CA0B44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F601E05-638B-4CFC-8DB1-105C93CA0B44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

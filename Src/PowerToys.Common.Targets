@@ -1,0 +1,25 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+	<!-- Inputs. -->
+	<PropertyGroup>
+		<!-- This folder must point to the ReSharper binaries location on your system. -->
+		<ReSharperBinariesDir Condition="'$(ReSharperBinariesDir)'==''">$(PowerToysHomeDir)/../Bin</ReSharperBinariesDir>
+		<PowerToysBinariesDir Condition="'$(PowerToysBinariesDir)'==''">$(PowerToysHomeDir)/Bin</PowerToysBinariesDir>
+	</PropertyGroup>
+
+	<!-- Outputs. -->
+	<PropertyGroup>
+		<OutputPath>$(PowerToysBinariesDir)\</OutputPath>
+		<IntermediateOutputPath>$(PowerToysHomeDir)\Obj\$(MSBuildProjectName)\$(Configuration)\</IntermediateOutputPath>
+	</PropertyGroup>
+
+	<!-- Other Settings. -->
+	<PropertyGroup>
+		<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+		<DebugSymbols>True</DebugSymbols>
+		<DebugType>Full</DebugType>
+		<DocumentationFile>$(IntermediateOutputPath)$(AssemblyName).Xml</DocumentationFile>
+		<NoWarn>$(NoWarn); 1591</NoWarn>
+		<SignAssembly Condition="'$(Configuration)'=='Release'">True</SignAssembly>
+		<AssemblyOriginatorKeyFile>$(PowerToysHomeDir)/Src/Key.Snk</AssemblyOriginatorKeyFile>
+	</PropertyGroup>
+</Project>
