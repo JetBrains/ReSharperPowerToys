@@ -17,10 +17,11 @@ The below descriptions are kept as generic as possible to avoid falling out of s
 • Obj — intermediate directory for the build process temporary files (relocated from under the projects).
 • Setup — the common infrastructure for the PowerToy installers.
 • Src — the source code for the PowerToy sample plugins.
+• Lib - libraries required to build PowerToys
 
 1. Before you compile.
 
-To set up the freshly downloaded set of sources for local compilation, you should specify the path to the Bin folder of the local R# installation (see .Targets file that is included into each of the .csproj project files). From this point on, you may open the solution in Visual Studio.
+To set up the freshly downloaded set of sources for local compilation, you should copy to Lib/ReSharper files from Bin folder of local R# installation. From this point on, you may open the solution in Visual Studio.
 
 Then, download and install a WiX version that is compatible with the samples, and correct the WiX location paths (see .Targets file that is included into each Setup project). 
 

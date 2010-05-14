@@ -37,82 +37,82 @@
   <ItemGroup>
     <Reference Include="JetBrains.Platform.ReSharper.ActionManagement">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.ActionManagement.dll</HintPath>
+      <HintPath>..\..\Lib\ReSharper\JetBrains.Platform.ReSharper.ActionManagement.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.Metadata">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.Metadata.dll</HintPath>
+      <HintPath>..\..\Lib\ReSharper\JetBrains.Platform.ReSharper.Metadata.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.ExternalSources">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperBinariesDir)\JetBrains.ReSharper.ExternalSources.dll</HintPath>
+      <HintPath>..\..\Lib\ReSharper\JetBrains.ReSharper.ExternalSources.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Feature.Services.ExternalSources">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperBinariesDir)\JetBrains.ReSharper.Feature.Services.ExternalSources.dll</HintPath>
+      <HintPath>..\..\Lib\ReSharper\JetBrains.ReSharper.Feature.Services.ExternalSources.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Feature.Services">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperBinariesDir)\JetBrains.ReSharper.Feature.Services.dll</HintPath>
+      <HintPath>..\..\Lib\ReSharper\JetBrains.ReSharper.Feature.Services.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.IDE">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.IDE.dll</HintPath>
+      <HintPath>..\..\Lib\ReSharper\JetBrains.Platform.ReSharper.IDE.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.Shell">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.Shell.dll</HintPath>
+      <HintPath>..\..\Lib\ReSharper\JetBrains.Platform.ReSharper.Shell.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Annotations">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperBinariesDir)\JetBrains.Annotations.dll</HintPath>
+      <HintPath>..\..\Lib\ReSharper\JetBrains.Annotations.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.DocumentManager">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.DocumentManager.dll</HintPath>
+      <HintPath>..\..\Lib\ReSharper\JetBrains.Platform.ReSharper.DocumentManager.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.DocumentModel">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.DocumentModel.dll</HintPath>
+      <HintPath>..\..\Lib\ReSharper\JetBrains.Platform.ReSharper.DocumentModel.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.ProjectModel">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.ProjectModel.dll</HintPath>
+      <HintPath>..\..\Lib\ReSharper\JetBrains.Platform.ReSharper.ProjectModel.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Psi">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperBinariesDir)\JetBrains.ReSharper.Psi.dll</HintPath>
+      <HintPath>..\..\Lib\ReSharper\JetBrains.ReSharper.Psi.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Psi.CSharp">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperBinariesDir)\JetBrains.ReSharper.Psi.CSharp.dll</HintPath>
+      <HintPath>..\..\Lib\ReSharper\JetBrains.ReSharper.Psi.CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Psi.Services">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperBinariesDir)\JetBrains.ReSharper.Psi.Services.dll</HintPath>
+      <HintPath>..\..\Lib\ReSharper\JetBrains.ReSharper.Psi.Services.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.UI">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.UI.dll</HintPath>
+      <HintPath>..\..\Lib\ReSharper\JetBrains.Platform.ReSharper.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.Util">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.Util.dll</HintPath>
+      <HintPath>..\..\Lib\ReSharper\JetBrains.Platform.ReSharper.Util.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
