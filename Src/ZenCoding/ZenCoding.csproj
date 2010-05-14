@@ -35,113 +35,113 @@
   <ItemGroup>
     <Reference Include="DevExpress.Data.v7.1, Version=7.1.3.0, Culture=neutral, PublicKeyToken=ac81f19954537d54, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperBinariesDir)\DevExpress.Data.v7.1.dll</HintPath>
+      <HintPath>..\..\Lib\ReSharper\DevExpress.Data.v7.1.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DevExpress.Utils.v7.1, Version=7.1.3.0, Culture=neutral, PublicKeyToken=ac81f19954537d54, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperBinariesDir)\DevExpress.Utils.v7.1.dll</HintPath>
+      <HintPath>..\..\Lib\ReSharper\DevExpress.Utils.v7.1.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DevExpress.XtraEditors.v7.1, Version=7.1.3.0, Culture=neutral, PublicKeyToken=ac81f19954537d54, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperBinariesDir)\DevExpress.XtraEditors.v7.1.dll</HintPath>
+      <HintPath>..\..\Lib\ReSharper\DevExpress.XtraEditors.v7.1.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DevExpress.XtraTreeList.v7.1, Version=7.1.3.0, Culture=neutral, PublicKeyToken=ac81f19954537d54, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperBinariesDir)\DevExpress.XtraTreeList.v7.1.dll</HintPath>
+      <HintPath>..\..\Lib\ReSharper\DevExpress.XtraTreeList.v7.1.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="IronPython, Version=2.6.10920.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <DontRemapToReSharper>True</DontRemapToReSharper>
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>libs\IronPython.dll</HintPath>
+      <HintPath>..\..\Lib\Microsoft\IronPython.dll</HintPath>
     </Reference>
     <Reference Include="IronPython.Modules, Version=2.6.10920.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <DontRemapToReSharper>True</DontRemapToReSharper>
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>libs\IronPython.Modules.dll</HintPath>
+      <HintPath>..\..\Lib\Microsoft\IronPython.Modules.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.ActionManagement">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.ActionManagement.dll</HintPath>
+      <HintPath>..\..\Lib\ReSharper\JetBrains.Platform.ReSharper.ActionManagement.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.DocumentManager">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.DocumentManager.dll</HintPath>
+      <HintPath>..\..\Lib\ReSharper\JetBrains.Platform.ReSharper.DocumentManager.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.DocumentModel">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.DocumentModel.dll</HintPath>
+      <HintPath>..\..\Lib\ReSharper\JetBrains.Platform.ReSharper.DocumentModel.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.IDE">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.IDE.dll</HintPath>
+      <HintPath>..\..\Lib\ReSharper\JetBrains.Platform.ReSharper.IDE.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.Interop.WinApi">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.Interop.WinApi.dll</HintPath>
+      <HintPath>..\..\Lib\ReSharper\JetBrains.Platform.ReSharper.Interop.WinApi.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.ProjectModel">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.ProjectModel.dll</HintPath>
+      <HintPath>..\..\Lib\ReSharper\JetBrains.Platform.ReSharper.ProjectModel.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.Shell">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.Shell.dll</HintPath>
+      <HintPath>..\..\Lib\ReSharper\JetBrains.Platform.ReSharper.Shell.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.TextControl">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.TextControl.dll</HintPath>
+      <HintPath>..\..\Lib\ReSharper\JetBrains.Platform.ReSharper.TextControl.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.UI">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.UI.dll</HintPath>
+      <HintPath>..\..\Lib\ReSharper\JetBrains.Platform.ReSharper.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.Util">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.Util.dll</HintPath>
+      <HintPath>..\..\Lib\ReSharper\JetBrains.Platform.ReSharper.Util.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Features.Common">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperBinariesDir)\JetBrains.ReSharper.Features.Common.dll</HintPath>
+      <HintPath>..\..\Lib\ReSharper\JetBrains.ReSharper.Features.Common.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Psi">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperBinariesDir)\JetBrains.ReSharper.Psi.dll</HintPath>
+      <HintPath>..\..\Lib\ReSharper\JetBrains.ReSharper.Psi.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Psi.Services">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperBinariesDir)\JetBrains.ReSharper.Psi.Services.dll</HintPath>
+      <HintPath>..\..\Lib\ReSharper\JetBrains.ReSharper.Psi.Services.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.Dynamic, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <DontRemapToReSharper>True</DontRemapToReSharper>
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>libs\Microsoft.Dynamic.dll</HintPath>
+      <HintPath>..\..\Lib\Microsoft\Microsoft.Dynamic.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Scripting, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <DontRemapToReSharper>True</DontRemapToReSharper>
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>libs\Microsoft.Scripting.dll</HintPath>
+      <HintPath>..\..\Lib\Microsoft\Microsoft.Scripting.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Scripting.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <DontRemapToReSharper>True</DontRemapToReSharper>
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>libs\Microsoft.Scripting.Core.dll</HintPath>
+      <HintPath>..\..\Lib\Microsoft\Microsoft.Scripting.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
