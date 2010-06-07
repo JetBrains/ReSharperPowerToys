@@ -1,0 +1,68 @@
+﻿<Project InitialTargets="CheckPowerToysHomeDir" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<!-- The PowerToysHomeDir and PowerToysBinariesDir properties must be defined externally. -->
+
+	<!-- WiX Paths. -->
+	<PropertyGroup>
+		<!-- Path for the WiX build tasks to locate the DLLs and EXEs. -->
+		<!-- If you're building on machines with WiX installed by an installer, and its EXEs are added to the %PATH%, you may delete the following line. -->
+		<WixToolPath>$(PowerToysHomeDir)\..\Platform\tools\WiX3</WixToolPath>
+		<!-- Path for the WiX Targets file to locate the tasks and their DLLs. -->
+		<!-- If you're building on machines with WiX installed by an installer, and its tasks are added to the system MSBuild Extensions folder, delete the following line. -->
+		<MSBuildExtensionsPath>$(PowerToysHomeDir)\..\Platform\tools\MSBuild\</MSBuildExtensionsPath>
+	</PropertyGroup>
+
+	<!-- Outputs. -->
+	<PropertyGroup>
+		<OutputPath>$(PowerToysBinariesDir)\</OutputPath>
+		<IntermediateOutputPath>$(PowerToysBinariesDir)\..\Obj\$(MSBuildProjectName)\$(Configuration)\</IntermediateOutputPath>
+		<SetupFilesDir>$(PowerToysHomeDir)/Setup</SetupFilesDir>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+		<ProductVersion>3.0</ProductVersion>
+		<ProjectGuid>{7f601e05-638b-4cfc-8db1-105c93ca0b44}</ProjectGuid>
+		<SchemaVersion>2.0</SchemaVersion>
+		<OutputName>$(ProductName) Setup (VS $(VsVersion))</OutputName>
+		<OutputType>Package</OutputType>
+		<DefineConstants Condition=" '$(Configuration)' == 'Debug' ">$(DefineConstants);Debug</DefineConstants>
+		<Cultures>en-us</Cultures>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- Source files. -->
+		<Compile Include="$(SetupFilesDir)/ReSharperPowerToySetup.Main.wxs" />
+		<Compile Include="$(SetupFilesDir)/ReSharperPowerToySetup.Property.wxs" />
+    <Compile Include="$(SetupFile)" />
+		<!-- Support for the Wizard dialogs. -->
+		<WixExtension Include="WixUIExtension" />
+	</ItemGroup>
+
+	<!-- Set the external properties for use in the Wxs source files. -->
+	<PropertyGroup>
+		<DefineConstants>
+      $(DefineConstants);
+      DynProductName=$(ProductName);
+      DynProductVersion=$(ProductVersion);
+      DynCompanyName=$(CompanyName);
+      DynUpgradeCode=$(UpgradeCode);
+      DynVsVersion=$(VsVersion);
+      DynSetupFilesDir=$(SetupFilesDir);
+      DynAssemblyFile=$(AssemblyFile);
+      DynReSharperVersion2=$(ReSharperVersion2);
+      DynMsiComponentGuid00=$(MsiComponentGuid00);
+      DynMsiComponentGuid01=$(MsiComponentGuid01);
+      DynPowerToysBinariesDir=$(PowerToysBinariesDir);
+    </DefineConstants>
+
+	</PropertyGroup>
+
+	<Import Project="$(MSBuildExtensionsPath)\Microsoft\WiX\v3.0\Wix.targets" />
+
+	<!-- Checks for the mandatory properties. -->
+	<Target Name="CheckPowerToysHomeDir">
+		<Error Condition="'$(PowerToysHomeDir)'==''" Text="The “PowerToysHomeDir” property must be defined, pointing to the root PowerToys folder."/>
+		<Error Condition="'$(PowerToysBinariesDir)'==''" Text="The “PowerToysBinariesDir” property must be defined, pointing to the PowerToys Bin folder."/>
+	</Target>
+
+</Project>

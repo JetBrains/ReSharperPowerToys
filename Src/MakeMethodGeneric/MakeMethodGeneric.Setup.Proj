@@ -1,0 +1,44 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<!-- Home folder for the PowerToys build site. -->
+		<PowerToysHomeDir>$(MSBuildProjectDirectory)/../..</PowerToysHomeDir>
+		<!-- Binaries dir; redirect the build output by setting it externally. -->
+		<PowerToysBinariesDir Condition="'$(PowerToysBinariesDir)'==''">$(PowerToysHomeDir)/Bin</PowerToysBinariesDir>
+	</PropertyGroup>
+	
+	<PropertyGroup>
+		 
+		<!-- Name of the plugin product and of the plugin folder in the R# plugins store, as well. -->
+		<ProductName>MakeMethodGeneric PowerToy</ProductName>
+		
+		<!-- Version of the plugin, to be specified in the installer. -->
+		<ProductVersion>5.0.0.0</ProductVersion>
+
+		<!-- Version of R# (two components only) that the plugin is targeting. -->
+		<ReSharperVersion2>5.0</ReSharperVersion2>
+		
+		<!-- Plugin vendor name. -->
+		<CompanyName>JetBrains Inc</CompanyName>
+		
+		<!-- Upgrade code for the plugin. -->
+		<!-- Should be unique for each of the plugins, but should not change within the plugin lifetime. All of the plugin versions should feature the same Upgrade Code. -->
+		<UpgradeCode>{83794CAF-1161-4339-817F-F2D22623518A}</UpgradeCode>
+		
+		<!-- Version of Visual Studio we're installing for. -->
+		<!-- Can be overridden on the command line when running the installation. -->
+		<VsVersion>9.0</VsVersion>
+
+		<!-- The plugin assembly file. -->
+		<AssemblyFile>$(PowerToysBinariesDir)/MakeMethodGeneric.dll</AssemblyFile>
+
+    <!-- Additional setup wix file -->
+    <SetupFile>MakeMethodGeneric.Setup.wxs</SetupFile>
+
+    <!-- The GUIDs that must be unique for each of the plugins. -->
+		<MsiComponentGuid00>{307BFAC3-4C20-49c5-9C50-E6F049B3E563}</MsiComponentGuid00>
+		<MsiComponentGuid01>{15BF0D3D-045C-4149-A8AD-AAAADC2D24A9}</MsiComponentGuid01>
+
+	</PropertyGroup>
+
+	<Import Project="$(PowerToysHomeDir)/Setup/ReSharperPowerToySetup.Targets"/>
+</Project>
