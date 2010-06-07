@@ -1,75 +1,77 @@
 ﻿<Project InitialTargets="CheckExternalProps" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-	<!-- JetBrains internal build of the PowerToy installers and the pack installer. -->
-	<PropertyGroup>
-		<PowerToysHomeDir>$(MSBuildProjectDirectory)/..</PowerToysHomeDir>
-	</PropertyGroup>
+  <!-- JetBrains internal build of the PowerToy installers and the pack installer. -->
+  <PropertyGroup>
+    <PowerToysHomeDir>$(MSBuildProjectDirectory)/..</PowerToysHomeDir>
+  </PropertyGroup>
 
-	<PropertyGroup>
-		<!-- Point to the R# Debug Bin folder by default. -->
-		<ProductBinariesDir Condition="'$(ProductBinariesDir)'==''">$(PowerToysHomeDir)/../Bin</ProductBinariesDir>
-		<!-- Point to the local Bin folder by default. -->
-		<PowerToysBinariesDir Condition="'$(PowerToysBinariesDir)'==''">$(PowerToysHomeDir)/Bin</PowerToysBinariesDir>
-	</PropertyGroup>
+  <PropertyGroup>
+    <!-- Point to the R# Debug Bin folder by default. -->
+    <ProductBinariesDir Condition="'$(ProductBinariesDir)'==''">$(PowerToysHomeDir)/../Bin</ProductBinariesDir>
+    <!-- Point to the local Bin folder by default. -->
+    <PowerToysBinariesDir Condition="'$(PowerToysBinariesDir)'==''">$(PowerToysHomeDir)/Bin</PowerToysBinariesDir>
+  </PropertyGroup>
 
-	<!-- Common Tasks. -->
-	<!--<Import Project="$(ProductHomeDir)/Build/Product.Common.Targets" Condition="'$(PragmaOnce_Product_Common_Targets)'==''" />-->
+  <!-- Common Tasks. -->
+  <!--<Import Project="$(ProductHomeDir)/Build/Product.Common.Targets" Condition="'$(PragmaOnce_Product_Common_Targets)'==''" />-->
 
-	<PropertyGroup>
-		<BuildDependsOn>
-			$(BuildDependsOn);
-			InvokeBuildProjBuild;
-			InvokePowerToysPackBuild;
-		</BuildDependsOn>
-		<CleanDependsOn>
-			$(CleanDependsOn);
-			InvokeBuildProjClean;
-			InvokePowerToysPackClean;
-		</CleanDependsOn>
-	</PropertyGroup>
+  <PropertyGroup>
+    <BuildDependsOn>
+      $(BuildDependsOn);
+      InvokeBuildProjBuild;
+      InvokePowerToysPackBuild;
+      ReSharperLibsExtract;
+    </BuildDependsOn>
+    <CleanDependsOn>
+      $(CleanDependsOn);
+      ReSharperLibsClean;
+      InvokePowerToysPackClean;
+      InvokeBuildProjClean;
+    </CleanDependsOn>
+  </PropertyGroup>
 
-	<!-- Anchor targets. -->
-	<Target Name="Build" DependsOnTargets="$(BuildDependsOn)"/>
-	<Target Name="Clean" DependsOnTargets="$(CleanDependsOn)"/>
-	<Target Name="Rebuild" DependsOnTargets="Clean;Build"/>
+  <!-- Anchor targets. -->
+  <Target Name="Build" DependsOnTargets="$(BuildDependsOn)"/>
+  <Target Name="Clean" DependsOnTargets="$(CleanDependsOn)"/>
+  <Target Name="Rebuild" DependsOnTargets="Clean;Build"/>
 
-	<!-- Builds the public PowerToys part (binaries and installers of individual powertoys). -->
-	<PropertyGroup>
-		<BuildProjProperties>
-			$(BuildProjProperties);
-			ReSharperBinariesDir=$(ProductBinariesDir);
-			PowerToysBinariesDir=$(PowerToysBinariesDir);
-		</BuildProjProperties>
-	</PropertyGroup>
-	<Target Name="InvokeBuildProjBuild">
-		<MSBuild Projects="$(PowerToysHomeDir)/Build/Build.Proj" Targets="Build" Properties="$(BuildProjProperties)"  />
-	</Target>
-	<Target Name="InvokeBuildProjClean">
-		<MSBuild Projects="$(PowerToysHomeDir)/Build/Build.Proj" Targets="Clean" Properties="$(BuildProjProperties)"  />
-	</Target>
+  <!-- Builds the public PowerToys part (binaries and installers of individual powertoys). -->
+  <PropertyGroup>
+    <BuildProjProperties>
+      $(BuildProjProperties);
+      ReSharperBinariesDir=$(ProductBinariesDir);
+      PowerToysBinariesDir=$(PowerToysBinariesDir);
+    </BuildProjProperties>
+  </PropertyGroup>
+  <Target Name="InvokeBuildProjBuild">
+    <MSBuild Projects="$(PowerToysHomeDir)/Build/Build.Proj" Targets="Build" Properties="$(BuildProjProperties)"  />
+  </Target>
+  <Target Name="InvokeBuildProjClean">
+    <MSBuild Projects="$(PowerToysHomeDir)/Build/Build.Proj" Targets="Clean" Properties="$(BuildProjProperties)"  />
+  </Target>
 
-	<!-- Builds the PowerToysPack installer. -->
-	<PropertyGroup>
-		<PowerToysPackProperties>
-			$(PowerToysPackProperties);
-			PowerToysBinariesDir=$(PowerToysBinariesDir);
-		</PowerToysPackProperties>
-	</PropertyGroup>
-	<Target Name="InvokePowerToysPackBuild">
-		<MSBuild Projects="$(PowerToysHomeDir)/Setup/PowerToysPack/Build.Proj" Targets="Build" Properties="$(PowerToysPackProperties)" />
-	</Target>
-	<Target Name="InvokePowerToysPackClean">
-		<MSBuild Projects="$(PowerToysHomeDir)/Setup/PowerToysPack/Build.Proj" Targets="Clean" Properties="$(PowerToysPackProperties)" />
-	</Target>
+  <!-- Builds the PowerToysPack installer. -->
+  <PropertyGroup>
+    <PowerToysPackProperties>
+      $(PowerToysPackProperties);
+      PowerToysBinariesDir=$(PowerToysBinariesDir);
+    </PowerToysPackProperties>
+  </PropertyGroup>
+  <Target Name="InvokePowerToysPackBuild">
+    <MSBuild Projects="$(PowerToysHomeDir)/Setup/PowerToysPack/Build.Proj" Targets="Build" Properties="$(PowerToysPackProperties)" />
+  </Target>
+  <Target Name="InvokePowerToysPackClean">
+    <MSBuild Projects="$(PowerToysHomeDir)/Setup/PowerToysPack/Build.Proj" Targets="Clean" Properties="$(PowerToysPackProperties)" />
+  </Target>
 
-	<!-- Launch conditions. -->
-	<Target Name="CheckExternalProps">
-	</Target>
+  <!-- Launch conditions. -->
+  <Target Name="CheckExternalProps">
+  </Target>
 
-	<Target Name="PackPowerToysSources">
-		<Delete Files="$(ProductBinariesDir)/PowerToysSources.zip" />
-		<ItemGroup>
-			<SourceFiles
+  <Target Name="PackPowerToysSources">
+    <Delete Files="$(ProductBinariesDir)/PowerToysSources.zip" />
+    <ItemGroup>
+      <SourceFiles
 				Include="$(PowerToysHomeDir)\**\*.*"
 				Exclude="
 					$(PowerToysHomeDir)\**\.svn\**\*.*;
@@ -87,27 +89,54 @@
 					$(PowerToysHomeDir)\Src\_ReSharper.*\**\*.*;
 					$(PowerToysHomeDir)\Obj\**\*.*;
 					" />
-		</ItemGroup>
-		<Zip
+    </ItemGroup>
+    <Zip
 			Files="@(SourceFiles)"
 			ZipFileName="$(ProductBinariesDir)/PowerToysSources.zip"
 			WorkingDirectory="$(PowerToysHomeDir)" />
-	</Target>
+  </Target>
 
-	<!-- Support multiple VS Versions. Invoke self build with different VsVersion property values. -->
-	<Import Project="$(PowerToysHomeDir)/Build/VsHive.Targets"/>
-	<Target Name="MultipleVsVersions">
-		<MSBuild Projects="$(MSBuildProjectFullPath)" Targets="Rebuild" Properties="VsVersion=%(KnownVsVersions.Identity)" />
-	</Target>
+  <!-- Support multiple VS Versions. Invoke self build with different VsVersion property values. -->
+  <Import Project="$(PowerToysHomeDir)/Build/VsHive.Targets"/>
+  <Target Name="MultipleVsVersions">
+    <MSBuild Projects="$(MSBuildProjectFullPath)" Targets="Rebuild" Properties="VsVersion=%(KnownVsVersions.Identity)" />
+  </Target>
 
-	<ItemGroup>
-		<PowerToysBinDlls Include="$(PowerToysHomeDir)\Obj\*\Release\*.dll" />
-	</ItemGroup>
-	<Target Name="PublishPowertoysAsPlugins">
-		<Copy
+  <ItemGroup>
+    <PowerToysBinDlls Include="$(PowerToysHomeDir)\Obj\*\Release\*.dll" />
+  </ItemGroup>
+  <Target Name="PublishPowertoysAsPlugins">
+    <Copy
 			SourceFiles="%(PowerToysBinDlls.FullPath)"
 			DestinationFolder="$(ProductBinariesDir)\Plugins\%(PowerToysBinDlls.FileName).plugin"
 			Condition="Exists('$(PowerToysHomeDir)\Src\%(PowerToysBinDlls.FileName)')" />
-	</Target>
+  </Target>
+
+  <!-- Produces R# libs to use as references in projects. -->
+  <!-- Currently, takes them from an MSI file residing in LIB. -->
+  <PropertyGroup>
+    <!--  Folder into which MSI is expanded before we copy the useful payload to our locations. -->
+    <MsiExpandFolderName>$(TEMP)\PowerToys\ReSharperBinaries\</MsiExpandFolderName>
+    <ReSharperBinariesDir>$(PowerToysHomeDir)/Lib/ReSharperBinaries</ReSharperBinariesDir>
+  </PropertyGroup>
+  <Target Name="ReSharperLibsExtract">
+    <ItemGroup>
+      <!-- All of the MSI files in LIB. Actually, we expect only one. -->
+      <!-- TODO: make this fetch MRU MSI for nightly builds. -->
+      <ReSharperSetupMsi Include="$(PowerToysHomeDir)/Lib/ReSharperSetup/*.msi" />
+    </ItemGroup>
+    <Message Text="Expanding MSI into ReSharper binaries." />
+    <!-- This does the Admin Install, which is basically about extracting the files. And these we need. -->
+    <Exec Command="msiexec /a %(ReSharperSetupMsi.Identity) /qn TARGETDIR=$(MsiExpandFolderName)" />
+
+    <!-- Copy the extracted files (look into subfolder). -->
+    <Copy SourceFiles="$(MsiExpandFolderName)PFiles\JetBrains\ReSharper\v5.1" DestinationFolder="" OverwriteReadOnlyFiles="true" />
+  </Target>
+
+  <!-- Cleans after ReSharperLibsExtract. -->
+  <Target Name="ReSharperLibsClean">
+    <RemoveDir Directories="$(MsiExpandFolderName)" />
+    <RemoveDir Directories="$(ReSharperBinariesDir)" />
+  </Target>
 
 </Project>
