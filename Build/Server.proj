@@ -119,7 +119,7 @@
 	<PropertyGroup>
 		<!--  Folder into which MSI is expanded before we copy the useful payload to our locations. -->
 		<MsiExpandFolderName>$(TEMP)\PowerToys\ReSharperBinaries\</MsiExpandFolderName>
-		<ReSharperBinariesDir>$(PowerToysHomeDir)/Lib/ReSharperBinaries</ReSharperBinariesDir>
+		<ReSharperBinariesDir>$(PowerToysHomeDir)/Lib/ReSharper</ReSharperBinariesDir>
 	</PropertyGroup>
 	<Target Name="ReSharperLibsExtract">
 		<ItemGroup>
