@@ -16,7 +16,7 @@
 	</PropertyGroup>
 
 	<!-- Common Tasks. -->
-	<Import Project="$(ProductHomeDir)/Build/Product.Common.Targets" Condition="'$(PragmaOnce_Product_Common_Targets)'==''" />
+	<!--<Import Project="$(ProductHomeDir)/Build/Product.Common.Targets" Condition="'$(PragmaOnce_Product_Common_Targets)'==''" />-->
 
 	<PropertyGroup>
 		<BuildDependsOn>
