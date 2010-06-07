@@ -8,9 +8,9 @@
   <!-- WiX Paths. -->
   <PropertyGroup>
     <!-- Path for the WiX build tasks to locate the DLLs and EXEs. -->
-    <WixToolPath>$(PowerToysHomeDir)\..\Platform\tools\WiX3</WixToolPath>
+    <WixToolPath>$(PowerToysHomeDir)\Tools\WiX3</WixToolPath>
     <!-- Path for the WiX Targets file to locate the tasks and their DLLs. -->
-    <MSBuildExtensionsPath>$(PowerToysHomeDir)\..\Platform\tools\MSBuild\</MSBuildExtensionsPath>
+    <MSBuildExtensionsPath>$(PowerToysHomeDir)\Tools\MSBuild\</MSBuildExtensionsPath>
   </PropertyGroup>
   <!-- Outputs. -->
   <PropertyGroup>
