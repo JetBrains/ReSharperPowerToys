@@ -1,8 +1,14 @@
 ﻿<Project InitialTargets="CheckExternalProps" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <!-- JetBrains internal build of the PowerToy installers and the pack installer. -->
+  
+  <!-- The root dir of the repo. -->
+  <!-- Normalize the path. Note: in MSBuild4, this is not a problem. -->
+  <ItemGroup>
+    <PowerToysHomeDirItemGroup Include="$(MSBuildProjectDirectory)/.." />
+  </ItemGroup>
   <PropertyGroup>
-    <PowerToysHomeDir>$(MSBuildProjectDirectory)/..</PowerToysHomeDir>
+    <PowerToysHomeDir>%(PowerToysHomeDirItemGroup.FullPath)</PowerToysHomeDir>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -18,15 +24,15 @@
   <PropertyGroup>
     <BuildDependsOn>
       $(BuildDependsOn);
+      ReSharperLibsExtract;
       InvokeBuildProjBuild;
       InvokePowerToysPackBuild;
-      ReSharperLibsExtract;
     </BuildDependsOn>
     <CleanDependsOn>
       $(CleanDependsOn);
-      ReSharperLibsClean;
       InvokePowerToysPackClean;
       InvokeBuildProjClean;
+      ReSharperLibsClean;
     </CleanDependsOn>
   </PropertyGroup>
 
@@ -127,10 +133,10 @@
     </ItemGroup>
     <Message Text="Expanding MSI into ReSharper binaries." />
     <!-- This does the Admin Install, which is basically about extracting the files. And these we need. -->
-    <Exec Command="msiexec /a %(ReSharperSetupMsi.Identity) /qn TARGETDIR=$(MsiExpandFolderName)" />
+    <Exec Command="msiexec /a %(ReSharperSetupMsi.FullPath) /qn TARGETDIR=$(MsiExpandFolderName)" />
 
     <!-- Copy the extracted files (look into subfolder). -->
-    <Copy SourceFiles="$(MsiExpandFolderName)PFiles\JetBrains\ReSharper\v5.1" DestinationFolder="" OverwriteReadOnlyFiles="true" />
+    <Copy SourceFiles="$(MsiExpandFolderName)PFiles\JetBrains\ReSharper\*\Bin\*" DestinationFolder="$(ReSharperBinariesDir)" OverwriteReadOnlyFiles="true" />
   </Target>
 
   <!-- Cleans after ReSharperLibsExtract. -->
