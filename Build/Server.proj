@@ -132,7 +132,10 @@
 		<Exec Command="msiexec /a %(ReSharperSetupMsi.FullPath) /qn TARGETDIR=$(MsiExpandFolderName)" />
 
 		<!-- Copy the extracted files (look into subfolder). -->
-		<Copy SourceFiles="$(MsiExpandFolderName)PFiles\JetBrains\ReSharper\*\Bin\*" DestinationFolder="$(ReSharperBinariesDir)" OverwriteReadOnlyFiles="true" />
+		<ItemGroup>
+			<ExpandedMsiFiles Include="$(MsiExpandFolderName)PFiles\JetBrains\ReSharper\*\Bin\*" />
+		</ItemGroup>
+		<Copy SourceFiles="@(ExpandedMsiFiles)" DestinationFolder="$(ReSharperBinariesDir)" OverwriteReadOnlyFiles="true" />
 	</Target>
 
 	<!-- Cleans after ReSharperLibsExtract. -->
