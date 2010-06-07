@@ -3,9 +3,6 @@
 	<!-- JetBrains internal build of the PowerToy installers and the pack installer. -->
 	<PropertyGroup>
 		<PowerToysHomeDir>$(MSBuildProjectDirectory)/..</PowerToysHomeDir>
-
-		<!-- R# home dir. -->
-		<ProductHomeDir Condition="'$(ProductHomeDir)'==''">$(PowerToysHomeDir)/..</ProductHomeDir>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -98,7 +95,7 @@
 	</Target>
 
 	<!-- Support multiple VS Versions. Invoke self build with different VsVersion property values. -->
-	<Import Project="$(ProductHomeDir)/Build/VsHive.Targets"/>
+	<Import Project="$(PowerToysHomeDir)/Build/VsHive.Targets"/>
 	<Target Name="MultipleVsVersions">
 		<MSBuild Projects="$(MSBuildProjectFullPath)" Targets="Rebuild" Properties="VsVersion=%(KnownVsVersions.Identity)" />
 	</Target>
