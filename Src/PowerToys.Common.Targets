@@ -2,7 +2,7 @@
 	<!-- Inputs. -->
 	<PropertyGroup>
 		<!-- This folder must point to the ReSharper binaries location on your system. -->
-		<ReSharperBinariesDir Condition="'$(ReSharperBinariesDir)'==''">$(PowerToysHomeDir)/Lib/ReSharper</ReSharperBinariesDir>
+		<ReSharperBinariesDir Condition="'$(ReSharperBinariesDir)'==''">$(PowerToysHomeDir)/Lib/ReSharperBinaries</ReSharperBinariesDir>
 		<PowerToysBinariesDir Condition="'$(PowerToysBinariesDir)'==''">$(PowerToysHomeDir)/Bin</PowerToysBinariesDir>
 	</PropertyGroup>
 
