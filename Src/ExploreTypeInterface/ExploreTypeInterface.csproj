@@ -37,7 +37,7 @@
   <ItemGroup>
     <Reference Include="JetBrains.Platform.ReSharper.ActionManagement">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperBinariesDir)\JetBrains.Platform.ReSharper.ActionManagement.dll</HintPath>
+      <HintPath>..\..\Lib\ReSharper\JetBrains.Platform.ReSharper.ActionManagement.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.IDE">
