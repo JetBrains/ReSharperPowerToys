@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<actions>
+  <insert group-id="Refactor" anchor-id="UseBaseTypeAction" position="before">
+    <action id="MakeMethodGeneric" text="Make Method Generic..." vsid="475">
+    </action>
+  </insert>
+
+  <insert group-id="RefactorMember" position="after">
+    <action-ref id="MakeMethodGeneric">
+    </action-ref>
+  </insert>
+
+</actions>

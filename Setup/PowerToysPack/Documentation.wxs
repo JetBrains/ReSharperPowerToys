@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<!-- The doc/help files. -->
+	<Fragment Id="G.Documentation">
+
+		<?define DocumentationDiskId=3?>
+		<Media Id="$(var.DocumentationDiskId)" Cabinet="PowerToyDocumentation.cab" EmbedCab="yes" />
+
+		<DirectoryRef Id="D.PowerToysHome">
+			<Directory Id="D.Documentation.Doc" Name="Doc">
+				<Component Id="C.Documentation" Guid="{90F4EFF9-7E7C-402d-9B47-CD9E797CE34D}" Location="local" DiskId="$(var.DocumentationDiskId)">
+					<File Id="F.Documentation.ReSharperPowerToys.chm" Name="ReSharperPowerToys.chm" Checksum="yes" Vital="yes" KeyPath="yes" ReadOnly="yes" Source="$(var.DynPowerToysHomeDir)/Doc/ReSharperPowerToys.chm" />
+				</Component>
+			</Directory>
+		</DirectoryRef>
+
+		<Feature Id="U.Documentation" Title="Documentation" Level="1" AllowAdvertise="no" InstallDefault="local" Display="expand" Description="The documentation on R#, plugin development, and PowerToys.">
+			<ComponentRef Id="C.Documentation" />
+		</Feature>
+
+	</Fragment>
+</Wix>
