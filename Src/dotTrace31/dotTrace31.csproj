@@ -56,9 +56,9 @@
       <HintPath>..\..\Lib\ReSharper\DevExpress.XtraTreeList.v7.1.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="JetBrains.dotTrace.Api, Version=2.0.203.122, Culture=neutral, PublicKeyToken=a69a3c730d060360">
+    <Reference Include="JetBrains.dotTrace.Api, Version=3.1.359.1, Culture=neutral, PublicKeyToken=a69a3c730d060360">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\ReSharper\JetBrains.dotTrace.Api.dll</HintPath>
+      <HintPath>..\..\Lib\dotTrace31\JetBrains.dotTrace.Api.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.IDE">
       <SpecificVersion>False</SpecificVersion>
