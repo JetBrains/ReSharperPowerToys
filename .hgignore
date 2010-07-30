@@ -1,0 +1,9 @@
+syntax: regexp
+^[Bb]in$
+^[Oo]bj$
+^Lib/ReSharper
+^Src/_ReSharper
+\.ReSharper.user$
+\.csproj.user$
+\.suo$
+
