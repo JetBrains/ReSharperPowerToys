@@ -41,7 +41,7 @@
 		</SolutionBuildProperties>
 	</PropertyGroup>
   <Target Name="PrepareBinaries">
-    <Exec Command="del /Q $(PowerToysHomeDir)\Lib\ReSharper\*.*" Condition="Exists('$(PowerToysHomeDir)\Lib\ReSharper\*.*"/>
+    <Exec Command="del /Q $(PowerToysHomeDir)\Lib\ReSharper\*.*" Condition="Exists('$(PowerToysHomeDir)\Lib\ReSharper\*.*'"/>
     <Exec Command="rmdir /s $(MSBuildProjectDirectory)\Temp" Condition="Exists('$(MSBuildProjectDirectory)\Temp')"/>
     <Exec Command="xcopy /Y ..\Lib\ReSharperSetup\ReSharper.msi ."/>
     <Exec Command="msiexec /a ReSharper.msi /qb TARGETDIR=$(MSBuildProjectDirectory)\Temp"/>
