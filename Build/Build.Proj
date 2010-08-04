@@ -6,12 +6,12 @@
 	-->
 
 	<PropertyGroup>
-		<PowerToysHomeDir>$(MSBuildProjectDirectory)/..</PowerToysHomeDir>
+		<PowerToysHomeDir>$(MSBuildProjectDirectory)\..</PowerToysHomeDir>
 	</PropertyGroup>
 
 	<PropertyGroup>
 		<!-- Point to the local Bin folder by default. -->
-		<PowerToysBinariesDir Condition="'$(PowerToysBinariesDir)'==''">$(PowerToysHomeDir)/Bin</PowerToysBinariesDir>
+		<PowerToysBinariesDir Condition="'$(PowerToysBinariesDir)'==''">$(PowerToysHomeDir)\Bin</PowerToysBinariesDir>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -31,6 +31,7 @@
 	<Target Name="Build" DependsOnTargets="$(BuildDependsOn)"/>
 	<Target Name="Clean" DependsOnTargets="$(CleanDependsOn)"/>
 	<Target Name="Rebuild" DependsOnTargets="Clean;Build"/>
+  <Target Name="PrepareBinAndBuild" DependsOnTargets="Clean;PrepareBinaries;Build"/>
 
 	<!-- Builds the powertoys solution. -->
 	<PropertyGroup>
@@ -39,8 +40,15 @@
 			PowerToysBinariesDir=$(PowerToysBinariesDir);
 		</SolutionBuildProperties>
 	</PropertyGroup>
+  <Target Name="PrepareBinaries">
+    <Exec Command="del /Q $(PowerToysHomeDir)\Lib\ReSharper\*.*"/>
+    <Exec Command="rmdir /s $(MSBuildProjectDirectory)\Temp" Condition="Exists('$(MSBuildProjectDirectory)\Temp')"/>
+    <Exec Command="xcopy /Y ..\Lib\ReSharperSetup\ReSharper.msi ."/>
+    <Exec Command="msiexec /a ReSharper.msi /qb TARGETDIR=$(MSBuildProjectDirectory)\Temp"/>
+    <Exec Command="xcopy /Y $(MSBuildProjectDirectory)\Temp\PFiles\JetBrains\ReSharper\v$(ReSharperVersion2)\Bin\*.* $(PowerToysHomeDir)\Lib\ReSharper"/>
+  </Target>
 	<Target Name="InvokeSolutionBuild">
-		<MSBuild Projects="$(PowerToysHomeDir)/Src/PowerToys.sln" Targets="Build" Properties="$(SolutionBuildProperties)"  />
+    <MSBuild Projects="$(PowerToysHomeDir)/Src/PowerToys.sln" Targets="Build" Properties="$(SolutionBuildProperties)"  />
 	</Target>
 	<Target Name="InvokeSolutionClean">
 		<MSBuild Projects="$(PowerToysHomeDir)/Src/PowerToys.sln" Targets="Clean" Properties="$(SolutionBuildProperties)"  />
