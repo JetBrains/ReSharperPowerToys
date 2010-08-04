@@ -1,18 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{0B9EEC3B-131D-4AA9-98E6-1FD307A1E269}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>JetBrains.ReSharper.PowerToys.ZenCoding</RootNamespace>
     <AssemblyName>ZenCoding</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <PowerToysHomeDir>$(MSBuildProjectDirectory)/../..</PowerToysHomeDir>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,6 +41,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,6 +50,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <Import Project="$(PowerToysHomeDir)/Src/PowerToys.Common.Targets" />
   <ItemGroup>
@@ -150,9 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Options\FileAssociationPresenter.cs" />
-    <Compile Include="Options\FileAssociationsTreeView.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Options\FileAssociationsTreeView.cs" />
     <Compile Include="Options\FileAssociationViewController.cs" />
     <Compile Include="Options\EditFileAssociationForm.cs">
       <SubType>Form</SubType>
@@ -164,9 +183,7 @@
     <Compile Include="Options\Model\Handlers\IPatternHandler.cs" />
     <Compile Include="Options\Model\Handlers\RegexPatternHandler.cs" />
     <Compile Include="Options\Model\PatternType.cs" />
-    <Compile Include="Options\EditFileAssociationControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Options\EditFileAssociationControl.cs" />
     <Compile Include="Options\EditFileAssociationControl.Designer.cs">
       <DependentUpon>EditFileAssociationControl.cs</DependentUpon>
     </Compile>
@@ -192,7 +209,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ZenCoding.Setup.wxs" />
-    <None Include="ZenCoding.Setup.Proj" />
+    <None Include="ZenCoding.Setup.Proj">
+      <SubType>Designer</SubType>
+    </None>
     <Content Include="zencoding\zen_core.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -204,13 +223,16 @@
     <Content Include="license.txt" />
     <EmbeddedResource Include="Options\EditFileAssociationForm.resx">
       <DependentUpon>EditFileAssociationForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Options\EditFileAssociationControl.resx">
       <DependentUpon>EditFileAssociationControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="resources\zencoding.png" />
     <EmbeddedResource Include="Options\ZenCodingOptionsPage.resx">
       <DependentUpon>ZenCodingOptionsPage.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <Content Include="sys\copy.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -233,6 +255,23 @@
     <Content Include="zencoding\zen_settings.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
