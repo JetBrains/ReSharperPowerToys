@@ -107,6 +107,10 @@
       <HintPath>..\..\Lib\ReSharper\JetBrains.ReSharper.Features.Common.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="JetBrains.ReSharper.NewRefactorings, Version=5.1.1708.11, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Lib\ReSharper\JetBrains.ReSharper.NewRefactorings.dll</HintPath>
+    </Reference>
     <Reference Include="JetBrains.ReSharper.Psi">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Lib\ReSharper\JetBrains.ReSharper.Psi.dll</HintPath>
