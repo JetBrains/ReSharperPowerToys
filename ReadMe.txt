@@ -2,12 +2,12 @@
 ReadMe File
 ——————————————————————————————————————
 
-Note: this file is provided for a quick reference only. For detailed descriptions of the files and folders included within this installation, and for the step-by-step instructions for building the samples and installers for them, you should refer to the Confluence page at http://www.jetbrains.net/confluence, which has a section that corresponds to the PowerToys version you're using.
+Note: this file is provided for a quick reference only. 
 
-The JetBrains ReSharper PowerToys Pack comprises a set of sample projects that illustrate basic techniques and practices for ReSharper plugin development.
-The samples are intended as a quickstart basis for building third-party ReSharper plugins, especially the plugin installers. Their source code may be freely reused.
+The JetBrains ReSharper PowerToys Pack comprises a set of sample projects that illustrate basic techniques for ReSharper plugin development.
+The samples are intended as a quickstart basis for building third-party ReSharper plugins, especially the plugin installers. 
+Their source code may be freely used under the BSD License.
 
-The below descriptions are kept as generic as possible to avoid falling out of sync with the actual state of the things.
 
 1. Folders.
 
