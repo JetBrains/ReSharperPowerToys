@@ -64,7 +64,7 @@ namespace JetBrains.ReSharper.PowerToys.dotTrace31
       catch (Exception e)
       {
         // This posts exception to log file without showing it to the user
-        Logger.LogException(e);
+        Logger.LogExceptionSilently(e);
         ourHasProfiler = false;
       }
     }
