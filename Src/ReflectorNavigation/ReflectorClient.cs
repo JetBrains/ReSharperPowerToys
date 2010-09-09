@@ -118,7 +118,7 @@ namespace JetBrains.ReSharper.PowerToys.ReflectorNavigation
                           Arguments = "\"/configuration:" + reflectorCfg.FullPath + "\"",
                           ErrorDialog = true,
                           FileName = reflectorExe,
-                          WindowStyle = ProcessWindowStyle.Minimized,
+                          WindowStyle = ProcessWindowStyle.Hidden,
                         };
       
       var process = Process.Start(startInfo);
