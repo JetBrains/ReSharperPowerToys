@@ -147,7 +147,9 @@
     <Compile Include="ReflectorConstants.cs" />
     <Compile Include="ReflectorExternalSourcesProvider.cs" />
     <Compile Include="ReflectorOptions.cs" />
-    <Compile Include="ReflectorOptionsPage.cs" />
+    <Compile Include="ReflectorOptionsPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ReflectorSpecificLogger.cs" />
   </ItemGroup>
   <ItemGroup>

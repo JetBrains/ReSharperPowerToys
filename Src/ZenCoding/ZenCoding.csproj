@@ -171,7 +171,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Options\FileAssociationPresenter.cs" />
-    <Compile Include="Options\FileAssociationsTreeView.cs" />
+    <Compile Include="Options\FileAssociationsTreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Options\FileAssociationViewController.cs" />
     <Compile Include="Options\EditFileAssociationForm.cs">
       <SubType>Form</SubType>
@@ -183,7 +185,9 @@
     <Compile Include="Options\Model\Handlers\IPatternHandler.cs" />
     <Compile Include="Options\Model\Handlers\RegexPatternHandler.cs" />
     <Compile Include="Options\Model\PatternType.cs" />
-    <Compile Include="Options\EditFileAssociationControl.cs" />
+    <Compile Include="Options\EditFileAssociationControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Options\EditFileAssociationControl.Designer.cs">
       <DependentUpon>EditFileAssociationControl.cs</DependentUpon>
     </Compile>
