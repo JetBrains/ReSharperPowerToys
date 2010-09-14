@@ -187,6 +187,7 @@
     </Compile>
     <Compile Include="MakeMethodGenericUnsupported.cs" />
     <Compile Include="MakeMethodGenericWorkflow.cs" />
+    <Compile Include="MakeMethodGenericWorkflowProvider.cs" />
     <Compile Include="PowerToyRefactoringsLanguageService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

@@ -1,5 +1,6 @@
 using JetBrains.ActionManagement;
 using JetBrains.ReSharper.Refactorings.Workflow;
+using JetBrains.UI.RichText;
 
 namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
 {
@@ -7,10 +8,11 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
   /// Refactoring action uses refactoring workflow to implement <see cref="IActionHandler"/> interface
   /// </summary>
   [ActionHandler]
-  internal class MakeMethodGenericAction : RefactoringAction
+  internal class MakeMethodGenericAction : ExtensibleRefactoringAction<MakeMethodGenericWorkflowProvider>
   {
-    public MakeMethodGenericAction() : base(solution => new MakeMethodGenericWorkflow(solution))
-    {
-    }
+  	protected override RichText GetGroupCaption()
+  	{
+  		return "Make Method Generic";
+  	}
   }
 }
