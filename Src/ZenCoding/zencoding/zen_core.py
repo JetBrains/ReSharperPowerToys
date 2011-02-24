@@ -422,6 +422,7 @@ class Tag(object):
 		name = name.lower()
 		
 		abbr = get_abbreviation(doc_type, name)
+		
 		if abbr and abbr.type == stparser.TYPE_REFERENCE:
 			abbr = get_abbreviation(doc_type, abbr.value)
 		
@@ -594,6 +595,9 @@ class Tag(object):
 		cursor = profile['place_cursor'] and '|' or ''
 		self_closing = ''
 		
+		is_empty = self.is_empty() and not self.children
+		
+		
 		if profile['self_closing_tag'] == 'xhtml':
 			self_closing = ' /'
 		elif profile['self_closing_tag'] == True:
@@ -614,7 +618,7 @@ class Tag(object):
 		deepest_child = self.find_deepest_child()
 		
 		# output children
-		if not self.is_empty():
+		if not is_empty:
 			if deepest_child and self.repeat_by_lines:
 				deepest_child.set_content(content_placeholder)
 			
@@ -628,7 +632,7 @@ class Tag(object):
 		# define opening and closing tags
 		if self.name:
 			tag_name = profile['tag_case'] == 'upper' and self.name.upper() or self.name.lower()
-			if self.is_empty():
+			if is_empty:
 				start_tag = '<%s%s%s>' % (tag_name, attrs, self_closing)
 			else:
 				start_tag, end_tag = '<%s%s>' % (tag_name, attrs), '</%s>' % tag_name
@@ -644,7 +648,7 @@ class Tag(object):
 			if self.name:
 				if content:
 					content = pad_string(content, profile['indent'] and 1 or 0)
-				elif not self.is_empty():
+				elif not is_empty:
 					start_tag += cursor
 		
 		# repeat tag by lines count
