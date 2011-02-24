@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Selects the default Visual Studio Hive for the Debug configuration. -->
+<!-- Whenever the default VS version changes, or the RootSuffix for the current R# development branch, these defaults should be changed. -->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+	<PropertyGroup>
+		<VsVersion Condition="'$(VsVersion)' == ''">10.0</VsVersion>
+		<VsRootSuffixDevelopment Condition="'$(VsRootSuffixDevelopment)' == ''">ReSharper</VsRootSuffixDevelopment>
+	</PropertyGroup>
+	<!-- Lists the supported VS versions. For instance, installers will be built for all those. -->
+	<ItemGroup>
+		<KnownVsVersions Include="8.0"/>
+		<KnownVsVersions Include="9.0"/>
+		<KnownVsVersions Include="10.0"/>
+	</ItemGroup>
+</Project>

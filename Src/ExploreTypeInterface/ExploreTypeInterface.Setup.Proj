@@ -1,0 +1,43 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<!-- Home folder for the PowerToys build site. -->
+		<PowerToysHomeDir>$(MSBuildProjectDirectory)/../..</PowerToysHomeDir>
+		<!-- Binaries dir; redirect the build output by setting it externally. -->
+		<PowerToysBinariesDir Condition="'$(PowerToysBinariesDir)'==''">$(PowerToysHomeDir)/Bin</PowerToysBinariesDir>
+	</PropertyGroup>
+	
+	<PropertyGroup>
+		 
+		<!-- Name of the plugin product and of the plugin folder in the R# plugins store, as well. -->
+		<ProductName>ExploreTypeInterface PowerToy</ProductName>
+		
+		<!-- Version of the plugin, to be specified in the installer. -->
+		<ProductVersion>5.0.0.0</ProductVersion>
+
+		<!-- Version of R# (two components only) that the plugin is targeting. -->
+		<ReSharperVersion2>5.0</ReSharperVersion2>
+		
+		<!-- Plugin vendor name. -->
+		<CompanyName>JetBrains Inc</CompanyName>
+		
+		<!-- Upgrade code for the plugin. -->
+		<!-- Should be unique for each of the plugins, but should not change within the plugin lifetime. All of the plugin versions should feature the same Upgrade Code. -->
+		<UpgradeCode>{B69CBD2D-75F5-4c26-B815-F302D002264B}</UpgradeCode>
+		
+		<!-- Version of Visual Studio we're installing for. -->
+		<!-- Can be overridden on the command line when running the installation. -->
+		<VsVersion>9.0</VsVersion>
+
+		<!-- The plugin assembly file. -->
+		<AssemblyFile>$(PowerToysBinariesDir)/ExploreTypeInterface.dll</AssemblyFile>
+
+    <!-- Additional setup wix file -->
+    <SetupFile>ExploreTypeInterface.Setup.wxs</SetupFile>
+
+    <!-- The GUIDs that must be unique for each of the plugins. -->
+		<MsiComponentGuid00>{0269f3c6-e00d-4a9d-ad3e-fb9e0068b2b2}</MsiComponentGuid00>
+		<MsiComponentGuid01>{1826cc3c-fb09-4f31-bef3-f2ed4ef925e0}</MsiComponentGuid01>
+	</PropertyGroup>
+
+	<Import Project="$(PowerToysHomeDir)/Setup/ReSharperPowerToySetup.Targets"/>
+</Project>

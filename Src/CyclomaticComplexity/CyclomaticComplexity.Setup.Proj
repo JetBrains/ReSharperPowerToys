@@ -1,0 +1,43 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<!-- Home folder for the PowerToys build site. -->
+		<PowerToysHomeDir>$(MSBuildProjectDirectory)/../..</PowerToysHomeDir>
+		<!-- Binaries dir; redirect the build output by setting it externally. -->
+		<PowerToysBinariesDir Condition="'$(PowerToysBinariesDir)'==''">$(PowerToysHomeDir)/Bin</PowerToysBinariesDir>
+	</PropertyGroup>
+	
+	<PropertyGroup>
+		 
+		<!-- Name of the plugin product and of the plugin folder in the R# plugins store, as well. -->
+		<ProductName>CyclomaticComplexity PowerToy</ProductName>
+		
+		<!-- Version of the plugin, to be specified in the installer. -->
+		<ProductVersion>5.0.0.0</ProductVersion>
+
+		<!-- Version of R# (two components only) that the plugin is targeting. -->
+		<ReSharperVersion2>5.0</ReSharperVersion2>
+		
+		<!-- Plugin vendor name. -->
+		<CompanyName>JetBrains Inc</CompanyName>
+		
+		<!-- Upgrade code for the plugin. -->
+		<!-- Should be unique for each of the plugins, but should not change within the plugin lifetime. All of the plugin versions should feature the same Upgrade Code. -->
+		<UpgradeCode>{144C7E49-D14A-4325-ABFB-2538647C6C26}</UpgradeCode>
+		
+		<!-- Version of Visual Studio we're installing for. -->
+		<!-- Can be overridden on the command line when running the installation. -->
+		<VsVersion>9.0</VsVersion>
+
+		<!-- The plugin assembly file. -->
+		<AssemblyFile>$(PowerToysBinariesDir)/CyclomaticComplexity.dll</AssemblyFile>
+
+    <!-- Additional setup wix file -->
+    <SetupFile>CyclomaticComplexity.Setup.wxs</SetupFile>
+
+    <!-- The GUIDs that must be unique for each of the plugins. -->
+		<MsiComponentGuid00>{5df2d055-e95f-41dd-974d-f85453f93305}</MsiComponentGuid00>
+		<MsiComponentGuid01>{d8fcd92e-eccf-4039-8245-3bf76d0329f6}</MsiComponentGuid01>
+	</PropertyGroup>
+
+	<Import Project="$(PowerToysHomeDir)/Setup/ReSharperPowerToySetup.Targets"/>
+</Project>

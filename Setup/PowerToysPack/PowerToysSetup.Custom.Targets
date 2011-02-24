@@ -1,0 +1,22 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<!-- Custom settings. -->
+
+	<!-- Things with the product information. On the global build, should be defined externally. -->
+	<PropertyGroup>
+		<ProductVersionMajor Condition="'$(ProductVersionMajor)'==''">4</ProductVersionMajor>
+		<ProductVersionMinor Condition="'$(ProductVersionMinor)'==''">0</ProductVersionMinor>
+		<VsVersion Condition="'$(VsVersion)'==''">9.0</VsVersion>
+	</PropertyGroup>
+
+	<!-- Externally-defined property values. -->
+	<PropertyGroup>
+		<DefineConstants>
+			$(DefineConstants);
+			DynReSharperVersion2=$(ProductVersionMajor).$(ProductVersionMinor);
+			DynVsVersion=$(VsVersion);
+			DynPowerToysHomeDir=$(PowerToysHomeDir);
+			DynSetupFilesDir=$(SetupFilesDir);
+			DynPowerToysBinariesDir=$(PowerToysBinariesDir);
+		</DefineConstants>
+	</PropertyGroup>
+</Project>
