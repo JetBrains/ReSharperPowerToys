@@ -1,5 +1,5 @@
 using System.Reflection;
-using JetBrains.UI.Application.PluginSupport;
+using JetBrains.Application.PluginSupport;
 
 [assembly: AssemblyTitle("ReSharper PowerToys: Sample Menu Items")]
 [assembly: AssemblyDescription("")]
@@ -14,7 +14,3 @@ using JetBrains.UI.Application.PluginSupport;
 [assembly: PluginTitle("ReSharper PowerToys: Sample Options Page")]
 [assembly: PluginVendor("JetBrains s.r.o.")]
 [assembly: PluginDescription("This plugin shows how to add a page to ReSharper Options window and save settings of your plugin.")]
-
-namespace JetBrains.ReSharper.PowerToys.OptionsPage.Properties
-{
-}

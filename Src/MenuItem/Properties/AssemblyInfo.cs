@@ -1,6 +1,6 @@
 using System.Reflection;
 using JetBrains.ActionManagement;
-using JetBrains.UI.Application.PluginSupport;
+using JetBrains.Application.PluginSupport;
 
 [assembly: AssemblyTitle("ReSharper PowerToys: Sample Menu Items")]
 [assembly: AssemblyDescription("")]

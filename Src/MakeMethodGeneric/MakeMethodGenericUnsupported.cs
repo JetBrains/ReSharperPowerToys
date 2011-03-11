@@ -13,14 +13,15 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
   /// </summary>
   public class MakeMethodGenericUnsupported : MakeMethodGenericBase
   {
-    public MakeMethodGenericUnsupported(MakeMethodGenericWorkflow workflow, ISolution solution, IRefactoringDriver driver) : base(workflow, solution, driver)
+    public MakeMethodGenericUnsupported(MakeMethodGenericWorkflow workflow, ISolution solution,
+                                        IRefactoringDriver driver) : base(workflow, solution, driver)
     {
     }
 
     public override MethodInvocation ProcessUsage(IReference reference)
     {
       // when something goes wrong just add conflict
-      Driver.AddConflict(new UnsupportedLanguageConflict(reference.GetElement(), "usage", ConflictSeverity.Error));
+      Driver.AddConflict(new UnsupportedLanguageConflict(reference.GetTreeNode(), "usage", ConflictSeverity.Error));
       return null;
     }
 
@@ -32,12 +33,13 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
     public override ITypeParameter AddTypeParameter(IDeclaration declaration)
     {
       Driver.AddConflict(new UnsupportedLanguageConflict(declaration, "method declaration", ConflictSeverity.Error));
-      return null;    
+      return null;
     }
 
     public override void ProcessParameterReference(IReference reference)
     {
-      Driver.AddConflict(new UnsupportedLanguageConflict(reference.GetElement(), "parameter usage", ConflictSeverity.Error));
+      Driver.AddConflict(new UnsupportedLanguageConflict(reference.GetTreeNode(), "parameter usage",
+                                                         ConflictSeverity.Error));
     }
   }
 }

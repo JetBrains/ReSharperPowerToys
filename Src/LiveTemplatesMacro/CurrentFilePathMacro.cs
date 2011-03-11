@@ -1,5 +1,8 @@
 using System.Collections.Generic;
+using JetBrains.Application;
+using JetBrains.DocumentManagers;
 using JetBrains.DocumentModel;
+using JetBrains.DocumentModel.Transactions;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros;
@@ -7,7 +10,7 @@ using JetBrains.ReSharper.Feature.Services.Lookup;
 
 namespace JetBrains.ReSharper.PowerToys.LiveTemplatesMacro
 {
-  [Macro("AddLiveTemplatesMacro.CurrentFilePath", // macro name should be unique among all other macros, it's recommended to prefix it with your plugin name to achieve that
+  [Macro("LiveTemplatesMacro.CurrentFilePath", // macro name should be unique among all other macros, it's recommended to prefix it with your plugin name to achieve that
     ShortDescription = "Current file path", // description of the macro to be shown in the list of macros
     LongDescription="Evaluates current file path" // long description of the macro to be shown in the area below the list
     )]
@@ -17,8 +20,9 @@ namespace JetBrains.ReSharper.PowerToys.LiveTemplatesMacro
 
     private static string Evaluate(IHotspotContext context)
     {
-      IDocument currentDocument = context.SessionContext.TextControl.Document;
-      IProjectFile projectItem = DocumentManager.GetInstance(context.SessionContext.Solution).GetProjectFile(currentDocument);
+      var ctx = context.SessionContext;
+      IDocument currentDocument = ctx.TextControl.Document;
+      IProjectFile projectItem = ctx.Solution.GetComponent<DocumentManager>().GetProjectFile(currentDocument);
       return projectItem.Location.FullPath;
     }
 

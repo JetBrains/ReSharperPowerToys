@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 using JetBrains.ActionManagement;
+using JetBrains.Application.PluginSupport;
 using JetBrains.UI;
 using JetBrains.UI.Application.PluginSupport;
 

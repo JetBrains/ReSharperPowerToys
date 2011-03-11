@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 using JetBrains.ActionManagement;
-using JetBrains.UI.Application.PluginSupport;
+using JetBrains.Application.PluginSupport;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -23,7 +23,3 @@ using JetBrains.UI.Application.PluginSupport;
 [assembly: PluginVendor("JetBrains s.r.o.")]
 [assembly: PluginDescription("Search text in solution and display it in Find Results view")]
 [assembly: ActionsXml("JetBrains.ReSharper.PowerToys.FindText.Actions.xml")]
-
-namespace JetBrains.ReSharper.PowerToys.FindText.Properties
-{
-}

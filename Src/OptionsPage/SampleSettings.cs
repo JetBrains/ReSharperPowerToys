@@ -1,59 +1,23 @@
 using System;
 using System.Xml;
 using JetBrains.Application;
-using JetBrains.ComponentModel;
-using JetBrains.Util;
+using JetBrains.Application.Components;
+using JetBrains.Application.Configuration;
 
 namespace JetBrains.ReSharper.PowerToys.OptionsPage
 {
-  [ShellComponentInterface(ProgramConfigurations.VS_ADDIN)]
-  [ShellComponentImplementation]
-  public class SampleSettings : IXmlExternalizableShellComponent
+  [ShellComponent(ProgramConfigurations.VS_ADDIN)]
+  public class SampleSettings : IXmlExternalizable
   {
-    private bool mySampleOption;
-
     public static SampleSettings Instance
     {
       get { return Shell.Instance.GetComponent<SampleSettings>(); }
     }
 
     [XmlExternalizable(true)]
-    public bool SampleOption
-    {
-      get { return mySampleOption; }
-      set { mySampleOption = value; }
-    }
+    public bool SampleOption { get; set; }
 
-    #region IShellComponent implementation
-
-    void IComponent.Init()
-    {
-    }
-
-    void IDisposable.Dispose()
-    {
-    }
-
-    #endregion
-
-    #region IXmlExternalizableShellComponent implementation
-
-    string IXmlExternalizableComponent.TagName
-    {
-      get
-      {
-        // tag name, should not conflict with any other plugins and internal ReSharper components
-        return "PluginSamples.AddOptionsPage.SampleSettings";
-      }
-    }
-
-    XmlExternalizationScope IXmlExternalizableComponent.Scope
-    {
-      get
-      {
-        return XmlExternalizationScope.UserSettings;
-      }
-    }
+    #region IXmlExternalizable implementation
 
     void IXmlExternalizable.ReadFromXml(XmlElement element)
     {

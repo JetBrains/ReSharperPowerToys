@@ -1,41 +1,75 @@
 using System.Collections.Generic;
+using System.Drawing;
 using JetBrains.ActionManagement;
 using JetBrains.ActivityTracking;
-using JetBrains.IDE;
+using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Generate;
-using JetBrains.ReSharper.Features.Altering.Generate;
+using JetBrains.ReSharper.Feature.Services.Generate.Actions;
 using JetBrains.ReSharper.Psi;
-using JetBrains.Util;
+using JetBrains.ReSharper.Psi.DeclaredElements;
 
-// Register event for ActivityTracking, required as we use StandardGeneratorItem
 [assembly: RegisterEvent("Generate.Dispose", EventType.WITH_START_FINISH)]
 
 namespace JetBrains.ReSharper.PowerToys.GenerateDispose
 {
-  /// <summary>
-  /// Describes item in generate menu, we reuse StandardGeneratorItem
-  /// </summary>
-  [GeneratorItemProvider]
-  public class GeneratorDisposeItemProvider : IGeneratorItemProvider
+  [ActionHandler("Generate.Dispose")]
+  public class GenerateDisposeAction : GenerateActionBase<GenerateDisposeItemProvider>
   {
-    public IEnumerable<IGeneratorItem> GetItems(IDataContext context)
+    protected override bool ShowMenuWithOneItem
     {
-      var textControl = context.GetData(DataConstants.TEXT_CONTROL);
-      var solution = context.GetData(DataConstants.SOLUTION);
-      if (textControl == null || solution == null)
-        return EmptyArray<IGeneratorItem>.Instance;
+      get { return true; }
+    }
 
-      return new[]
-               {
-                 new StandardGeneratorItem("Dispose",
-                                           PsiIconManager.Instance.GetImage(CLRDeclaredElementType.METHOD,
-                                                                            PsiIconExtension.None),
-                                           "Dispose",
-                                           0,
-                                           "Generate Dispose",
-                                           "Select Disposable fields which should be disposed in generated method")
-                 ,
-               };
+    protected override UI.RichText.RichText Caption
+    {
+      get { return "Generate Dispose"; }
+    }
+  } 
+
+  [GenerateProvider]
+  public class GenerateDisposeItemProvider : IGenerateActionProvider
+  {
+    public IEnumerable<IGenerateActionWorkflow> CreateWorkflow(IDataContext dataContext)
+    {
+      var solution = dataContext.GetData(IDE.DataConstants.SOLUTION);
+      var iconManager = solution.GetComponent<PsiIconManager>();
+      var icon = iconManager.GetImage(CLRDeclaredElementType.METHOD);
+      yield return new GenerateDisposeActionWorkflow(icon);
+    }
+  }
+
+  public class GenerateDisposeActionWorkflow : StandardGenerateActionWorkflow
+  {
+    public GenerateDisposeActionWorkflow(Image icon)
+      : base("Dispose", icon, "&Dispose", GenerateActionGroup.CLR_LANGUAGE, "Generate dispose", 
+        "Generate a Dispose() implementation which disposes selected fields.", "Generate.Dispose")
+    {
+    }
+
+    public override double Order
+    {
+      get { return 100; }
+    }
+
+    /// <summary>
+    /// This method is redefined in order to get rid of the IsKindAllowed() check at the end.
+    /// </summary>
+    public override bool IsAvailable(IDataContext dataContext)
+    {
+      var solution = dataContext.GetData(IDE.DataConstants.SOLUTION);
+      if (solution == null)
+        return false;
+
+      var generatorManager = GeneratorManager.GetInstance(solution);
+      if (generatorManager == null)
+        return false;
+
+      var languageType = generatorManager.GetPsiLanguageFromContext(dataContext);
+      if (languageType == null)
+        return false;
+
+      var generatorContextFactory = LanguageManager.Instance.TryGetService<IGeneratorContextFactory>(languageType);
+      return generatorContextFactory != null;
     }
   }
 }

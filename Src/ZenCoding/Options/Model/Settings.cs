@@ -1,19 +1,20 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 using JetBrains.Application;
-using JetBrains.ComponentModel;
+using JetBrains.Application.Components;
+using JetBrains.Application.Configuration;
 using JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model.Handlers;
 using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model
 {
-  [ShellComponentInterface(ProgramConfigurations.VS_ADDIN)]
-  [ShellComponentImplementation]
-  public class Settings : IXmlExternalizableShellComponent
+  [ShellComponent(ProgramConfigurations.VS_ADDIN)]
+  public class Settings : IXmlExternalizable
   {
     public static readonly Settings Default =
       new Settings
@@ -66,20 +67,16 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model
     public List<FileAssociation> FileAssociations { get; set; }
 
     #region IXmlExternalizableShellComponent Members
+    
+    //string IXmlExternalizable.TagName
+    //{
+    //  get { return "ZenCoding.Settings"; }
+    //}
 
-    void IComponent.Init() { }
-
-    void IDisposable.Dispose() { }
-
-    string IXmlExternalizableComponent.TagName
-    {
-      get { return "ZenCoding.Settings"; }
-    }
-
-    XmlExternalizationScope IXmlExternalizableComponent.Scope
-    {
-      get { return XmlExternalizationScope.UserSettings; }
-    }
+    //XmlExternalizationScope IXmlExternalizable.Scope
+    //{
+    //  get { return XmlExternalizationScope.UserSettings; }
+    //}
 
     void IXmlExternalizable.ReadFromXml(XmlElement element)
     {

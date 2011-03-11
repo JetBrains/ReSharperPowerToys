@@ -9,7 +9,8 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
   /// </summary>
   public abstract class PowerToyRefactoringsLanguageService : IRefactoringLanguageService
   {
-    public virtual MakeMethodGenericBase CreateMakeMethodGeneric(MakeMethodGenericWorkflow workflow, ISolution solution, IRefactoringDriver driver)
+    public virtual MakeMethodGenericBase CreateMakeMethodGeneric(MakeMethodGenericWorkflow workflow, ISolution solution,
+                                                                 IRefactoringDriver driver)
     {
       return null;
     }

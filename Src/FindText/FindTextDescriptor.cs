@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using JetBrains.ReSharper.Feature.Services.Search;
+using JetBrains.ReSharper.Feature.Services.Search.SearchRequests;
 using JetBrains.ReSharper.Features.Common.Occurences;
 using JetBrains.ReSharper.Features.Finding.Search;
 using JetBrains.Util;
@@ -34,16 +35,10 @@ namespace JetBrains.ReSharper.PowerToys.FindText
         if (foundCount > 1)
           form = NounUtil.GetPlural(form);
 
-        if (foundCount == section.FilteredCount)
-        {
-          // all results are shown
-          title = string.Format("Found {0} {1}", foundCount, form);
-        }
-        else
-        {
-          // some results are filtered
-          title = string.Format("Displaying {0} of {1} found {2}", section.FilteredCount, foundCount, form);
-        }
+        title = 
+          foundCount == section.FilteredCount ? 
+          string.Format("Found {0} {1}", foundCount, form) : 
+          string.Format("Displaying {0} of {1} found {2}", section.FilteredCount, foundCount, form);
       }
       else
         title = string.Format("No locations found");

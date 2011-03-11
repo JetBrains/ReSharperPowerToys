@@ -5,7 +5,7 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
   /// <summary>
   /// The highlighting that warns about high complexity
   /// </summary>
-  [StaticSeverityHighlighting(Severity.WARNING)]
+  [StaticSeverityHighlighting(Severity.WARNING, "CSharpInfo")]
   public class ComplexityWarning : IHighlighting
   {
     private readonly string myTooltip;

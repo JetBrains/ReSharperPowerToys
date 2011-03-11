@@ -6,6 +6,7 @@ using JetBrains.ReSharper.Features.Common.Options;
 using JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model;
 using JetBrains.TreeModels;
 using JetBrains.UI;
+using JetBrains.UI.CrossFramework;
 using JetBrains.UI.Options;
 using JetBrains.Util;
 
@@ -44,7 +45,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
       _buttons.Items.Add("Down", ImageLoader.GetImage("Down"), MoveDown);
     }
 
-    public Control Control
+    public EitherControl Control
     {
       get { return this; }
     }

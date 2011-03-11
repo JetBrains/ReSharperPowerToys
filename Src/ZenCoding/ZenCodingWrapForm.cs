@@ -11,11 +11,12 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
 {
   public class ZenCodingWrapForm : Form, IConstrainableControl
   {
-    private Disposables myDisposables = new Disposables(false);
+    private readonly LifetimeDefinition lifetime;
 
-    public ZenCodingWrapForm()
+    public ZenCodingWrapForm(Lifetime lifetime)
     {
       InitControls();
+      this.lifetime = Lifetimes.Define(lifetime);
     }
 
     public TextBox TextBox { get; private set; }
@@ -38,7 +39,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
         TextBox = new TextBox { Dock = DockStyle.Fill };
         Controls.Add(TextBox);
         DialogResult = DialogResult.Cancel;
-        myDisposables.Add(new EditboxGlyph(TextBox, ImageLoader.GetImage("zencoding")));
+        lifetime.Lifetime.AddDispose(new EditboxGlyph(TextBox, ImageLoader.GetImage("zencoding")));
 
         // Note: we're not setting the owner to the main window because the menu must be over whatever top level window has spawned it; a menu is topmost so this is not a problem.      
       }
@@ -65,8 +66,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
 
     protected override void Dispose(bool disposing)
     {
-      myDisposables.Dispose();
-      base.Dispose(disposing);
+      lifetime.Terminate();
     }
     #region IConstrainableControl Members
 

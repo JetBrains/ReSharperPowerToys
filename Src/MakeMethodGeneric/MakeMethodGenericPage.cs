@@ -1,16 +1,15 @@
-﻿using System;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using JetBrains.Application.Progress;
 using JetBrains.DataFlow;
 using JetBrains.ReSharper.Refactorings.Workflow;
-using JetBrains.UI.Interop;
+using JetBrains.UI.CrossFramework;
 
 namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
 { // UI page. 
   public partial class MakeMethodGenericPage : UserControl, IRefactoringPage
   {
-    private readonly MakeMethodGenericWorkflow myWorkflow;
     private readonly IProperty<bool> myContinueEnabled = new Property<bool>("MakeMethodGenericPage", true);
+    private readonly MakeMethodGenericWorkflow myWorkflow;
 
     public MakeMethodGenericPage(MakeMethodGenericWorkflow workflow)
     {
@@ -20,6 +19,9 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
     }
 
     // 'Next' button is clicked. Commit data from from into workflow. 
+
+    #region IRefactoringPage Members
+
     public IRefactoringPage Commit(IProgressIndicator pi)
     {
       myWorkflow.TypeParameterName = myTextName.Text;
@@ -51,27 +53,19 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
 
     public IProperty<bool> ContinueEnabled
     {
-      get
-      {
-        return myContinueEnabled;
-      }
+      get { return myContinueEnabled; }
     }
 
     public string Description
     {
-      get
-      {
-        return "";
-      }
+      get { return ""; }
     }
 
     public string Title
     {
-      get
-      {
-        return "Specify name of type parameter";
-      }
+      get { return "Specify name of type parameter"; }
     }
+
     /// <summary>
     /// UI control itself
     /// </summary>
@@ -79,5 +73,7 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
     {
       get { return this; }
     }
+
+    #endregion
   }
 }

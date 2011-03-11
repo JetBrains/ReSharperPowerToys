@@ -2,11 +2,14 @@ using System;
 using System.Collections.Generic;
 
 using JetBrains.ActionManagement;
+using JetBrains.Application;
+using JetBrains.DocumentManagers;
 using JetBrains.DocumentModel;
+using JetBrains.Interop.WinApi;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.Services.FormatSettings;
+using JetBrains.ReSharper.Psi.CodeStyle;
 using JetBrains.TextControl;
 using JetBrains.UI.Interop;
 using JetBrains.Util;
@@ -18,15 +21,15 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
     private static readonly IDictionary<ProjectFileType, DocType> ourFileTypes =
       new Dictionary<ProjectFileType, DocType>
       {
-        { ProjectFileType.ASP, DocType.Html },
-        { ProjectFileType.XML, DocType.Xsl },
+        { AspProjectFileType.Instance, DocType.Html },
+        { XmlProjectFileType.Instance, DocType.Xsl },
       };
 
     private static readonly Key<ZenCodingEngine> ourKey = new Key<ZenCodingEngine>("ZenCodingEngine");
 
     protected static ZenCodingEngine GetEngine(ISolution solution)
     {
-      return solution.GetOrCreateData(ourKey, () => new ZenCodingEngine(solution));
+      return solution.GetOrCreateData(ourKey, () => Shell.Instance.GetComponent<ZenCodingEngine>());
     }
 
     public virtual bool Update(IDataContext context, ActionPresentation presentation, DelegateUpdate nextUpdate)
@@ -63,9 +66,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
 
     protected static IProjectFile GetProjectFile(IDataContext context)
     {
-      return DocumentManager
-        .GetInstance(context.GetData(IDE.DataConstants.SOLUTION))
-        .GetProjectFile(context.GetData(IDE.DataConstants.DOCUMENT));
+      return Shell.Instance.GetComponent<DocumentManager>().GetProjectFile(context.GetData(IDE.DataConstants.DOCUMENT));
     }
 
     public abstract void Execute(IDataContext context, DelegateExecute nextExecute);
@@ -77,8 +78,8 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
         Win32Declarations.MessageBeep(MessageBeepType.Error);
         return;
       }
-
-      var indentSize = GlobalFormatSettingsHelper.GetService(solution).GetSettingsForLanguage(PsiLanguageType.ANY).IndentSize;
+      
+      var indentSize = GlobalFormatSettingsHelper.GetService(solution).GetSettingsForLanguage(KnownLanguage.ANY).IndentSize;
       expanded = GetEngine(solution).PadString(expanded, (int)textControl.Document.GetCoordsByOffset(abbrRange.StartOffset).Column / indentSize);
       textControl.Document.ReplaceText(abbrRange, expanded);
       if (insertPoint != -1)
