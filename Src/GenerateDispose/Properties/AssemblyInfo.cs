@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
+using JetBrains.Application.PluginSupport;
 using JetBrains.UI.Application.PluginSupport;
 
 // General Information about an assembly is controlled through the following 

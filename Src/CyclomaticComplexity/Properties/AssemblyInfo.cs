@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
+using JetBrains.Application.PluginSupport;
 using JetBrains.UI.Application.PluginSupport;
 
 // General Information about an assembly is controlled through the following 
@@ -40,7 +41,3 @@ using JetBrains.UI.Application.PluginSupport;
 [assembly : PluginTitle("ReSharper PowerToys: Cyclomatic Complexity")]
 [assembly : PluginVendor("JetBrains s.r.o.")]
 [assembly : PluginDescription("Analyses cyclomatic complexity for a member and issue warning")]
-
-namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity.Properties
-{
-}

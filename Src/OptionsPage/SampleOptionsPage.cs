@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+using JetBrains.UI.CrossFramework;
 using JetBrains.UI.Options;
 
 namespace JetBrains.ReSharper.PowerToys.OptionsPage
@@ -9,11 +10,7 @@ namespace JetBrains.ReSharper.PowerToys.OptionsPage
   /// This is a sample R# Options Page. 
   /// See the CyclomaticComplexity PowerToy for a live piece of code in a more complex scenario.
   /// </summary>
-  [OptionsPage(
-    ID,
-    "Sample Page",
-    "JetBrains.ReSharper.PowerToys.OptionsPage.samplePage.gif",
-    Sequence = 2)]
+  [OptionsPage(ID, "Sample Page", "JetBrains.ReSharper.PowerToys.OptionsPage.samplePage.gif", Sequence = 2)]
   public class SampleOptionsPage : UserControl, IOptionsPage
   {
     private CheckBox checkBox1;
@@ -40,7 +37,7 @@ namespace JetBrains.ReSharper.PowerToys.OptionsPage
       checkBox1.Checked = settings.SampleOption;
     }
 
-    public Control Control
+    public EitherControl Control
     {
       get { return this; }
     }

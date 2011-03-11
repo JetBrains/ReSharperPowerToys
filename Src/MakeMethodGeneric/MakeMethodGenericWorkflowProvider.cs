@@ -1,26 +1,31 @@
+using System.Collections.Generic;
+using JetBrains.ActionManagement;
 using JetBrains.ProjectModel;
+using JetBrains.ReSharper.Psi.Search;
 using JetBrains.ReSharper.Refactorings.Workflow;
 
 namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
 {
-	[RefactoringWorkflowProviderAttribute(typeof(MakeMethodGenericWorkflowProvider))]
-	public class MakeMethodGenericWorkflowProvider : IRefactoringWorkflowProvider
-	{
-		#region IRefactoringWorkflowProvider Members
+  [RefactoringWorkflowProviderAttribute]
+  public class MakeMethodGenericWorkflowProvider : IRefactoringWorkflowProvider
+  {
+    public RefactoringActionGroup ActionGroup
+    {
+      get { return RefactoringActionGroup.Unsorded; }
+    }
 
-		public IRefactoringWorkflow CreateWorkflow(ISolution solution)
-		{
-			return new MakeMethodGenericWorkflow(solution);
-		}
+    #region IRefactoringWorkflowProvider Members
 
-		public RefactoringActionGroup ActionGroup
-		{
-			get
-			{
-				return RefactoringActionGroup.Unsorded;
-			}
-		}
+    public IEnumerable<IRefactoringWorkflow> CreateWorkflow(IDataContext dataContext)
+    {
+      return null;
+    }
 
-		#endregion
-	}
+    #endregion
+
+    public IRefactoringWorkflow CreateWorkflow(ISolution solution, string actionId, SearchDomainFactory factory)
+    {
+      return new MakeMethodGenericWorkflow(solution, actionId, factory);
+    }
+  }
 }

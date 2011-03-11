@@ -3,6 +3,7 @@ using JetBrains.ReSharper.Feature.Services.CSharp.Generate;
 using JetBrains.ReSharper.Feature.Services.Generate;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp;
+using JetBrains.ReSharper.Psi.CSharp.Impl;
 using JetBrains.ReSharper.Psi.CSharp.Util;
 using JetBrains.Util;
 
@@ -11,7 +12,7 @@ namespace JetBrains.ReSharper.PowerToys.GenerateDispose
   /// <summary>
   /// Provides input elements for user's choice
   /// </summary>
-  [GeneratorElementProvider("Dispose", CSharpLanguageService.CSHARP_LANGUAGEID)]
+  [GeneratorElementProvider("Dispose", CSharpLanguage.Name)]
   internal class CSharpDisposableFieldProvider : CSharpGeneratorProviderBase
   {
     #region IGeneratorElementProvider Members
@@ -50,7 +51,7 @@ namespace JetBrains.ReSharper.PowerToys.GenerateDispose
                                         where !member.IsStatic
                                               && !member.IsConstant && !member.IsSynthetic()
                                               && memberType != null
-                                              && memberType.CanUseExplicitly(context.ClassDeclaration.ToTreeNode())
+                                              && memberType.CanUseExplicitly(context.ClassDeclaration)
                                               && memberType.IsSubtypeOf(disposableType)
                                         select new GeneratorDeclaredElement<ITypeOwner>(member));
 

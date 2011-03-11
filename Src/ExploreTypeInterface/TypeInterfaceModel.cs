@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using JetBrains.ReSharper.Feature.Services.Util;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve.Filters;
+using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.TreeModels;
 using JetBrains.Util;
 
@@ -14,10 +15,10 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
   public class TypeInterfaceModel : TreeDemandModel
   {
     // Root type element envoy
-    private readonly DeclaredElementEnvoy<ITypeElement> myTypeElementEnvoy;
 
     // Hide static and protected members for root, if true
     private readonly bool myInstanceOnly;
+    private readonly DeclaredElementEnvoy<ITypeElement> myTypeElementEnvoy;
 
     public TypeInterfaceModel(DeclaredElementEnvoy<ITypeElement> typeElementEnvoy, bool instanceOnly)
     {
@@ -38,7 +39,7 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
       if (envoy != null)
       {
         // Get type which will be expanded for the node
-        var declaredElement = envoy.GetValidDeclaredElement();
+        IDeclaredElement declaredElement = envoy.GetValidDeclaredElement();
         var typeElement = declaredElement as ITypeElement;
         if (typeElement == null)
         {
@@ -73,7 +74,7 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
         return EmptyArray<IDeclaredElementEnvoy>.Instance;
 
       bool instanceVisible = envoy != myTypeElementEnvoy || myInstanceOnly;
-      var declaredElement = envoy.GetValidDeclaredElement();
+      IDeclaredElement declaredElement = envoy.GetValidDeclaredElement();
 
       // Get type which is expanded for the node
       var typeElement = declaredElement as ITypeElement;
@@ -98,19 +99,20 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
     private static IEnumerable GetChildren(ITypeElement typeElement, bool instanceVisible)
     {
       // Obtain language service for the type
-      var languageService = LanguageService.GetInstance(PresentationUtil.GetPresentationLanguage(typeElement));
+      LanguageService languageService =
+        LanguageService.GetInstance(PresentationUtil.GetPresentationLanguage(typeElement));
       var children = new List<DeclaredElementEnvoy<ITypeMember>>();
 
       // Get symbol table for the typeElement and filter it with OverriddenFilter
       // This filter removes all but leaf members for override chains
-      var symbolTable = TypeFactory.CreateType(typeElement).GetSymbolTable();
+      ISymbolTable symbolTable = TypeFactory.CreateType(typeElement).GetSymbolTable(typeElement.Module);
       symbolTable = symbolTable.Filter(OverriddenFilter.INSTANCE);
 
       // Obtain ITypeElement for System.Object 
       // We don't want ToString(), GetHashCode(), GetType() and Equals() to pollute tree view
       ITypeElement objectType = typeElement.Module.GetPredefinedType().Object.GetTypeElement();
-      foreach (string name in symbolTable.Names(""))
-        foreach (var info in symbolTable.GetAllSymbolInfos(name))
+      foreach (string name in symbolTable.Names())
+        foreach (ISymbolInfo info in symbolTable.GetAllSymbolInfos(name))
         {
           // Select all ITypeMembers from symbol table
           var member = info.GetDeclaredElement() as ITypeMember;
@@ -129,7 +131,7 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
             continue;
 
           // Checks if member should be displayed according to its accessibility
-          var access = member.AccessibilityDomain.DomainType;
+          AccessibilityDomain.AccessibilityDomainType access = member.AccessibilityDomain.DomainType;
           if (access == AccessibilityDomain.AccessibilityDomainType.PRIVATE)
             continue;
 

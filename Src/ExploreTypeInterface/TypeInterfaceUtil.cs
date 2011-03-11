@@ -24,7 +24,7 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
 
       // If we have type, just return it
       var typeElement = declaredElement as ITypeElement;
-      if(typeElement != null)
+      if (typeElement != null)
       {
         instance = false;
         return typeElement;
@@ -32,7 +32,7 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
 
       // If it is constructor, return containing type
       var constructor = declaredElement as IConstructor;
-      if(constructor != null)
+      if (constructor != null)
       {
         instance = false;
         return constructor.GetContainingType();
@@ -40,7 +40,7 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
 
       // Element has type attached to it, e.g. method return type, property or field type
       var typeOwner = declaredElement as ITypeOwner;
-      if(typeOwner != null)
+      if (typeOwner != null)
       {
         // It is instance of type, which is returned, so provide caller with this information
         instance = true;
@@ -50,7 +50,7 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
       // Try to guess type of expression
       ITextControl textControl = context.GetData(IDE.DataConstants.TEXT_CONTROL);
       ISolution solution = context.GetData(IDE.DataConstants.SOLUTION);
-      if(textControl != null && solution != null)
+      if (textControl != null && solution != null)
       {
         // TODO: Implement expression processing
       }
@@ -67,10 +67,10 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
     public static ITypeElement GetTypeElement(IType type)
     {
       var declaredType = type as IDeclaredType;
-      if(declaredType != null)
+      if (declaredType != null)
       {
         // skip System.Void type, we don't care about its members
-        if(declaredType.IsVoid())
+        if (declaredType.IsVoid())
           return null;
         return declaredType.GetTypeElement();
       }
@@ -78,11 +78,11 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
       // For array or pointer type, get it's element type and process recursively
 
       var arrayType = type as IArrayType;
-      if(arrayType != null)
+      if (arrayType != null)
         return GetTypeElement(arrayType.ElementType);
 
       var pointerType = type as IPointerType;
-      if(pointerType != null)
+      if (pointerType != null)
         return GetTypeElement(pointerType.ElementType);
 
       return null;

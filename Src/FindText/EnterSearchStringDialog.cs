@@ -1,19 +1,22 @@
 using System;
 using System.ComponentModel;
 using System.Windows.Forms;
-using JetBrains.Application;
+using JetBrains.Application.Configuration;
 
 namespace JetBrains.ReSharper.PowerToys.FindText
 {
   public partial class EnterSearchStringDialog : Form
   {
-    public EnterSearchStringDialog()
+    private readonly GlobalSettingsTable globalSettingsTable;
+
+    public EnterSearchStringDialog(GlobalSettingsTable globalSettingsTable)
     {
+      this.globalSettingsTable = globalSettingsTable;
       InitializeComponent();
       
       // Gettings previously saved state or default values from global settings
-      string searchString = GlobalSettingsTable.Instance.GetString("jetbrains.resharper.powertoy.findtext.recenttext", "");
-      var searchFlags = (FindTextSearchFlags) GlobalSettingsTable.Instance.GetInteger("jetbrains.resharper.powertoy.findtext.recentflags", (int)FindTextSearchFlags.All);
+      string searchString = globalSettingsTable.GetString("jetbrains.resharper.powertoy.findtext.recenttext", "");
+      var searchFlags = (FindTextSearchFlags)globalSettingsTable.GetInteger("jetbrains.resharper.powertoy.findtext.recentflags", (int)FindTextSearchFlags.All);
       txtSearchString.Text = searchString;
       txtSearchString.SelectAll();
 
@@ -29,8 +32,8 @@ namespace JetBrains.ReSharper.PowerToys.FindText
     {
       base.OnClosing(e);
       // Saving state to global settings
-      GlobalSettingsTable.Instance.SetString("jetbrains.resharper.powertoy.findtext.recenttext", SearchString);
-      GlobalSettingsTable.Instance.SetInteger("jetbrains.resharper.powertoy.findtext.recentflags", (int) SearchFlags);
+      globalSettingsTable.SetString("jetbrains.resharper.powertoy.findtext.recenttext", SearchString);
+      globalSettingsTable.SetInteger("jetbrains.resharper.powertoy.findtext.recentflags", (int)SearchFlags);
     }
 
     public string SearchString

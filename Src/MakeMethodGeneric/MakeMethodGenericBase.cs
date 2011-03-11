@@ -12,9 +12,11 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
   /// <summary>
   /// Base class of language specific implementation. 
   /// </summary>
-  public abstract class MakeMethodGenericBase : RefactoringExecBase<MakeMethodGenericWorkflow, MakeMethodGenericRefactoring>
+  public abstract class MakeMethodGenericBase :
+    RefactoringExecBase<MakeMethodGenericWorkflow, MakeMethodGenericRefactoring>
   {
-    protected MakeMethodGenericBase(MakeMethodGenericWorkflow workflow, ISolution solution, IRefactoringDriver driver) : base(workflow, solution, driver)
+    protected MakeMethodGenericBase(MakeMethodGenericWorkflow workflow, ISolution solution, IRefactoringDriver driver)
+      : base(workflow, solution, driver)
     {
     }
 

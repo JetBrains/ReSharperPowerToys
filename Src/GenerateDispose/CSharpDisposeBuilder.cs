@@ -5,12 +5,13 @@ using JetBrains.ReSharper.Feature.Services.CSharp.Generate;
 using JetBrains.ReSharper.Feature.Services.Generate;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp;
+using JetBrains.ReSharper.Psi.CSharp.Impl;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.Util;
 
 namespace JetBrains.ReSharper.PowerToys.GenerateDispose
 {
-  [GeneratorBuilder("Dispose", CSharpLanguageService.CSHARP_LANGUAGEID)]
+  [GeneratorBuilder("Dispose", CSharpLanguage.Name)]
   internal class CSharpDisposeBuilder : CSharpGeneratorBuilderBase
   {
     public override double Priority
@@ -149,12 +150,11 @@ namespace JetBrains.ReSharper.PowerToys.GenerateDispose
         if (typeOwner.Type.IsReferenceType())
         {
           var attributesOwner = typeOwner as IAttributesOwner;
-          var mark = CodeAnnotationsCache.GetInstance(typeOwner.GetManager().Solution).GetNullableAttribute(attributesOwner);
+          var mark = CodeAnnotationsCache.GetInstance(typeOwner.GetSolution()).GetNullableAttribute(attributesOwner);
           return new IGeneratorOption[]
                    {
-                     new GeneratorOptionBoolean(CanBeNull,
-                                                "Can be &null",
-                                                !(mark == CodeAnnotationsCache.NullableAttributeMark.NOT_NULL))
+                     new GeneratorOptionBoolean(CanBeNull, "Can be &null",
+                                                mark != CodeAnnotationsCache.NullableAttributeMark.NOT_NULL)
                        { OverridesGlobalOption = mark == CodeAnnotationsCache.NullableAttributeMark.NOT_NULL }
                    };
 

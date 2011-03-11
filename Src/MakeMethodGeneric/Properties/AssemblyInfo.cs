@@ -1,6 +1,6 @@
 using System.Reflection;
 using JetBrains.ActionManagement;
-using JetBrains.UI.Application.PluginSupport;
+using JetBrains.Application.PluginSupport;
 
 [assembly: AssemblyTitle("ReSharper PowerToys: Make method generic refactoring")]
 [assembly: AssemblyDescription("")]
@@ -15,5 +15,4 @@ using JetBrains.UI.Application.PluginSupport;
 [assembly: PluginTitle("ReSharper PowerToys: Make Method generic refactoring")]
 [assembly: PluginVendor("JetBrains s.r.o.")]
 [assembly: PluginDescription("Make method generic refactoring")]
-
 [assembly: ActionsXml("JetBrains.ReSharper.PowerToys.MakeMethodGeneric.Actions.xml")]

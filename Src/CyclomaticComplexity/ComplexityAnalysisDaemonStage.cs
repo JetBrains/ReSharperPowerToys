@@ -1,8 +1,10 @@
 using System;
 using JetBrains.Application;
+using JetBrains.Application.Configuration;
 using JetBrains.DataFlow;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Daemon;
+using JetBrains.ReSharper.Psi;
 
 namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
 {
@@ -13,19 +15,13 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
   [DaemonStage]
   public class ComplexityAnalysisDaemonStage : IDaemonStage
   {
-    public ComplexityAnalysisDaemonStage()
+    private static GlobalSettingsTable GlobalSettingsTable;
+
+    public ComplexityAnalysisDaemonStage(Daemon.Daemon daemon, Lifetime lifetime, GlobalSettingsTable table)
     {
+      GlobalSettingsTable = table;
       // Listen to the changes of the threshold, recalculate on such an event
-      ThresholdProperty.Change.Advise(delegate
-                                        {
-                                          var currentSolution = SolutionManager.Instance.CurrentSolution;
-                                          if (currentSolution == null)
-                                            return;
-                                          // VS has just started, or the solution has been closed — nothing to do
-
-                                          Daemon.Daemon.GetInstance(currentSolution).Invalidate();
-                                        });
-
+      ThresholdProperty.Change.Advise(lifetime, args => daemon.Invalidate());
     }
 
     /// <summary>
@@ -39,7 +35,7 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
       return new ComplexityAnalysisDaemonStageProcess(process);
     }
 
-    public ErrorStripeRequest NeedsErrorStripe(IProjectFile projectFile)
+    public ErrorStripeRequest NeedsErrorStripe(IPsiSourceFile sourceFile)
     {
       // We want to add markers to the right-side stripe as well as contribute to document errors
       return ErrorStripeRequest.STRIPE_AND_ERRORS;
@@ -67,7 +63,7 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
         // Get the property from the R# property bag by its name. The value will be persisted between R# runs.
         // As it's the only place where we use the name, there's no use of declaring a constant for it.
         // This is also the only place where we specify the default value for the property.
-        return GlobalSettingsTable.Instance.IntProperties["CyclomaticComplexityThreshold", 20];
+        return GlobalSettingsTable.IntProperties["CyclomaticComplexityThreshold", 20];
       }
     }
   }

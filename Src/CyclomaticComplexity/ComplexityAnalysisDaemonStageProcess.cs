@@ -20,7 +20,7 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
     {
       // Getting PSI (AST) for the file being highlighted
       PsiManager manager = PsiManager.GetInstance(myDaemonProcess.Solution);
-      var file = manager.GetPsiFile(myDaemonProcess.ProjectFile, CSharpLanguageService.CSHARP) as ICSharpFile;
+      var file = manager.GetPsiFile(myDaemonProcess.SourceFile, CSharpLanguage.Instance) as ICSharpFile;
       if (file == null)
         return;
 
@@ -34,6 +34,11 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
 
       // Commit the result into document
       commiter(new DaemonStageResult(elementProcessor.Highlightings));
+    }
+
+    public IDaemonProcess DaemonProcess
+    {
+      get { return myDaemonProcess; }
     }
   }
 }

@@ -1,8 +1,12 @@
 using System.Windows.Forms;
 using JetBrains.ActionManagement;
 using JetBrains.Application;
+using JetBrains.DataFlow;
+using JetBrains.DocumentManagers;
 using JetBrains.DocumentModel;
+using JetBrains.DocumentModel.Transactions;
 using JetBrains.IDE;
+using JetBrains.Interop.WinApi;
 using JetBrains.TextControl;
 using JetBrains.Threading;
 using JetBrains.UI;
@@ -15,6 +19,15 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
   [ActionHandler]
   public class PowerToys_ZenCodingWrapAction : ZenCodingActionBase
   {
+    private Lifetime lifetime;
+    private readonly DocumentTransactionManager documentTransactionManager;
+
+    public PowerToys_ZenCodingWrapAction(Lifetime lifetime, DocumentTransactionManager documentTransactionManager)
+    {
+      this.lifetime = lifetime;
+      this.documentTransactionManager = documentTransactionManager;
+    }
+
     public override bool Update(IDataContext context, ActionPresentation presentation, DelegateUpdate nextUpdate)
     {
       return context.CheckAllNotNull(IDE.DataConstants.DOCUMENT_SELECTION) &&
@@ -23,12 +36,18 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
 
     public override void Execute(IDataContext context, DelegateExecute nextExecute)
     {
+      Lifetimes.Using(lifetime =>
+      {
+        
+      });
+
       var solution = context.GetData(IDE.DataConstants.SOLUTION);
       Assertion.AssertNotNull(solution, "solution == null");
       var textControl = context.GetData(IDE.DataConstants.TEXT_CONTROL);
       Assertion.AssertNotNull(textControl, "textControl == null");
-      
+
       var windowContext = context.GetData(UI.DataConstants.POPUP_WINDOW_CONTEXT);
+
       // Layouter
       // Achtung! You MUST either pass the layouter to CreatePopupWindow or dispose of it, don't let it drift off
       IPopupWindowContext ctxToUse;
@@ -39,7 +58,8 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
         var ctxTextControl = windowContext as TextControlPopupWindowContext;
         if (ctxTextControl != null)
         {
-          layouterToUse = new DockingLayouter(new TextControlAnchoringRect(ctxTextControl.TextControl, ctxTextControl.TextControl.Caret.Offset()), Anchoring2D.AnchorLeftOrRightOnly);
+          layouterToUse = new DockingLayouter(
+            new TextControlAnchoringRect(ctxTextControl.TextControl, ctxTextControl.TextControl.Caret.Offset()), Anchoring2D.AnchorLeftOrRightOnly);
           ctxToUse = ctxTextControl;
         }
         else
@@ -51,10 +71,10 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
       else
       {
         ctxToUse = PopupWindowContext.Empty;
-        layouterToUse = ctxToUse.CreateLayouter();
+        layouterToUse = ctxToUse.CreateLayouter(lifetime);
       }
 
-      var form = new ZenCodingWrapForm();
+      var form = new ZenCodingWrapForm(lifetime);
       var window = PopupWindowManager.CreatePopupWindow(form, layouterToUse, ctxToUse, HideFlags.Escape, true);
       window.Closed += (sender, args) => ReentrancyGuard.Current.ExecuteOrQueue("ZenCodingWrap", () =>
       {
@@ -71,11 +91,13 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
           using (ReadLockCookie.Create())
           using (CommandCookie.Create("ZenCodingWrap"))
           {
-            using (var cookie = DocumentManager.GetInstance(solution).EnsureWritable(textControl.Document))
+            // use transaction manager?
+            using (var cookie = documentTransactionManager.EnsureWritable(textControl.Document))
             {
               if (cookie.EnsureWritableResult != EnsureWritableResult.SUCCESS)
                 return;
 
+              
               var selection = textControl.Selection.DocRange;
               Assertion.Assert(selection.IsValid, "selection is not valid");
 

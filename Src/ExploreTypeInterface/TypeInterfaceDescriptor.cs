@@ -17,24 +17,24 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
   {
     // Hide static and protected members for root, if true
     private readonly bool myInstanceOnly;
-    
+
     // Root type element envoy
-    private DeclaredElementEnvoy<ITypeElement> myTypeElementEnvoy;
-    
+
     // Presentation provider
     private readonly TreeModelBrowserPresenter myPresenter;
 
     // Cached title
-    private string myTitle;
 
     // Model
     private TypeInterfaceModel myModel;
+    private string myTitle;
+    private DeclaredElementEnvoy<ITypeElement> myTypeElementEnvoy;
 
-    public TypeInterfaceDescriptor(ITypeElement typeElement, bool instanceOnly) : base(typeElement.GetManager().Solution)
+    public TypeInterfaceDescriptor(ITypeElement typeElement, bool instanceOnly) : base(typeElement.GetSolution())
     {
       AutoExpandSingleChild = true;
       myInstanceOnly = instanceOnly;
-      
+
       // We use standard presenter, but emphasize root element using adorements
       myPresenter = new TypeInterfacePresenter
                       {
@@ -87,8 +87,9 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
                     };
       myModel = model;
       // Use our comparer, which sorts by member kind first
-      myModel.Comparer = DelegatingComparer<TreeModelNode, object>.Create(source => source.DataValue, new TypeInterfaceModelComparer());
-      
+      myModel.Comparer = DelegatingComparer<TreeModelNode, object>.Create(source => source.DataValue,
+                                                                          new TypeInterfaceModelComparer());
+
       // Descriptor is finished configuring itself, so request updating visual representation, i.e. tree view
       RequestUpdate(UpdateKind.Structure, true);
     }
@@ -109,11 +110,13 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
                     {
                       ShowTypeParameters = TypeParameterStyle.FULL
                     };
-      string typeElementText = DeclaredElementPresenter.Format(PresentationUtil.GetPresentationLanguage(TypeElement), style, TypeElement);
+      string typeElementText = DeclaredElementPresenter.Format(PresentationUtil.GetPresentationLanguage(TypeElement),
+                                                               style, TypeElement);
       return string.Format(format, typeElementText);
     }
 
-    private void PresentAdorements(object value, IPresentableItem item, TreeModelNode structureElement, PresentationState state)
+    private void PresentAdorements(object value, IPresentableItem item, TreeModelNode structureElement,
+                                   PresentationState state)
     {
       // Emphasize root element
       var element = value as IDeclaredElement;

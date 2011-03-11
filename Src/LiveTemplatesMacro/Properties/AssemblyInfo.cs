@@ -1,4 +1,5 @@
 using System.Reflection;
+using JetBrains.Application.PluginSupport;
 using JetBrains.UI.Application.PluginSupport;
 
 //
@@ -21,7 +22,3 @@ using JetBrains.UI.Application.PluginSupport;
 [assembly: PluginTitle("ReSharper PowerToys: Current File Path Macro")]
 [assembly: PluginVendor("JetBrains s.r.o.")]
 [assembly: PluginDescription("Adds LiveTemplate macro which expands to current file path.")]
-
-namespace JetBrains.ReSharper.PowerToys.LiveTemplatesMacro.Properties
-{
-}

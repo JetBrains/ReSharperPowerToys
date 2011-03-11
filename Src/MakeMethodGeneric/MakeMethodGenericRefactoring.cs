@@ -6,10 +6,12 @@ using JetBrains.ReSharper.PowerToys.MakeMethodGeneric.Impl;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Search;
+using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Refactorings;
 using JetBrains.ReSharper.Refactorings.Common;
 using JetBrains.ReSharper.Refactorings.Conflicts;
 using JetBrains.ReSharper.Refactorings.OverridesSupport;
+using JetBrains.ReSharper.Refactorings.Rename;
 using JetBrains.ReSharper.Refactorings.Workflow;
 
 namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
@@ -19,12 +21,17 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
   /// </summary>
   public class MakeMethodGenericRefactoring : DrivenRefactoring<MakeMethodGenericWorkflow, MakeMethodGenericBase>
   {
+    private readonly SearchDomainFactory searchDomainFactory;
+
+    public MakeMethodGenericRefactoring(MakeMethodGenericWorkflow workFlow, ISolution solution,
+                                        IRefactoringDriver driver,
+                                        SearchDomainFactory searchDomainFactory) : base(workFlow, solution, driver)
+    {
+      this.searchDomainFactory = searchDomainFactory;
+    }
+
     public IMethod Method { get; private set; }
     public IParameter Parameter { get; private set; }
-
-    public MakeMethodGenericRefactoring(MakeMethodGenericWorkflow workFlow, ISolution solution, IRefactoringDriver driver) : base(workFlow, solution, driver)
-    {
-    }
 
     /// <summary>
     /// This code changes PSI documents. It is executed usder PSI transaction, Command cookies, Reentrancy guard ets. 
@@ -41,38 +48,40 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
       if (Method == null || Parameter == null)
         return false;
 
-      var manager = Parameter.GetManager();
+      IPsiServices services = Parameter.GetPsiServices();
 
       IReference[] referencesToParameter;
       IReference[] referencesToRootOverrides;
 
       // search for method overrides (OverridesFinder is util class that 
       // allows to find all overrides and problems with quasi implementations)
-      var overridesFinder = OverridesFinder.CreateInstance(Method);
+      OverridesFinder overridesFinder = OverridesFinder.CreateInstance(Method);
       using (var subPi = new SubProgressIndicator(pi, 1))
         overridesFinder.Find(subPi);
 
-      var hierarchyMembers = overridesFinder.Overrides;
+      JetHashSet<HierarchyMember> hierarchyMembers = overridesFinder.Overrides;
 
-      var methods = ScanHierarchyConflicts(hierarchyMembers).ToList();
-      var parameters = GetAllParameters(methods).ToList();
+      List<IMethod> methods = ScanHierarchyConflicts(hierarchyMembers).ToList();
+      List<IParameter> parameters = GetAllParameters(methods).ToList();
 
       // find parameters and methods usages...
       using (var subPi = new SubProgressIndicator(pi, 1))
       {
         subPi.TaskName = "Searching parameter usages:";
-        var projectFiles = from param in parameters 
-                           let projectFilesOfOneParameter = param.GetProjectFiles() 
-                           from projectFile in projectFilesOfOneParameter 
-                           select projectFile;
-        var searchDomain = SearchDomainFactory.Instance.CreateSearchDomain(projectFiles.ToList());
-        referencesToParameter = manager.Finder.FindReferences(parameters, searchDomain, subPi);
+        IEnumerable<IPsiSourceFile> projectFiles = from param in parameters
+                                                   let projectFilesOfOneParameter = param.GetSourceFiles()
+                                                   from projectFile in projectFilesOfOneParameter
+                                                   select projectFile;
+        ISearchDomain searchDomain = searchDomainFactory.CreateSearchDomain(projectFiles.ToList());
+        referencesToParameter = services.Finder.FindReferences(parameters, searchDomain, subPi);
       }
 
       using (var subPi = new SubProgressIndicator(pi, 1))
       {
         subPi.TaskName = "Searching method usages:";
-        referencesToRootOverrides = manager.Finder.FindReferences(methods, SearchDomainFactory.Instance.CreateSearchDomain(Solution, false), subPi);
+        referencesToRootOverrides = services.Finder.FindReferences(methods,
+                                                                   searchDomainFactory.CreateSearchDomain(Solution,
+                                                                                                          false), subPi);
       }
 
       // this step processes method usages, removes argument and stores reference specific data to the 'MethodInvocation'.
@@ -85,7 +94,7 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
         ProcessParameterUsages(referencesToParameter, subPi);
 
       // Remove parameters from method declarations and insert new type parmeter. Map contains method -> new type parameter relation. 
-      var map = UpdateDeclarations(methods);
+      Dictionary<IMethod, ITypeParameter> map = UpdateDeclarations(methods);
 
       // We have changed declarations. cashes should be updated)
       PsiManager.GetInstance(Solution).UpdateCaches();
@@ -99,7 +108,7 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
 
     private IEnumerable<IParameter> GetAllParameters(IEnumerable<IMethod> overrides)
     {
-      var index = Method.Parameters.IndexOf(Parameter);
+      int index = Method.Parameters.IndexOf(Parameter);
       return from method in overrides
              let parameters = method.Parameters
              where index < parameters.Count
@@ -111,7 +120,7 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
       var members = new List<IMethod>();
       var provider = new MakeGenericHierarchyConflictTextProvider();
       var conflictConsumer = new HierarchyConflictConsumer();
-      foreach (var hierarchyMember in hierarchyMembers)
+      foreach (HierarchyMember hierarchyMember in hierarchyMembers)
       {
         // paranoiac check 
         var member = hierarchyMember.Member as IMethod;
@@ -121,9 +130,9 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
           conflictConsumer.AddConflictsForHierarhyMember(hierarchyMember);
         }
       }
-      foreach (var hierarchyConflict in conflictConsumer.MyHierarchyConflicts)
+      foreach (HierarchyConflict hierarchyConflict in conflictConsumer.MyHierarchyConflicts)
       {
-        var conflict = hierarchyConflict.CreateConflict(provider);
+        IConflict conflict = hierarchyConflict.CreateConflict(provider);
         if (conflict != null)
           Driver.AddConflict(conflict);
       }
@@ -137,23 +146,24 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
         return;
 
       pi.Start(references.Count);
-      foreach (var reference in references)
+      foreach (IReference reference in references)
       {
         // reference can be invalid if previous changes affected it's element. It is unlikely to be occured...
         if (reference.IsValid())
           // process reference with language specific implementation...
-          myExec[reference.GetElement().Language].ProcessParameterReference(reference);
+          myExec[reference.GetTreeNode().Language].ProcessParameterReference(reference);
         pi.Advance(1);
       }
     }
 
-    private void BindUsages(ICollection<MethodInvocation> usages, IDictionary<IMethod, ITypeParameter> map, IProgressIndicator pi)
+    private void BindUsages(ICollection<MethodInvocation> usages, IDictionary<IMethod, ITypeParameter> map,
+                            IProgressIndicator pi)
     {
       if (usages.Count == 0)
         return;
 
       pi.Start(usages.Count);
-      foreach (var usage in usages)
+      foreach (MethodInvocation usage in usages)
       {
         if (usage.IsValid())
         {
@@ -161,11 +171,11 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
           if (map.TryGetValue(usage.Method, out typeParameter))
           {
             // one more call to language specific code...
-            myExec[usage.Reference.GetElement().Language].BindUsage(usage, typeParameter);
+            myExec[usage.Reference.GetTreeNode().Language].BindUsage(usage, typeParameter);
           }
           else
           {
-            myExec[usage.Reference.GetElement().Language].BindUsage(usage, null);
+            myExec[usage.Reference.GetTreeNode().Language].BindUsage(usage, null);
           }
         }
         pi.Advance(1);
@@ -174,12 +184,12 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
 
     private Dictionary<IMethod, ITypeParameter> UpdateDeclarations(IEnumerable<IMethod> methods)
     {
-      var index = Method.Parameters.IndexOf(Parameter);
+      int index = Method.Parameters.IndexOf(Parameter);
       var map = new Dictionary<IMethod, ITypeParameter>();
-      foreach (var method in methods)
+      foreach (IMethod method in methods)
       {
         ITypeParameter parameter = null;
-        foreach (var declaration in method.GetDeclarations())
+        foreach (IDeclaration declaration in method.GetDeclarations())
         {
           // methods can have multiple declarations (partial methods). 
           myExec[declaration.Language].RemoveParameter(declaration, index);
@@ -188,20 +198,21 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
         if (parameter != null)
         {
           map.Add(method, parameter);
-        }        
+        }
       }
       return map;
     }
 
-    private IEnumerable<MethodInvocation> PreProcessMethodUsages(ICollection<IReference> references, IProgressIndicator pi)
+    private IEnumerable<MethodInvocation> PreProcessMethodUsages(ICollection<IReference> references,
+                                                                 IProgressIndicator pi)
     {
       if (references.Count == 0)
         yield break;
 
       pi.Start(references.Count);
-      foreach (var reference in references)
+      foreach (IReference reference in references)
       {
-        var usage = myExec[reference.GetElement().Language].ProcessUsage(reference);
+        MethodInvocation usage = myExec[reference.GetTreeNode().Language].ProcessUsage(reference);
         if (usage != null)
           yield return usage;
         pi.Advance(1);

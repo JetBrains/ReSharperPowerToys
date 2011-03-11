@@ -10,9 +10,9 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
   [ActionHandler]
   internal class MakeMethodGenericAction : ExtensibleRefactoringAction<MakeMethodGenericWorkflowProvider>
   {
-  	protected override RichText GetGroupCaption()
-  	{
-  		return "Make Method Generic";
-  	}
+    protected override RichText Caption
+    {
+      get { return new RichText("Make Method Generic"); }
+    }
   }
 }

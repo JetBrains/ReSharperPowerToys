@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Psi;
@@ -111,21 +112,21 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
 
     #region IRecursiveElementProcessor Members
 
-    public bool InteriorShouldBeProcessed(IElement element)
+    public bool InteriorShouldBeProcessed(ITreeNode element)
     {
       return true;
     }
 
-    public void ProcessAfterInterior(IElement element)
+    public void ProcessBeforeInterior(ITreeNode element)
+    {
+    }
+
+    public void ProcessAfterInterior(ITreeNode element)
     {
       // We are only interested in function declarations (methods, property accessors, etc.)
       var functionDeclaration = element as ICSharpFunctionDeclaration;
-      if(functionDeclaration != null)
+      if (functionDeclaration != null)
         ProcessFunctionDeclaration(functionDeclaration);
-    }
-
-    public void ProcessBeforeInterior(IElement element)
-    {
     }
 
     public bool ProcessingIsFinished
