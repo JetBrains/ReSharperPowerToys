@@ -7,6 +7,7 @@ using JetBrains.DocumentManagers.impl;
 using JetBrains.DocumentModel;
 using JetBrains.DocumentModel.Transactions;
 using JetBrains.Interop.WinApi;
+using JetBrains.TextControl;
 using JetBrains.UI.Interop;
 using JetBrains.Util;
 
@@ -32,15 +33,14 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
       Assertion.AssertNotNull(solution, "solution == null");
       var textControl = context.GetData(IDE.DataConstants.TEXT_CONTROL);
       Assertion.AssertNotNull(textControl, "textControl == null");
-
       
       using (commandProcessor.UsingCommand("ZenCoding"))
       {
         documentTransactionManager.StartTransaction("ZenCoding");
 
         string abbr;
-        
-        TextRange abbrRange = textControl.Selection.DocRange;
+
+        TextRange abbrRange = textControl.Selection.UnionOfDocRanges();
         if (abbrRange.IsValid && !abbrRange.IsEmpty)
         {
           abbr = textControl.Document.GetText(abbrRange);

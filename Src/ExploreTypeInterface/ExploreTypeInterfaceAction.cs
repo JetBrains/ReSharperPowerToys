@@ -30,7 +30,7 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
     public void Execute(IDataContext context, DelegateExecute nextExecute)
     {
       // Get solution from context in which action is executed
-      ISolution solution = context.GetData(DataConstants.SOLUTION);
+      ISolution solution = context.GetData(IDE.DataConstants.SOLUTION);
       if (solution == null)
         return;
 

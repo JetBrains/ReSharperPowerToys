@@ -58,12 +58,11 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.ActivityTracking">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v6.0\\Bin\JetBrains.Platform.ReSharper.ActivityTracking.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\..\Program Files (x86)\JetBrains\ReSharper\v6.0\Bin\JetBrains.Platform.ReSharper.ActivityTracking.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.ComponentModel">
       <HintPath>..\..\..\..\Program Files (x86)\JetBrains\ReSharper\v6.0\Bin\JetBrains.Platform.ReSharper.ComponentModel.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.IDE">
       <SpecificVersion>False</SpecificVersion>

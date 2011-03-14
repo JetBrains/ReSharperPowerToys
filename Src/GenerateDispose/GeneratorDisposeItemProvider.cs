@@ -1,14 +1,11 @@
 using System.Collections.Generic;
 using System.Drawing;
 using JetBrains.ActionManagement;
-using JetBrains.ActivityTracking;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Generate;
 using JetBrains.ReSharper.Feature.Services.Generate.Actions;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.DeclaredElements;
-
-[assembly: RegisterEvent("Generate.Dispose", EventType.WITH_START_FINISH)]
 
 namespace JetBrains.ReSharper.PowerToys.GenerateDispose
 {
@@ -41,7 +38,7 @@ namespace JetBrains.ReSharper.PowerToys.GenerateDispose
   public class GenerateDisposeActionWorkflow : StandardGenerateActionWorkflow
   {
     public GenerateDisposeActionWorkflow(Image icon)
-      : base("Dispose", icon, "&Dispose", GenerateActionGroup.CLR_LANGUAGE, "Generate dispose", 
+      : base("Dispose", icon, "Dispose", GenerateActionGroup.CLR_LANGUAGE, "Generate dispose", 
         "Generate a Dispose() implementation which disposes selected fields.", "Generate.Dispose")
     {
     }
