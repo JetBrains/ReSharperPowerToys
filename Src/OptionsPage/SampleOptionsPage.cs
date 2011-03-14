@@ -16,11 +16,12 @@ namespace JetBrains.ReSharper.PowerToys.OptionsPage
     private CheckBox checkBox1;
 
     public const string ID = "SamplePageId";
+    private Label label1;
 
     /// <summary> 
     /// Required designer variable.
     /// </summary>
-    private Container components = null;
+    private Container components;
 
     public SampleOptionsPage(IOptionsDialog optionsUI)
     {
@@ -55,14 +56,6 @@ namespace JetBrains.ReSharper.PowerToys.OptionsPage
       return true;
     }
 
-    public void OnActivated(bool activated)
-    {
-    }
-
-    public void InitializeUI()
-    {
-    }
-
     public bool ValidatePage()
     {
       return true;
@@ -89,24 +82,38 @@ namespace JetBrains.ReSharper.PowerToys.OptionsPage
     /// </summary>
     private void InitializeComponent()
     {
-      checkBox1 = new CheckBox();
-      SuspendLayout();
+      this.checkBox1 = new System.Windows.Forms.CheckBox();
+      this.label1 = new System.Windows.Forms.Label();
+      this.SuspendLayout();
       // 
       // checkBox1
       // 
-      checkBox1.Dock = DockStyle.Top;
-      checkBox1.Location = new Point(0, 0);
-      checkBox1.Name = "checkBox1";
-      checkBox1.Size = new Size(600, 24);
-      checkBox1.TabIndex = 0;
-      checkBox1.Text = "Sample option";
+      this.checkBox1.Dock = System.Windows.Forms.DockStyle.Top;
+      this.checkBox1.Location = new System.Drawing.Point(0, 0);
+      this.checkBox1.Name = "checkBox1";
+      this.checkBox1.Size = new System.Drawing.Size(600, 24);
+      this.checkBox1.TabIndex = 0;
+      this.checkBox1.Text = "Sample option";
+      // 
+      // label1
+      // 
+      this.label1.AutoSize = true;
+      this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 60F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+      this.label1.Location = new System.Drawing.Point(243, 196);
+      this.label1.Name = "label1";
+      this.label1.Size = new System.Drawing.Size(115, 91);
+      this.label1.TabIndex = 1;
+      this.label1.Text = ":-)";
       // 
       // SampleOptionsPage
       // 
-      Controls.Add(checkBox1);
-      Name = "SampleOptionsPage";
-      Size = new Size(600, 472);
-      ResumeLayout(false);
+      this.Controls.Add(this.label1);
+      this.Controls.Add(this.checkBox1);
+      this.Name = "SampleOptionsPage";
+      this.Size = new System.Drawing.Size(600, 472);
+      this.ResumeLayout(false);
+      this.PerformLayout();
+
     }
 
     #endregion

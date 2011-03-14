@@ -15,13 +15,20 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
   [DaemonStage]
   public class ComplexityAnalysisDaemonStage : IDaemonStage
   {
-    private static GlobalSettingsTable GlobalSettingsTable;
-
-    public ComplexityAnalysisDaemonStage(Daemon.Daemon daemon, Lifetime lifetime, GlobalSettingsTable table)
+    public ComplexityAnalysisDaemonStage(Lifetime lifetime, ISolution solution)
     {
-      GlobalSettingsTable = table;
       // Listen to the changes of the threshold, recalculate on such an event
-      ThresholdProperty.Change.Advise(lifetime, args => daemon.Invalidate());
+      ThresholdProperty.Change.Advise(lifetime, args =>
+                                                  {
+                                                    try
+                                                    {
+                                                      var daemon = Daemon.Daemon.GetInstance(solution);
+                                                      daemon.Invalidate();
+                                                    } catch (Exception)
+                                                    {
+                                                      // we might not have a daemon, but that's OK
+                                                    }
+                                                  });
     }
 
     /// <summary>
@@ -63,7 +70,7 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
         // Get the property from the R# property bag by its name. The value will be persisted between R# runs.
         // As it's the only place where we use the name, there's no use of declaring a constant for it.
         // This is also the only place where we specify the default value for the property.
-        return GlobalSettingsTable.IntProperties["CyclomaticComplexityThreshold", 20];
+        return Shell.Instance.GetComponent<GlobalSettingsTable>().IntProperties["CyclomaticComplexityThreshold", 20];
       }
     }
   }

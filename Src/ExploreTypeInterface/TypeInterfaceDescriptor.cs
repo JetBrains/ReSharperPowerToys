@@ -62,11 +62,6 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
       }
     }
 
-    public override string Title
-    {
-      get { return myTitle; }
-    }
-
     public override TreeModel Model
     {
       get { return myModel; }

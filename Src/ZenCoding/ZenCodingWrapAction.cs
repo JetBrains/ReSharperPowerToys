@@ -21,11 +21,13 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
   {
     private Lifetime lifetime;
     private readonly DocumentTransactionManager documentTransactionManager;
+    private IShellLocks locks;
 
     public PowerToys_ZenCodingWrapAction(Lifetime lifetime, DocumentTransactionManager documentTransactionManager)
     {
       this.lifetime = lifetime;
       this.documentTransactionManager = documentTransactionManager;
+      this.locks = Shell.Instance.GetComponent<IShellLocks>();
     }
 
     public override bool Update(IDataContext context, ActionPresentation presentation, DelegateUpdate nextUpdate)
@@ -36,11 +38,6 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
 
     public override void Execute(IDataContext context, DelegateExecute nextExecute)
     {
-      Lifetimes.Using(lifetime =>
-      {
-        
-      });
-
       var solution = context.GetData(IDE.DataConstants.SOLUTION);
       Assertion.AssertNotNull(solution, "solution == null");
       var textControl = context.GetData(IDE.DataConstants.TEXT_CONTROL);
@@ -58,8 +55,8 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
         var ctxTextControl = windowContext as TextControlPopupWindowContext;
         if (ctxTextControl != null)
         {
-          layouterToUse = new DockingLayouter(
-            new TextControlAnchoringRect(ctxTextControl.TextControl, ctxTextControl.TextControl.Caret.Offset()), Anchoring2D.AnchorLeftOrRightOnly);
+          layouterToUse = new DockingLayouter(lifetime, 
+            new TextControlAnchoringRect(lifetime, ctxTextControl.TextControl, ctxTextControl.TextControl.Caret.Offset(), locks), Anchoring2D.AnchorLeftOrRightOnly);
           ctxToUse = ctxTextControl;
         }
         else
@@ -98,12 +95,12 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
                 return;
 
               
-              var selection = textControl.Selection.DocRange;
+              var selection = textControl.Selection.UnionOfDocRanges();
               Assertion.Assert(selection.IsValid, "selection is not valid");
 
               int insertPoint;
               var expanded = GetEngine(solution).WrapWithAbbreviation(
-                abbr, textControl.Selection.GetSelectionText(), GetDocTypeForFile(GetProjectFile(context)), out insertPoint);
+                abbr, string.Join("", textControl.Selection.GetSelectedText().ToArray()), GetDocTypeForFile(GetProjectFile(context)), out insertPoint);
               CheckAndIndent(solution, textControl, selection, expanded, insertPoint);
             }
           }

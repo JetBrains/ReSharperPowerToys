@@ -91,6 +91,10 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
       return ribs;
     }
 
+    /// <summary>
+    /// Processes the function declaration.
+    /// </summary>
+    /// <param name="declaration">The declaration.</param>
     private void ProcessFunctionDeclaration(ICSharpFunctionDeclaration declaration)
     {
       // Nothing to calculate
