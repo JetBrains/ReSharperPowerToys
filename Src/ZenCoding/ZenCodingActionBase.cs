@@ -1,17 +1,14 @@
 using System;
 using System.Collections.Generic;
-
 using JetBrains.ActionManagement;
 using JetBrains.Application;
 using JetBrains.DocumentManagers;
-using JetBrains.DocumentModel;
 using JetBrains.Interop.WinApi;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CodeStyle;
 using JetBrains.TextControl;
-using JetBrains.UI.Interop;
 using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PowerToys.ZenCoding
@@ -22,6 +19,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
       new Dictionary<ProjectFileType, DocType>
       {
         { AspProjectFileType.Instance, DocType.Html },
+        { HtmlProjectFileType.Instance, DocType.Html },
         { XmlProjectFileType.Instance, DocType.Xsl },
       };
 
@@ -45,8 +43,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
 
     protected bool IsSupportedFile(IProjectFile file)
     {
-      return ourFileTypes.ContainsKey(file.LanguageType) ||
-             Settings.Instance.IsSupportedFile(file.Name);
+      return ourFileTypes.ContainsKey(file.LanguageType) || Settings.Instance.IsSupportedFile(file.Name);
     }
 
     protected DocType GetDocTypeForFile(IProjectFile file)
@@ -66,7 +63,10 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
 
     protected static IProjectFile GetProjectFile(IDataContext context)
     {
-      return Shell.Instance.GetComponent<DocumentManager>().GetProjectFile(context.GetData(IDE.DataConstants.DOCUMENT));
+      ISolution solution = context.GetData(IDE.DataConstants.SOLUTION);
+      var dm = solution.GetComponent<DocumentManager>();
+      var doc = context.GetData(IDE.DataConstants.DOCUMENT);
+      return dm.GetProjectFile(doc);
     }
 
     public abstract void Execute(IDataContext context, DelegateExecute nextExecute);

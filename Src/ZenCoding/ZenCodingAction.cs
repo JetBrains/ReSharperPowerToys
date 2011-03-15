@@ -7,33 +7,26 @@ using JetBrains.DocumentManagers.impl;
 using JetBrains.DocumentModel;
 using JetBrains.DocumentModel.Transactions;
 using JetBrains.Interop.WinApi;
+using JetBrains.ProjectModel;
 using JetBrains.TextControl;
 using JetBrains.UI.Interop;
 using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PowerToys.ZenCoding
 {
-  [ActionHandler]
+  [ActionHandler("PowerToys.ZenCoding")]
   public class PowerToys_ZenCodingAction : ZenCodingActionBase
   {
-    private DocumentManager documentManager;
-    private readonly ICommandProcessor commandProcessor;
-    private readonly SolutionDocumentTransactionManager documentTransactionManager;
-
-    public PowerToys_ZenCodingAction(DocumentManager documentManager, ICommandProcessor commandProcessor, SolutionDocumentTransactionManager documentTransactionManager)
-    {
-      this.documentManager = documentManager;
-      this.commandProcessor = commandProcessor;
-      this.documentTransactionManager = documentTransactionManager;
-    }
-
     public override void Execute(IDataContext context, DelegateExecute nextExecute)
     {
       var solution = context.GetData(IDE.DataConstants.SOLUTION);
       Assertion.AssertNotNull(solution, "solution == null");
       var textControl = context.GetData(IDE.DataConstants.TEXT_CONTROL);
       Assertion.AssertNotNull(textControl, "textControl == null");
-      
+
+      var commandProcessor = Shell.Instance.GetComponent<ICommandProcessor>();
+      var documentTransactionManager = solution.GetComponent<DocumentTransactionManager>();
+
       using (commandProcessor.UsingCommand("ZenCoding"))
       {
         documentTransactionManager.StartTransaction("ZenCoding");
@@ -41,15 +34,19 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
         string abbr;
 
         TextRange abbrRange = textControl.Selection.UnionOfDocRanges();
-        if (abbrRange.IsValid && !abbrRange.IsEmpty)
+        // todo: selected text
+        /*
+        if (abbrRange.IsValid && abbrRange.Length > 0)
         {
           abbr = textControl.Document.GetText(abbrRange);
         }
         else
-        {
+        { */
           var coords = textControl.Caret.PositionValue.ToDocLineColumn();
           int start;
-          abbr = GetEngine(solution).FindAbbreviationInLine(textControl.Document.GetLineText(coords.Line), (int)coords.Column, out start);
+          var engine = GetEngine(solution);
+          var lineText = textControl.Document.GetLineText(coords.Line);
+          abbr = engine.FindAbbreviationInLine(lineText, (int)coords.Column, out start);
           if (start == -1)
           {
             Win32Declarations.MessageBeep(MessageBeepType.Error);
@@ -58,7 +55,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
           abbrRange = TextRange
             .FromLength(textControl.Caret.PositionValue.ToDocOffset(), -abbr.Length)
             .Normalized();
-        }
+        //}
 
         int insertPoint;
         var expanded = GetEngine(solution).ExpandAbbreviation(abbr, GetDocTypeForFile(GetProjectFile(context)), out insertPoint);
