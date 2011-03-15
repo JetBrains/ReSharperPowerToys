@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- PowerToy Installer File. -->
+<!-- This is a part of the JetBrains ReSharper PowerToys pack. -->
+<!-- The file can be used for building an installer for your own R# Plugins. -->
+<!-- To do that, do not modify this file; instead, see how the “Setup.Proj” files are organized inside the PowerToy folders. -->
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<!-- The “Dyn”-prefixed variables are coming from the project file. This way you can build a typical R# plugin installer without touching the installer sources themselves, just modify the settings file (Setup.Proj). -->
+	<Product Id="*" Name="$(var.DynProductName) ReSharper $(var.DynReSharperVersion2) Plugin (VS $(var.DynVsVersion))" Language="1033" Version="$(var.DynProductVersion)" Manufacturer="$(var.DynCompanyName)" UpgradeCode="$(var.DynUpgradeCode)">
+		<Package InstallerVersion="200" Compressed="yes" />
+
+		<!-- Defines the pack of source files. -->
+		<Media Id="1" Cabinet="ReSharperPowerToySetup.cab" EmbedCab="yes" />
+
+		<!-- Directory structure for the plugin. -->
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="APPLICATIONFOLDER" Name="[ApplicationFolderName]"> <!-- This will be redirected into either R# installdir or user-data folder. -->
+
+					<!-- Install the plugin assembly. -->
+					<Component Id="C.ProductAssembly" Guid="$(var.DynMsiComponentGuid00)" Location="local">
+						<File Id="F.ProductAssembly" Checksum="yes" DiskId="1" KeyPath="yes" Name="ReSharperPlugin.Dll" ReadOnly="yes" Source="$(var.DynAssemblyFile)" Vital="yes" />
+					</Component>
+
+					<!-- Cause the one-time-init to happen in R# after the plugin is installed, either per-user or all-users. -->
+					<Component Id="C.OneTimeInit" Guid="$(var.DynMsiComponentGuid01)" Location="local">
+						<RegistryValue Id="R.OneTimeInit" Root="HKMU" Key="Software\JetBrains\ReSharper\v[RESHARPERVERSION2]\vs[VSVERSION][VSROOTSUFFIX]" Name="One-Time Initialization Generation" Value="[Date]T[Time]" Type="string" Action="write" KeyPath="yes" />
+					</Component>
+
+				</Directory>
+			</Directory>
+		</Directory>
+
+		<!-- Feature tree: just mount the components. -->
+		<Feature Id="ProductFeature" Title="Everything" Level="1" AllowAdvertise="no" Display="expand" InstallDefault="local" Description="Installs the [ProductName] either under the R# directory, or into the user's Local Applocation Data folder.">
+			<ComponentRef Id="C.ProductAssembly" />
+			<ComponentRef Id="C.OneTimeInit" />
+      <!-- Additional setup files mount. -->
+      <ComponentGroupRef Id="C.PowerToySetup.AdditionalComponents" />
+    </Feature>
+
+		<!-- Name of the innermost application folder; used by the stock WiX template, we're using it just for legacy. -->
+		<Property Id="ApplicationFolderName" Value="$(var.DynProductName)" />
+		
+		<!-- Default selection for the “per user or per machine?” dialog. -->
+		<Property Id="WixAppFolder" Value="WixPerUserFolder" />
+
+		<!-- Mount the WiX Wizard Dialogs. -->
+		<UIRef Id="WixUI_Advanced" />
+
+		<!-- This includes the whole fragment with property declarations. -->
+		<PropertyRef Id="RESHARPERVERSION2"/>
+
+		<!-- Locate the R# installdir. -->
+		<Property Id="RESHARPERINSTALLDIR" Secure="yes">
+		<RegistrySearch Id="AS.ReSharperBinariesDir" Root="HKLM" Key="Software\JetBrains\ReSharper\v[RESHARPERVERSION2]\vs[VSVERSION][VSROOTSUFFIX]" Name="InstallDir" Type="directory" />
+		</Property>
+		
+		<!-- Assign the installation folder for the all users / current user scenarios. -->
+		<CustomAction Id="WixSetDefaultPerMachineFolder.Custom" Property="WixPerMachineFolder" Value="[ProgramFilesFolder]JetBrains\ReSharper\v[RESHARPERVERSION2]\Bin\Plugins\[ApplicationFolderName].vs[VSVERSION][VSROOTSUFFIX]" Execute="immediate" />	<!-- Per-machine folder, as for the default installation dir. -->
+		<CustomAction Id="WixSetDefaultPerMachineFolder.InstallDir" Property="WixPerMachineFolder" Value="[RESHARPERINSTALLDIR]\Plugins\[ApplicationFolderName].vs[VSVERSION][VSROOTSUFFIX]" Execute="immediate" /> <!-- Per-machine folder, as specified by the InstallDir (preferred, if available). -->
+		<CustomAction Id="WixSetDefaultPerUserFolder.Custom" Property="WixPerUserFolder" Value="[LocalAppDataFolder]JetBrains\ReSharper\v[RESHARPERVERSION2]\vs[VSVERSION][VSROOTSUFFIX]\Plugins\[ApplicationFolderName]" Execute="immediate" /> <!-- Per-user folder in the application data. -->
+		<InstallExecuteSequence>
+			<Custom Action="WixSetDefaultPerMachineFolder.Custom" Before="WixSetPerMachineFolder">Not RESHARPERINSTALLDIR</Custom>
+			<Custom Action="WixSetDefaultPerMachineFolder.InstallDir" Before="WixSetPerMachineFolder">RESHARPERINSTALLDIR</Custom>
+			<Custom Action="WixSetDefaultPerUserFolder.Custom" Before="WixSetPerUserFolder" />
+		</InstallExecuteSequence>
+		<InstallUISequence>
+			<Custom Action="WixSetDefaultPerMachineFolder.Custom" Before="WixSetPerMachineFolder">Not RESHARPERINSTALLDIR</Custom>
+			<Custom Action="WixSetDefaultPerMachineFolder.InstallDir" Before="WixSetPerMachineFolder">RESHARPERINSTALLDIR</Custom>
+			<Custom Action="WixSetDefaultPerUserFolder.Custom" Before="WixSetPerUserFolder" />
+		</InstallUISequence>
+		
+	</Product>
+</Wix>
