@@ -21,7 +21,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
 
       myPanel.Controls.Add(myEditor);
 
-      Icon = Shell.Instance.Descriptor.ProductIcon;
+      Icon = Shell.Instance.GetComponent<IApplicationDescriptor>().ProductIcon;
     }
 
     public FileAssociation FileAssociation
