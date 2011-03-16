@@ -1,15 +1,10 @@
 using JetBrains.ActionManagement;
 using JetBrains.Application;
 using JetBrains.Application.CommandProcessing;
-using JetBrains.DocumentManagers;
-using JetBrains.DocumentManagers.Transactions;
-using JetBrains.DocumentManagers.impl;
-using JetBrains.DocumentModel;
 using JetBrains.DocumentModel.Transactions;
 using JetBrains.Interop.WinApi;
 using JetBrains.ProjectModel;
 using JetBrains.TextControl;
-using JetBrains.UI.Interop;
 using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PowerToys.ZenCoding

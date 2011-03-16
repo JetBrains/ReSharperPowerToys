@@ -41,12 +41,12 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
       return IsSupportedFile(GetProjectFile(context)) || nextUpdate();
     }
 
-    protected bool IsSupportedFile(IProjectFile file)
+    private static bool IsSupportedFile(IProjectFile file)
     {
       return ourFileTypes.ContainsKey(file.LanguageType) || Settings.Instance.IsSupportedFile(file.Name);
     }
 
-    protected DocType GetDocTypeForFile(IProjectFile file)
+    protected static DocType GetDocTypeForFile(IProjectFile file)
     {
       if (!IsSupportedFile(file))
       {

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Psi;
@@ -57,7 +56,7 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
       return ribs.Count - nodes + 2;
     }
 
-    private static int GetNodesCount(HashSet<IControlFlowRib> ribs)
+    private static int GetNodesCount(IEnumerable<IControlFlowRib> ribs)
     {
       bool hasSrcNull = false;
       bool hasDstNull = false;
