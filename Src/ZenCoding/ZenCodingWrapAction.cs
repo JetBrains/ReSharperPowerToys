@@ -17,7 +17,7 @@ using DataConstants = JetBrains.UI.DataConstants;
 
 namespace JetBrains.ReSharper.PowerToys.ZenCoding
 {
-  [ActionHandler("PowerToys.ZenCodingWrap")]
+  //[ActionHandler("PowerToys.ZenCodingWrap")]
   public class PowerToys_ZenCodingWrapAction : ZenCodingActionBase
   {
     private Lifetime lifetime;
