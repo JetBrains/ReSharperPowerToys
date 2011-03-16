@@ -1,8 +1,8 @@
 using System.Windows.Forms;
 using JetBrains.ActionManagement;
+using JetBrains.Application;
 using JetBrains.Application.Configuration;
 using JetBrains.DocumentManagers;
-using JetBrains.IDE;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Features.Common.FindResultsBrowser;
 using JetBrains.ReSharper.Psi;
@@ -13,34 +13,27 @@ namespace JetBrains.ReSharper.PowerToys.FindText
   /// <summary>
   /// Handles FindText action, see Actions.xml
   /// </summary>
-  [ActionHandler]
+  [ActionHandler("PowerToys.FindText")]
   public class PowerToys_FindTextAction : IActionHandler
   {
-    private GlobalSettingsTable globalSettingsTable;
-    private readonly IMainWindow mainWindow;
-    private readonly DocumentManager documentManager;
-    private readonly IPsiServices psiServices;
-
-    public PowerToys_FindTextAction(IMainWindow mainWindow, DocumentManager documentManager, IPsiServices psiServices)
-    {
-      this.mainWindow = mainWindow;
-      this.documentManager = documentManager;
-      this.psiServices = psiServices;
-    }
-
     public bool Update(IDataContext context, ActionPresentation presentation, DelegateUpdate nextUpdate)
     {
       // Check that we have a solution
-      return context.CheckAllNotNull(DataConstants.SOLUTION);
+      return context.CheckAllNotNull(IDE.DataConstants.SOLUTION);
     }
 
     public void Execute(IDataContext context, DelegateExecute nextExecute)
     {
       // Get solution from context in which action is executed
-      ISolution solution = context.GetData(DataConstants.SOLUTION);
+      ISolution solution = context.GetData(IDE.DataConstants.SOLUTION);
       if (solution == null)
         return;
 
+      var documentManager = solution.GetComponent<DocumentManager>();
+      var globalSettingsTable = Shell.Instance.GetComponent<GlobalSettingsTable>();
+      var psiServices = solution.GetPsiServices();
+      var mainWindow = solution.GetComponent<IMainWindow>();
+      
       // Ask user about search string
       using (var dialog = new EnterSearchStringDialog(globalSettingsTable))
       {

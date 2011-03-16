@@ -53,7 +53,6 @@ namespace JetBrains.ReSharper.PowerToys.LiveTemplatesMacro
     {
       get
       {
-        // our macro is parameterless
         return EmptyArray<ParameterInfo>.Instance;
       }
     }
