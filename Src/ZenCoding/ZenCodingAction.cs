@@ -32,7 +32,6 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
         documentTransactionManager.StartTransaction("ZenCoding");
 
         string abbr;
-
         TextRange abbrRange = textControl.Selection.UnionOfDocRanges();
         // todo: selected text
         /*

@@ -1,12 +1,11 @@
 using System.Collections.Generic;
-using JetBrains.Application;
 using JetBrains.DocumentManagers;
 using JetBrains.DocumentModel;
-using JetBrains.DocumentModel.Transactions;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros;
 using JetBrains.ReSharper.Feature.Services.Lookup;
+using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PowerToys.LiveTemplatesMacro
 {
@@ -55,7 +54,7 @@ namespace JetBrains.ReSharper.PowerToys.LiveTemplatesMacro
       get
       {
         // our macro is parameterless
-        return new ParameterInfo[0];
+        return EmptyArray<ParameterInfo>.Instance;
       }
     }
 
