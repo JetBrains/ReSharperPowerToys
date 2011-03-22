@@ -19,16 +19,16 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
     {
       // Listen to the changes of the threshold, recalculate on such an event
       ThresholdProperty.Change.Advise(lifetime, args =>
-                                                  {
-                                                    try
-                                                    {
-                                                      var daemon = Daemon.Daemon.GetInstance(solution);
-                                                      daemon.Invalidate();
-                                                    } catch (Exception)
-                                                    {
-                                                      // we might not have a daemon, but that's OK
-                                                    }
-                                                  });
+      {
+        try
+        {
+          var daemon = Daemon.Daemon.GetInstance(solution);
+          daemon.Invalidate();
+        } catch (Exception)
+        {
+          // we might not have a daemon, but that's OK
+        }
+      });
     }
 
     /// <summary>

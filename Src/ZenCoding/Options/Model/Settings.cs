@@ -20,36 +20,36 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model
       new Settings
       {
         FileAssociations = new List<FileAssociation>
-                           {
-                             new FileAssociation
-                             {
-                               Pattern = @".*\.html?$",
-                               PatternType = PatternType.Regex,
-                               DocType = DocType.Html,
-                               Enabled = true
-                             },
-                             new FileAssociation
-                             {
-                               Pattern = ".spark",
-                               PatternType = PatternType.FileExtension,
-                               DocType = DocType.Html,
-                               Enabled = true
-                             },
-                             new FileAssociation
-                             {
-                               Pattern = ".css",
-                               PatternType = PatternType.FileExtension,
-                               DocType = DocType.Css,
-                               Enabled = true
-                             },
-                             new FileAssociation
-                             {
-                               Pattern = @".*\.xslt?$",
-                               PatternType = PatternType.Regex,
-                               DocType = DocType.Xsl,
-                               Enabled = true
-                             }
-                           }
+        {
+          new FileAssociation
+          {
+            Pattern = @".*\.html?$",
+            PatternType = PatternType.Regex,
+            DocType = DocType.Html,
+            Enabled = true
+          },
+          new FileAssociation
+          {
+            Pattern = ".spark",
+            PatternType = PatternType.FileExtension,
+            DocType = DocType.Html,
+            Enabled = true
+          },
+          new FileAssociation
+          {
+            Pattern = ".css",
+            PatternType = PatternType.FileExtension,
+            DocType = DocType.Css,
+            Enabled = true
+          },
+          new FileAssociation
+          {
+            Pattern = @".*\.xslt?$",
+            PatternType = PatternType.Regex,
+            DocType = DocType.Xsl,
+            Enabled = true
+          }
+        }
       };
 
     private readonly IPatternHandler[] myHandlers;
@@ -57,6 +57,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model
     public Settings()
     {
       myHandlers = new IPatternHandler[] {new FileExtensionPatternHandler(), new RegexPatternHandler()};
+      FileAssociations = new List<FileAssociation>();
     }
 
     public static Settings Instance
@@ -67,16 +68,6 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model
     public List<FileAssociation> FileAssociations { get; set; }
 
     #region IXmlExternalizableShellComponent Members
-    
-    //string IXmlExternalizable.TagName
-    //{
-    //  get { return "ZenCoding.Settings"; }
-    //}
-
-    //XmlExternalizationScope IXmlExternalizable.Scope
-    //{
-    //  get { return XmlExternalizationScope.UserSettings; }
-    //}
 
     void IXmlExternalizable.ReadFromXml(XmlElement element)
     {
