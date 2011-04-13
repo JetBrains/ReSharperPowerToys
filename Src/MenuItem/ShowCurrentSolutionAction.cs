@@ -13,7 +13,7 @@ namespace JetBrains.ReSharper.PowerToys.MenuItem
   {
     #region IActionHandler Members
 
-    bool IActionHandler.Update(IDataContext context, ActionPresentation presentation, DelegateUpdate nextUpdate)
+    public bool Update(IDataContext context, ActionPresentation presentation, DelegateUpdate nextUpdate)
     {
       // fetch active solution from context
       ISolution solution = context.GetData(IDE.DataConstants.SOLUTION);
@@ -22,7 +22,7 @@ namespace JetBrains.ReSharper.PowerToys.MenuItem
       return solution != null;
     }
 
-    void IActionHandler.Execute(IDataContext context, DelegateExecute nextExecute)
+    public void Execute(IDataContext context, DelegateExecute nextExecute)
     {
       // Fetch active solution from context.
       // It should be not null because it is checked in "Update". 

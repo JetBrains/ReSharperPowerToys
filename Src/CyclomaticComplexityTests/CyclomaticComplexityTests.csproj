@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="JetBrains.ReSharper.FeaturesTestFramework">
+      <HintPath>..\..\Lib\R# Test Assemblies\JetBrains.ReSharper.FeaturesTestFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -42,6 +45,12 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CyclomaticComplexity\CyclomaticComplexity.csproj">
+      <Project>{4FF42D42-187D-4332-8154-49506B1DB698}</Project>
+      <Name>CyclomaticComplexity</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
