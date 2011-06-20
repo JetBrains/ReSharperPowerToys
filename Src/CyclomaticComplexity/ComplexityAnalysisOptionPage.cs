@@ -1,4 +1,6 @@
+using JetBrains.DataFlow;
 using JetBrains.ReSharper.Features.Environment.Options.Inspections;
+using JetBrains.UI.CommonControls.Fonts;
 using JetBrains.UI.Options;
 using JetBrains.UI.Options.Helpers;
 
@@ -15,8 +17,8 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
     /// <summary>
     /// Creates new instance of ComplexityAnalysisOptionPage
     /// </summary>
-    public ComplexityAnalysisOptionPage()
-      : base(PID)
+    public ComplexityAnalysisOptionPage(Lifetime lifetime, FontsManager fontsManager)
+      : base(lifetime, fontsManager, PID)
     {
       InitControls();
     }

@@ -31,7 +31,7 @@ namespace JetBrains.ReSharper.PowerToys.LiveTemplatesMacro
       if (method != null)
       {
         var lookupItems = new List<ILookupItem>();
-        var methodReturnTypeName = method.ReturnType.GetPresentableName(method.Language);
+        var methodReturnTypeName = method.ReturnType.GetPresentableName(method.PresentationLanguage);
         var item = new TextLookupItem(methodReturnTypeName);
         lookupItems.Add(item);
         var hotSpotItems = new HotspotItems(lookupItems);

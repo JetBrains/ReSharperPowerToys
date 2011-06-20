@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using JetBrains.ActionManagement;
 using JetBrains.Application;
+using JetBrains.Application.DataContext;
 using JetBrains.DocumentManagers;
 using JetBrains.Interop.WinApi;
 using JetBrains.ProjectModel;
@@ -33,7 +34,8 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
     public virtual bool Update(IDataContext context, ActionPresentation presentation, DelegateUpdate nextUpdate)
     {
       // Check that we have a solution
-      if (!context.CheckAllNotNull(IDE.DataConstants.SOLUTION, IDE.DataConstants.TEXT_CONTROL))
+      if (!context.CheckAllNotNull(ProjectModel.DataContext.DataConstants.SOLUTION, 
+        TextControl.DataContext.DataConstants.TEXT_CONTROL))
       {
         return nextUpdate();
       }
@@ -63,7 +65,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
 
     protected static IProjectFile GetProjectFile(IDataContext context)
     {
-      ISolution solution = context.GetData(IDE.DataConstants.SOLUTION);
+      ISolution solution = context.GetData(ProjectModel.DataContext.DataConstants.SOLUTION);
       var dm = solution.GetComponent<DocumentManager>();
       var doc = context.GetData(IDE.DataConstants.DOCUMENT);
       return dm.GetProjectFile(doc);

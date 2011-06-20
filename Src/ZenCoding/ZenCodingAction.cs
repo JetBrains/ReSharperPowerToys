@@ -1,6 +1,7 @@
 using JetBrains.ActionManagement;
 using JetBrains.Application;
 using JetBrains.Application.CommandProcessing;
+using JetBrains.Application.DataContext;
 using JetBrains.DocumentModel.Transactions;
 using JetBrains.Interop.WinApi;
 using JetBrains.ProjectModel;
@@ -14,9 +15,9 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
   {
     public override void Execute(IDataContext context, DelegateExecute nextExecute)
     {
-      var solution = context.GetData(IDE.DataConstants.SOLUTION);
+      var solution = context.GetData(ProjectModel.DataContext.DataConstants.SOLUTION);
       Assertion.AssertNotNull(solution, "solution == null");
-      var textControl = context.GetData(IDE.DataConstants.TEXT_CONTROL);
+      var textControl = context.GetData(TextControl.DataContext.DataConstants.TEXT_CONTROL);
       Assertion.AssertNotNull(textControl, "textControl == null");
 
       var commandProcessor = Shell.Instance.GetComponent<ICommandProcessor>();

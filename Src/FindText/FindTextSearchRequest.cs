@@ -203,7 +203,8 @@ namespace JetBrains.ReSharper.PowerToys.FindText
               if ((mySearchFlags & FindTextSearchFlags.Other) == FindTextSearchFlags.None)
                 continue;
             }
-            myItems.Add(new EmptyTextualOccurence(projectFile, textRange));
+            var options = new OccurencePresentationOptions();
+            myItems.Add(new EmptyTextualOccurence(projectFile, textRange, options));
           }
         }
       }

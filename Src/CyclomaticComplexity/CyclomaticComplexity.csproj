@@ -16,7 +16,7 @@
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -32,6 +32,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -53,81 +54,6 @@
   </PropertyGroup>
   <Import Project="$(PowerToysHomeDir)/Src/PowerToys.Common.Targets" />
   <ItemGroup>
-    <Reference Include="JetBrains.Platform.ReSharper.ActionManagement">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v6.0\\Bin\JetBrains.Platform.ReSharper.ActionManagement.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="JetBrains.Platform.ReSharper.ComponentModel">
-      <HintPath>..\..\..\..\Program Files (x86)\JetBrains\ReSharper\v6.0\Bin\JetBrains.Platform.ReSharper.ComponentModel.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="JetBrains.Platform.ReSharper.IDE">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v6.0\\Bin\JetBrains.Platform.ReSharper.IDE.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Daemon">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v6.0\\Bin\JetBrains.ReSharper.Daemon.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="JetBrains.Platform.ReSharper.DocumentManager">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v6.0\\Bin\JetBrains.Platform.ReSharper.DocumentManager.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="JetBrains.Platform.ReSharper.DocumentModel">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v6.0\\Bin\JetBrains.Platform.ReSharper.DocumentModel.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v6.0\\Bin\JetBrains.ReSharper.Feature.Services.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Features.Environment">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v6.0\\Bin\JetBrains.ReSharper.Features.Environment.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="JetBrains.Platform.ReSharper.ProjectModel">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v6.0\\Bin\JetBrains.Platform.ReSharper.ProjectModel.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Psi">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v6.0\\Bin\JetBrains.ReSharper.Psi.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Psi.CSharp">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v6.0\\Bin\JetBrains.ReSharper.Psi.CSharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="JetBrains.Platform.ReSharper.TextControl">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v6.0\\Bin\JetBrains.Platform.ReSharper.TextControl.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="JetBrains.Platform.ReSharper.Shell">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v6.0\\Bin\JetBrains.Platform.ReSharper.Shell.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="JetBrains.Platform.ReSharper.UI">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v6.0\\Bin\JetBrains.Platform.ReSharper.UI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="JetBrains.Platform.ReSharper.Util">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v6.0\\Bin\JetBrains.Platform.ReSharper.Util.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Resources, Version=6.0.2108.17, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -180,11 +106,5 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <Import Project="$(MSBuildExtensionsPath)\JetBrains\ReSharper.SDK\6.0\Plugin.Targets" />
 </Project>

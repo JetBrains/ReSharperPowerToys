@@ -1,4 +1,5 @@
 using JetBrains.ActionManagement;
+using JetBrains.Application.DataContext;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.TextControl;
@@ -48,8 +49,8 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
       }
 
       // Try to guess type of expression
-      ITextControl textControl = context.GetData(IDE.DataConstants.TEXT_CONTROL);
-      ISolution solution = context.GetData(IDE.DataConstants.SOLUTION);
+      ITextControl textControl = context.GetData(TextControl.DataContext.DataConstants.TEXT_CONTROL);
+      ISolution solution = context.GetData(ProjectModel.DataContext.DataConstants.SOLUTION);
       if (textControl != null && solution != null)
       {
         // TODO: Implement expression processing

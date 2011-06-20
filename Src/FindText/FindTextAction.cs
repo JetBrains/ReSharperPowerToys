@@ -2,6 +2,7 @@ using System.Windows.Forms;
 using JetBrains.ActionManagement;
 using JetBrains.Application;
 using JetBrains.Application.Configuration;
+using JetBrains.Application.DataContext;
 using JetBrains.DocumentManagers;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Features.Common.FindResultsBrowser;
@@ -19,13 +20,13 @@ namespace JetBrains.ReSharper.PowerToys.FindText
     public bool Update(IDataContext context, ActionPresentation presentation, DelegateUpdate nextUpdate)
     {
       // Check that we have a solution
-      return context.CheckAllNotNull(IDE.DataConstants.SOLUTION);
+      return context.CheckAllNotNull(ProjectModel.DataContext.DataConstants.SOLUTION);
     }
 
     public void Execute(IDataContext context, DelegateExecute nextExecute)
     {
       // Get solution from context in which action is executed
-      ISolution solution = context.GetData(IDE.DataConstants.SOLUTION);
+      ISolution solution = context.GetData(ProjectModel.DataContext.DataConstants.SOLUTION);
       if (solution == null)
         return;
 

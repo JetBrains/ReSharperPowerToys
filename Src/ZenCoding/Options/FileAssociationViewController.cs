@@ -5,7 +5,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
 {
   public class FileAssociationViewController : TreeViewController
   {
-    public override bool ExpandNodeInitially(TreeModelViewNode viewNode)
+    public override bool ExpandNodeInitially(TreeModelNode modelNode)
     {
       return true;
     }
