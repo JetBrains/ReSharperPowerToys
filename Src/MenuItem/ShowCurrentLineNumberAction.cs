@@ -1,4 +1,5 @@
 using JetBrains.ActionManagement;
+using JetBrains.Application.DataContext;
 using JetBrains.IDE;
 using JetBrains.TextControl;
 using JetBrains.TextControl.Coords;
@@ -17,7 +18,7 @@ namespace JetBrains.ReSharper.PowerToys.MenuItem
     bool IActionHandler.Update(IDataContext context, ActionPresentation presentation, DelegateUpdate nextUpdate)
     {
       // fetch focused text editor control
-      ITextControl textControl = context.GetData(IDE.DataConstants.TEXT_CONTROL);
+      ITextControl textControl = context.GetData(JetBrains.TextControl.DataContext.DataConstants.TEXT_CONTROL);
 
       // enable this action if we are in text editor, disable otherwise
       return textControl != null;
@@ -25,7 +26,7 @@ namespace JetBrains.ReSharper.PowerToys.MenuItem
 
     void IActionHandler.Execute(IDataContext context, DelegateExecute nextExecute)
     {
-      ITextControl textControl = context.GetData(IDE.DataConstants.TEXT_CONTROL);
+      ITextControl textControl = context.GetData(JetBrains.TextControl.DataContext.DataConstants.TEXT_CONTROL);
       if(textControl == null)
       {
         MessageBox.ShowError("Text control unavailable."); // Note: shouldn't actually get here due to Update() handling

@@ -1,7 +1,7 @@
 using JetBrains.ActionManagement;
 using JetBrains.Application;
+using JetBrains.Application.DataContext;
 using JetBrains.DataFlow;
-using JetBrains.IDE;
 using JetBrains.IDE.TreeBrowser;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Features.Browsing;
@@ -30,7 +30,7 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
     public void Execute(IDataContext context, DelegateExecute nextExecute)
     {
       // Get solution from context in which action is executed
-      ISolution solution = context.GetData(IDE.DataConstants.SOLUTION);
+      ISolution solution = context.GetData(ProjectModel.DataContext.DataConstants.SOLUTION);
       if (solution == null)
         return;
 
@@ -58,8 +58,10 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
         // Create descriptor and ask TreeModelBrowser to show it in the HierarchyResults view. 
         // Same view, where type hierarchy is shown
         var descriptor = new TypeInterfaceDescriptor(typeElement, instanceOnly);
-        TreeModelBrowser.GetInstance(solution).Show(lifetime, HierarchyWindowRegistrar.HierarchyWindowID, descriptor,
-                                                    new TreeModelBrowserPanelPsi(descriptor));
+
+        // todo: fix by using ActivateToolWindowActionHandler<T> as example
+        //TreeModelBrowser.GetInstance(solution).Show(lifetime, HierarchyWindowRegistrar.HierarchyWindowID, descriptor,
+        //                                            new TreeModelBrowserPanelPsi(descriptor));
       }
     }
 

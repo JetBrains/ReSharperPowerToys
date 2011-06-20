@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.ControlFlow2;
-using JetBrains.ReSharper.Psi.ControlFlow2.CSharp;
+using JetBrains.ReSharper.Psi.ControlFlow;
+using JetBrains.ReSharper.Psi.ControlFlow.CSharp;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.Tree;
 

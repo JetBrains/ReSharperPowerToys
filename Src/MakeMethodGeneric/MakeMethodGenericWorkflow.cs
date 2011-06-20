@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using JetBrains.ActionManagement;
 using JetBrains.Annotations;
+using JetBrains.Application.DataContext;
 using JetBrains.Application.Progress;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
@@ -93,8 +94,9 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
       // following code produces name for type parameter using parameter name...
       NamingManager namingManager = method.GetPsiServices().Naming;
       var suggestionOptions = new SuggestionOptions {DefaultName = "T"};
+      
       TypeParameterName = namingManager.Suggestion.GetDerivedName(parameter, NamedElementKinds.TypeParameters,
-                                                                  ScopeKind.Common, method.Language, suggestionOptions);
+                                                                  ScopeKind.Common, parameter.PresentationLanguage, suggestionOptions);
       return true;
     }
 
