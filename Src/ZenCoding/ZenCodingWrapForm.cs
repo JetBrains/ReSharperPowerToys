@@ -15,8 +15,8 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
 
     public ZenCodingWrapForm(Lifetime lifetime)
     {
+      this.lifetime = Lifetimes.Define(lifetime, "ZenCodingWrapForm");
       InitControls();
-      this.lifetime = Lifetimes.Define(lifetime);
     }
 
     public TextBox TextBox { get; private set; }

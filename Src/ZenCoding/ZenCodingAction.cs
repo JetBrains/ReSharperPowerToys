@@ -7,6 +7,7 @@ using JetBrains.Interop.WinApi;
 using JetBrains.ProjectModel;
 using JetBrains.TextControl;
 using JetBrains.Util;
+using JetBrains.ReSharper.Features.Browsing.Bookmarks;
 
 namespace JetBrains.ReSharper.PowerToys.ZenCoding
 {
@@ -28,15 +29,13 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
         documentTransactionManager.StartTransaction("ZenCoding");
 
         string abbr;
-        var abbrRange = textControl.Selection.UnionOfDocRanges();
-        // todo: selected text
-        /*
+        var abbrRange = textControl.Selection.OneDocRangeWithCaret();
         if (abbrRange.IsValid && abbrRange.Length > 0)
         {
           abbr = textControl.Document.GetText(abbrRange);
         }
         else
-        { */
+        {
           var coords = textControl.Caret.PositionValue.ToDocLineColumn();
           int start;
           var engine = GetEngine(solution);
@@ -50,10 +49,10 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
           abbrRange = TextRange
             .FromLength(textControl.Caret.PositionValue.ToDocOffset(), -abbr.Length)
             .Normalized();
-        //}
+        }
 
         int insertPoint;
-        var projectFile = GetProjectFile(context);
+        var projectFile = textControl.GetProjectFile(solution);
         var expanded = GetEngine(solution).ExpandAbbreviation(abbr, GetDocTypeForFile(projectFile), out insertPoint);
         CheckAndIndent(solution, projectFile, textControl, abbrRange, expanded, insertPoint);
 

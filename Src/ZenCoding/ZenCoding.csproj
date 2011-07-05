@@ -133,13 +133,13 @@
     <Compile Include="Options\Model\FileAssociation.cs" />
     <Compile Include="Options\Model\Settings.cs" />
     <Compile Include="ZenCodingActionBase.cs" />
-    <None Include="ZenCodingWrapAction.cs" />
+    <Compile Include="ZenCodingWrapAction.cs" />
     <Compile Include="ZenCodingAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ZenCodingEngine.cs" />
-    <None Include="ZenCodingWrapForm.cs">
+    <Compile Include="ZenCodingWrapForm.cs">
       <SubType>Form</SubType>
-    </None>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="resources\Actions.xml" />
