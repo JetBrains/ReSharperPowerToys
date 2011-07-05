@@ -33,9 +33,6 @@ using System.Text.RegularExpressions;
 using IronPython.Hosting;
 using IronPython.Runtime;
 using JetBrains.Application;
-using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.CodeStyle;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Hosting;
 using JetBrains.Util;
@@ -44,6 +41,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
 {
   public enum DocType
   {
+    None = 0,
     Html,
     Css,
     Xsl

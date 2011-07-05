@@ -35,18 +35,15 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
     public virtual bool Update(IDataContext context, ActionPresentation presentation, DelegateUpdate nextUpdate)
     {
       // Check that we have a solution
-      if (!context.CheckAllNotNull(ProjectModel.DataContext.DataConstants.SOLUTION, 
-        TextControl.DataContext.DataConstants.TEXT_CONTROL))
-      {
-        return nextUpdate();
-      }
+      if (!context.CheckAllNotNull(ProjectModel.DataContext.DataConstants.SOLUTION, TextControl.DataContext.DataConstants.TEXT_CONTROL))
+        return false;
 
-      return IsSupportedFile(GetProjectFile(context)) || nextUpdate();
+      return IsSupportedFile(GetProjectFile(context));
     }
 
     private static bool IsSupportedFile(IProjectFile file)
     {
-      return ourFileTypes.ContainsKey(file.LanguageType) || Settings.Instance.IsSupportedFile(file.Name);
+      return ourFileTypes.Any(_ => file.LanguageType.IsProjectFileType(_.Key)) || Settings.Instance.IsSupportedFile(file.Name);
     }
 
     protected static DocType GetDocTypeForFile(IProjectFile file)
@@ -56,10 +53,12 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
         throw new NotSupportedException(String.Format("The file {0} is not supported", file.Name));
       }
 
-      return ourFileTypes
+      var docType = ourFileTypes
         .Where(_ => file.LanguageType.IsProjectFileType(_.Key))
         .Select(_ => _.Value)
-        .FirstOrDefault(Settings.Instance.GetDocType(file.Name));
+        .FirstOrDefault();
+
+      return docType == DocType.None ? Settings.Instance.GetDocType(file.Name) : docType;
     }
 
     protected static IProjectFile GetProjectFile(IDataContext context)
