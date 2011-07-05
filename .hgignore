@@ -1,9 +1,10 @@
 syntax: regexp
 ^[Bb]in$
 ^[Oo]bj$
-^Lib/ReSharper
+^Lib/JetBrains
+^Lib/DevExpress
 glob:Src/*.cache
-glob:Src/*.user
+glob:Src/**.user
 glob:Src/*.suo
 glob:Src/ReflectorNavigation/ReflectorAddin/bin
 glob:Src/ReflectorNavigation/ReflectorAddin/obj
