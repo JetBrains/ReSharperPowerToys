@@ -54,6 +54,22 @@
   </PropertyGroup>
   <Import Project="$(PowerToysHomeDir)/Src/PowerToys.Common.Targets" />
   <ItemGroup>
+    <Reference Include="DevExpress.Data.v7.1">
+      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v6.0\SDK\Bin\DevExpress.Data.v7.1.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v7.1">
+      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v6.0\SDK\Bin\DevExpress.Utils.v7.1.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v7.1">
+      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v6.0\SDK\Bin\DevExpress.XtraEditors.v7.1.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraTreeList.v7.1">
+      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v6.0\SDK\Bin\DevExpress.XtraTreeList.v7.1.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="IronPython, Version=2.6.10920.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <DontRemapToReSharper>True</DontRemapToReSharper>
       <SpecificVersion>False</SpecificVersion>
@@ -197,5 +213,5 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(MSBuildExtensionsPath)\JetBrains\ReSharper.SDK\6.0\Plugin.Targets" />
+  <Import Project="$(MSBuildExtensionsPath)\JetBrains\ReSharper.SDK\v6.0\Plugin.Targets" />
 </Project>
