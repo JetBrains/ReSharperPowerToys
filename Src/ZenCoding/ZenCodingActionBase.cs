@@ -11,6 +11,7 @@ using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CodeStyle;
 using JetBrains.TextControl;
 using JetBrains.Util;
+using System.Linq;
 
 namespace JetBrains.ReSharper.PowerToys.ZenCoding
 {
@@ -19,8 +20,8 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
     private static readonly IDictionary<ProjectFileType, DocType> ourFileTypes =
       new Dictionary<ProjectFileType, DocType>
       {
-        { AspProjectFileType.Instance, DocType.Html },
         { HtmlProjectFileType.Instance, DocType.Html },
+        { CssProjectFileType.Instance, DocType.Css },
         { XmlProjectFileType.Instance, DocType.Xsl },
       };
 
@@ -55,17 +56,15 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
         throw new NotSupportedException(String.Format("The file {0} is not supported", file.Name));
       }
 
-      if (ourFileTypes.ContainsKey(file.LanguageType))
-      {
-        return ourFileTypes[file.LanguageType];
-      }
-      
-      return Settings.Instance.GetDocType(file.Name);
+      return ourFileTypes
+        .Where(_ => file.LanguageType.IsProjectFileType(_.Key))
+        .Select(_ => _.Value)
+        .FirstOrDefault(Settings.Instance.GetDocType(file.Name));
     }
 
     protected static IProjectFile GetProjectFile(IDataContext context)
     {
-      ISolution solution = context.GetData(ProjectModel.DataContext.DataConstants.SOLUTION);
+      var solution = context.GetData(ProjectModel.DataContext.DataConstants.SOLUTION);
       var dm = solution.GetComponent<DocumentManager>();
       var doc = context.GetData(IDE.DataConstants.DOCUMENT);
       return dm.GetProjectFile(doc);
@@ -73,7 +72,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
 
     public abstract void Execute(IDataContext context, DelegateExecute nextExecute);
 
-    protected static void CheckAndIndent(ISolution solution, ITextControl textControl, TextRange abbrRange, string expanded, int insertPoint)
+    protected static void CheckAndIndent(ISolution solution, IProjectFile projectFile, ITextControl textControl, TextRange abbrRange, string expanded, int insertPoint)
     {
       if (expanded.IsEmpty())
       {
@@ -81,7 +80,8 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
         return;
       }
       
-      var indentSize = GlobalFormatSettingsHelper.GetService(solution).GetSettingsForLanguage(KnownLanguage.ANY).IndentSize;
+      var indentSize = GlobalFormatSettingsHelper.GetService(solution)
+        .GetSettingsForLanguage(PsiProjectFileTypeCoordinator.Instance.GetPrimaryPsiLanguageType(projectFile)).IndentSize;
       expanded = GetEngine(solution).PadString(expanded, (int)textControl.Document.GetCoordsByOffset(abbrRange.StartOffset).Column / indentSize);
       textControl.Document.ReplaceText(abbrRange, expanded);
       if (insertPoint != -1)

@@ -28,7 +28,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
         documentTransactionManager.StartTransaction("ZenCoding");
 
         string abbr;
-        TextRange abbrRange = textControl.Selection.UnionOfDocRanges();
+        var abbrRange = textControl.Selection.UnionOfDocRanges();
         // todo: selected text
         /*
         if (abbrRange.IsValid && abbrRange.Length > 0)
@@ -53,8 +53,9 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
         //}
 
         int insertPoint;
-        var expanded = GetEngine(solution).ExpandAbbreviation(abbr, GetDocTypeForFile(GetProjectFile(context)), out insertPoint);
-        CheckAndIndent(solution, textControl, abbrRange, expanded, insertPoint);
+        var projectFile = GetProjectFile(context);
+        var expanded = GetEngine(solution).ExpandAbbreviation(abbr, GetDocTypeForFile(projectFile), out insertPoint);
+        CheckAndIndent(solution, projectFile, textControl, abbrRange, expanded, insertPoint);
 
         documentTransactionManager.CommitTransaction();
       }

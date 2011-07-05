@@ -23,13 +23,6 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model
         {
           new FileAssociation
           {
-            Pattern = @".*\.html?$",
-            PatternType = PatternType.Regex,
-            DocType = DocType.Html,
-            Enabled = true
-          },
-          new FileAssociation
-          {
             Pattern = ".spark",
             PatternType = PatternType.FileExtension,
             DocType = DocType.Html,
@@ -37,7 +30,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model
           },
           new FileAssociation
           {
-            Pattern = ".css",
+            Pattern = ".less",
             PatternType = PatternType.FileExtension,
             DocType = DocType.Css,
             Enabled = true
@@ -125,7 +118,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model
 
     public DocType GetDocType(string fileName)
     {
-      FileAssociation fileAssociation = FileAssociations.FirstOrDefault(a => HandlerMatch(a, fileName));
+      var fileAssociation = FileAssociations.FirstOrDefault(a => HandlerMatch(a, fileName));
       if (fileAssociation != null)
       {
         return fileAssociation.DocType;
