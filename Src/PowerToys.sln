@@ -36,6 +36,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZenCoding", "ZenCoding\ZenC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3DB50835-680B-46E9-8108-FF8AA553E8E7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gist", "Gist\Gist.csproj", "{B272E0BB-3945-4EC1-A61F-73CF4E098A2D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -78,6 +80,10 @@ Global
 		{0B9EEC3B-131D-4AA9-98E6-1FD307A1E269}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B9EEC3B-131D-4AA9-98E6-1FD307A1E269}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B9EEC3B-131D-4AA9-98E6-1FD307A1E269}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B272E0BB-3945-4EC1-A61F-73CF4E098A2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B272E0BB-3945-4EC1-A61F-73CF4E098A2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B272E0BB-3945-4EC1-A61F-73CF4E098A2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B272E0BB-3945-4EC1-A61F-73CF4E098A2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
