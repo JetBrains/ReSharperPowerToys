@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 using JetBrains.Application;
 using JetBrains.Application.Communication;
 using JetBrains.Application.DataContext;
+using JetBrains.Application.src.Settings;
 using JetBrains.DocumentManagers;
 using JetBrains.IDE;
 using JetBrains.ProjectModel;
@@ -63,7 +64,7 @@ namespace JetBrains.ReSharper.PowerToys.Gist
 
       if (publishData == null) return;
 
-      var url = Publish(shell.GetComponent<WebProxySettingsReader>().GetProxySettings(context), publishData);
+      var url = Publish(shell.GetComponent<GitHubService>().GetClient(context), publishData);
       
       if (!string.IsNullOrEmpty(url))
       {
@@ -97,9 +98,8 @@ namespace JetBrains.ReSharper.PowerToys.Gist
     }
 
     [CanBeNull]
-    private string Publish(IWebProxy proxy, IDictionary<string, string> content)
+    private string Publish(GitHubClient client, IDictionary<string, string> content)
     {
-      var client = new Client { Proxy = proxy };
       var response = client.Execute<GitHub.Gist>(new RestRequest("/gists", Method.POST) {  RequestFormat = DataFormat.Json }
         .AddBody(new GitHub.Gist { IsPublic = true, Files = content.ToDictionary(_ => _.Key, _ => new GistFile { Content = _.Value }) }));
       return response.Data != null ? response.Data.HtmlUrl : null;
