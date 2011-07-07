@@ -9,3 +9,4 @@ glob:Src/*.suo
 glob:Src/ReflectorNavigation/ReflectorAddin/bin
 glob:Src/ReflectorNavigation/ReflectorAddin/obj
 glob:Src/_ReSharper.*
+glob:obj/
