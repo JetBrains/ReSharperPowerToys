@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms.Integration;
 using JetBrains.Annotations;
 using JetBrains.Application.src.Settings;
 using JetBrains.DataFlow;
@@ -27,14 +28,14 @@ namespace JetBrains.ReSharper.PowerToys.Gist
       myGitHubService = gitHubService;
 
       TextBox usernameBox;
-      TextBox passwordBox;
+      System.Windows.Forms.TextBox passwordBox;
       Control = InitView(out usernameBox, out passwordBox);
 
       Bind_GlobalContext<GitHubSettings, string>(s => s.Username, usernameBox, TextBox.TextProperty);
-      Bind_GlobalContext<GitHubSettings, string>(s => s.Password, passwordBox, TextBox.TextProperty);
+      Bind_GlobalContext<GitHubSettings, string>(s => s.Password, WinFormsProperty.Create(lifetime, passwordBox, box => box.Text, true));
     }
 
-    private EitherControl InitView(out TextBox usernameBox, out TextBox passwordBox)
+    private EitherControl InitView(out TextBox usernameBox, out System.Windows.Forms.TextBox passwordBox)
     {
       var grid = new Grid { Background = SystemColors.ControlBrush };
 
@@ -70,15 +71,16 @@ namespace JetBrains.ReSharper.PowerToys.Gist
       Grid.SetColumn(passwordLabel, 0);
       Grid.SetRow(passwordLabel, 2);
 
-      passwordBox = new TextBox();
-      Grid.SetColumn(passwordBox, 1);
-      Grid.SetRow(passwordBox, 2);
+      passwordBox = new System.Windows.Forms.TextBox { UseSystemPasswordChar = true };
+      var passwordHost = new WindowsFormsHost { Child =  passwordBox };
+      Grid.SetColumn(passwordHost, 1);
+      Grid.SetRow(passwordHost, 2);
 
       grid.AddChild(header);
       grid.AddChild(usernameLabel);
       grid.AddChild(usernameBox);
       grid.AddChild(passwordLabel);
-      grid.AddChild(passwordBox);
+      grid.AddChild(passwordHost);
 
       return grid;
     }
