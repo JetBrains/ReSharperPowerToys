@@ -73,7 +73,7 @@ namespace JetBrains.ReSharper.PowerToys.Gist
       }
       else
       {
-        ShowTooltip(context, shell, "Error posting Gist");
+        ShowTooltip(context, shell, "Error posting to Gist");
       }
     }
 
@@ -102,6 +102,11 @@ namespace JetBrains.ReSharper.PowerToys.Gist
     {
       var response = client.Execute<GitHub.Gist>(new RestRequest("/gists", Method.POST) {  RequestFormat = DataFormat.Json }
         .AddBody(new GitHub.Gist { IsPublic = true, Files = content.ToDictionary(_ => _.Key, _ => new GistFile { Content = _.Value }) }));
+      if ((response.ResponseStatus == ResponseStatus.Error) || !response.StatusCode.InRange(HttpStatusCode.OK, HttpStatusCode.Ambiguous - 1))
+      {
+        Logger.LogMessage("Gist error: {0}", response.ErrorMessage ?? string.Format("{0:D} {1}", response.StatusCode, response.StatusDescription));
+        return null;
+      }
       return response.Data != null ? response.Data.HtmlUrl : null;
     }
   }
