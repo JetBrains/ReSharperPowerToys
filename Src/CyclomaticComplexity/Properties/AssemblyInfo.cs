@@ -38,6 +38,7 @@ using JetBrains.UI.Application.PluginSupport;
 
 [assembly : AssemblyVersion("3.0.0.0")]
 [assembly : AssemblyFileVersion("3.0.0.0")]
+
 [assembly : PluginTitle("ReSharper PowerToys: Cyclomatic Complexity")]
 [assembly : PluginVendor("JetBrains s.r.o.")]
-[assembly : PluginDescription("Analyses cyclomatic complexity for a member and issue warning")]
+[assembly : PluginDescription("Analyses cyclomatic complexity for a member and issues warnings.")]
