@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>JetBrains.dotTrace.Api</name>
+    </assembly>
+    <members>
+        <member name="T:JetBrains.dotTrace.Api.CPUProfiler">
+            <summary>
+            CPUProfiler class allows application developers to programmatically control the process of profiling their applications.
+            </summary>
+            <example>
+            There are many scenarios where controlling profiler from the profilee is useful. One of these cases is profiling code which is
+            slow only occasionally, not always. In this case you might use the scheme displayed below:
+            <code>
+            public void YourSlowFunction()
+            {
+              long ticks = DateTime.Now.Ticks;
+              CPUProfiler.Start();
+            
+              try
+              {
+                // Your code which might be slow and might be not.
+              }
+              finally
+              {
+                // This invocation has taken significant time and needs to be profiled
+                if (DateTime.Now.Ticks - ticks > Threshold)
+                  CPUProfiler.StopAndSaveSnapshot();  
+                else
+                  CPUProfiler.StopAndDropSnapshot();       
+              }
+            }
+            </code>
+            
+            This way you can get snapshot each time when your code executes longer than the specified threshold value.
+            </example>
+        </member>
+        <member name="M:JetBrains.dotTrace.Api.CPUProfiler.Start">
+            <summary>
+            Starts taking performance measurements for this application. Note that measurements are taken for all threads.
+            </summary>
+        </member>
+        <member name="M:JetBrains.dotTrace.Api.CPUProfiler.Stop">
+            <summary>
+            Stops taking performance measurements for this application. Current data will persist in memory so next time you start
+            taking measurements the new data will be added to the current data.
+            </summary>
+        </member>
+        <member name="M:JetBrains.dotTrace.Api.CPUProfiler.StopAndSaveSnapShot">
+            <summary>
+            Stops taking performance measurements and opens snapshot with current data in the profiler. After opening the snapshot the
+            measurements data are reset.
+            </summary>
+        </member>
+        <member name="M:JetBrains.dotTrace.Api.CPUProfiler.StopAndDropSnapShot">
+            <summary>
+            Stops taking performance measurements and resets current measurements data.
+            </summary>
+        </member>
+        <member name="M:JetBrains.dotTrace.Api.CPUProfiler.DisableCurrentThread">
+            <summary>
+            Disable performance measurements for current thread.
+            </summary>
+        </member>
+    </members>
+</doc>
