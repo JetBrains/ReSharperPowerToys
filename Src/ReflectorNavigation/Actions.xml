@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<actions>
-  <insert group-id="NavigateToMenu" anchor-id="NavigateToMetadataView" position="after">
-    <action id="NavigateToReflector" text="R&amp;eflector" />
-  </insert>
-</actions>
