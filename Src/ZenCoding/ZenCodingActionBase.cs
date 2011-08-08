@@ -11,6 +11,7 @@ using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CodeStyle;
 using JetBrains.TextControl;
 using JetBrains.Util;
+using System.Linq;
 
 namespace JetBrains.ReSharper.PowerToys.ZenCoding
 {
@@ -19,8 +20,8 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
     private static readonly IDictionary<ProjectFileType, DocType> ourFileTypes =
       new Dictionary<ProjectFileType, DocType>
       {
-        { AspProjectFileType.Instance, DocType.Html },
         { HtmlProjectFileType.Instance, DocType.Html },
+        { CssProjectFileType.Instance, DocType.Css },
         { XmlProjectFileType.Instance, DocType.Xsl },
       };
 
@@ -34,18 +35,15 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
     public virtual bool Update(IDataContext context, ActionPresentation presentation, DelegateUpdate nextUpdate)
     {
       // Check that we have a solution
-      if (!context.CheckAllNotNull(ProjectModel.DataContext.DataConstants.SOLUTION, 
-        TextControl.DataContext.DataConstants.TEXT_CONTROL))
-      {
-        return nextUpdate();
-      }
+      if (!context.CheckAllNotNull(ProjectModel.DataContext.DataConstants.SOLUTION, TextControl.DataContext.DataConstants.TEXT_CONTROL))
+        return false;
 
-      return IsSupportedFile(GetProjectFile(context)) || nextUpdate();
+      return IsSupportedFile(GetProjectFile(context));
     }
 
     private static bool IsSupportedFile(IProjectFile file)
     {
-      return ourFileTypes.ContainsKey(file.LanguageType) || Settings.Instance.IsSupportedFile(file.Name);
+      return ourFileTypes.Any(_ => file.LanguageType.IsProjectFileType(_.Key)) || Settings.Instance.IsSupportedFile(file.Name);
     }
 
     protected static DocType GetDocTypeForFile(IProjectFile file)
@@ -55,17 +53,17 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
         throw new NotSupportedException(String.Format("The file {0} is not supported", file.Name));
       }
 
-      if (ourFileTypes.ContainsKey(file.LanguageType))
-      {
-        return ourFileTypes[file.LanguageType];
-      }
-      
-      return Settings.Instance.GetDocType(file.Name);
+      var docType = ourFileTypes
+        .Where(_ => file.LanguageType.IsProjectFileType(_.Key))
+        .Select(_ => _.Value)
+        .FirstOrDefault();
+
+      return docType == DocType.None ? Settings.Instance.GetDocType(file.Name) : docType;
     }
 
     protected static IProjectFile GetProjectFile(IDataContext context)
     {
-      ISolution solution = context.GetData(ProjectModel.DataContext.DataConstants.SOLUTION);
+      var solution = context.GetData(ProjectModel.DataContext.DataConstants.SOLUTION);
       var dm = solution.GetComponent<DocumentManager>();
       var doc = context.GetData(IDE.DataConstants.DOCUMENT);
       return dm.GetProjectFile(doc);
@@ -73,7 +71,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
 
     public abstract void Execute(IDataContext context, DelegateExecute nextExecute);
 
-    protected static void CheckAndIndent(ISolution solution, ITextControl textControl, TextRange abbrRange, string expanded, int insertPoint)
+    protected static void CheckAndIndent(ISolution solution, IProjectFile projectFile, ITextControl textControl, TextRange abbrRange, string expanded, int insertPoint)
     {
       if (expanded.IsEmpty())
       {
@@ -81,7 +79,8 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
         return;
       }
       
-      var indentSize = GlobalFormatSettingsHelper.GetService(solution).GetSettingsForLanguage(KnownLanguage.ANY).IndentSize;
+      var indentSize = GlobalFormatSettingsHelper.GetService(solution)
+        .GetSettingsForLanguage(PsiProjectFileTypeCoordinator.Instance.GetPrimaryPsiLanguageType(projectFile)).IndentSize;
       expanded = GetEngine(solution).PadString(expanded, (int)textControl.Document.GetCoordsByOffset(abbrRange.StartOffset).Column / indentSize);
       textControl.Document.ReplaceText(abbrRange, expanded);
       if (insertPoint != -1)
