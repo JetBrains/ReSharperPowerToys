@@ -106,5 +106,5 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(MSBuildExtensionsPath)\JetBrains\ReSharper.SDK\6.0\Plugin.Targets" />
+  <Import Project="$(MSBuildExtensionsPath)\JetBrains\ReSharper.SDK\v6.0\Plugin.Targets" />
 </Project>

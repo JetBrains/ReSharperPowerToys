@@ -1,17 +1,15 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 using JetBrains.Application.PluginSupport;
-using JetBrains.UI.Application.PluginSupport;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly : AssemblyTitle("ReSharper PowerToys: Generate Dispose")]
 [assembly : AssemblyDescription("")]
-[assembly : AssemblyConfiguration("")]
-[assembly: AssemblyCompany("IntelliJ Labs")]
+[assembly: AssemblyCompany("JetBrains s.r.o.")]
 [assembly: AssemblyProduct("ReSharper PowerToys")]
-[assembly: AssemblyCopyright("Copyright © IntelliJ Labs 2006-2008")]
+[assembly: AssemblyCopyright("Copyright \u00A9 2006-2011 JetBrains s.r.o. All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly : AssemblyCulture("")]
 
@@ -37,7 +35,3 @@ using JetBrains.UI.Application.PluginSupport;
 [assembly : PluginTitle("ReSharper PowerToys: Generate Dispose")]
 [assembly : PluginVendor("JetBrains s.r.o.")]
 [assembly : PluginDescription("Generate Dispose method")]
-
-namespace JetBrains.ReSharper.PowerToys.GenerateDispose.Properties
-{
-}

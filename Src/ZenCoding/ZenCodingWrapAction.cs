@@ -1,36 +1,27 @@
 using System.Windows.Forms;
 using JetBrains.ActionManagement;
 using JetBrains.Application;
+using JetBrains.Application.CommandProcessing;
+using JetBrains.Application.DataContext;
 using JetBrains.DataFlow;
-using JetBrains.DocumentManagers;
-using JetBrains.DocumentModel;
 using JetBrains.DocumentModel.Transactions;
 using JetBrains.IDE;
 using JetBrains.Interop.WinApi;
+using JetBrains.ProjectModel;
 using JetBrains.TextControl;
 using JetBrains.Threading;
 using JetBrains.UI;
-using JetBrains.UI.Interop;
 using JetBrains.UI.PopupWindowManager;
 using JetBrains.Util;
 using DataConstants = JetBrains.UI.DataConstants;
+using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.Features.Browsing.Bookmarks;
 
 namespace JetBrains.ReSharper.PowerToys.ZenCoding
 {
-  //[ActionHandler("PowerToys.ZenCodingWrap")]
+  [ActionHandler("PowerToys.ZenCodingWrap")]
   public class PowerToys_ZenCodingWrapAction : ZenCodingActionBase
   {
-    private Lifetime lifetime;
-    private readonly DocumentTransactionManager documentTransactionManager;
-    private IShellLocks locks;
-
-    public PowerToys_ZenCodingWrapAction(Lifetime lifetime, DocumentTransactionManager documentTransactionManager)
-    {
-      this.lifetime = lifetime;
-      this.documentTransactionManager = documentTransactionManager;
-      this.locks = Shell.Instance.GetComponent<IShellLocks>();
-    }
-
     public override bool Update(IDataContext context, ActionPresentation presentation, DelegateUpdate nextUpdate)
     {
       return context.CheckAllNotNull(IDE.DataConstants.DOCUMENT_SELECTION) &&
@@ -39,80 +30,75 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
 
     public override void Execute(IDataContext context, DelegateExecute nextExecute)
     {
-    //  var solution = context.GetData(IDE.DataConstants.SOLUTION);
-    //  Assertion.AssertNotNull(solution, "solution == null");
-    //  var textControl = context.GetData(IDE.DataConstants.TEXT_CONTROL);
-    //  Assertion.AssertNotNull(textControl, "textControl == null");
+      var solution = context.GetData(ProjectModel.DataContext.DataConstants.SOLUTION);
+      Assertion.AssertNotNull(solution, "solution == null");
+      var textControl = context.GetData(TextControl.DataContext.DataConstants.TEXT_CONTROL);
+      Assertion.AssertNotNull(textControl, "textControl == null");
 
-      var windowContext = context.GetData(DataConstants.PopupWindowContextSource);
+      var lifetimeDefinition = Lifetimes.Define(EternalLifetime.Instance, "ZenCodingWrap");
+      var lifetime = lifetimeDefinition.Lifetime;
+      var windowContextSource = context.GetData(DataConstants.PopupWindowContextSource);
 
-    //  // Layouter
-    //  // Achtung! You MUST either pass the layouter to CreatePopupWindow or dispose of it, don't let it drift off
-    //  IPopupWindowContext ctxToUse;
-    //  IPopupLayouter layouterToUse;
+      // Layouter
+      // Achtung! You MUST either pass the layouter to CreatePopupWindow or dispose of it, don't let it drift off
+      IPopupWindowContext ctxToUse;
 
-    //  if (windowContext != null)
-    //  {
-    //    var ctxTextControl = windowContext as TextControlPopupWindowContext;
-    //    if (ctxTextControl != null)
-    //    {
-    //      layouterToUse = new DockingLayouter(lifetime, 
-    //        new TextControlAnchoringRect(lifetime, ctxTextControl.TextControl, ctxTextControl.TextControl.Caret.Offset(), locks), Anchoring2D.AnchorLeftOrRightOnly);
-    //      ctxToUse = ctxTextControl;
-    //    }
-    //    else
-    //    {
-    //      layouterToUse = windowContext.CreateLayouter();
-    //      ctxToUse = windowContext;
-    //    }
-    //  }
-    //  else
-    //  {
-    //    ctxToUse = PopupWindowContext.Empty;
-    //    layouterToUse = ctxToUse.CreateLayouter(lifetime);
-    //  }
+      if (windowContextSource != null)
+      {
+        IPopupWindowContext windowContext = windowContextSource.Create(lifetime);
+        var ctxTextControl = windowContext as TextControlPopupWindowContext;
+        ctxToUse = ctxTextControl == null ? windowContext:
+          ctxTextControl.OverrideLayouter(lifetime, lifetimeLayouter => new DockingLayouter(lifetimeLayouter, new TextControlAnchoringRect(lifetimeLayouter, ctxTextControl.TextControl, ctxTextControl.TextControl.Caret.Offset(), Shell.Instance.Locks), Anchoring2D.AnchorTopOrBottom));
+      }
+      else
+      {
+        ctxToUse = Shell.Instance.GetComponent<MainWindowPopupWindowContext>().Create(lifetime);
+      }
 
-    //  var form = new ZenCodingWrapForm(lifetime);
-    //  var window = PopupWindowManager.CreatePopupWindow(form, layouterToUse, ctxToUse, HideFlags.Escape, true);
-    //  window.Closed += (sender, args) => ReentrancyGuard.Current.ExecuteOrQueue("ZenCodingWrap", () =>
-    //  {
-    //    try
-    //    {
-    //      if (form.DialogResult == DialogResult.Cancel)
-    //        return;
-    //      var abbr = form.TextBox.Text.Trim();
-    //      if (abbr.IsEmpty())
-    //      {
-    //        Win32Declarations.MessageBeep(MessageBeepType.Error);
-    //        return;
-    //      }
-    //      using (ReadLockCookie.Create())
-    //      using (CommandCookie.Create("ZenCodingWrap"))
-    //      {
-    //        // use transaction manager?
-    //        using (var cookie = documentTransactionManager.EnsureWritable(textControl.Document))
-    //        {
-    //          if (cookie.EnsureWritableResult != EnsureWritableResult.SUCCESS)
-    //            return;
+      var form = new ZenCodingWrapForm(lifetime);
+      // Popup support
+      var window = Shell.Instance.GetComponent<PopupWindowManager>().CreatePopupWindow(lifetimeDefinition, form, ctxToUse, HideFlags.All & ~HideFlags.Scrolling);
+      window.HideMethod = FormHideMethod.Visibility;
+      window.Closed += (sender, args) => ReentrancyGuard.Current.ExecuteOrQueue("ZenCodingWrap", () =>
+      {
+        try
+        {
+          if (form.DialogResult == DialogResult.Cancel)
+            return;
+          var abbr = form.TextBox.Text.Trim();
+          if (abbr.IsEmpty())
+          {
+            Win32Declarations.MessageBeep(MessageBeepType.Error);
+            return;
+          }
 
-              
-    //          var selection = textControl.Selection.UnionOfDocRanges();
-    //          Assertion.Assert(selection.IsValid, "selection is not valid");
+          var commandProcessor = Shell.Instance.GetComponent<ICommandProcessor>();
+          var documentTransactionManager = solution.GetComponent<DocumentTransactionManager>();
 
-    //          int insertPoint;
-    //          var expanded = GetEngine(solution).WrapWithAbbreviation(
-    //            abbr, string.Join("", textControl.Selection.GetSelectedText().ToArray()), GetDocTypeForFile(GetProjectFile(context)), out insertPoint);
-    //          CheckAndIndent(solution, textControl, selection, expanded, insertPoint);
-    //        }
-    //      }
-    //    }
-    //    finally
-    //    {
-    //      window.Dispose();
-    //      form.Dispose();
-    //    }
-    //  });
-    //  window.ShowWindow();
+          using (commandProcessor.UsingCommand("ZenCodingWrap"))
+          {
+            documentTransactionManager.StartTransaction("ZenCodingWrap");
+
+            var selection = textControl.Selection.OneDocRangeWithCaret();
+            Assertion.Assert(selection.IsValid, "selection is not valid");
+
+            int insertPoint;
+            var projectFile = textControl.GetProjectFile(solution);
+            var expanded = GetEngine(solution)
+              .WrapWithAbbreviation(abbr, textControl.Document.GetText(selection), GetDocTypeForFile(projectFile), out insertPoint);
+            CheckAndIndent(solution, projectFile, textControl, selection, expanded, insertPoint);
+            
+            documentTransactionManager.CommitTransaction();
+          }
+        }
+        finally
+        {
+          lifetimeDefinition.Terminate();
+        }
+      });
+      lifetime.AddBracket(() => window.ShowWindow(), window.HideWindow);
+      lifetime.AddDispose(window);
+      lifetime.AddDispose(form);
     }
   }
 }

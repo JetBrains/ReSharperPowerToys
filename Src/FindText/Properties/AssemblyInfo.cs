@@ -9,10 +9,9 @@ using JetBrains.Application.PluginSupport;
 
 [assembly: AssemblyTitle("ReSharper PowerToys: Find Text")]
 [assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("Visual Studio 2008")]
 [assembly: AssemblyCompany("JetBrains s.r.o.")]
 [assembly: AssemblyProduct("ReSharper PowerToys")]
-[assembly: AssemblyCopyright("Copyright \u00A9 2006-2008 JetBrains s.r.o. All rights reserved.")]
+[assembly: AssemblyCopyright("Copyright \u00A9 2006-2011 JetBrains s.r.o. All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: AssemblyVersion("3.0.0.0")]

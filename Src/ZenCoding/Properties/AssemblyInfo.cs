@@ -3,7 +3,6 @@ using System.Runtime.InteropServices;
 using JetBrains.ActionManagement;
 using JetBrains.Application.PluginSupport;
 using JetBrains.UI;
-using JetBrains.UI.Application.PluginSupport;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -21,8 +20,10 @@ using JetBrains.UI.Application.PluginSupport;
 [assembly: AssemblyFileVersion("1.0.0.0")]
 [assembly: ComVisible(false)]
 [assembly: Guid("1F813F92-B59B-43A4-AAB4-7E1CE19019D0")]
+
 [assembly: PluginTitle("ReSharper PowerToys: ZenCoding")]
 [assembly: PluginVendor("JetBrains s.r.o.")]
 [assembly: PluginDescription("ZenCoding")]
+
 [assembly: ActionsXml("JetBrains.ReSharper.PowerToys.ZenCoding.resources.Actions.xml")]
 [assembly: ImagesBase("JetBrains.ReSharper.PowerToys.ZenCoding.resources")]

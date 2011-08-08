@@ -93,7 +93,6 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <Import Project="$(PowerToysHomeDir)/Src/PowerToys.Common.Targets" />
-  <Import Project="$(MSBuildExtensionsPath)\JetBrains\ReSharper.SDK\6.0\Plugin.Targets" />
   <ItemGroup>
     <Reference Include="System">
       <Name>System</Name>
@@ -140,7 +139,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(MSBuildExtensionsPath)\JetBrains\ReSharper.SDK\6.0\Plugin.Targets" />
+  <Import Project="$(MSBuildExtensionsPath)\JetBrains\ReSharper.SDK\v6.0\Plugin.Targets" />
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
