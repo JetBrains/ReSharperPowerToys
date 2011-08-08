@@ -1,10 +1,35 @@
-syntax: regexp
-^[Bb]in$
-^[Oo]bj$
-^Lib/ReSharper
-glob:Src/*.cache
-glob:Src/*.user
-glob:Src/*.suo
-glob:Src/ReflectorNavigation/ReflectorAddin/bin
-glob:Src/ReflectorNavigation/ReflectorAddin/obj
-^Src/_ReSharper
+# Ignore file for Visual Studio 2008
+
+# use glob syntax
+syntax: glob
+
+# Ignore Visual Studio 2008 files
+*.obj
+*.exe
+*.pdb
+*.user
+*.aps
+*.pch
+*.vspscc
+*_i.c
+*_p.c
+*.ncb
+*.suo
+*.tlb
+*.tlh
+*.bak
+*.cache
+*.ilk
+*.log
+*.lib
+*.sbr
+*.scc
+*.sdf # not safe in case of SQLCE
+[Bb]in*/
+[Db]ebug*/
+[Oo]bj*/
+[Rr]elease*/
+_ReSharper*/
+[Tt]est[Rr]esult*
+[Bb]uild[Ll]og.*
+*.[Pp]ublish.xml
