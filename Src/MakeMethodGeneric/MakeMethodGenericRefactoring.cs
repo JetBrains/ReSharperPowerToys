@@ -151,7 +151,7 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
         // reference can be invalid if previous changes affected it's element. It is unlikely to be occured...
         if (reference.IsValid())
           // process reference with language specific implementation...
-          myExec[reference.GetTreeNode().Language].ProcessParameterReference(reference);
+          Exec[reference.GetTreeNode().Language].ProcessParameterReference(reference);
         pi.Advance(1);
       }
     }
@@ -171,11 +171,11 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
           if (map.TryGetValue(usage.Method, out typeParameter))
           {
             // one more call to language specific code...
-            myExec[usage.Reference.GetTreeNode().Language].BindUsage(usage, typeParameter);
+            Exec[usage.Reference.GetTreeNode().Language].BindUsage(usage, typeParameter);
           }
           else
           {
-            myExec[usage.Reference.GetTreeNode().Language].BindUsage(usage, null);
+            Exec[usage.Reference.GetTreeNode().Language].BindUsage(usage, null);
           }
         }
         pi.Advance(1);
@@ -192,8 +192,8 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
         foreach (IDeclaration declaration in method.GetDeclarations())
         {
           // methods can have multiple declarations (partial methods). 
-          myExec[declaration.Language].RemoveParameter(declaration, index);
-          parameter = myExec[declaration.Language].AddTypeParameter(declaration);
+          Exec[declaration.Language].RemoveParameter(declaration, index);
+          parameter = Exec[declaration.Language].AddTypeParameter(declaration);
         }
         if (parameter != null)
         {
@@ -212,7 +212,7 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
       pi.Start(references.Count);
       foreach (IReference reference in references)
       {
-        MethodInvocation usage = myExec[reference.GetTreeNode().Language].ProcessUsage(reference);
+        MethodInvocation usage = Exec[reference.GetTreeNode().Language].ProcessUsage(reference);
         if (usage != null)
           yield return usage;
         pi.Advance(1);

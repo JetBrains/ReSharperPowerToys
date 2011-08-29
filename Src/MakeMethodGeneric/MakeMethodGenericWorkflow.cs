@@ -96,7 +96,7 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
       var suggestionOptions = new SuggestionOptions {DefaultName = "T"};
       
       TypeParameterName = namingManager.Suggestion.GetDerivedName(parameter, NamedElementKinds.TypeParameters,
-                                                                  ScopeKind.Common, parameter.PresentationLanguage, suggestionOptions);
+                                                                  ScopeKind.Common, parameter.PresentationLanguage, suggestionOptions, null);
       return true;
     }
 
