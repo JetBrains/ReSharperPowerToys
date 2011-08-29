@@ -3,6 +3,7 @@ using System.Xml;
 using JetBrains.Application;
 using JetBrains.Application.Components;
 using JetBrains.Application.Configuration;
+using JetBrains.ReSharper.Psi.CSharp;
 
 namespace JetBrains.ReSharper.PowerToys.OptionsPage
 {
