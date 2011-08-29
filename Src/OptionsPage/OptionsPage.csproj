@@ -149,7 +149,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\JetBrains\ReSharper.SDK\v6.0\Plugin.Targets" />
+  <Import Project="$(MSBuildExtensionsPath)\JetBrains\ReSharper.SDK\v6.1\Plugin.Targets" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

@@ -56,7 +56,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
         var expanded = GetEngine(solution).ExpandAbbreviation(abbr, GetDocTypeForFile(projectFile), out insertPoint);
         CheckAndIndent(solution, projectFile, textControl, abbrRange, expanded, insertPoint);
 
-        documentTransactionManager.CommitTransaction();
+        documentTransactionManager.CommitTransaction(null);
       }
     }
   }

@@ -88,7 +88,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
               .WrapWithAbbreviation(abbr, textControl.Document.GetText(selection), GetDocTypeForFile(projectFile), out insertPoint);
             CheckAndIndent(solution, projectFile, textControl, selection, expanded, insertPoint);
             
-            documentTransactionManager.CommitTransaction();
+            documentTransactionManager.CommitTransaction(null);
           }
         }
         finally

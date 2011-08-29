@@ -151,10 +151,10 @@ namespace JetBrains.ReSharper.PowerToys.GenerateDispose
           var attributesOwner = typeOwner as IAttributesOwner;
           var mark = CodeAnnotationsCache.GetInstance(typeOwner.GetSolution()).GetNullableAttribute(attributesOwner);
           return new IGeneratorOption[]
-                   {
+                   { 
                      new GeneratorOptionBoolean(CanBeNull, "Can be &null",
-                                                mark != CodeAnnotationsCache.NullableAttributeMark.NOT_NULL)
-                       { OverridesGlobalOption = mark == CodeAnnotationsCache.NullableAttributeMark.NOT_NULL }
+                                                mark != CodeAnnotationNullableAttributeMark.NOT_NULL)
+                       { OverridesGlobalOption = mark == CodeAnnotationNullableAttributeMark.NOT_NULL }
                    };
 
         }
