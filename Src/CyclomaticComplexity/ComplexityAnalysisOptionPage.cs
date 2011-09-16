@@ -3,6 +3,7 @@ using JetBrains.ReSharper.Features.Environment.Options.Inspections;
 using JetBrains.UI.CommonControls.Fonts;
 using JetBrains.UI.Options;
 using JetBrains.UI.Options.Helpers;
+using JetBrains.Application.src.Settings;
 
 namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
 {
@@ -12,14 +13,18 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
   [OptionsPage(PID, "Complexity Analysis", "JetBrains.ReSharper.PowerToys.CyclomaticComplexity.ComplexityOptionPage.png", ParentId = CodeInspectionPage.PID)]
   public class ComplexityAnalysisOptionPage : AStackPanelOptionsPage
   {
+    private readonly Lifetime myLifetime;
+    private readonly OptionsSettingsSmartContext mySettings;
     private const string PID = "PowerToys.CyclomaticComplexity";
 
     /// <summary>
     /// Creates new instance of ComplexityAnalysisOptionPage
     /// </summary>
-    public ComplexityAnalysisOptionPage(Lifetime lifetime, FontsManager fontsManager)
+    public ComplexityAnalysisOptionPage(Lifetime lifetime, FontsManager fontsManager, OptionsSettingsSmartContext settings)
       : base(lifetime, fontsManager, PID)
     {
+      myLifetime = lifetime;
+      mySettings = settings;
       InitControls();
     }
 
@@ -45,7 +50,7 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
       spin.Value = new decimal(new[] {1, 0, 0, 0});
 
       // This binding will take the initial value from ComplexityAnalysisElementProcessor, put it into the edit, and pass back from UI to the control if the OK button is hit
-      Bind(ComplexityAnalysisDaemonStage.ThresholdProperty, spin.IntegerValue);
+      mySettings.SetBinding(myLifetime, (ComplexityAnalysisSettings s) => s.Threshold, spin.IntegerValue);
     }
   }
 }

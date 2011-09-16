@@ -25,7 +25,7 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
       get { return myTooltip; }
     }
 
-    public virtual int NavigationOffsetPatch
+    public int NavigationOffsetPatch
     {
       get { return 0; }
     }

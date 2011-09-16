@@ -15,7 +15,7 @@ namespace JetBrains.ReSharper.PowerToys.FindText
   /// Handles FindText action, see Actions.xml
   /// </summary>
   [ActionHandler("PowerToys.FindText")]
-  public class PowerToys_FindTextAction : IActionHandler
+  public class FindTextAction : IActionHandler
   {
     public bool Update(IDataContext context, ActionPresentation presentation, DelegateUpdate nextUpdate)
     {

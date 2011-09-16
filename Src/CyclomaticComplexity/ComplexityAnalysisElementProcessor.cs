@@ -18,14 +18,16 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
     private readonly List<HighlightingInfo> myHighlightings = new List<HighlightingInfo>();
 
     private readonly IDaemonProcess myProcess;
+    private readonly int myThreshold;
 
     #endregion
 
     #region Init
 
-    public ComplexityAnalysisElementProcessor(IDaemonProcess process)
+    public ComplexityAnalysisElementProcessor(IDaemonProcess process, int threshold)
     {
       myProcess = process;
+      myThreshold = threshold;
     }
 
     #endregion
@@ -103,9 +105,9 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
       int cyclomatic = CalcCyclomaticComplexity(declaration);
 
       // Placing highlighting
-      if(cyclomatic > ComplexityAnalysisDaemonStage.Threshold)
+      if(cyclomatic > myThreshold)
       {
-        string message = string.Format("Member has cyclomatic complexity of {0} ({1}%)", cyclomatic, (int)(cyclomatic * 100.0 / ComplexityAnalysisDaemonStage.Threshold));
+        string message = string.Format("Member has cyclomatic complexity of {0} ({1}%)", cyclomatic, (int)(cyclomatic * 100.0 / myThreshold));
         var warning = new ComplexityWarning(message);
         myHighlightings.Add(new HighlightingInfo(declaration.GetNameDocumentRange(), warning));
       }
