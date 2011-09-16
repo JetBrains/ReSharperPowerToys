@@ -68,6 +68,7 @@
     <Compile Include="ComplexityAnalysisOptionPage.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ComplexityAnalysisSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ComplexityWarning.cs" />
     <Compile Include="Stringtable.Designer.cs">

@@ -27,7 +27,6 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
 
     // Model
     private TypeInterfaceModel myModel;
-    private string myTitle;
     private DeclaredElementEnvoy<ITypeElement> myTypeElementEnvoy;
 
     public TypeInterfaceDescriptor(ITypeElement typeElement, bool instanceOnly) : base(typeElement.GetSolution())
@@ -75,6 +74,7 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
     private void MakeModel()
     {
       UpdateTitle();
+
       // Create new model with recursion prevention
       var model = new TypeInterfaceModel(myTypeElementEnvoy, myInstanceOnly)
                     {
@@ -95,7 +95,7 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
       if (TypeElement == null)
         return;
 
-      myTitle = FormatTypeElement("Type '{0}'");
+      Title.Value = FormatTypeElement("Type '{0}'");
     }
 
     private string FormatTypeElement(string format)
