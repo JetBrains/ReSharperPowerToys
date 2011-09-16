@@ -1,8 +1,6 @@
-﻿using System;
-using JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros;
+﻿using JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros;
 using JetBrains.ReSharper.LiveTemplatesTests.Macros;
 using JetBrains.ReSharper.PowerToys.LiveTemplatesMacro;
-using JetBrains.ReSharper.TestFramework;
 using NUnit.Framework;
 
 namespace LiveTemplatesMacroTests

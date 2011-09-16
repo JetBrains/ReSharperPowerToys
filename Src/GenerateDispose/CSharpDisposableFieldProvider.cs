@@ -11,8 +11,8 @@ namespace JetBrains.ReSharper.PowerToys.GenerateDispose
   /// <summary>
   /// Provides input elements for user's choice
   /// </summary>
-  [GeneratorElementProvider("Dispose", CSharpLanguage.Name)]
-  internal class CSharpDisposableFieldProvider : CSharpGeneratorProviderBase
+  [GeneratorElementProvider("Dispose", typeof(CSharpLanguage))]
+  internal class CSharpDisposableFieldProvider : GeneratorProviderBase<CSharpGeneratorContext>
   {
     #region IGeneratorElementProvider Members
 

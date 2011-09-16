@@ -22,14 +22,15 @@ namespace JetBrains.ReSharper.PowerToys.Gist
   public class GistOptionsPage : AOptionsPage
   {
     public const string Pid = "GistSettings";
+
     private const string DEFAULT_GRAVATAR = "https://gs1.wac.edgecastcdn.net/80460E/assets/images/gravatars/gravatar-140.png";
     private const int AVATAR_SIZE = 140;
 
     private readonly GitHubService myGitHubService;
     private readonly IDataContext myEmptyDataContext;
 
-    public GistOptionsPage([NotNull] Lifetime lifetime, SettingsStore settingsStore, DataContexts dataContexts, GitHubService gitHubService)
-      : base(lifetime, Pid, settingsStore)
+    public GistOptionsPage([NotNull] Lifetime lifetime, DataContexts dataContexts, GitHubService gitHubService, OptionsSettingsSmartContext settings)
+      : base(lifetime, Pid)
     {
       if (lifetime == null)
         throw new ArgumentNullException("lifetime");
@@ -41,8 +42,8 @@ namespace JetBrains.ReSharper.PowerToys.Gist
       System.Windows.Forms.TextBox passwordBox;
       Control = InitView(out usernameBox, out passwordBox);
 
-      Bind_GlobalContext<GitHubSettings, string>(s => s.Username, usernameBox, TextBox.TextProperty);
-      Bind_GlobalContext<GitHubSettings, string>(s => s.Password, WinFormsProperty.Create(lifetime, passwordBox, box => box.Text, true));
+      settings.SetBinding(lifetime, (GitHubSettings s) => s.Username, usernameBox, TextBox.TextProperty);
+      settings.SetBinding(lifetime, (GitHubSettings s) => s.Password, WinFormsProperty.Create(lifetime, passwordBox, box => box.Text, true));
     }
 
     private EitherControl InitView(out TextBox usernameBox, out System.Windows.Forms.TextBox passwordBox)

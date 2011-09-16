@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros;
 using JetBrains.ReSharper.Feature.Services.Lookup;
@@ -13,9 +14,9 @@ namespace JetBrains.ReSharper.PowerToys.LiveTemplatesMacro
     LongDescription = "Obtains the result type of the containing method it is used in")]
   public class MethodResultTypeMacro : IMacro
   {
-    public string GetPlaceholder()
+    public string GetPlaceholder(IDocument document)
     {
-      return "a";
+      return "a";      
     }
 
     public bool HandleExpansion(IHotspotContext context, IList<string> arguments)

@@ -98,6 +98,7 @@
   <Import Project="$(PowerToysHomeDir)/Src/PowerToys.Common.Targets" />
   <ItemGroup>
     <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -116,16 +117,12 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SampleOptionsPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="SampleSettings.cs">
       <SubType>Code</SubType>
     </Compile>
-    <EmbeddedResource Include="SampleOptionsPage.resx">
-      <DependentUpon>SampleOptionsPage.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <Compile Include="SampleOptionPage.xaml.cs">
+      <DependentUpon>SampleOptionPage.xaml</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="samplePage.gif" />
   </ItemGroup>
   <ItemGroup>
@@ -151,6 +148,12 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="SampleOptionPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(ReSharperSdkTargets)\Plugin.Targets" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

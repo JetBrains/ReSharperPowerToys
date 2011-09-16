@@ -10,9 +10,16 @@ using JetBrains.ReSharper.Psi.Util;
 
 namespace JetBrains.ReSharper.PowerToys.GenerateDispose
 {
-  [GeneratorBuilder("Dispose", CSharpLanguage.Name)]
+  [GeneratorBuilder("Dispose", typeof(CSharpLanguage))]
   internal class CSharpDisposeBuilder : CSharpGeneratorBuilderBase
   {
+    private readonly CodeAnnotationsCache myCodeAnnotationsCache;
+
+    public CSharpDisposeBuilder(CodeAnnotationsCache codeAnnotationsCache)
+    {
+      myCodeAnnotationsCache = codeAnnotationsCache;
+    }
+
     public override double Priority
     {
       get { return 0; }
@@ -149,7 +156,7 @@ namespace JetBrains.ReSharper.PowerToys.GenerateDispose
         if (typeOwner.Type.IsReferenceType())
         {
           var attributesOwner = typeOwner as IAttributesOwner;
-          var mark = CodeAnnotationsCache.GetInstance(typeOwner.GetSolution()).GetNullableAttribute(attributesOwner);
+          var mark = myCodeAnnotationsCache.GetNullableAttribute(attributesOwner);
           return new IGeneratorOption[]
                    { 
                      new GeneratorOptionBoolean(CanBeNull, "Can be &null",
@@ -166,6 +173,5 @@ namespace JetBrains.ReSharper.PowerToys.GenerateDispose
     {
       return true;
     }
-
   }
 }

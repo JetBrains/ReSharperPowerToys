@@ -39,7 +39,7 @@ namespace JetBrains.ReSharper.PowerToys.LiveTemplatesMacro
       return new HotspotItems(new TextLookupItem(Evaluate(context)));
     }
 
-    public string GetPlaceholder()
+    public string GetPlaceholder(IDocument document)
     {
       return "a";
     }
