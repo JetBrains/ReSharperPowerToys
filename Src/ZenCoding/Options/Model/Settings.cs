@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Xml;
@@ -62,7 +61,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model
 
     #region IXmlExternalizableShellComponent Members
 
-    void IXmlExternalizable.ReadFromXml(XmlElement element)
+    void IXmlReadable.ReadFromXml(XmlElement element)
     {
       if (element == null)
       {
@@ -85,7 +84,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model
       }
     }
 
-    void IXmlExternalizable.WriteToXml(XmlElement element)
+    void IXmlWritable.WriteToXml(XmlElement element)
     {
       element.SetAttribute("version", "1");
       var serializer = new XmlSerializer(GetType());
