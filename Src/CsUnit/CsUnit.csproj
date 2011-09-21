@@ -1,138 +1,39 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <PowerToysHomeDir>$(MSBuildProjectDirectory)/../..</PowerToysHomeDir>
+    <ReSharperSdkTargets Condition=" '$(ReSharperSdkTargets)' == '' ">$(MSBuildExtensionsPath)\JetBrains\ReSharper.SDK\v6.1</ReSharperSdkTargets>
+  </PropertyGroup>
+  <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{751F04EE-3A62-4895-AE49-7993B70F80F8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>JetBrains.ReSharper.PowerToys.CsUnit</RootNamespace>
     <AssemblyName>CsUnit</AssemblyName>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>full</DebugType>
+    <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DebugSymbols>true</DebugSymbols>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <Import Project="$(PowerToysHomeDir)/Src/PowerToys.Common.Targets" />
   <ItemGroup>
-    <Reference Include="DevExpress.Data.v7.1">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\ReSharper\DevExpress.Data.v7.1.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="DevExpress.Utils.v7.1">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\ReSharper\DevExpress.Utils.v7.1.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="DevExpress.XtraEditors.v7.1">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\ReSharper\DevExpress.XtraEditors.v7.1.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="DevExpress.XtraTreeList.v7.1">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\ReSharper\DevExpress.XtraTreeList.v7.1.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="JetBrains.Platform.ReSharper.IDE">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\ReSharper\JetBrains.Platform.ReSharper.IDE.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="JetBrains.Platform.ReSharper.Metadata">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\ReSharper\JetBrains.Platform.ReSharper.Metadata.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="JetBrains.Platform.ReSharper.DocumentManager">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\ReSharper\JetBrains.Platform.ReSharper.DocumentManager.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="JetBrains.Platform.ReSharper.ProjectModel">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\ReSharper\JetBrains.Platform.ReSharper.ProjectModel.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\ReSharper\JetBrains.ReSharper.Feature.Services.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Features.Common">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\ReSharper\JetBrains.ReSharper.Features.Common.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Psi">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\ReSharper\JetBrains.ReSharper.Psi.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.TaskRunnerFramework">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\ReSharper\JetBrains.ReSharper.TaskRunnerFramework.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="JetBrains.Platform.ReSharper.Shell">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\ReSharper\JetBrains.Platform.ReSharper.Shell.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="JetBrains.Platform.ReSharper.UI">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\ReSharper\JetBrains.Platform.ReSharper.UI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="JetBrains.Platform.ReSharper.Util">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\ReSharper\JetBrains.Platform.ReSharper.Util.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.UnitTestFramework">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\ReSharper\JetBrains.ReSharper.UnitTestFramework.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Drawing" />
@@ -151,38 +52,8 @@
     <Compile Include="CSUnitTestTask.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="CsUnit.Setup.Proj" />
-    <None Include="CsUnit.Setup.wxs" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="resources\csunit.png" />
   </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <Import Project="$(ReSharperSdkTargets)\Plugin.Targets" />
 </Project>

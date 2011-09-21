@@ -34,25 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Deployment.Compression, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ce35f76fcda82bad, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Program Files (x86)\JetBrains\ReSharper\v6.0\Bin\Microsoft.Deployment.Compression.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Deployment.Compression.Cab, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ce35f76fcda82bad, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Program Files (x86)\JetBrains\ReSharper\v6.0\Bin\Microsoft.Deployment.Compression.Cab.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Gel">
-      <HintPath>..\..\..\..\Program Files (x86)\JetBrains\ReSharper\v6.0\Bin\Microsoft.VisualStudio.Gel.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Platform.VSEditor.Interop">
-      <HintPath>..\..\..\..\Program Files (x86)\JetBrains\ReSharper\v6.0\Bin\Microsoft.VisualStudio.Platform.VSEditor.Interop.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Program Files (x86)\JetBrains\ReSharper\v6.0\Bin\Microsoft.VisualStudio.Shell.Interop.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
