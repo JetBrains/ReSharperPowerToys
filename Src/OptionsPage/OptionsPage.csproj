@@ -36,7 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="JetBrains.Platform.ReSharper.VSIntegration">
-      <HintPath>..\..\..\..\Program Files (x86)\JetBrains\ReSharper\v6.1\SDK\Bin\JetBrains.Platform.ReSharper.VSIntegration.dll</HintPath>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.VSIntegration.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
