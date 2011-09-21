@@ -14,13 +14,12 @@ using JetBrains.UI;
 using JetBrains.UI.PopupWindowManager;
 using JetBrains.Util;
 using DataConstants = JetBrains.UI.DataConstants;
-using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Features.Browsing.Bookmarks;
 
 namespace JetBrains.ReSharper.PowerToys.ZenCoding
 {
   [ActionHandler("PowerToys.ZenCodingWrap")]
-  public class PowerToys_ZenCodingWrapAction : ZenCodingActionBase
+  public class ZenCodingWrapAction : ZenCodingActionBase
   {
     public override bool Update(IDataContext context, ActionPresentation presentation, DelegateUpdate nextUpdate)
     {
@@ -31,10 +30,14 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
     public override void Execute(IDataContext context, DelegateExecute nextExecute)
     {
       var solution = context.GetData(ProjectModel.DataContext.DataConstants.SOLUTION);
-      Assertion.AssertNotNull(solution, "solution == null");
-      var textControl = context.GetData(TextControl.DataContext.DataConstants.TEXT_CONTROL);
-      Assertion.AssertNotNull(textControl, "textControl == null");
+      if (solution == null)
+        return;
 
+      var textControl = context.GetData(TextControl.DataContext.DataConstants.TEXT_CONTROL);
+      if (textControl == null)
+        return;
+
+      var shellLocks = solution.GetComponent<IShellLocks>();
       var lifetimeDefinition = Lifetimes.Define(EternalLifetime.Instance, "ZenCodingWrap");
       var lifetime = lifetimeDefinition.Lifetime;
       var windowContextSource = context.GetData(DataConstants.PopupWindowContextSource);
@@ -47,58 +50,67 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
       {
         IPopupWindowContext windowContext = windowContextSource.Create(lifetime);
         var ctxTextControl = windowContext as TextControlPopupWindowContext;
-        ctxToUse = ctxTextControl == null ? windowContext:
-          ctxTextControl.OverrideLayouter(lifetime, lifetimeLayouter => new DockingLayouter(lifetimeLayouter, new TextControlAnchoringRect(lifetimeLayouter, ctxTextControl.TextControl, ctxTextControl.TextControl.Caret.Offset(), Shell.Instance.Locks), Anchoring2D.AnchorTopOrBottom));
+        ctxToUse = ctxTextControl == null
+                     ? windowContext
+                     : ctxTextControl.OverrideLayouter(
+                       lifetime,
+                       lifetimeLayouter =>
+                       new DockingLayouter(lifetimeLayouter,
+                                           new TextControlAnchoringRect(
+                                             lifetimeLayouter,
+                                             ctxTextControl.TextControl,
+                                             ctxTextControl.TextControl.Caret.Offset(),
+                                             shellLocks),
+                                           Anchoring2D.AnchorTopOrBottom));
       }
       else
       {
-        ctxToUse = Shell.Instance.GetComponent<MainWindowPopupWindowContext>().Create(lifetime);
+        ctxToUse = solution.GetComponent<MainWindowPopupWindowContext>().Create(lifetime);
       }
 
       var form = new ZenCodingWrapForm(lifetime);
+
       // Popup support
-      var window = Shell.Instance.GetComponent<PopupWindowManager>().CreatePopupWindow(lifetimeDefinition, form, ctxToUse, HideFlags.All & ~HideFlags.Scrolling);
+      var window = solution.GetComponent<PopupWindowManager>().CreatePopupWindow(
+        lifetimeDefinition, form, ctxToUse, HideFlags.All & ~HideFlags.Scrolling);
       window.HideMethod = FormHideMethod.Visibility;
-      window.Closed += (sender, args) => ReentrancyGuard.Current.ExecuteOrQueue("ZenCodingWrap", () =>
-      {
-        try
-        {
-          if (form.DialogResult == DialogResult.Cancel)
-            return;
-          var abbr = form.TextBox.Text.Trim();
-          if (abbr.IsEmpty())
-          {
-            Win32Declarations.MessageBeep(MessageBeepType.Error);
-            return;
-          }
+      window.Closed +=
+        (sender, args) =>
+        ReentrancyGuard.Current.ExecuteOrQueue(
+          "ZenCodingWrap",
+          () =>
+            {
+              if (form.DialogResult == DialogResult.Cancel)
+                return;
 
-          var commandProcessor = Shell.Instance.GetComponent<ICommandProcessor>();
-          var documentTransactionManager = solution.GetComponent<DocumentTransactionManager>();
+              string abbr = form.TextBox.Text.Trim();
+              if (abbr.IsEmpty())
+              {
+                Win32Declarations.MessageBeep(MessageBeepType.Error);
+                return;
+              }
 
-          using (commandProcessor.UsingCommand("ZenCodingWrap"))
-          {
-            documentTransactionManager.StartTransaction("ZenCodingWrap");
+              var commandProcessor = solution.GetComponent<ICommandProcessor>();
+              var documentTransactionManager = solution.GetComponent<DocumentTransactionManager>();
 
-            var selection = textControl.Selection.OneDocRangeWithCaret();
-            Assertion.Assert(selection.IsValid, "selection is not valid");
+              using (commandProcessor.UsingCommand("ZenCodingWrap"))
+              {
+                documentTransactionManager.StartTransaction("ZenCodingWrap");
 
-            int insertPoint;
-            var projectFile = textControl.GetProjectFile(solution);
-            var expanded = GetEngine(solution)
-              .WrapWithAbbreviation(abbr, textControl.Document.GetText(selection), GetDocTypeForFile(projectFile), out insertPoint);
-            CheckAndIndent(solution, projectFile, textControl, selection, expanded, insertPoint);
-            
-            documentTransactionManager.CommitTransaction(null);
-          }
-        }
-        finally
-        {
-          lifetimeDefinition.Terminate();
-        }
-      });
-      lifetime.AddBracket(() => window.ShowWindow(), window.HideWindow);
-      lifetime.AddDispose(window);
-      lifetime.AddDispose(form);
+                TextRange selection = textControl.Selection.OneDocRangeWithCaret();
+                if (!solution.IsValid())
+                  return;
+
+                int insertPoint;
+                IProjectFile projectFile = textControl.GetProjectFile(solution);
+                string expanded = GetEngine(solution).WrapWithAbbreviation
+                  (abbr, textControl.Document.GetText(selection),GetDocTypeForFile(projectFile), out insertPoint);
+                CheckAndIndent(solution, projectFile, textControl, selection, expanded, insertPoint);
+
+                documentTransactionManager.CommitTransaction(null);
+              }
+            });
+      window.ShowWindow();
     }
   }
 }

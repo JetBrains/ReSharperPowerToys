@@ -4,9 +4,7 @@ using System.Net;
 using JetBrains.ActionManagement;
 using JetBrains.Annotations;
 using JetBrains.Application;
-using JetBrains.Application.Communication;
 using JetBrains.Application.DataContext;
-using JetBrains.Application.src.Settings;
 using JetBrains.DocumentManagers;
 using JetBrains.IDE;
 using JetBrains.ProjectModel;
@@ -36,9 +34,9 @@ namespace JetBrains.ReSharper.PowerToys.Gist
 
     public void Execute(IDataContext context, DelegateExecute nextExecute)
     {
-      var shell = Shell.Instance;
       var solution = context.GetData(ProjectModel.DataContext.DataConstants.SOLUTION);
-      Assertion.AssertNotNull(solution, "solution == null");
+      if (solution == null)
+        return;
 
       IDictionary<string, string> publishData = null;
       // Publish selected text
@@ -54,7 +52,8 @@ namespace JetBrains.ReSharper.PowerToys.Gist
       var projectModelElements = context.GetData(ProjectModel.DataContext.DataConstants.PROJECT_MODEL_ELEMENTS);
       if ((publishData == null) && (projectModelElements != null))
       {
-        var documentManager = DocumentManager.GetInstance(solution);
+        var documentManager = solution.GetComponent<DocumentManager>();
+
         publishData = projectModelElements
           .OfType<IProjectFile>()
           .Concat(projectModelElements.OfType<IProjectFolder>().SelectMany(_ => _.GetAllProjectFiles()))
@@ -64,22 +63,24 @@ namespace JetBrains.ReSharper.PowerToys.Gist
 
       if (publishData == null) return;
 
-      var url = Publish(shell.GetComponent<GitHubService>().GetClient(context), publishData);
+      var url = Publish(solution.GetComponent<GitHubService>().GetClient(context), publishData);
       
       if (!string.IsNullOrEmpty(url))
       {
-        shell.GetComponent<Clipboard>().SetDataObject(url);
-        ShowTooltip(context, shell, new RichText("Url ").Append(new RichText(url, TextStyle.FromForeColor(Color.Blue))).Append(" copied to clipboard", TextStyle.Default));
+        solution.GetComponent<Clipboard>().SetDataObject(url);
+        ShowTooltip(context, solution, new RichText("Url ").Append(new RichText(url, TextStyle.FromForeColor(Color.Blue))).Append(" copied to clipboard", TextStyle.Default));
       }
       else
       {
-        ShowTooltip(context, shell, "Error posting to Gist");
+        ShowTooltip(context, solution, "Error posting to Gist");
       }
     }
 
-    private static void ShowTooltip(IDataContext context, Shell shell, RichText tooltip)
+    private static void ShowTooltip(IDataContext context, ISolution solution, RichText tooltip)
     {
-      var tooltipManager = shell.GetComponent<ITooltipManager>();
+      var shellLocks = solution.GetComponent<IShellLocks>();
+      var tooltipManager = solution.GetComponent<ITooltipManager>();
+
       tooltipManager.Show(tooltip,
         lifetime =>
         {
@@ -90,10 +91,10 @@ namespace JetBrains.ReSharper.PowerToys.Gist
             var windowContext = windowContextSource.Create(lifetime);
             var ctxTextControl = windowContext as TextControlPopupWindowContext;
             return ctxTextControl == null ? windowContext :
-              ctxTextControl.OverrideLayouter(lifetime, lifetimeLayouter => new DockingLayouter(lifetimeLayouter, new TextControlAnchoringRect(lifetimeLayouter, ctxTextControl.TextControl, ctxTextControl.TextControl. Caret.Offset(), shell.Locks), Anchoring2D.AnchorTopOrBottom));
+              ctxTextControl.OverrideLayouter(lifetime, lifetimeLayouter => new DockingLayouter(lifetimeLayouter, new TextControlAnchoringRect(lifetimeLayouter, ctxTextControl.TextControl, ctxTextControl.TextControl. Caret.Offset(), shellLocks), Anchoring2D.AnchorTopOrBottom));
           }
 
-          return shell.GetComponent<MainWindowPopupWindowContext>().Create(lifetime);
+          return solution.GetComponent<MainWindowPopupWindowContext>().Create(lifetime);
         });
     }
 
