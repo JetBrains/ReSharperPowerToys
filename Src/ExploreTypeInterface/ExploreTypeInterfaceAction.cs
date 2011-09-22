@@ -1,10 +1,11 @@
 using JetBrains.ActionManagement;
 using JetBrains.Application.DataContext;
 using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Features.Browsing;
 using JetBrains.ReSharper.Psi;
-using JetBrains.Util;
 using JetBrains.ReSharper.Feature.Services.Util;
+using DataConstants = JetBrains.ReSharper.Psi.Services.DataConstants;
+using MessageBox = JetBrains.Util.MessageBox;
+using System.Linq;
 
 namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
 {
@@ -45,15 +46,15 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
         // Create descriptor and ask TreeModelBrowser to show it in the HierarchyResults view. 
         // Same view, where type hierarchy is shown
         var descriptor = new TypeInterfaceDescriptor(typeElement, instanceOnly);
-        var hierarchyWindowRegistrar = solution.GetComponent<HierarchyWindowRegistrar>();
-        hierarchyWindowRegistrar.Show(descriptor);
+        var windowRegistrar = solution.GetComponent<TypeInterfaceToolWindowRegistrar>();
+        windowRegistrar.Show(descriptor);
       }
     }
 
     public bool Update(IDataContext context, ActionPresentation presentation, DelegateUpdate nextUpdate)
     {
-      // Check that we have a solution
-      return context.CheckAllNotNull(Psi.Services.DataConstants.DECLARED_ELEMENT);
+      var declaredElements = context.GetData(DataConstants.DECLARED_ELEMENTS);
+      return declaredElements != null && declaredElements.Any();
     }
 
     #endregion
