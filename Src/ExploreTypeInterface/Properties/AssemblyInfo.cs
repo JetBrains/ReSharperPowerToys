@@ -40,4 +40,4 @@ using JetBrains.Application.PluginSupport;
 [assembly: PluginTitle("ReSharper PowerToys: Explore Type Interface")]
 [assembly: PluginVendor("JetBrains s.r.o.")]
 [assembly: PluginDescription("Explores Type Interface")]
-[assembly: ActionsXml("JetBrains.ReSharper.PowerToys.ExploreTypeInterface.Actions.xml")]
+[assembly: ActionsXml("JetBrains.ReSharper.PowerToys.ExploreTypeInterface.resources.Actions.xml")]
