@@ -1,9 +1,10 @@
-using JetBrains.ActionManagement;
 using JetBrains.Application.DataContext;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.TextControl;
 using DataConstants = JetBrains.ReSharper.Psi.Services.DataConstants;
+using JetBrains.Util;
+using System.Linq;
 
 namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
 {
@@ -21,7 +22,15 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
     {
       // Obtain declared element from context
       // This may be from source code (from caret), or from various tree views displaying elements
-      IDeclaredElement declaredElement = context.GetData(DataConstants.DECLARED_ELEMENT);
+
+      var declaredElements = context.GetData(DataConstants.DECLARED_ELEMENTS);
+      if (declaredElements == null || declaredElements.IsEmpty())
+      {
+        instance = false;
+        return null;
+      }
+
+      IDeclaredElement declaredElement = declaredElements.First();
 
       // If we have type, just return it
       var typeElement = declaredElement as ITypeElement;
