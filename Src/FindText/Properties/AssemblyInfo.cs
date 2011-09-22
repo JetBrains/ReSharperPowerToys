@@ -21,4 +21,4 @@ using JetBrains.Application.PluginSupport;
 [assembly: PluginTitle("ReSharper PowerToys: FindText")]
 [assembly: PluginVendor("JetBrains s.r.o.")]
 [assembly: PluginDescription("Search text in solution and display it in Find Results view")]
-[assembly: ActionsXml("JetBrains.ReSharper.PowerToys.FindText.Actions.xml")]
+[assembly: ActionsXml("JetBrains.ReSharper.PowerToys.FindText.resources.actions.xml")]
