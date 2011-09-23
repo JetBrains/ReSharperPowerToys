@@ -1,8 +1,7 @@
 using System.Windows.Forms;
 using JetBrains.ActionManagement;
-using JetBrains.Application;
-using JetBrains.Application.Configuration;
 using JetBrains.Application.DataContext;
+using JetBrains.Application.src.Settings;
 using JetBrains.DocumentManagers;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Features.Common.FindResultsBrowser;
@@ -31,12 +30,12 @@ namespace JetBrains.ReSharper.PowerToys.FindText
         return;
 
       var documentManager = solution.GetComponent<DocumentManager>();
-      var globalSettingsTable = Shell.Instance.GetComponent<GlobalSettingsTable>();
+      var settingStore = solution.GetComponent<ISettingsStore>();
       var psiServices = solution.GetPsiServices();
       var mainWindow = solution.GetComponent<IMainWindow>();
       
       // Ask user about search string
-      using (var dialog = new EnterSearchStringDialog(globalSettingsTable))
+      using (var dialog = new EnterSearchStringDialog(settingStore.BindToContextTransient(ContextRange.Smart((lt, contexts) => context))))
       {
         if (dialog.ShowDialog(mainWindow) == DialogResult.OK)
         {
@@ -44,6 +43,7 @@ namespace JetBrains.ReSharper.PowerToys.FindText
           var searchRequest = new FindTextSearchRequest(solution, dialog.SearchString, dialog.CaseSensitive, dialog.SearchFlags, documentManager, psiServices);
           var descriptor = new FindTextDescriptor(searchRequest);
           descriptor.Search();
+
           FindResultsBrowser.ShowResults(descriptor);
         }
       }

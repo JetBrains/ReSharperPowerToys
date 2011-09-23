@@ -7,7 +7,7 @@ namespace JetBrains.ReSharper.PowerToys.Gist
   /// <summary>
   /// Gist settings.
   /// </summary>
-  [SettingsKey(typeof(InternetSettings), "GitHub settings")]
+  [SettingsKey(typeof (InternetSettings), "GitHub settings")]
   public class GitHubSettings
   {
     [SettingsEntry("", "GitHub username")]
@@ -16,6 +16,9 @@ namespace JetBrains.ReSharper.PowerToys.Gist
     [SettingsEntry("", "GitHub password")]
     public string Password { get; set; }
 
-    public bool IsAnonymous { get { return Username.IsEmpty() || Password.IsEmpty(); } }
+    public bool IsAnonymous
+    {
+      get { return Username.IsEmpty() || Password.IsEmpty(); }
+    }
   }
 }

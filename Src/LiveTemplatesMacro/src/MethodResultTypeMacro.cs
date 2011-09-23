@@ -26,9 +26,11 @@ namespace JetBrains.ReSharper.PowerToys.LiveTemplatesMacro
 
     public HotspotItems GetLookupItems(IHotspotContext context, IList<string> arguments)
     {
-      var method = TextControlToPsi.GetContainingTypeOrTypeMember(context.SessionContext.Solution, 
-        context.SessionContext.TextControl) as IMethod;
+      var textControl = context.SessionContext.TextControl;
+      if (textControl == null)
+        return null;
 
+      var method = TextControlToPsi.GetContainingTypeOrTypeMember(context.SessionContext.Solution, textControl) as IMethod;
       if (method != null)
       {
         var lookupItems = new List<ILookupItem>();

@@ -1,5 +1,6 @@
 using JetBrains.DataFlow;
 using JetBrains.ReSharper.Features.Environment.Options.Inspections;
+using JetBrains.ReSharper.PowerToys.CyclomaticComplexity.resources;
 using JetBrains.UI.CommonControls.Fonts;
 using JetBrains.UI.Options;
 using JetBrains.UI.Options.Helpers;
@@ -10,7 +11,7 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
   /// <summary>
   /// Implements an options page that holds a set of setting editors stacked in lines from top to bottom.
   /// </summary>
-  [OptionsPage(PID, "Complexity Analysis", "JetBrains.ReSharper.PowerToys.CyclomaticComplexity.ComplexityOptionPage.png", ParentId = CodeInspectionPage.PID)]
+  [OptionsPage(PID, "Complexity Analysis", "JetBrains.ReSharper.PowerToys.CyclomaticComplexity.resources.ComplexityOptionPage.png", ParentId = CodeInspectionPage.PID)]
   public class ComplexityAnalysisOptionPage : AStackPanelOptionsPage
   {
     private readonly Lifetime myLifetime;

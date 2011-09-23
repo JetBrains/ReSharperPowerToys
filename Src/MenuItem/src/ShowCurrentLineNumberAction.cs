@@ -1,24 +1,20 @@
 using JetBrains.ActionManagement;
 using JetBrains.Application.DataContext;
-using JetBrains.IDE;
 using JetBrains.TextControl;
 using JetBrains.TextControl.Coords;
 using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PowerToys.MenuItem
 {
-  /// <summary>
-  /// The action ID is deduced from the class name (but for the “Action” or “ActionHandler” suffix), dots are replaced with underscores.
-  /// </summary>
-  [ActionHandler]
-  internal class AddMenuItem_ShowCurrentLineNumberAction : IActionHandler
+  [ActionHandler("AddMenuItem.ShowCurrentLineNumber")]
+  internal class ShowCurrentLineNumberAction : IActionHandler
   {
     #region IActionHandler Members
 
     bool IActionHandler.Update(IDataContext context, ActionPresentation presentation, DelegateUpdate nextUpdate)
     {
       // fetch focused text editor control
-      ITextControl textControl = context.GetData(JetBrains.TextControl.DataContext.DataConstants.TEXT_CONTROL);
+      ITextControl textControl = context.GetData(TextControl.DataContext.DataConstants.TEXT_CONTROL);
 
       // enable this action if we are in text editor, disable otherwise
       return textControl != null;
@@ -26,7 +22,7 @@ namespace JetBrains.ReSharper.PowerToys.MenuItem
 
     void IActionHandler.Execute(IDataContext context, DelegateExecute nextExecute)
     {
-      ITextControl textControl = context.GetData(JetBrains.TextControl.DataContext.DataConstants.TEXT_CONTROL);
+      ITextControl textControl = context.GetData(TextControl.DataContext.DataConstants.TEXT_CONTROL);
       if(textControl == null)
       {
         MessageBox.ShowError("Text control unavailable."); // Note: shouldn't actually get here due to Update() handling

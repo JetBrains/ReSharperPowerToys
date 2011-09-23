@@ -10,26 +10,20 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model.Handlers
     public bool Matches(FileAssociation fileAssociation, string fileName)
     {
       if (!fileAssociation.Enabled)
-      {
         return false;
-      }
 
       if (fileAssociation.PatternType != PatternType.Regex)
-      {
         return false;
-      }
 
       var expr = GetRegex(fileAssociation);
 
       return expr.IsMatch(fileName);
     }
 
-    Regex GetRegex(FileAssociation fileAssociation)
+    private Regex GetRegex(FileAssociation fileAssociation)
     {
       if (myCache.ContainsKey(fileAssociation.Pattern))
-      {
         return myCache[fileAssociation.Pattern];
-      }
 
       return new Regex(fileAssociation.Pattern,
         RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase | RegexOptions.Singleline);

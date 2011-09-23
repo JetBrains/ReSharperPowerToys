@@ -8,7 +8,6 @@ using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Occurences;
 using JetBrains.ReSharper.Feature.Services.Search;
 using JetBrains.ReSharper.Feature.Services.Search.SearchRequests;
-using JetBrains.ReSharper.Features.Common.Occurences;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.Text;
@@ -29,8 +28,8 @@ namespace JetBrains.ReSharper.PowerToys.FindText
     private readonly bool myCaseSensitive;
 
     private readonly FindTextSearchFlags mySearchFlags;
-    private readonly DocumentManager documentManager;
-    private readonly IPsiServices psiServices;
+    private readonly DocumentManager myDocumentManager;
+    private readonly IPsiServices myPsiServices;
 
     private readonly string mySearchString;
 
@@ -46,8 +45,8 @@ namespace JetBrains.ReSharper.PowerToys.FindText
     {
       mySolution = solution;
       mySearchFlags = searchFlags;
-      this.documentManager = documentManager;
-      this.psiServices = psiServices;
+      myDocumentManager = documentManager;
+      myPsiServices = psiServices;
       mySearchString = searchString;
       myCaseSensitive = caseSensitive;
     }
@@ -58,21 +57,15 @@ namespace JetBrains.ReSharper.PowerToys.FindText
 
     public override ICollection<IOccurence> Search()
     {
-      // We override this member, because we don't need to Commit Documents and Wait for caches
-      // This search doesn't use PSI 
-/*	// TODO: reimpl
-      using (ITaskExecutor pw = CreateTaskExecutor())
-      {
-        bool canceled;
-
-        var result =
-          (ICollection<IOccurence>)
-          pw.ExecuteTask(Search, string.Format("Searching {0} \u2026", StringUtil.Decapitalize(Title)), out canceled);
-        if (!canceled)
-          return result;
-      }
-*/
-      return null;
+      ICollection<IOccurence> retval = null;
+      return CreateTaskExecutor().ExecuteTask(
+        "Search", TaskCancelable.Yes,
+        progressIndicator =>
+          {
+            progressIndicator.TaskName = string.Format(
+              "Searching for {0}", Title.Decapitalize());
+            retval = Search(progressIndicator);
+          }) ? retval : null;
     }
 
     public override ICollection<IOccurence> Search(IProgressIndicator progressIndicator)
@@ -86,7 +79,7 @@ namespace JetBrains.ReSharper.PowerToys.FindText
       var items = new List<IOccurence>();
 
       // visit each project and collect occurences
-      var visitor = new ProjectTextSearcher(searcher, items, mySolution, mySearchFlags, documentManager, psiServices);
+      var visitor = new ProjectTextSearcher(searcher, items, mySearchFlags, myDocumentManager, myPsiServices);
       foreach (IProject project in projects)
       {
         progressIndicator.CurrentItemText = string.Format("Scanning project '{0}'", project.Name);
@@ -123,7 +116,7 @@ namespace JetBrains.ReSharper.PowerToys.FindText
       #region Data
 
       private readonly DocumentManager myDocumentManager;
-      private readonly IPsiServices psiServices;
+      private readonly IPsiServices myPsiServices;
 
       private readonly List<IOccurence> myItems;
 
@@ -135,14 +128,13 @@ namespace JetBrains.ReSharper.PowerToys.FindText
 
       #region Init
 
-      public ProjectTextSearcher(StringSearcher searcher, List<IOccurence> items, ISolution solution,
-                                 FindTextSearchFlags searchFlags, DocumentManager documentManager, IPsiServices psiServices)
+      public ProjectTextSearcher(StringSearcher searcher, List<IOccurence> items, FindTextSearchFlags searchFlags, DocumentManager documentManager, IPsiServices psiServices)
       {
         mySearcher = searcher;
         mySearchFlags = searchFlags;
         myItems = items;
         myDocumentManager = documentManager;
-        this.psiServices = psiServices;
+        myPsiServices = psiServices;
       }
 
       #endregion
@@ -166,7 +158,7 @@ namespace JetBrains.ReSharper.PowerToys.FindText
             IBuffer contentBuffer = new StringBuffer(document.GetText());
             var factory = PsiProjectFileTypeCoordinator.Instance;
             var lexerFactory = factory.CreateLexerFactory(projectFile.ToSourceFile(), projectFile.LanguageType,
-                                                          contentBuffer, psiServices.PsiManager);
+                                                          contentBuffer, myPsiServices.PsiManager);
             if (lexerFactory != null)
             {
               lexer = lexerFactory.CreateLexer(contentBuffer);

@@ -13,46 +13,46 @@ namespace XmlAndHtml
   [ContextAction(Group = "HTML", Name = "Specify Id", Description = "Creates an 'id' attribute for the selected tag of an HTML document")]
   public class SpecifyIdHtmlContextAction : IContextAction, IBulbItem
   {
-    private readonly IWebContextActionDataProvider<IHtmlFile> provider;
-    private IHtmlTag Tag;
+    private readonly IWebContextActionDataProvider<IHtmlFile> myProvider;
+    private IHtmlTag myTag;
 
     public SpecifyIdHtmlContextAction(IWebContextActionDataProvider<IHtmlFile> provider)
     {
-      this.provider = provider;
+      myProvider = provider;
     }
 
     public bool IsAvailable(IUserDataHolder cache)
     {
-      var tag = provider.FindNodeAtCaret<IHtmlTag>();
-      if (tag != null)
+      var tag = myProvider.FindNodeAtCaret<IHtmlTag>();
+      if (tag == null)
+        return false;
+
+      var idAtt = tag.Attributes.FirstOrDefault(a => a.AttributeName.Equals("id"));
+      if (idAtt == null)
       {
-        var idAtt = tag.Attributes.FirstOrDefault(a => a.AttributeName.Equals("id"));
-        if (idAtt == null)
-        {
-          Tag = tag;
-          return true;
-        }
+        myTag = tag;
+        return true;
       }
+
       return false;
     }
 
     public IBulbItem[] Items
     {
-      get { return new[] {this}; }
+      get { return new IBulbItem[] { this }; }
     }
 
     public void Execute(ISolution solution, ITextControl textControl)
     {
-
       // The easiest way to create an attribute is to create an HTML tag with an attribute in it
       // and then get the attribute from the tag.
 
       var psiServices = solution.GetComponent<IPsiServices>();
       using (new PsiTransactionCookie(psiServices, DefaultAction.Commit, Text)) 
       {
-        var factory = HtmlElementFactory.GetInstance(Tag.Language);
-        var dummy = factory.CreateHtmlTag("<tag id=\"\"/>", Tag);
-        Tag.AddAttributeBefore(dummy.Attributes.First(), null);
+        var factory = HtmlElementFactory.GetInstance(myTag.Language);
+        var dummy = factory.CreateHtmlTag("<tag id=\"\"/>", myTag);
+        myTag.AddAttributeBefore(dummy.Attributes.First(), null);
       }
     }
 

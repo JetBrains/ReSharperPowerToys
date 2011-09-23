@@ -21,13 +21,13 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
   /// </summary>
   public class MakeMethodGenericRefactoring : DrivenRefactoring<MakeMethodGenericWorkflow, MakeMethodGenericBase>
   {
-    private readonly SearchDomainFactory searchDomainFactory;
+    private readonly SearchDomainFactory mySearchDomainFactory;
 
     public MakeMethodGenericRefactoring(MakeMethodGenericWorkflow workFlow, ISolution solution,
                                         IRefactoringDriver driver,
                                         SearchDomainFactory searchDomainFactory) : base(workFlow, solution, driver)
     {
-      this.searchDomainFactory = searchDomainFactory;
+      mySearchDomainFactory = searchDomainFactory;
     }
 
     public IMethod Method { get; private set; }
@@ -72,7 +72,7 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
                                                    let projectFilesOfOneParameter = param.GetSourceFiles()
                                                    from projectFile in projectFilesOfOneParameter
                                                    select projectFile;
-        ISearchDomain searchDomain = searchDomainFactory.CreateSearchDomain(projectFiles.ToList());
+        ISearchDomain searchDomain = mySearchDomainFactory.CreateSearchDomain(projectFiles.ToList());
         referencesToParameter = services.Finder.FindReferences(parameters, searchDomain, subPi);
       }
 
@@ -80,7 +80,7 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
       {
         subPi.TaskName = "Searching method usages:";
         referencesToRootOverrides = services.Finder.FindReferences(methods,
-                                                                   searchDomainFactory.CreateSearchDomain(Solution,
+                                                                   mySearchDomainFactory.CreateSearchDomain(Solution,
                                                                                                           false), subPi);
       }
 

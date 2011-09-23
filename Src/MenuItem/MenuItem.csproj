@@ -1,4 +1,5 @@
-﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ReSharperSdkTargets Condition=" '$(ReSharperSdkTargets)' == '' ">$(MSBuildExtensionsPath)\JetBrains\ReSharper.SDK\v6.1</ReSharperSdkTargets>
   </PropertyGroup>
@@ -42,15 +43,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Actions.xml" />
-    <EmbeddedResource Include="testImage.gif" />
+    <EmbeddedResource Include="resources\actions.xml" />
+    <EmbeddedResource Include="resources\testImage.gif" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ShowCurrentLineNumberAction.cs">
+    <Compile Include="src\ShowCurrentLineNumberAction.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ShowCurrentSolutionAction.cs">
+    <Compile Include="src\ShowCurrentSolutionAction.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

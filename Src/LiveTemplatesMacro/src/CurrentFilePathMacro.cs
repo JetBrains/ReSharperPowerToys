@@ -15,19 +15,19 @@ namespace JetBrains.ReSharper.PowerToys.LiveTemplatesMacro
     )]
   public class CurrentFilePathMacro : IMacro
   {
-    #region Implementation
-
     private static string Evaluate(IHotspotContext context)
     {
       var ctx = context.SessionContext;
-      IDocument currentDocument = ctx.TextControl.Document;
+
+      var textControl = ctx.TextControl;
+      if (textControl == null)
+        return null;
+
+      IDocument currentDocument = textControl.Document;
+
       IProjectFile projectItem = ctx.Solution.GetComponent<DocumentManager>().GetProjectFile(currentDocument);
       return projectItem.Location.FullPath;
     }
-
-    #endregion
-
-    #region IMacro Members
 
     public string EvaluateQuickResult(IHotspotContext context, IList<string> arguments)
     {
@@ -56,7 +56,5 @@ namespace JetBrains.ReSharper.PowerToys.LiveTemplatesMacro
         return EmptyArray<ParameterInfo>.Instance;
       }
     }
-
-    #endregion
   }
 }

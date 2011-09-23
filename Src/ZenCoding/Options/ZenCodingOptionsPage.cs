@@ -12,10 +12,7 @@ using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
 {
-  [OptionsPage(ID,
-    "Zen Coding",
-    "zencoding",
-    ParentId = ToolsPage.PID)]
+  [OptionsPage(ID, "Zen Coding", "zencoding", ParentId = ToolsPage.PID)]
   public partial class ZenCodingOptionsPage : UserControl, IOptionsPage
   {
     const string ID = "ZenCoding-E439BB70-6F99-4C64-BA42-5D3DAEAC70E1";
@@ -65,7 +62,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
       return true;
     }
 
-    void CreateFileAssociation(object sender, EventArgs e)
+    private void CreateFileAssociation(object sender, EventArgs e)
     {
       OpenEditor(new FileAssociation(), form =>
       {
@@ -74,7 +71,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
       });
     }
 
-    void EditFileAssociation(object sender, EventArgs e)
+    private void EditFileAssociation(object sender, EventArgs e)
     {
       FileAssociation selection = GetSelectedFileAssociation();
       if (selection == null)
@@ -85,7 +82,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
       OpenEditor((FileAssociation) selection.Clone(), form => selection.CopyFrom(form.FileAssociation));
     }
 
-    void OpenEditor(FileAssociation association, Action<EditFileAssociationForm> onClose)
+    private void OpenEditor(FileAssociation association, Action<EditFileAssociationForm> onClose)
     {
       using (var form = new EditFileAssociationForm(association))
       {
@@ -99,7 +96,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
       }
     }
 
-    void RemoveFileAssociation(object sender, EventArgs e)
+    private void RemoveFileAssociation(object sender, EventArgs e)
     {
       FileAssociation selection = GetSelectedFileAssociation();
       if (selection == null)
@@ -112,7 +109,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
       BindModel(null);
     }
 
-    void MoveUp(object sender, EventArgs e)
+    private void MoveUp(object sender, EventArgs e)
     {
       FileAssociation selection = GetSelectedFileAssociation();
       if (selection == null)
@@ -132,7 +129,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
       }
     }
 
-    void MoveDown(object sender, EventArgs e)
+    private void MoveDown(object sender, EventArgs e)
     {
       FileAssociation selection = GetSelectedFileAssociation();
       if (selection == null)
@@ -152,30 +149,23 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
       }
     }
 
-    static void Exchange(int first, int second)
+    private static void Exchange(int first, int second)
     {
       var temp = Settings.Instance.FileAssociations[first];
       Settings.Instance.FileAssociations[first] = Settings.Instance.FileAssociations[second];
       Settings.Instance.FileAssociations[second] = temp;
     }
 
-    FileAssociation GetSelectedFileAssociation()
+    private FileAssociation GetSelectedFileAssociation()
     {
       TreeModelNode selection = myView.ModelFocusedNode;
       if (selection == null)
-      {
         return null;
-      }
 
-      var association = selection.DataValue as FileAssociation;
-      if (association == null)
-      {
-        return association;
-      }
-      return association;
+      return selection.DataValue as FileAssociation;
     }
 
-    void ResetClick(object sender, EventArgs e)
+    private void ResetClick(object sender, EventArgs e)
     {
       Settings.Instance.FileAssociations = new List<FileAssociation>();
 
@@ -187,7 +177,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
       BindModel(null);
     }
 
-    static TreeSimpleModel BuildModel(IEnumerable<FileAssociation> fileAssociations)
+    private static TreeSimpleModel BuildModel(IEnumerable<FileAssociation> fileAssociations)
     {
       var model = new TreeSimpleModel();
 
@@ -199,7 +189,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
       return model;
     }
 
-    void BindModel(FileAssociation selection)
+    private void BindModel(FileAssociation selection)
     {
       myView.Model = BuildModel(Settings.Instance.FileAssociations);
       myView.UpdateAllNodesPresentation();

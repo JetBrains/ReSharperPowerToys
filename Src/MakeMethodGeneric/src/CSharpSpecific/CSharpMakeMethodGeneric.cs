@@ -29,6 +29,7 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric.CSharpSpecific
         Driver.AddConflict(ReferenceConflict.CreateError(reference, "{0} can not be updated correctly.", "Usage"));
         return null;
       }
+
       bool isExtensionMethod = referenceExpression.IsExtensionMethod();
       IInvocationExpression invocation = InvocationExpressionNavigator.GetByInvokedExpression(referenceExpression);
       if (invocation == null)
@@ -36,22 +37,25 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric.CSharpSpecific
         Driver.AddConflict(ReferenceConflict.CreateError(reference, "{0} can not be updated correctly.", "Usage"));
         return null;
       }
+
       ITreeNode element = GetArgument(invocation, isExtensionMethod);
 
       var argument = element as ICSharpArgument;
       IType type = argument != null ? GetTypeOfValue(argument.Value) : GetTypeOfValue(element);
       if (type == null || !type.CanUseExplicitly(invocation))
       {
-        Driver.AddConflict(ReferenceConflict.CreateError(reference, "Arguemnt of {0} is not valid 'typeof' expression.",
-                                                         "usage"));
+        Driver.AddConflict(ReferenceConflict.CreateError(
+          reference, "Arguemnt of {0} is not valid 'typeof' expression.", "usage"));
         return null;
       }
+
       // we can rely on resolve result since method declaration is not yet changed. 
       ResolveResultWithInfo resolveResult = reference.Resolve();
       ISubstitution substitution = resolveResult.Result.Substitution;
       var method = resolveResult.DeclaredElement as IMethod;
       if (method == null)
         return null;
+
       if (argument != null)
       {
         invocation.RemoveArgument(argument);
@@ -126,7 +130,11 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric.CSharpSpecific
     [CanBeNull]
     private ITreeNode GetArgument(IInvocationExpression invocation, bool isExtensionMethod)
     {
-      int parameterIndex = Executer.Parameter.ContainingParametersOwner.Parameters.IndexOf(Executer.Parameter);
+      var containingParametersOwner = Executer.Parameter.ContainingParametersOwner;
+      if (containingParametersOwner == null)
+        return null;
+
+      int parameterIndex = containingParametersOwner.Parameters.IndexOf(Executer.Parameter);
       IList<ICSharpArgument> arguments = invocation.Arguments;
       if (isExtensionMethod)
       {
@@ -147,6 +155,7 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric.CSharpSpecific
           return arguments[parameterIndex];
         }
       }
+
       return null;
     }
   }

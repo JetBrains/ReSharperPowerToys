@@ -14,7 +14,7 @@
       Action ID should be unique so it's recommended to prefix IDs of all your actions with your plugin prefix.
     -->
   <action id="AddMenuItem.ShowCurrentSolution" text="Show Current Solution" 
-          image="JetBrains.ReSharper.PowerToys.MenuItem.testImage.gif" />
+          image="JetBrains.ReSharper.PowerToys.MenuItem.resources.testImage.gif" />
   <action id="AddMenuItem.ShowCurrentLineNumber" text="Show Current Line" />
 
   <!-- Insert items into the main menu (to the end of the Navigate menu). -->
