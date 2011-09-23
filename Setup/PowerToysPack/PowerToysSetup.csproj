@@ -1,0 +1,44 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <!-- Home folder for the PowerToys build site. -->
+    <PowerToysHomeDir>$(MSBuildProjectDirectory)/../..</PowerToysHomeDir>
+    <!-- Binaries dir; redirect the build output by setting it externally. -->
+    <PowerToysBinariesDir Condition="'$(PowerToysBinariesDir)'==''">$(PowerToysHomeDir)/Bin</PowerToysBinariesDir>
+  </PropertyGroup>
+  <!-- WiX Paths. -->
+  <PropertyGroup>
+    <!-- Path for the WiX build tasks to locate the DLLs and EXEs. -->
+    <WixToolPath>$(PowerToysHomeDir)\Tools\WiX3</WixToolPath>
+    <!-- Path for the WiX Targets file to locate the tasks and their DLLs. -->
+    <MSBuildExtensionsPath>$(PowerToysHomeDir)\Tools\MSBuild\</MSBuildExtensionsPath>
+  </PropertyGroup>
+  <!-- Outputs. -->
+  <PropertyGroup>
+    <OutputPath>$(PowerToysBinariesDir)\</OutputPath>
+    <IntermediateOutputPath>$(PowerToysBinariesDir)\..\Obj\$(MSBuildProjectName)\$(Configuration)\</IntermediateOutputPath>
+    <SetupFilesDir>$(PowerToysHomeDir)/Setup/PowerToysPack</SetupFilesDir>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <ProductVersion>3.0</ProductVersion>
+    <ProjectGuid>{7f601e05-638b-4cfc-8db1-105c93ca0b44}</ProjectGuid>
+    <SchemaVersion>2.0</SchemaVersion>
+    <VsVersion Condition="'$(VsVersion)'==''">9.0</VsVersion>
+    <OutputName>ReSharper PowerToys Pack Setup (VS $(VsVersion))</OutputName>
+    <OutputType>Package</OutputType>
+    <DefineConstants Condition="'$(Configuration)'=='Debug'">Debug</DefineConstants>
+    <Cultures>en-us</Cultures>
+  </PropertyGroup>
+  <ItemGroup>
+    <WixExtension Include="WixUIExtension" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Binaries.wxs" />
+    <Compile Include="ChoosePerUserFolder.wxs" />
+    <Compile Include="Documentation.wxs" />
+    <Compile Include="Main.wxs" />
+    <Compile Include="Property.wxs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WiX\v3.0\Wix.targets" />
+  <Import Project="PowerToysSetup.Custom.Targets" />
+</Project>
