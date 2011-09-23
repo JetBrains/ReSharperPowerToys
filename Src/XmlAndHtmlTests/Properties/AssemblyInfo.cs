@@ -9,7 +9,9 @@ using XmlAndHtml;
 /// Must be in the global namespace.
 /// </summary>
 [SetUpFixture]
+// ReSharper disable CheckNamespace
 public class XmlAndHtmlTestEnvironmentAssembly : ReSharperTestEnvironmentAssembly
+// ReSharper restore CheckNamespace
 {
   /// <summary>
   /// Gets the assemblies to load into test environment.
@@ -23,9 +25,8 @@ public class XmlAndHtmlTestEnvironmentAssembly : ReSharperTestEnvironmentAssembl
     // Plugin code
     yield return typeof(SpecifyIdHtmlContextAction).Assembly;
   }
-  
-  [SetUp]
-  public void SetUp()
+
+  public override void SetUp()
   {
     base.SetUp();
     ReentrancyGuard.Current.Execute(
@@ -34,8 +35,7 @@ public class XmlAndHtmlTestEnvironmentAssembly : ReSharperTestEnvironmentAssembl
         GetType().Name, GetAssembliesToLoad()));
   }
 
-  [TearDown]
-  public void TearDown()
+  public override void TearDown()
   {
     ReentrancyGuard.Current.Execute(
       "UnloadAssemblies",

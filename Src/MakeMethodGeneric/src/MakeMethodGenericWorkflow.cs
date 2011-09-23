@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using JetBrains.ActionManagement;
 using JetBrains.Annotations;
 using JetBrains.Application.DataContext;
 using JetBrains.Application.Progress;
@@ -13,6 +12,7 @@ using JetBrains.ReSharper.Psi.Naming.Settings;
 using JetBrains.ReSharper.Psi.Search;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Refactorings.Workflow;
+using System.Linq;
 
 namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
 {
@@ -20,12 +20,12 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
   /// </summary>
   public class MakeMethodGenericWorkflow : DrivenRefactoringWorkflow
   {
-    private readonly SearchDomainFactory searchDomainFactory;
+    private readonly SearchDomainFactory mySearchDomainFactory;
 
     public MakeMethodGenericWorkflow(ISolution solution, string actionId, SearchDomainFactory searchDomainFactory)
       : base(solution, actionId)
     {
-      this.searchDomainFactory = searchDomainFactory;
+      mySearchDomainFactory = searchDomainFactory;
     }
 
     [NotNull]
@@ -121,8 +121,13 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
     private bool IsAvailableInternal(IDataContext context, out IParameter systemTypeParameter, out IMethod method)
     {
       systemTypeParameter = null;
+      method = null;
 
-      method = context.GetData(Psi.Services.DataConstants.DECLARED_ELEMENT) as IMethod;
+      var declaredElements = context.GetData(Psi.Services.DataConstants.DECLARED_ELEMENTS);
+      if (declaredElements == null)
+        return false;
+
+      method = declaredElements.OfType<IMethod>().FirstOrDefault();
       if (method == null)
         return false;
 
@@ -138,8 +143,6 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
         return false;
 
       IPsiModule module = method.Module;
-      if (module == null)
-        return false;
 
       IDeclaredType systemType = TypeFactory.CreateTypeByCLRName("System.Type", module);
 
@@ -167,7 +170,7 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
     /// </summary>
     public override IRefactoringExecuter CreateRefactoring(IRefactoringDriver driver)
     {
-      return new MakeMethodGenericRefactoring(this, Solution, driver, searchDomainFactory);
+      return new MakeMethodGenericRefactoring(this, Solution, driver, mySearchDomainFactory);
     }
 
     public bool IsValid()

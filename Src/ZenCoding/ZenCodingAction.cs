@@ -12,7 +12,7 @@ using JetBrains.ReSharper.Features.Browsing.Bookmarks;
 namespace JetBrains.ReSharper.PowerToys.ZenCoding
 {
   [ActionHandler("PowerToys.ZenCoding")]
-  public class PowerToys_ZenCodingAction : ZenCodingActionBase
+  public class ZenCodingAction : ZenCodingActionBase
   {
     public override void Execute(IDataContext context, DelegateExecute nextExecute)
     {
