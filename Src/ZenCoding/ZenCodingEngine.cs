@@ -50,9 +50,9 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
   [ShellComponent]
   public class ZenCodingEngine
   {
-    private readonly Func<string, string, string> expandAbbr;
-    private readonly Func<string, string, string, string> wrapWithAbbr;
-    private readonly Func<string, int, PythonTuple> findAbbrInLine;
+    private readonly Func<string, string, string> myExpandAbbr;
+    private readonly Func<string, string, string, string> myWrapWithAbbr;
+    private readonly Func<string, int, PythonTuple> myFindAbbrInLine;
     public Func<string, int, string> PadString { get; private set; }
 
     private const string InsertionPoint = "$IP$";
@@ -81,15 +81,15 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
           .AppendLine();
       ScriptSource source = engine.CreateScriptSourceFromString(code.ToString(), SourceCodeKind.Statements);
       source.Execute(scope);
-      expandAbbr = engine.GetVariable<Func<string, string, string>>(scope, "expand_abbreviation");
+      myExpandAbbr = engine.GetVariable<Func<string, string, string>>(scope, "expand_abbreviation");
       PadString = engine.GetVariable<Func<string, int, string>>(scope, "pad_string");
-      findAbbrInLine = engine.GetVariable<Func<string, int, PythonTuple>>(scope, "find_abbr_in_line");
-      wrapWithAbbr = engine.GetVariable<Func<string, string, string, string>>(scope, "wrap_with_abbreviation");
+      myFindAbbrInLine = engine.GetVariable<Func<string, int, PythonTuple>>(scope, "find_abbr_in_line");
+      myWrapWithAbbr = engine.GetVariable<Func<string, string, string, string>>(scope, "wrap_with_abbreviation");
     }
 
     public string ExpandAbbreviation(string abbreviation, DocType docType)
     {
-      return expandAbbr(abbreviation, docType.ToString().ToLowerInvariant());
+      return myExpandAbbr(abbreviation, docType.ToString().ToLowerInvariant());
     }
 
     public string ExpandAbbreviation(string abbreviation, DocType docType, out int relativeInsertionPoint)
@@ -102,13 +102,13 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
       relativeInsertionPoint = -1;
       if (text.IsEmpty())
         return text;
-      relativeInsertionPoint = text.IndexOf(InsertionPoint);
+      relativeInsertionPoint = text.IndexOf(InsertionPoint, StringComparison.Ordinal);
       return text.Replace(InsertionPoint, "");
     }
 
     public string FindAbbreviationInLine(string line, int index, out int startIndex)
     {
-      PythonTuple tuple = findAbbrInLine(line, index);
+      PythonTuple tuple = myFindAbbrInLine(line, index);
       var abbreviation = (string)tuple[0];
       startIndex = string.IsNullOrEmpty(abbreviation) ? -1 : (int) tuple[1];
       return string.IsNullOrEmpty(abbreviation) ? null : abbreviation;
@@ -116,7 +116,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
 
     public string WrapWithAbbreviation(string abbreviation, string text, DocType docType)
     {
-      return wrapWithAbbr(abbreviation, text, docType.ToString().ToLowerInvariant());
+      return myWrapWithAbbr(abbreviation, text, docType.ToString().ToLowerInvariant());
     }
 
     public string WrapWithAbbreviation(string abbreviation, string text, DocType docType, out int relativeInsertionPoint)

@@ -98,10 +98,13 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
 
     private static IEnumerable GetChildren(ITypeElement typeElement, bool instanceVisible)
     {
+      var children = new List<DeclaredElementEnvoy<ITypeMember>>();
+
       // Obtain language service for the type
       LanguageService languageService =
         LanguageService.GetInstance(PresentationUtil.GetPresentationLanguage(typeElement));
-      var children = new List<DeclaredElementEnvoy<ITypeMember>>();
+      if (languageService == null)
+        return children;
 
       // Get symbol table for the typeElement and filter it with OverriddenFilter
       // This filter removes all but leaf members for override chains

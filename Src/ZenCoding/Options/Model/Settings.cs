@@ -92,14 +92,15 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model
       using (var sw = new StringWriter())
       {
         using (XmlWriter writer = XmlWriter.Create(sw))
-        {
           serializer.Serialize(writer, this);
-        }
 
         var document = new XmlDocument();
         document.LoadXml(sw.GetStringBuilder().ToString());
 
-        element.InnerXml = document.DocumentElement.OuterXml;
+        var documentElement = document.DocumentElement;
+        Assertion.AssertNotNull(documentElement, "documentElement != null");
+
+        element.InnerXml = documentElement.OuterXml;
       }
     }
 

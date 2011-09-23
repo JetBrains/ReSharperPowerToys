@@ -39,7 +39,8 @@ namespace JetBrains.ReSharper.PowerToys.MenuItem
       if(nTextControlLine == nDocLine)
         message = string.Format("Current line number is {0:N0}.", nTextControlLine + 1);
       else
-        message = string.Format("Current text control line number is {0:N0}.\nCurrent document line number is {1:N0}.\n\nProbably, you have some hidden regions in the text editor, or Word Wrapping turned on. Hence the difference in line numbers.", nTextControlLine, nDocLine);
+        message = string.Format("Current text control line number is {0:N0}.\nCurrent document line number is {1:N0}.\n\nProbably, you have some hidden regions in the text " +
+                                "editor, or Word Wrapping turned on. Hence the difference in line numbers.", nTextControlLine, nDocLine);
       MessageBox.ShowInfo(message, "AddMenuItem Sample Plugin");
     }
 

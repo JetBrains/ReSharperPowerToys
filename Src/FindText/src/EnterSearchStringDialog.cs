@@ -1,8 +1,6 @@
 using System;
 using System.ComponentModel;
 using System.Windows.Forms;
-using JetBrains.Application.Configuration;
-using JetBrains.Application.DataContext;
 using JetBrains.Application.src.Settings;
 
 namespace JetBrains.ReSharper.PowerToys.FindText
