@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IO;
+using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model.Handlers
 {
@@ -8,16 +8,12 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model.Handlers
     public bool Matches(FileAssociation fileAssociation, string fileName)
     {
       if (!fileAssociation.Enabled)
-      {
         return false;
-      }
 
       if (fileAssociation.PatternType != PatternType.FileExtension)
-      {
         return false;
-      }
 
-      return Path.GetExtension(fileName).Equals(fileAssociation.Pattern, StringComparison.OrdinalIgnoreCase);
+      return new FileSystemPath(fileName).ExtensionWithDot.Equals(fileAssociation.Pattern, StringComparison.OrdinalIgnoreCase);
     }
   }
 }

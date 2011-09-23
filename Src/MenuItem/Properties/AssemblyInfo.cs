@@ -16,5 +16,4 @@ using JetBrains.Application.PluginSupport;
 [assembly: PluginDescription("This plugin shows how to add menu items, enable/disable actions depending on context and how to access context information when action is invoked.")]
 
 // references XML-resource with actions configuration for this plug-in
-
-[assembly: ActionsXml("JetBrains.ReSharper.PowerToys.MenuItem.Actions.xml")]
+[assembly: ActionsXml("JetBrains.ReSharper.PowerToys.MenuItem.resources.actions.xml")]

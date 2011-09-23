@@ -23,20 +23,20 @@ namespace XmlAndHtml
     Priority = 0)]
   public class SpecifyIdXmlContextAction : XmlContextAction
   {
-    private IXmlTag Tag;
+    private IXmlTag myTag;
 
     public SpecifyIdXmlContextAction(XmlContextActionDataProvider dataProvider)
       : base(dataProvider) { }
 
     protected override Action<ITextControl> ExecutePsiTransaction(ISolution solution, IProgressIndicator progress)
     {
-      IXmlElementFactory factory = XmlElementFactory.GetElementFactory(Tag);
+      IXmlElementFactory factory = XmlElementFactory.GetElementFactory(myTag);
       string text = String.Format("id=\"\"");
 
       IXmlFile file = factory.CreateFile(DataProvider.PsiServices, DataProvider.PsiModule,
                                           "<tag " + text + "/>", true);
       IXmlAttribute att = file.InnerTags.First().GetAttributes().First();
-      Tag.AddAttributeBefore(att, null);
+      myTag.AddAttributeBefore(att, null);
       return null;
     }
 
@@ -52,18 +52,17 @@ namespace XmlAndHtml
     {
       // grab the tag we're on
       var tag = DataProvider.FindNodeAtCaret<IXmlTag>();
-      if (tag != null)
-      {
-        // check if the attribute is already there
-        var idAtt = tag.GetAttribute("id");
-        if (idAtt == null)
-        {
-          // if there's no such attribute, save the tag and return
-          Tag = tag;
-          return true;
-        }
-      }
-      return false;
+      if (tag == null)
+        return false;
+
+      // check if the attribute is already there
+      var idAtt = tag.GetAttribute("id");
+      if (idAtt != null)
+        return false;
+
+      // if there's no such attribute, save the tag and return
+      myTag = tag;
+      return true;
     }
   }
 }

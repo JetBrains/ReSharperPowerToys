@@ -9,6 +9,6 @@ namespace JetBrains.ReSharper.PowerToys.FindText
     StringLiterals = 1,
     Comments = 2,
     Other = 4,
-    All = StringLiterals|Comments|Other
+    All = StringLiterals | Comments | Other
   }
 }

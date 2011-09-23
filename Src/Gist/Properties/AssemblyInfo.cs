@@ -24,5 +24,5 @@ using JetBrains.UI;
 [assembly: PluginVendor("JetBrains s.r.o.")]
 [assembly: PluginDescription("Publish code snippets on Gist (https://gist.github.com/)")]
 
-[assembly: ActionsXml("JetBrains.ReSharper.PowerToys.Gist.resources.Actions.xml")]
+[assembly: ActionsXml("JetBrains.ReSharper.PowerToys.Gist.resources.actions.xml")]
 [assembly: ImagesBase("JetBrains.ReSharper.PowerToys.Gist.resources")]

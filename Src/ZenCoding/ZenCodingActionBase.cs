@@ -64,8 +64,14 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
     protected static IProjectFile GetProjectFile(IDataContext context)
     {
       var solution = context.GetData(ProjectModel.DataContext.DataConstants.SOLUTION);
+      if (solution == null)
+        return null;
+
       var dm = solution.GetComponent<DocumentManager>();
       var doc = context.GetData(IDE.DataConstants.DOCUMENT);
+      if (doc == null)
+        return null;
+
       return dm.GetProjectFile(doc);
     }
 

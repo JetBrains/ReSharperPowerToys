@@ -1,4 +1,5 @@
-﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ReSharperSdkTargets Condition=" '$(ReSharperSdkTargets)' == '' ">$(MSBuildExtensionsPath)\JetBrains\ReSharper.SDK\v6.1</ReSharperSdkTargets>
   </PropertyGroup>
@@ -55,18 +56,18 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GistOptionsPage.cs" />
-    <Compile Include="GitHubService.cs" />
-    <Compile Include="GitHubSettings.cs" />
-    <Compile Include="GitHub\GistFile.cs" />
-    <Compile Include="GitHub\Gist.cs" />
-    <Compile Include="GitHub\GitHubClient.cs" />
-    <Compile Include="GitHub\User.cs" />
+    <Compile Include="src\GistOptionsPage.cs" />
+    <Compile Include="src\GitHubService.cs" />
+    <Compile Include="src\GitHubSettings.cs" />
+    <Compile Include="src\GitHub\GistFile.cs" />
+    <Compile Include="src\GitHub\Gist.cs" />
+    <Compile Include="src\GitHub\GitHubClient.cs" />
+    <Compile Include="src\GitHub\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="GistAction.cs" />
+    <Compile Include="src\GistAction.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="resources\Actions.xml" />
+    <EmbeddedResource Include="resources\actions.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="resources\gist.png" />

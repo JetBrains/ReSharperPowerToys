@@ -2,21 +2,27 @@ using System;
 using System.ComponentModel;
 using System.Windows.Forms;
 using JetBrains.Application.Configuration;
+using JetBrains.Application.DataContext;
+using JetBrains.Application.src.Settings;
 
 namespace JetBrains.ReSharper.PowerToys.FindText
 {
   public partial class EnterSearchStringDialog : Form
   {
-    private readonly GlobalSettingsTable globalSettingsTable;
+    private readonly IContextBoundSettingsStore2 mySettingsStore;
 
-    public EnterSearchStringDialog(GlobalSettingsTable globalSettingsTable)
+    public EnterSearchStringDialog(IContextBoundSettingsStore2 settingsStore)
     {
-      this.globalSettingsTable = globalSettingsTable;
+      mySettingsStore = settingsStore;
       InitializeComponent();
       
-      // Gettings previously saved state or default values from global settings
-      string searchString = globalSettingsTable.GetString("jetbrains.resharper.powertoy.findtext.recenttext", "");
-      var searchFlags = (FindTextSearchFlags)globalSettingsTable.GetInteger("jetbrains.resharper.powertoy.findtext.recentflags", (int)FindTextSearchFlags.All);
+      // Gettings previously saved state or default values from settings
+      string searchString = mySettingsStore.GetValue((FindTextSettings s) => s.LastUsedText) ?? string.Empty;
+
+      var searchFlags = mySettingsStore.GetValue((FindTextSettings s) => s.LastUsedFlags);
+      if (searchFlags == 0)
+        searchFlags = FindTextSearchFlags.All;
+
       txtSearchString.Text = searchString;
       txtSearchString.SelectAll();
 
@@ -31,9 +37,10 @@ namespace JetBrains.ReSharper.PowerToys.FindText
     protected override void OnClosing(CancelEventArgs e)
     {
       base.OnClosing(e);
+
       // Saving state to global settings
-      globalSettingsTable.SetString("jetbrains.resharper.powertoy.findtext.recenttext", SearchString);
-      globalSettingsTable.SetInteger("jetbrains.resharper.powertoy.findtext.recentflags", (int)SearchFlags);
+      mySettingsStore.SetValue((FindTextSettings s) => s.LastUsedText, SearchString);
+      mySettingsStore.SetValue((FindTextSettings s) => s.LastUsedFlags, SearchFlags);
     }
 
     public string SearchString

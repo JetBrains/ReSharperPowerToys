@@ -14,4 +14,4 @@ using JetBrains.Application.PluginSupport;
 [assembly: PluginTitle("ReSharper PowerToys: Make Method generic refactoring")]
 [assembly: PluginVendor("JetBrains s.r.o.")]
 [assembly: PluginDescription("Make method generic refactoring")]
-[assembly: ActionsXml("JetBrains.ReSharper.PowerToys.MakeMethodGeneric.Actions.xml")]
+[assembly: ActionsXml("JetBrains.ReSharper.PowerToys.MakeMethodGeneric.resources.actions.xml")]

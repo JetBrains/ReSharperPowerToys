@@ -119,9 +119,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model
     {
       var fileAssociation = FileAssociations.FirstOrDefault(a => HandlerMatch(a, fileName));
       if (fileAssociation != null)
-      {
         return fileAssociation.DocType;
-      }
 
       throw new NotSupportedException();
     }
