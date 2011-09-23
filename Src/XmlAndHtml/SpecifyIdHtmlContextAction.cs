@@ -1,20 +1,22 @@
-﻿using JetBrains.ProjectModel;
+﻿using System;
+using JetBrains.Application.Progress;
+using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Bulbs;
 using JetBrains.ReSharper.Feature.Services.Html.Bulbs;
-using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.Intentions;
 using JetBrains.ReSharper.Psi.Html.Parsing;
 using JetBrains.ReSharper.Psi.Html.Tree;
 using JetBrains.TextControl;
 using JetBrains.Util;
 using System.Linq;
+using JetBrains.ReSharper.Psi.Tree;
 
 namespace XmlAndHtml
 {
   [ContextAction(Group = "HTML", Name = "Specify Id", Description = "Creates an 'id' attribute for the selected tag of an HTML document")]
-  public class SpecifyIdHtmlContextAction : IContextAction, IBulbItem
+  public class SpecifyIdHtmlContextAction : BulbItemImpl, IContextAction
   {
     private readonly IWebContextActionDataProvider<IHtmlFile> myProvider;
-    private IHtmlTag myTag;
 
     public SpecifyIdHtmlContextAction(IWebContextActionDataProvider<IHtmlFile> provider)
     {
@@ -23,40 +25,39 @@ namespace XmlAndHtml
 
     public bool IsAvailable(IUserDataHolder cache)
     {
-      var tag = myProvider.FindNodeAtCaret<IHtmlTag>();
-      if (tag == null)
+      IHtmlTagHeader tagHeader = GetTag();
+      if (tagHeader == null)
         return false;
 
-      var idAtt = tag.Attributes.FirstOrDefault(a => a.AttributeName.Equals("id"));
-      if (idAtt == null)
-      {
-        myTag = tag;
-        return true;
-      }
-
-      return false;
+      // check if the attribute is already there (case-insensitive)
+      return !tagHeader.Attributes.Any(a => a.AttributeName.Equals("id", StringComparison.OrdinalIgnoreCase));
     }
 
-    public IBulbItem[] Items
+    private IHtmlTagHeader GetTag()
     {
-      get { return new IBulbItem[] { this }; }
+      return myProvider.FindNodeAtCaret<IHtmlTagHeader>();
     }
 
-    public void Execute(ISolution solution, ITextControl textControl)
+    protected override Action<ITextControl> ExecutePsiTransaction(ISolution solution, IProgressIndicator progress)
     {
+      IHtmlTagHeader tagHeader = GetTag();
+      if (tagHeader == null)
+        return null;
+
       // The easiest way to create an attribute is to create an HTML tag with an attribute in it
       // and then get the attribute from the tag.
+      HtmlElementFactory factory = HtmlElementFactory.GetInstance(tagHeader.Language);
+      IHtmlTag dummy = factory.CreateHtmlTag("<tag id=\"\"/>", tagHeader);
+      ITagAttribute idAttr = dummy.Attributes.Single();
+      tagHeader.AddAttributeBefore(idAttr, null);
 
-      var psiServices = solution.GetComponent<IPsiServices>();
-      using (new PsiTransactionCookie(psiServices, DefaultAction.Commit, Text)) 
-      {
-        var factory = HtmlElementFactory.GetInstance(myTag.Language);
-        var dummy = factory.CreateHtmlTag("<tag id=\"\"/>", myTag);
-        myTag.AddAttributeBefore(dummy.Attributes.First(), null);
-      }
+      // continuation to do after transaction commited
+      return textControl => 
+        // move cursor inside new created id attribute
+        textControl.Caret.MoveTo(idAttr.ValueElement.GetDocumentRange().TextRange.StartOffset, CaretVisualPlacement.Generic);
     }
 
-    public string Text
+    public override string Text
     {
       get { return "Specify 'id'"; }
     }

@@ -8,9 +8,9 @@ using JetBrains.Application.PluginSupport;
 [assembly: AssemblyTitle("XmlAndHtml")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyCompany("JetBrains s.r.o.")]
 [assembly: AssemblyProduct("XmlAndHtml")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2011")]
+[assembly: AssemblyCopyright("Copyright © JetBrains s.r.o. 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
