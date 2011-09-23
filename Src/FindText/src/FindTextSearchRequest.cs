@@ -55,19 +55,6 @@ namespace JetBrains.ReSharper.PowerToys.FindText
 
     #region Overrides
 
-    public override ICollection<IOccurence> Search()
-    {
-      ICollection<IOccurence> retval = null;
-      return CreateTaskExecutor().ExecuteTask(
-        "Search", TaskCancelable.Yes,
-        progressIndicator =>
-          {
-            progressIndicator.TaskName = string.Format(
-              "Searching for {0}", Title.Decapitalize());
-            retval = Search(progressIndicator);
-          }) ? retval : null;
-    }
-
     public override ICollection<IOccurence> Search(IProgressIndicator progressIndicator)
     {
       // Create and configure utility class, which will perform search
@@ -86,6 +73,7 @@ namespace JetBrains.ReSharper.PowerToys.FindText
         project.Accept(visitor);
         progressIndicator.Advance(1);
       }
+
       return items;
     }
 

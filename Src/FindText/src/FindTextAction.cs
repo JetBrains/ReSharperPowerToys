@@ -1,5 +1,6 @@
 using System.Windows.Forms;
 using JetBrains.ActionManagement;
+using JetBrains.Application;
 using JetBrains.Application.DataContext;
 using JetBrains.Application.src.Settings;
 using JetBrains.DocumentManagers;
@@ -30,22 +31,27 @@ namespace JetBrains.ReSharper.PowerToys.FindText
         return;
 
       var documentManager = solution.GetComponent<DocumentManager>();
+      var shellLocks = solution.GetComponent<IShellLocks>();
       var settingStore = solution.GetComponent<ISettingsStore>();
       var psiServices = solution.GetPsiServices();
       var mainWindow = solution.GetComponent<IMainWindow>();
       
       // Ask user about search string
+      FindTextSearchRequest searchRequest;
       using (var dialog = new EnterSearchStringDialog(settingStore.BindToContextTransient(ContextRange.Smart((lt, contexts) => context))))
       {
-        if (dialog.ShowDialog(mainWindow) == DialogResult.OK)
-        {
-          // Create request, descriptor, perform search and show results 
-          var searchRequest = new FindTextSearchRequest(solution, dialog.SearchString, dialog.CaseSensitive, dialog.SearchFlags, documentManager, psiServices);
-          var descriptor = new FindTextDescriptor(searchRequest);
-          descriptor.Search();
+        if (dialog.ShowDialog(mainWindow) != DialogResult.OK)
+          return;
 
-          FindResultsBrowser.ShowResults(descriptor);
-        }
+        // Create request, descriptor, perform search and show results 
+        searchRequest = new FindTextSearchRequest(solution, dialog.SearchString, dialog.CaseSensitive, dialog.SearchFlags, documentManager, psiServices);
+      }
+
+      using (shellLocks.UsingReadLock())
+      {
+        var descriptor = new FindTextDescriptor(searchRequest);
+        descriptor.Search();
+        FindResultsBrowser.ShowResults(descriptor);
       }
     }
   }
