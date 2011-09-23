@@ -1,6 +1,5 @@
 using System;
 using JetBrains.Application.src.Settings;
-using JetBrains.DataFlow;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Psi;
 
@@ -13,12 +12,6 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
   [DaemonStage]
   public class ComplexityAnalysisDaemonStage : IDaemonStage
   {
-    public ComplexityAnalysisDaemonStage(Lifetime lifetime, Daemon.Daemon daemon, SettingsStore settingsStore)
-    {
-      var thresholdEntry = settingsStore.Schema.GetScalarEntry((ComplexityAnalysisSettings s) => s.Threshold);
-      settingsStore.AdviseChange(lifetime, thresholdEntry, daemon.Invalidate);
-    }
-
     /// <summary>
     /// This method provides a <see cref="IDaemonStageProcess"/> instance which is assigned to highlighting a single document
     /// </summary>

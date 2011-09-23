@@ -44,6 +44,7 @@
     <Compile Include="src\ComplexityAnalysisDaemonStageProcess.cs" />
     <Compile Include="src\ComplexityAnalysisDaemonStage.cs" />
     <Compile Include="src\ComplexityAnalysisElementProcessor.cs" />
+    <Compile Include="src\ComplexityAnalysisInvalidateOnThresholdChange.cs" />
     <Compile Include="src\ComplexityAnalysisOptionPage.cs">
       <SubType>Component</SubType>
     </Compile>
