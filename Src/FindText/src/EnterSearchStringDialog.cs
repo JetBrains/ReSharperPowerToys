@@ -7,9 +7,9 @@ namespace JetBrains.ReSharper.PowerToys.FindText
 {
   public partial class EnterSearchStringDialog : Form
   {
-    private readonly IContextBoundSettingsStore2 mySettingsStore;
+    private readonly IContextBoundSettingsStore mySettingsStore;
 
-    public EnterSearchStringDialog(IContextBoundSettingsStore2 settingsStore)
+    public EnterSearchStringDialog(IContextBoundSettingsStore settingsStore)
     {
       mySettingsStore = settingsStore;
       InitializeComponent();
