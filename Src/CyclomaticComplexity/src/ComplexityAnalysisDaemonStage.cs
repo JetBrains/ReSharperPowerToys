@@ -15,7 +15,7 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
     /// <summary>
     /// This method provides a <see cref="IDaemonStageProcess"/> instance which is assigned to highlighting a single document
     /// </summary>
-    public IDaemonStageProcess CreateProcess(IDaemonProcess process, IContextBoundSettingsStore2 settings, DaemonProcessKind kind)
+    public IDaemonStageProcess CreateProcess(IDaemonProcess process, IContextBoundSettingsStore settings, DaemonProcessKind kind)
     {
       if (process == null)
         throw new ArgumentNullException("process");
@@ -23,7 +23,7 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
       return new ComplexityAnalysisDaemonStageProcess(process, settings.GetValue((ComplexityAnalysisSettings s) => s.Threshold));
     }
 
-    public ErrorStripeRequest NeedsErrorStripe(IPsiSourceFile sourceFile, IContextBoundSettingsStore2 settings)
+    public ErrorStripeRequest NeedsErrorStripe(IPsiSourceFile sourceFile, IContextBoundSettingsStore settings)
     {
       // We want to add markers to the right-side stripe as well as contribute to document errors
       return ErrorStripeRequest.STRIPE_AND_ERRORS;
