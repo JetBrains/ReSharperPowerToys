@@ -1,4 +1,4 @@
-﻿using JetBrains.Application.src.Settings;
+﻿using JetBrains.Application.Settings;
 using JetBrains.ReSharper.Psi.CodeStyle;
 
 namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity

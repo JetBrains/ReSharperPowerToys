@@ -1,5 +1,5 @@
 ﻿using JetBrains.Application.Communication;
-using JetBrains.Application.src.Settings;
+using JetBrains.Application.Settings;
 using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PowerToys.Gist

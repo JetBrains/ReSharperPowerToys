@@ -1,4 +1,4 @@
-﻿using JetBrains.Application.src.Settings;
+﻿using JetBrains.Application.Settings;
 using JetBrains.ReSharper.Features.Finding;
 
 namespace JetBrains.ReSharper.PowerToys.FindText
