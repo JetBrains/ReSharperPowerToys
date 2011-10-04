@@ -1,3 +1,4 @@
+using JetBrains.Application.Settings;
 using JetBrains.Application.src.Settings;
 
 namespace JetBrains.ReSharper.PowerToys.OptionsPage
