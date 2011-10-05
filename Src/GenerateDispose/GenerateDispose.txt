@@ -1,0 +1,9 @@
+﻿Generate Dispose
+
+This PowerToy demonstrates a Generate menu item that can add an IDisposable implementation
+to a class. It illustrates the following ReSharper features:
+
+ * Generator
+
+This plug-in shows how one would go about providing the elements (in this case, fields) for
+the Generate menu item as well as how one would declare and execute the generator.
