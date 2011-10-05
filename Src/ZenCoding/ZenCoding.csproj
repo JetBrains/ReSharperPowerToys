@@ -121,6 +121,7 @@
     <None Include="ZenCoding.Setup.Proj">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="ReadMe.txt" />
     <Content Include="zencoding\zen_core.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
