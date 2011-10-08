@@ -2,7 +2,7 @@ using System.Windows.Forms;
 using JetBrains.ActionManagement;
 using JetBrains.Application;
 using JetBrains.Application.DataContext;
-using JetBrains.Application.src.Settings;
+using JetBrains.Application.Settings;
 using JetBrains.DocumentManagers;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Features.Common.FindResultsBrowser;
