@@ -1,4 +1,5 @@
 using System;
+using JetBrains.Application.Settings;
 using JetBrains.Application.src.Settings;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Psi;
