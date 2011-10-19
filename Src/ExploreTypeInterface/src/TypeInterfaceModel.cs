@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.ReSharper.Feature.Services.Util;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve.Filters;
@@ -98,13 +99,14 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
 
     private static IEnumerable GetChildren(ITypeElement typeElement, bool instanceVisible)
     {
-      var children = new List<DeclaredElementEnvoy<ITypeMember>>();
-
       // Obtain language service for the type
-      LanguageService languageService =
-        LanguageService.GetInstance(PresentationUtil.GetPresentationLanguage(typeElement));
+      PsiLanguageType language = PresentationUtil.GetPresentationLanguage(typeElement);
+      if (language.IsNullOrUnknown())
+        return Enumerable.Empty<DeclaredElementEnvoy<ITypeMember>>();
+
+      LanguageService languageService = language.LanguageService();
       if (languageService == null)
-        return children;
+        return Enumerable.Empty<DeclaredElementEnvoy<ITypeMember>>();
 
       // Get symbol table for the typeElement and filter it with OverriddenFilter
       // This filter removes all but leaf members for override chains
@@ -114,6 +116,7 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
       // Obtain ITypeElement for System.Object 
       // We don't want ToString(), GetHashCode(), GetType() and Equals() to pollute tree view
       ITypeElement objectType = typeElement.Module.GetPredefinedType().Object.GetTypeElement();
+      var children = new List<DeclaredElementEnvoy<ITypeMember>>();
       foreach (string name in symbolTable.Names())
         foreach (ISymbolInfo info in symbolTable.GetAllSymbolInfos(name))
         {
