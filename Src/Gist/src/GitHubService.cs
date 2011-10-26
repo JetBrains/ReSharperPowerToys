@@ -2,6 +2,7 @@
 using JetBrains.Application;
 using JetBrains.Application.Communication;
 using JetBrains.Application.DataContext;
+using JetBrains.Application.Settings;
 using JetBrains.Application.src.Settings;
 using JetBrains.ReSharper.PowerToys.Gist.GitHub;
 using RestSharp;
@@ -22,14 +23,15 @@ namespace JetBrains.ReSharper.PowerToys.Gist
 
     public GitHubClient GetClient([NotNull] IDataContext context)
     {
-      var proxy = myProxySettingsReader.GetProxySettings(context);
-      var settings = mySettingsStore.GetKey<GitHubSettings>(context);
+      var boundSettings = mySettingsStore.BindToContextTransient(ContextRange.Smart((lt, _) => context));
+
+      var proxy = myProxySettingsReader.GetProxySettings(boundSettings);
+      var settings = boundSettings.GetKey<GitHubSettings>(SettingsOptimization.DoMeSlowly);
 
       var client = new GitHubClient { Proxy = proxy };
       if (!settings.IsAnonymous)
-      {
         client.Authenticator = new HttpBasicAuthenticator(settings.Username, settings.Password);
-      }
+
       return client;
     }
   }
