@@ -32,9 +32,9 @@ namespace XmlAndHtml
       if (tagHeader == null)
         return null;
 
-      IXmlElementFactory factory = XmlElementFactory.GetElementFactory(tagHeader);
+      IXmlElementFactory factory = XmlElementFactory.GetInstance(tagHeader);
 
-      IXmlAttribute idAttr = factory.CreateAttribute(DataProvider.PsiServices, DataProvider.PsiModule, "id=\"\"", false);
+      IXmlAttribute idAttr = factory.CreateAttribute("id=\"\"", DataProvider.PsiServices, DataProvider.PsiModule);
       IXmlTag tag = tagHeader.GetContainingNode<IXmlTag>();
       if (tag == null)
         return null;
