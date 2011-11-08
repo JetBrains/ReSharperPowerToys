@@ -43,7 +43,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
 
     private static bool IsSupportedFile(IProjectFile file)
     {
-      return ourFileTypes.Any(_ => file.LanguageType.IsProjectFileType(_.Key)) || Settings.Instance.IsSupportedFile(file.Name);
+      return ourFileTypes.Any(_ => file.LanguageType.IsProjectFileType(_.Key)) || Options.Model.Settings.Instance.IsSupportedFile(file.Name);
     }
 
     protected static DocType GetDocTypeForFile(IProjectFile file)
@@ -58,7 +58,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
         .Select(_ => _.Value)
         .FirstOrDefault();
 
-      return docType == DocType.None ? Settings.Instance.GetDocType(file.Name) : docType;
+      return docType == DocType.None ? Options.Model.Settings.Instance.GetDocType(file.Name) : docType;
     }
 
     protected static IProjectFile GetProjectFile(IDataContext context)
