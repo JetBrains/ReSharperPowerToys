@@ -23,37 +23,21 @@ namespace JetBrains.ReSharper.PowerToys.FindText
     // Solution to search in
     // Case sensitivity flag
 
-    #region Data
-
     private readonly bool myCaseSensitive;
-
+    private readonly string mySearchString;
     private readonly FindTextSearchFlags mySearchFlags;
     private readonly DocumentManager myDocumentManager;
-    private readonly IPsiServices myPsiServices;
-
-    private readonly string mySearchString;
-
     private readonly ISolution mySolution;
 
-    #endregion
-
-    #region Init
-
     public FindTextSearchRequest(ISolution solution, string searchString, bool caseSensitive,
-                                 FindTextSearchFlags searchFlags, DocumentManager documentManager,
-                                 IPsiServices psiServices)
+                                 FindTextSearchFlags searchFlags, DocumentManager documentManager)
     {
       mySolution = solution;
       mySearchFlags = searchFlags;
       myDocumentManager = documentManager;
-      myPsiServices = psiServices;
       mySearchString = searchString;
       myCaseSensitive = caseSensitive;
     }
-
-    #endregion
-
-    #region Overrides
 
     public override ICollection<IOccurence> Search(IProgressIndicator progressIndicator)
     {
@@ -66,7 +50,7 @@ namespace JetBrains.ReSharper.PowerToys.FindText
       var items = new List<IOccurence>();
 
       // visit each project and collect occurences
-      var visitor = new ProjectTextSearcher(searcher, items, mySearchFlags, myDocumentManager, myPsiServices);
+      var visitor = new ProjectTextSearcher(searcher, items, mySearchFlags, myDocumentManager, mySolution);
       foreach (IProject project in projects)
       {
         progressIndicator.CurrentItemText = string.Format("Scanning project '{0}'", project.Name);
@@ -92,19 +76,15 @@ namespace JetBrains.ReSharper.PowerToys.FindText
       get { return string.Format("Text '{0}'", mySearchString); }
     }
 
-    #endregion
-
     #region ProjectTextSearcher Type
 
     /// <summary>
     /// Class which visits project files recursively in the project and performs search
     /// </summary>
-    public class ProjectTextSearcher : RecursiveProjectVisitor
+    private class ProjectTextSearcher : RecursiveProjectVisitor
     {
-      #region Data
-
       private readonly DocumentManager myDocumentManager;
-      private readonly IPsiServices myPsiServices;
+      private readonly ISolution mySolution;
 
       private readonly List<IOccurence> myItems;
 
@@ -112,22 +92,14 @@ namespace JetBrains.ReSharper.PowerToys.FindText
 
       private readonly FindTextSearchFlags mySearchFlags;
 
-      #endregion
-
-      #region Init
-
-      public ProjectTextSearcher(StringSearcher searcher, List<IOccurence> items, FindTextSearchFlags searchFlags, DocumentManager documentManager, IPsiServices psiServices)
+      public ProjectTextSearcher(StringSearcher searcher, List<IOccurence> items, FindTextSearchFlags searchFlags, DocumentManager documentManager, ISolution solution)
       {
         mySearcher = searcher;
         mySearchFlags = searchFlags;
         myItems = items;
         myDocumentManager = documentManager;
-        myPsiServices = psiServices;
+        mySolution = solution;
       }
-
-      #endregion
-
-      #region Overrides
 
       public override void VisitProjectFile(IProjectFile projectFile)
       {
@@ -143,10 +115,9 @@ namespace JetBrains.ReSharper.PowerToys.FindText
           {
             // Content should be provided to the following call, because sometimes lexer depends on content
             // E.g. ASP with C# or VB script language
-            IBuffer contentBuffer = new StringBuffer(document.GetText());
+            IBuffer contentBuffer = document.Buffer;
             var factory = PsiProjectFileTypeCoordinator.Instance;
-            var lexerFactory = factory.CreateLexerFactory(projectFile.ToSourceFile(), projectFile.LanguageType,
-                                                          contentBuffer, myPsiServices.PsiManager);
+            var lexerFactory = factory.CreateLexerFactory(mySolution, projectFile.LanguageType, contentBuffer, projectFile.ToSourceFile());
             if (lexerFactory != null)
             {
               lexer = lexerFactory.CreateLexer(contentBuffer);
@@ -188,8 +159,6 @@ namespace JetBrains.ReSharper.PowerToys.FindText
           }
         }
       }
-
-      #endregion
     }
 
     #endregion
