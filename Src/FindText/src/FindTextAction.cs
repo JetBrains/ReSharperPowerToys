@@ -33,7 +33,6 @@ namespace JetBrains.ReSharper.PowerToys.FindText
       var documentManager = solution.GetComponent<DocumentManager>();
       var shellLocks = solution.GetComponent<IShellLocks>();
       var settingStore = solution.GetComponent<ISettingsStore>();
-      var psiServices = solution.GetPsiServices();
       var mainWindow = solution.GetComponent<IMainWindow>();
       
       // Ask user about search string
@@ -44,7 +43,7 @@ namespace JetBrains.ReSharper.PowerToys.FindText
           return;
 
         // Create request, descriptor, perform search and show results 
-        searchRequest = new FindTextSearchRequest(solution, dialog.SearchString, dialog.CaseSensitive, dialog.SearchFlags, documentManager, psiServices);
+        searchRequest = new FindTextSearchRequest(solution, dialog.SearchString, dialog.CaseSensitive, dialog.SearchFlags, documentManager);
       }
 
       using (shellLocks.UsingReadLock())
