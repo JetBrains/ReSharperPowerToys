@@ -118,7 +118,7 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
       ITypeElement objectType = typeElement.Module.GetPredefinedType().Object.GetTypeElement();
       var children = new List<DeclaredElementEnvoy<ITypeMember>>();
       foreach (string name in symbolTable.Names())
-        foreach (ISymbolInfo info in symbolTable.GetAllSymbolInfos(name))
+        foreach (ISymbolInfo info in symbolTable.GetSymbolInfos(name))
         {
           // Select all ITypeMembers from symbol table
           var member = info.GetDeclaredElement() as ITypeMember;
