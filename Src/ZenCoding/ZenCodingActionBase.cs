@@ -22,7 +22,6 @@ using JetBrains.Application.DataContext;
 using JetBrains.DocumentManagers;
 using JetBrains.Interop.WinApi;
 using JetBrains.ProjectModel;
-using JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CodeStyle;
 using JetBrains.TextControl;
