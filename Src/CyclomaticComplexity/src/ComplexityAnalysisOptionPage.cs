@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
+using JetBrains.Application.Settings;
 using JetBrains.DataFlow;
 using JetBrains.ReSharper.Features.Environment.Options.Inspections;
 using JetBrains.ReSharper.PowerToys.CyclomaticComplexity.resources;
 using JetBrains.UI.CommonControls.Fonts;
 using JetBrains.UI.Options;
 using JetBrains.UI.Options.Helpers;
-using JetBrains.Application.src.Settings;
 
 namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
 {
