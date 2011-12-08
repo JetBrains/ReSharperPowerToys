@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-using JetBrains.Application.src.Settings;
+using JetBrains.Application.Settings;
 using JetBrains.DataFlow;
 using JetBrains.ProjectModel;
 
@@ -23,8 +23,7 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
   [SolutionComponent]
   public class ComplexityAnalysisInvalidateOnThresholdChange
   {
-    public ComplexityAnalysisInvalidateOnThresholdChange(Lifetime lifetime, Daemon.Daemon daemon,
-                                                         SettingsStore settingsStore)
+    public ComplexityAnalysisInvalidateOnThresholdChange(Lifetime lifetime, Daemon.Daemon daemon, ISettingsStore settingsStore)
     {
       SettingsScalarEntry thresholdEntry = settingsStore.Schema.GetScalarEntry((ComplexityAnalysisSettings s) => s.Threshold);
       settingsStore.AdviseChange(lifetime, thresholdEntry, daemon.Invalidate);

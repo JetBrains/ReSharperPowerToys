@@ -18,7 +18,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using JetBrains.ActionManagement;
 using JetBrains.Application;
-using JetBrains.Application.src.Settings;
+using JetBrains.Application.Settings;
 using JetBrains.DataFlow;
 using JetBrains.IDE.TreeBrowser;
 using JetBrains.ProjectModel;
@@ -37,14 +37,14 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
   {
     private readonly Lifetime myLifetime;
     private readonly IShellLocks myLocks;
-    private readonly SettingsStore mySettingsStore;
+    private readonly ISettingsStore mySettingsStore;
     private readonly IActionBarManager myActionBarManager;
     private readonly ToolWindowClass myToolWindowClass;
 
     public TypeInterfaceToolWindowRegistrar(Lifetime lifetime,
                                     ToolWindowManager toolWindowManager,
                                     IShellLocks locks,
-                                    SettingsStore settingsStore,
+                                    ISettingsStore settingsStore,
                                     IActionManager actionManager,
                                     IActionBarManager actionBarManager,
                                     IShortcutManager shortcutManager,

@@ -21,7 +21,7 @@ using System.Windows.Forms.Integration;
 using System.Windows.Media.Imaging;
 using JetBrains.Annotations;
 using JetBrains.Application.DataContext;
-using JetBrains.Application.src.Settings;
+using JetBrains.Application.Settings;
 using JetBrains.DataFlow;
 using JetBrains.ReSharper.PowerToys.Gist.GitHub;
 using JetBrains.UI.CrossFramework;

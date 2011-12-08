@@ -19,7 +19,6 @@ using JetBrains.Application;
 using JetBrains.Application.Communication;
 using JetBrains.Application.DataContext;
 using JetBrains.Application.Settings;
-using JetBrains.Application.src.Settings;
 using JetBrains.ReSharper.PowerToys.Gist.GitHub;
 using RestSharp;
 
@@ -29,9 +28,9 @@ namespace JetBrains.ReSharper.PowerToys.Gist
   public class GitHubService
   {
     private readonly WebProxySettingsReader myProxySettingsReader;
-    private readonly SettingsStore mySettingsStore;
+    private readonly ISettingsStore mySettingsStore;
 
-    public GitHubService(WebProxySettingsReader proxySettingsReader, SettingsStore settingsStore)
+    public GitHubService(WebProxySettingsReader proxySettingsReader, ISettingsStore settingsStore)
     {
       myProxySettingsReader = proxySettingsReader;
       mySettingsStore = settingsStore;
