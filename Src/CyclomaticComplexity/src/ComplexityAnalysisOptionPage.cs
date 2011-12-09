@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-using JetBrains.Application.Settings;
+using JetBrains.Application.src.Settings;
 using JetBrains.DataFlow;
 using JetBrains.ReSharper.Features.Environment.Options.Inspections;
 using JetBrains.ReSharper.PowerToys.CyclomaticComplexity.resources;

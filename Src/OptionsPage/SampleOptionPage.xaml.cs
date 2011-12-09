@@ -15,7 +15,7 @@
  */
 
 using System.Windows.Controls.Primitives;
-using JetBrains.Application.Settings;
+using JetBrains.Application.src.Settings;
 using JetBrains.DataFlow;
 using JetBrains.ReSharper.Features.Common.Options;
 using JetBrains.UI.CrossFramework;
