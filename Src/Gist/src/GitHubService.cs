@@ -19,7 +19,6 @@ using JetBrains.Application;
 using JetBrains.Application.Communication;
 using JetBrains.Application.DataContext;
 using JetBrains.Application.Settings;
-using JetBrains.Application.src.Settings;
 using JetBrains.ReSharper.PowerToys.Gist.GitHub;
 using RestSharp;
 
