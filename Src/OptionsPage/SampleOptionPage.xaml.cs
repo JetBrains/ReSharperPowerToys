@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-using System.Windows.Controls.Primitives;
 using JetBrains.Application.Settings;
 using JetBrains.DataFlow;
 using JetBrains.ReSharper.Features.Common.Options;
+using JetBrains.UI.Controls;
 using JetBrains.UI.CrossFramework;
 using JetBrains.UI.Options;
 
@@ -31,7 +31,7 @@ namespace JetBrains.ReSharper.PowerToys.OptionsPage
     public SampleOptionPage(Lifetime lifetime, OptionsSettingsSmartContext settings)
     {
       InitializeComponent();
-      settings.SetBinding(lifetime, (SampleSettings s) => s.SampleOption, mySampleOptionCheckBox, ToggleButton.IsCheckedProperty);
+      settings.SetBinding(lifetime, (SampleSettings s) => s.SampleOption, mySampleOptionCheckBox, CheckBoxDisabledNoCheck2.IsCheckedLogicallyDependencyProperty);
     }
 
     public EitherControl Control
