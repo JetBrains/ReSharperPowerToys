@@ -15,17 +15,22 @@
  */
 
 using System;
+using JetBrains.Application.Settings;
 
 namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model
 {
   public class FileAssociation : ICloneable
   {
+    [SettingsEntry(null, "Pattern")]
     public string Pattern { get; set; }
 
+    [SettingsEntry(DocType.None, "Doc Type")]
     public DocType DocType { get; set; }
 
+    [SettingsEntry(null, "Pattern Type")]
     public PatternType PatternType { get; set; }
 
+    [SettingsEntry(false, "Enabled")]
     public bool Enabled { get; set; }
 
     public object Clone()

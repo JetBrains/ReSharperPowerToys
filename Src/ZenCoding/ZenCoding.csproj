@@ -68,6 +68,7 @@
       <HintPath>lib\Microsoft.Scripting.Core.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -86,6 +87,8 @@
     <Compile Include="Options\EditFileAssociationForm.Designer.cs">
       <DependentUpon>EditFileAssociationForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Options\Model\ZenCodingSettings.cs" />
+    <Compile Include="Options\Model\SettingsUpgrader.cs" />
     <Compile Include="Options\Model\Handlers\FileExtensionPatternHandler.cs" />
     <Compile Include="Options\Model\Handlers\IPatternHandler.cs" />
     <Compile Include="Options\Model\Handlers\RegexPatternHandler.cs" />

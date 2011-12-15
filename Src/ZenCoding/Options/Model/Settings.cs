@@ -68,11 +68,6 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model
       FileAssociations = new List<FileAssociation>();
     }
 
-    public static Settings Instance
-    {
-      get { return Shell.Instance.GetComponent<Settings>(); }
-    }
-
     public List<FileAssociation> FileAssociations { get; set; }
 
     #region IXmlExternalizableShellComponent Members
