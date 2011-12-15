@@ -19,9 +19,11 @@ using System.Collections.Generic;
 using JetBrains.ActionManagement;
 using JetBrains.Application;
 using JetBrains.Application.DataContext;
+using JetBrains.Application.Settings;
 using JetBrains.DocumentManagers;
 using JetBrains.Interop.WinApi;
 using JetBrains.ProjectModel;
+using JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CodeStyle;
 using JetBrains.TextControl;
@@ -32,6 +34,14 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
 {
   public abstract class ZenCodingActionBase : IActionHandler
   {
+    private readonly ZenCodingSettings mySettings;
+
+    protected ZenCodingActionBase()
+    {
+      var settingsStore = Shell.Instance.GetComponent<ISettingsStore>();
+      mySettings = settingsStore.GetKey<ZenCodingSettings>((lt, d) => d.Empty, SettingsOptimization.OptimizeDefault);
+    }
+
     private static readonly IDictionary<ProjectFileType, DocType> ourFileTypes =
       new Dictionary<ProjectFileType, DocType>
       {
@@ -56,12 +66,12 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
       return IsSupportedFile(GetProjectFile(context));
     }
 
-    private static bool IsSupportedFile(IProjectFile file)
+    private bool IsSupportedFile(IProjectFile file)
     {
-      return ourFileTypes.Any(_ => file.LanguageType.IsProjectFileType(_.Key)) || Options.Model.Settings.Instance.IsSupportedFile(file.Name);
+      return ourFileTypes.Any(_ => file.LanguageType.IsProjectFileType(_.Key)) || mySettings.IsSupportedFile(file.Name);
     }
 
-    protected static DocType GetDocTypeForFile(IProjectFile file)
+    protected DocType GetDocTypeForFile(IProjectFile file)
     {
       if (!IsSupportedFile(file))
       {
@@ -73,10 +83,10 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
         .Select(_ => _.Value)
         .FirstOrDefault();
 
-      return docType == DocType.None ? Options.Model.Settings.Instance.GetDocType(file.Name) : docType;
+      return docType == DocType.None ? mySettings.GetDocType(file.Name) : docType;
     }
 
-    protected static IProjectFile GetProjectFile(IDataContext context)
+    private static IProjectFile GetProjectFile(IDataContext context)
     {
       var solution = context.GetData(ProjectModel.DataContext.DataConstants.SOLUTION);
       if (solution == null)
