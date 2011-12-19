@@ -15,9 +15,9 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Application.Settings;
+using JetBrains.Application.Settings.Store;
 using JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model.Handlers;
 
 namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model
@@ -29,19 +29,18 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model
 
     public ZenCodingSettings()
     {
-      myHandlers = new IPatternHandler[] {new FileExtensionPatternHandler(), new RegexPatternHandler()};
-      FileAssociations = new List<FileAssociation>();
+      myHandlers = new IPatternHandler[] {new FileExtensionPatternHandler(), new RegexPatternHandler()};      
     }
 
-    [SettingsEntryAttribute(null, "File Associations")]
-    public List<FileAssociation> FileAssociations { get; set; }
+    [SettingsIndexedEntry("File Associations")]
+    public IIndexedEntry<int, FileAssociation> FileAssociations { get; set; }
 
     [SettingsEntryAttribute(false, "Is upgraded")]
     public bool IsUpgraded { get; set; }
 
     public bool IsSupportedFile(string fileName)
-    {
-      return FileAssociations.Any(a => HandlerMatch(a, fileName));
+    {      
+      return FileAssociations.EnumIndexedValues().Any(pair => HandlerMatch(pair.Value, fileName));
     }
 
     private bool HandlerMatch(FileAssociation a, string fileName)
@@ -51,9 +50,9 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model
 
     public DocType GetDocType(string fileName)
     {
-      var fileAssociation = FileAssociations.FirstOrDefault(a => HandlerMatch(a, fileName));
-      if (fileAssociation != null)
-        return fileAssociation.DocType;
+      var fileAssociationPair = FileAssociations.EnumIndexedValues().FirstOrDefault(pair => HandlerMatch(pair.Value, fileName));
+      if (fileAssociationPair.Value != null)
+        return fileAssociationPair.Value.DocType;
 
       throw new NotSupportedException();
     }

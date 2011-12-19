@@ -57,6 +57,8 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
         case DocType.Xsl:
           myXsl.Checked = true;
           break;
+        case DocType.None:
+          break;
         default:
           throw new ArgumentOutOfRangeException();
       }

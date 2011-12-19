@@ -16,15 +16,19 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Windows.Forms;
+using JetBrains.Application.Settings.Store;
 using JetBrains.DataFlow;
 using JetBrains.ReSharper.Features.Common.Options;
 using JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model;
+using JetBrains.Threading;
 using JetBrains.TreeModels;
 using JetBrains.UI;
 using JetBrains.UI.CrossFramework;
 using JetBrains.UI.Options;
 using JetBrains.Util;
+using System.Linq;
 using JetBrains.Application.Settings;
 
 namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
@@ -32,17 +36,31 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
   [OptionsPage(ID, "Zen Coding", "zencoding", ParentId = ToolsPage.PID)]
   public partial class ZenCodingOptionsPage : UserControl, IOptionsPage
   {
-    const string ID = "ZenCoding-E439BB70-6F99-4C64-BA42-5D3DAEAC70E1";
-    
-    readonly FileAssociationsTreeView myView;
-    private readonly IProperty<List<FileAssociation>> myFileAssociations;
+    private const string ID = "ZenCoding-E439BB70-6F99-4C64-BA42-5D3DAEAC70E1";
+    private readonly Lifetime myLifetime;
+    private readonly OptionsSettingsSmartContext mySettings;
+    private readonly IThreading myThreading;
+    private readonly Dictionary<int, FileAssociation> myFileAssociations;
 
-    public ZenCodingOptionsPage(Lifetime lifetime, OptionsSettingsSmartContext settings)
+    private readonly FileAssociationsTreeView myView;
+    private readonly Expression<Func<ZenCodingSettings, IIndexedEntry<int, FileAssociation>>> myLambdaExpression;
+
+    public ZenCodingOptionsPage(Lifetime lifetime, OptionsSettingsSmartContext settings, IThreading threading)
     {
+      myLifetime = lifetime;
+      mySettings = settings;
+      myThreading = threading;
+      myLambdaExpression = s => s.FileAssociations;
+
       InitializeComponent();
 
-      myFileAssociations = settings.GetValueProperty(lifetime, (ZenCodingSettings zcs) => zcs.FileAssociations);
-      var model = BuildModel(myFileAssociations.Value);
+      myFileAssociations = new Dictionary<int, FileAssociation>();
+      mySettings.EnumerateIndexedEntry(myLambdaExpression).ForEach(pair => myFileAssociations[pair.First] = pair.Second);
+
+      var indices = myFileAssociations.Keys.ToList();
+      indices.Sort();
+      var model = BuildModel(indices.Select(i => myFileAssociations[i]));
+
       myView = new FileAssociationsTreeView(model, new FileAssociationViewController())
       {
         Presenter = new FileAssociationPresenter(),
@@ -54,13 +72,9 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
       var assembly = GetType().Assembly;
 
       _buttons.Items.Add("Create", ImageLoader.GetImage("Create", assembly), CreateFileAssociation);
-
       _buttons.Items.Add("Edit", ImageLoader.GetImage("Edit", assembly), EditFileAssociation);
-
       _buttons.Items.Add("Remove", ImageLoader.GetImage("Remove", assembly), RemoveFileAssociation);
-
       _buttons.Items.Add("Up", ImageLoader.GetImage("Up", assembly), MoveUp);
-
       _buttons.Items.Add("Down", ImageLoader.GetImage("Down", assembly), MoveDown);
     }
 
@@ -88,7 +102,9 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
     {
       OpenEditor(new FileAssociation(), form =>
       {
-        myFileAssociations.Value.Add(form.FileAssociation);
+        var maxKey = myFileAssociations.Keys.Max();
+        myFileAssociations.Add(maxKey + 1, form.FileAssociation);
+        mySettings.SetIndexedValue(myLambdaExpression, maxKey + 1, form.FileAssociation);
         BindModel(null);
       });
     }
@@ -109,12 +125,13 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
       using (var form = new EditFileAssociationForm(association))
       {
         if (form.ShowDialog(this) != DialogResult.OK)
-        {
           return;
-        }
 
         onClose(form);
-        myView.UpdateAllNodesPresentation();
+        myThreading.ExecuteOrQueue(myLifetime, "ZenCodingOptionPage.UpdateAllNodesPresentation", () =>
+        {
+          myView.UpdateAllNodesPresentation();
+        });
       }
     }
 
@@ -126,7 +143,9 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
         return;
       }
 
-      myFileAssociations.Value.Remove(selection);
+      var pairToRemove = myFileAssociations.First(pair => pair.Value == selection);
+      myFileAssociations.Remove(pairToRemove.Key);
+      mySettings.RemoveIndexedValue(myLambdaExpression, pairToRemove.Key);
 
       BindModel(null);
     }
@@ -139,13 +158,15 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
         return;
       }
 
-      var fileAssociations = myFileAssociations.Value;
-      for (int i = 0; i < fileAssociations.Count; i++)
+      var indices = myFileAssociations.Keys.ToList();
+      indices.Sort();
+
+      for (int i = 0; i < indices.Count; i++)
       {
-        var association = fileAssociations[i];
+        var association = myFileAssociations[indices[i]];
         if (ReferenceEquals(selection, association) && i > 0)
         {
-          Exchange(i, i - 1);
+          Exchange(indices[i], indices[i - 1]);
           BindModel(selection);
           break;
         }
@@ -160,13 +181,15 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
         return;
       }
 
-      var fileAssociations = myFileAssociations.Value;
-      for (int i = 0; i < fileAssociations.Count; i++)
+      var indices = myFileAssociations.Keys.ToList();
+      indices.Sort();
+
+      for (int i = 0; i < indices.Count; i++)
       {
-        var association = fileAssociations[i];
-        if (ReferenceEquals(selection, association) && i + 1 < fileAssociations.Count)
+        var association = myFileAssociations[indices[i]];
+        if (ReferenceEquals(selection, association) && i + 1 < indices.Count)
         {
-          Exchange(i, i + 1);
+          Exchange(indices[i], indices[i + 1]);
           BindModel(selection);
           break;
         }
@@ -175,10 +198,14 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
 
     private void Exchange(int first, int second)
     {
-      var fileAssociations = myFileAssociations.Value;
-      var temp = fileAssociations[first];
-      fileAssociations[first] = fileAssociations[second];
-      fileAssociations[second] = temp;
+      var temp = myFileAssociations[first];
+      myFileAssociations[first] = myFileAssociations[second];
+      myFileAssociations[second] = temp;
+
+      mySettings.RemoveIndexedValue(myLambdaExpression, first);
+      mySettings.SetIndexedValue(myLambdaExpression, first, myFileAssociations[first]);
+      mySettings.RemoveIndexedValue(myLambdaExpression, second);
+      mySettings.SetIndexedValue(myLambdaExpression, second, myFileAssociations[second]);
     }
 
     private FileAssociation GetSelectedFileAssociation()
@@ -199,7 +226,16 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
       {
         fileAssociaitons.Add((FileAssociation) association.Clone());
       }
-      myFileAssociations.Value = fileAssociaitons;
+
+      mySettings.ResetIndexedValues(myLambdaExpression);
+      myFileAssociations.Clear();
+
+      for (int i = 0; i < fileAssociaitons.Count; i++)
+      {
+        var associaiton = fileAssociaitons[i];
+        myFileAssociations[i] = associaiton;
+        mySettings.SetIndexedValue(myLambdaExpression, i, associaiton);
+      }
 
       BindModel(null);
     }
@@ -218,19 +254,24 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
 
     private void BindModel(FileAssociation selection)
     {
-      var fileAssociations = myFileAssociations.Value;
-      myView.Model = BuildModel(fileAssociations);
-      myView.UpdateAllNodesPresentation();
-
-      for (int i = 0; i < fileAssociations.Count; i++)
+      myThreading.ExecuteOrQueue(myLifetime, "ZenCodingOptionsPage.BindModel", () =>
       {
-        var association = fileAssociations[i];
-        if (ReferenceEquals(selection, association))
+        var indices = myFileAssociations.Keys.ToList();
+        indices.Sort();
+
+        myView.Model = BuildModel(indices.Select(i => myFileAssociations[i]));
+        myView.UpdateAllNodesPresentation();
+
+        foreach (var pair in myFileAssociations)
         {
-          myView.SetFocusedNode(myView.FindNodeByID(i));
-          break;
+          var association = pair.Value;
+          if (ReferenceEquals(selection, association))
+          {
+            myView.SetFocusedNode(myView.FindNodeByID(pair.Key));
+            break;
+          }
         }
-      }
+      });
     }
   }
 }
