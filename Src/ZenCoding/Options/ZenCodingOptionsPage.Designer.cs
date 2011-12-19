@@ -52,7 +52,6 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
       System.Windows.Forms.Panel _container;
       this.myRules = new System.Windows.Forms.Panel();
       this._buttons = new System.Windows.Forms.ToolStrip();
-      this.myReset = new System.Windows.Forms.Button();
       _fileAssociations = new System.Windows.Forms.Panel();
       _container = new System.Windows.Forms.Panel();
       _fileAssociations.SuspendLayout();
@@ -89,20 +88,8 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
       this._buttons.TabIndex = 0;
       this._buttons.Text = "_buttons";
       // 
-      // _reset
-      // 
-      this.myReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.myReset.Location = new System.Drawing.Point(3, 705);
-      this.myReset.Name = "_reset";
-      this.myReset.Size = new System.Drawing.Size(94, 23);
-      this.myReset.TabIndex = 0;
-      this.myReset.Text = "Reset defaults";
-      this.myReset.UseVisualStyleBackColor = true;
-      this.myReset.Click += new System.EventHandler(this.ResetClick);
-      // 
       // _container
       // 
-      _container.Controls.Add(this.myReset);
       _container.Controls.Add(_fileAssociations);
       _container.Dock = System.Windows.Forms.DockStyle.Fill;
       _container.Location = new System.Drawing.Point(0, 0);
@@ -126,7 +113,6 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
 
     #endregion
 
-    private Button myReset;
     private Panel myRules;
   }
 }

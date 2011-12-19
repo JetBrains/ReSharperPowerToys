@@ -57,8 +57,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model
     private const string DOCTYPE = "DocType";
     private const string ENABLED = "Enabled";
 
-    public FileAssociationSerializer() : base(FileAssociationToString, StringToFileAssociation)
-    {}
+    public FileAssociationSerializer() : base(FileAssociationToString, StringToFileAssociation) { }
 
     private static FileAssociation StringToFileAssociation(string s, ILogger logger)
     {

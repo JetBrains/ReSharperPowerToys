@@ -29,7 +29,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model
 
     public ZenCodingSettings()
     {
-      myHandlers = new IPatternHandler[] {new FileExtensionPatternHandler(), new RegexPatternHandler()};      
+      myHandlers = new IPatternHandler[] {new FileExtensionPatternHandler(), new RegexPatternHandler()};
     }
 
     [SettingsIndexedEntry("File Associations")]
