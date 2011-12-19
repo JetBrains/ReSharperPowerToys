@@ -87,6 +87,7 @@
     <Compile Include="Options\EditFileAssociationForm.Designer.cs">
       <DependentUpon>EditFileAssociationForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Options\Model\PredefinedZenCodingSettings.cs" />
     <Compile Include="Options\Model\ZenCodingSettings.cs" />
     <Compile Include="Options\Model\SettingsUpgrader.cs" />
     <Compile Include="Options\Model\Handlers\FileExtensionPatternHandler.cs" />
@@ -125,6 +126,7 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="ReadMe.txt" />
+    <EmbeddedResource Include="resources\PredefinedZenCodingSettings.xml" />
     <Content Include="zencoding\zen_core.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

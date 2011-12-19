@@ -40,7 +40,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model
         for (int i = 0; i < oldSettings.FileAssociations.Count; i++)
         {
           var association = oldSettings.FileAssociations[i];
-          boundSettingsStore.SetIndexedValue((ZenCodingSettings settings) => settings.FileAssociations, i, association);  
+          boundSettingsStore.SetIndexedValue((ZenCodingSettings settings) => settings.FileAssociations, i, association);
         }
         
         boundSettingsStore.SetValue(isUpgradedProperty, true);
