@@ -22,7 +22,6 @@ using JetBrains.Application.Configuration;
 using JetBrains.Application.Env;
 using JetBrains.Application.Env.Components;
 using JetBrains.Application.Settings;
-using JetBrains.Application.src.Settings;
 
 namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model
 {
@@ -38,7 +37,12 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model
         var settingsComponent = new ShellSettingsComponent(applicationDescriptor, locks, productSettingsLocation, productConfigurations);
         var oldSettings = new Settings();
         settingsComponent.LoadSettings(oldSettings, XmlExternalizationScope.UserSettings, oldSettings.GetType().Name);
-        boundSettingsStore.SetValue((ZenCodingSettings settings) => settings.FileAssociations, oldSettings.FileAssociations);
+        for (int i = 0; i < oldSettings.FileAssociations.Count; i++)
+        {
+          var association = oldSettings.FileAssociations[i];
+          boundSettingsStore.SetIndexedValue((ZenCodingSettings settings) => settings.FileAssociations, i, association);  
+        }
+        
         boundSettingsStore.SetValue(isUpgradedProperty, true);
       }
     }

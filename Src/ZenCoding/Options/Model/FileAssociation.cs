@@ -15,22 +15,19 @@
  */
 
 using System;
-using JetBrains.Application.Settings;
+using System.Globalization;
+using System.Windows.Markup;
+using JetBrains.Util;
+using JetBrains.Util.Reflection;
 
 namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model
 {
+  [ValueSerializer(typeof(FileAssociationSerializer))]
   public class FileAssociation : ICloneable
   {
-    [SettingsEntry(null, "Pattern")]
     public string Pattern { get; set; }
-
-    [SettingsEntry(DocType.None, "Doc Type")]
     public DocType DocType { get; set; }
-
-    [SettingsEntry(null, "Pattern Type")]
     public PatternType PatternType { get; set; }
-
-    [SettingsEntry(false, "Enabled")]
     public bool Enabled { get; set; }
 
     public object Clone()
@@ -50,6 +47,48 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model
       PatternType = other.PatternType;
       DocType = other.DocType;
       Enabled = other.Enabled;
+    }
+  }
+
+  public class FileAssociationSerializer : ValueSerializerBase<FileAssociation>
+  {
+    private const string PATTERN_TYPE = "PatternType";
+    private const string PATTERN = "Pattern";
+    private const string DOCTYPE = "DocType";
+    private const string ENABLED = "Enabled";
+
+    public FileAssociationSerializer() : base(FileAssociationToString, StringToFileAssociation)
+    {}
+
+    private static FileAssociation StringToFileAssociation(string s, ILogger logger)
+    {
+      return TypeConverterUtil.FromStringThruXml(s, element =>
+      {
+        var pattern = element.ReadAttribute(PATTERN);
+        var docType = element.ReadAttribute(DOCTYPE).ToEnum<DocType>(DocType.None);
+        var patternType = element.ReadAttribute(PATTERN_TYPE).ToEnum<PatternType>(PatternType.FileExtension);
+        bool enabled = false;
+        bool.TryParse(element.ReadAttribute(ENABLED), out enabled);
+
+        return new FileAssociation()
+        {
+          DocType = docType,
+          Enabled = enabled,
+          Pattern = pattern,
+          PatternType = patternType
+        };
+      });
+    }
+
+    private static string FileAssociationToString(FileAssociation fileAssociation, ILogger logger)
+    {
+      return TypeConverterUtil.ToStringThruXml(element =>
+      {
+        element.CreateAttributeWithNonEmptyValue(PATTERN, fileAssociation.Pattern);
+        element.CreateAttributeWithNonEmptyValue(DOCTYPE, fileAssociation.DocType.ToString());
+        element.CreateAttributeWithNonEmptyValue(PATTERN_TYPE, fileAssociation.PatternType.ToString());
+        element.CreateAttributeWithNonEmptyValue(ENABLED, fileAssociation.Enabled.ToString(CultureInfo.InvariantCulture));
+      });
     }
   }
 }
