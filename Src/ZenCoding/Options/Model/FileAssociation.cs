@@ -48,6 +48,33 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model
       DocType = other.DocType;
       Enabled = other.Enabled;
     }
+
+    public bool Equals(FileAssociation other)
+    {
+      if (ReferenceEquals(null, other)) return false;
+      if (ReferenceEquals(this, other)) return true;
+      return Equals(other.Pattern, Pattern) && Equals(other.DocType, DocType) && Equals(other.PatternType, PatternType) && other.Enabled.Equals(Enabled);
+    }
+
+    public override bool Equals(object obj)
+    {
+      if (ReferenceEquals(null, obj)) return false;
+      if (ReferenceEquals(this, obj)) return true;
+      if (obj.GetType() != typeof (FileAssociation)) return false;
+      return Equals((FileAssociation) obj);
+    }
+
+    public override int GetHashCode()
+    {
+      unchecked
+      {
+        int result = (Pattern != null ? Pattern.GetHashCode() : 0);
+        result = (result*397) ^ DocType.GetHashCode();
+        result = (result*397) ^ PatternType.GetHashCode();
+        result = (result*397) ^ Enabled.GetHashCode();
+        return result;
+      }
+    }
   }
 
   public class FileAssociationSerializer : ValueSerializerBase<FileAssociation>
