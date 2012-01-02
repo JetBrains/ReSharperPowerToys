@@ -89,9 +89,9 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric.CSharpSpecific
       var methodDeclaration = declaration as IMethodDeclaration;
       if (methodDeclaration != null)
       {
-        IList<IRegularParameterDeclaration> parameterDeclarations = methodDeclaration.ParameterDeclarations;
+        var parameterDeclarations = methodDeclaration.ParameterDeclarations;
         if (index < parameterDeclarations.Count)
-          methodDeclaration.RemoveParameterDeclaration(parameterDeclarations[index]);
+          methodDeclaration.RemoveParameterDeclaration((IRegularParameterDeclaration)parameterDeclarations[index]);
       }
     }
 
