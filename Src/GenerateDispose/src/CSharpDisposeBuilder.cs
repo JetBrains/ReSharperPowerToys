@@ -28,7 +28,7 @@ using JetBrains.ReSharper.Psi.Util;
 namespace JetBrains.ReSharper.PowerToys.GenerateDispose
 {
   [GeneratorBuilder("Dispose", typeof(CSharpLanguage))]
-  internal class CSharpDisposeBuilder : CSharpGeneratorBuilderBase
+  internal class CSharpDisposeBuilder : GeneratorBuilderBase<CSharpGeneratorContext>
   {
     private readonly CodeAnnotationsCache myCodeAnnotationsCache;
 
@@ -42,12 +42,12 @@ namespace JetBrains.ReSharper.PowerToys.GenerateDispose
       get { return 0; }
     }
 
-    public override void Process(CSharpGeneratorContext context)
+    protected override void Process(CSharpGeneratorContext context)
     {
       if (context.ClassDeclaration == null)
         return;
 
-      var factory = GetFactory(context);
+      var factory = CSharpElementFactory.GetInstance(context.Root.GetPsiModule());
       var typeOwners = context.InputElements.OfType<GeneratorDeclaredElement<ITypeOwner>>().ToList();
 
       // order is important
@@ -108,7 +108,7 @@ namespace JetBrains.ReSharper.PowerToys.GenerateDispose
       {
         var typeOwner = element.DeclaredElement;
         var type = typeOwner.Type;
-        if (type.IsReferenceType() && context.GetElementOptionValue(element, CanBeNull) == bool.TrueString)
+        if (type.IsReferenceType() && context.GetElementOptionValue(element, CSharpBuilderOptions.CanBeNull) == bool.TrueString)
           builder.Append("if ($" + args.Count + " != null) $" + args.Count + ".Dispose();");
         else
           builder.Append("$" + args.Count + ".Dispose();");
@@ -118,7 +118,7 @@ namespace JetBrains.ReSharper.PowerToys.GenerateDispose
     }
 
 
-    public override IList<IGeneratorOption> GetGlobalOptions(CSharpGeneratorContext context)
+    protected override IList<IGeneratorOption> GetGlobalOptions(CSharpGeneratorContext context)
     {
       var hasReferenceFields = context.ProvidedElements
         .OfType<GeneratorDeclaredElement<ITypeOwner>>()
@@ -126,7 +126,7 @@ namespace JetBrains.ReSharper.PowerToys.GenerateDispose
 
       var options = new List<IGeneratorOption>();
       if (hasReferenceFields)
-        options.Add(new GeneratorOptionBoolean(CanBeNull, "Fields can be &null", true));
+        options.Add(new GeneratorOptionBoolean(CSharpBuilderOptions.CanBeNull, "Fields can be &null", true));
       if (FindDispose(context) != null)
         options.Add(new GeneratorOptionSelector("ChangeDispose", "&Dispose already exists", "Replace", new[] { "Replace", "Skip", "Side by side" }) { Persist = true });
       if (!HasDisposable(context))
@@ -163,8 +163,8 @@ namespace JetBrains.ReSharper.PowerToys.GenerateDispose
                                   && method.Parameters.Count == 0);
     }
 
-    public override IList<IGeneratorOption> GetInputElementOptions(IGeneratorElement inputElement,
-                                                                   CSharpGeneratorContext context)
+    protected override IList<IGeneratorOption> GetInputElementOptions(IGeneratorElement inputElement,
+                                                                      CSharpGeneratorContext context)
     {
       var declaredElement = inputElement as GeneratorDeclaredElement<ITypeOwner>;
       if (declaredElement != null)
@@ -175,18 +175,17 @@ namespace JetBrains.ReSharper.PowerToys.GenerateDispose
           var attributesOwner = typeOwner as IAttributesOwner;
           var mark = myCodeAnnotationsCache.GetNullableAttribute(attributesOwner);
           return new IGeneratorOption[]
-                   { 
-                     new GeneratorOptionBoolean(CanBeNull, "Can be &null",
-                                                mark != CodeAnnotationNullableAttributeMark.NOT_NULL)
-                       { OverridesGlobalOption = mark == CodeAnnotationNullableAttributeMark.NOT_NULL }
-                   };
-
+          {
+            new GeneratorOptionBoolean(CSharpBuilderOptions.CanBeNull, "Can be &null",
+                                       mark != CodeAnnotationNullableValue.NOT_NULL)
+              { OverridesGlobalOption = mark == CodeAnnotationNullableValue.NOT_NULL }
+          };
         }
       }
       return base.GetInputElementOptions(inputElement, context);
     }
 
-    public override bool HasProcessableElements(CSharpGeneratorContext context, IEnumerable<IGeneratorElement> elements)
+    protected override bool HasProcessableElements(CSharpGeneratorContext context, IEnumerable<IGeneratorElement> elements)
     {
       return true;
     }
