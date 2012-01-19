@@ -136,7 +136,8 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric.CSharpSpecific
       var typeofExpression = value as ITypeofExpression;
       if (typeofExpression != null)
       {
-        if (typeofExpression.IsOpenType)
+        var isOpenType = typeofExpression.IsOpenType();
+        if (isOpenType == null || isOpenType == true)
           return null;
         return typeofExpression.ArgumentType;
       }
