@@ -39,7 +39,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
   {
     public override bool Update(IDataContext context, ActionPresentation presentation, DelegateUpdate nextUpdate)
     {
-      return context.CheckAllNotNull(IDE.DataConstants.DOCUMENT_SELECTION) &&
+      return context.CheckAllNotNull(DocumentModel.DataContext.DataConstants.DOCUMENT_SELECTION) &&
         base.Update(context, presentation, nextUpdate);
     }
 

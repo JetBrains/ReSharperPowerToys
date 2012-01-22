@@ -35,6 +35,7 @@ using JetBrains.Util;
 using JetBrains.Util.Special;
 using System.Linq;
 using RestSharp;
+using DataConstants = JetBrains.DocumentModel.DataContext.DataConstants;
 
 namespace JetBrains.ReSharper.PowerToys.Gist
 {
@@ -45,7 +46,7 @@ namespace JetBrains.ReSharper.PowerToys.Gist
     {
       return
         context.CheckAllNotNull(ProjectModel.DataContext.DataConstants.SOLUTION, ProjectModel.DataContext.DataConstants.PROJECT_MODEL_ELEMENTS) ||
-        context.CheckAllNotNull(ProjectModel.DataContext.DataConstants.SOLUTION, IDE.DataConstants.DOCUMENT_SELECTION);
+        context.CheckAllNotNull(ProjectModel.DataContext.DataConstants.SOLUTION, DataConstants.DOCUMENT_SELECTION);
     }
 
     public void Execute(IDataContext context, DelegateExecute nextExecute)
@@ -56,7 +57,7 @@ namespace JetBrains.ReSharper.PowerToys.Gist
 
       IDictionary<string, string> publishData = null;
       // Publish selected text
-      var documentSelection = context.GetData(IDE.DataConstants.DOCUMENT_SELECTION);
+      var documentSelection = context.GetData(DataConstants.DOCUMENT_SELECTION);
       if (documentSelection != null)
       {
         var filename = documentSelection.Document.GetPsiSourceFile(solution).IfNotNull(_ => _.Name);
