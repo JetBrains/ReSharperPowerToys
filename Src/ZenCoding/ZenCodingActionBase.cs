@@ -29,6 +29,7 @@ using JetBrains.ReSharper.Psi.CodeStyle;
 using JetBrains.TextControl;
 using JetBrains.Util;
 using System.Linq;
+using DataConstants = JetBrains.DocumentModel.DataContext.DataConstants;
 
 namespace JetBrains.ReSharper.PowerToys.ZenCoding
 {
@@ -93,7 +94,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
         return null;
 
       var dm = solution.GetComponent<DocumentManager>();
-      var doc = context.GetData(IDE.DataConstants.DOCUMENT);
+      var doc = context.GetData(DataConstants.DOCUMENT);
       if (doc == null)
         return null;
 
