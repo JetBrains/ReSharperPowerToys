@@ -37,6 +37,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XmlAndHtml", "XmlAndHtml\Xm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gist", "Gist\Gist.csproj", "{B272E0BB-3945-4EC1-A61F-73CF4E098A2D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PsiPlugin", "PsiPlugin\PsiPlugin.csproj", "{F412CECA-91A8-4175-85A2-E7F7B72F30CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PsiPluginTest", "PsiPluginTest\PsiPluginTest.csproj", "{F748B849-59A8-4EDB-9319-A9B00DE32E46}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +91,14 @@ Global
 		{B272E0BB-3945-4EC1-A61F-73CF4E098A2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B272E0BB-3945-4EC1-A61F-73CF4E098A2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B272E0BB-3945-4EC1-A61F-73CF4E098A2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F412CECA-91A8-4175-85A2-E7F7B72F30CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F412CECA-91A8-4175-85A2-E7F7B72F30CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F412CECA-91A8-4175-85A2-E7F7B72F30CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F412CECA-91A8-4175-85A2-E7F7B72F30CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F748B849-59A8-4EDB-9319-A9B00DE32E46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F748B849-59A8-4EDB-9319-A9B00DE32E46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F748B849-59A8-4EDB-9319-A9B00DE32E46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F748B849-59A8-4EDB-9319-A9B00DE32E46}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
