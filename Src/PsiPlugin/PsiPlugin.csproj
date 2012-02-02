@@ -47,6 +47,10 @@
     <Reference Include="JetBrains.Platform.ReSharper.ComponentModel">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.ComponentModel.dll</HintPath>
     </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.DocumentManager, Version=6.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\ReSharper\Main\Bin\JetBrains.Platform.ReSharper.DocumentManager.dll</HintPath>
+    </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.DocumentModel">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.DocumentModel.dll</HintPath>
     </Reference>
@@ -77,9 +81,6 @@
     <Reference Include="JetBrains.ReSharper.Psi">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Psi.dll</HintPath>
     </Reference>
-    <Reference Include="JetBrains.ReSharper.Psi.CSharp">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Psi.CSharp.dll</HintPath>
-    </Reference>
     <Reference Include="JetBrains.ReSharper.Psi.Services">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Psi.Services.dll</HintPath>
     </Reference>
@@ -93,6 +94,14 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\Cache\ICacheItem.cs" />
+    <Compile Include="src\Cache\IPsiCacheProvider.cs" />
+    <Compile Include="src\Cache\IPsiCustomCacheBuilder.cs" />
+    <Compile Include="src\Cache\IPsiSymbol.cs" />
+    <Compile Include="src\Cache\PsiCacheBuilder.cs" />
+    <Compile Include="src\Cache\PsiCache.cs" />
+    <Compile Include="src\Cache\PsiStandartCacheBuilder.cs" />
+    <Compile Include="src\Cache\PsiStandartCacheProvider.cs" />
     <Compile Include="src\Completion\KeywordCompletionUtil.cs" />
     <Compile Include="src\Completion\KeywordsBetterFilter.cs" />
     <Compile Include="src\Completion\LookupItems\PsiKeywordLookupItem.cs" />
@@ -181,6 +190,7 @@
     <Compile Include="src\Tree\Impl\VariableName.cs" />
     <Compile Include="src\Tree\IPathDeclaration.cs" />
     <Compile Include="src\Tree\IPathName.cs" />
+    <Compile Include="src\Tree\IPsiTypeMemberDeclaration.cs" />
     <Compile Include="src\Tree\IRoleName.cs" />
     <Compile Include="src\Tree\IRuleName.cs" />
     <Compile Include="src\Tree\Impl\RuleDeclaration.cs" />
@@ -199,11 +209,8 @@
     <Compile Include="src\Tree\Impl\PsiGenericToken.cs" />
     <Compile Include="src\Tree\Impl\PsiTokenBase.cs" />
     <Compile Include="src\Tree\Impl\Whitespace.cs" />
-    <Compile Include="src\Tree\IPsiNamespaceDeclaration.cs" />
     <Compile Include="src\Tree\IPsiStatement.cs" />
     <Compile Include="src\Tree\IPsiTreeNode.cs" />
-    <Compile Include="src\Tree\IPsiTypeDeclaration.cs" />
-    <Compile Include="src\Tree\IPsiTypeMemberDeclaration.cs" />
     <Compile Include="src\Util\PsiDeclaredElementElementUtil.cs" />
     <Compile Include="src\Util\PsiElementFactory.cs" />
     <Compile Include="src\Util\PsiElementFactoryImpl.cs" />

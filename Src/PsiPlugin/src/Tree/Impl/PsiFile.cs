@@ -23,6 +23,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
     private string parserPackageName = "";
     private string treeInterfacesPackageName = "";
     private string treeClassesPackageName = "";
+    private string visitorClassName = "";
+    private string visitorMethodPrefix = "";
+    private string visitorMethodSuffix = "";
 
     protected Dictionary<string, IDeclaredElement> Declarations = new Dictionary<string, IDeclaredElement>();
 
@@ -99,6 +102,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
         ITreeNode parserPackageNode = null;
         ITreeNode treeInterfacesPackageNode = null;
         ITreeNode treeClassesPackageNode = null;
+        ITreeNode visitorClassNameNode = null;
+        ITreeNode visitorMethodSuffixNode = null;
+        ITreeNode visitorMethodPrefixNode = null;
         while (child != null)
         {
           optionDefinition = child as IOptionDefinition;
@@ -111,6 +117,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
               if ("\"tokenTypeClassFQName\"".Equals(token.GetText()))
               {
                 tokenTypeClassFQNameNode = optionDefinition.OptionStringValue;
+              }
+              if ("\"visitMethodPrefix\"".Equals(token.GetText()))
+              {
+                visitorMethodPrefixNode = optionDefinition.OptionStringValue;
               }
             }
             if ("parserClassName".Equals(optionName.GetText()))
@@ -128,6 +138,14 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
             if ("psiStubsPackageName".Equals(optionName.GetText()))
             {
               treeClassesPackageNode = optionDefinition.OptionStringValue;
+            }
+            if ("visitorClassName".Equals(optionName.GetText()))
+            {
+              visitorClassNameNode = optionDefinition.OptionStringValue;
+            }
+            if ("visitorMethodSuffix".Equals(optionName.GetText()))
+            {
+              visitorMethodSuffixNode = optionDefinition.OptionStringValue;
             }
           }
           child = child.NextSibling;
@@ -162,24 +180,78 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
 
         if ((parserPackageNode != null) && (parserClassNameNode != null))
         {
-          parserClassName = parserClassNameNode.GetText();
-          parserClassName = parserClassName.Substring(1, parserClassName.Length - 2);
-          parserPackageName = parserPackageNode.GetText();
-          parserPackageName = parserPackageName.Substring(1, parserPackageName.Length - 2);
-          treeInterfacesPackageName = treeInterfacesPackageNode.GetText();
-          treeInterfacesPackageName = treeInterfacesPackageName.Substring(1, treeInterfacesPackageName.Length - 2);
-          treeClassesPackageName = treeClassesPackageNode.GetText();
-          treeClassesPackageName = treeClassesPackageName.Substring(1, treeClassesPackageName.Length - 2);
+          if (parserClassNameNode != null)
+          {
+            parserClassName = parserClassNameNode.GetText();
+            parserClassName = parserClassName.Substring(1, parserClassName.Length - 2);
+          } else
+          {
+            parserClassName = "";
+          }
+          if (parserPackageName != null)
+          {
+            parserPackageName = parserPackageNode.GetText();
+            parserPackageName = parserPackageName.Substring(1, parserPackageName.Length - 2);
+          } else
+          {
+            parserPackageName = "";
+          }
+          if (treeInterfacesPackageNode != null)
+          {
+            treeInterfacesPackageName = treeInterfacesPackageNode.GetText();
+            treeInterfacesPackageName = treeInterfacesPackageName.Substring(1, treeInterfacesPackageName.Length - 2);
+          } else
+          {
+            treeInterfacesPackageName = "";
+          }
+          if (treeClassesPackageNode != null)
+          {
+            treeClassesPackageName = treeClassesPackageNode.GetText();
+            treeClassesPackageName = treeClassesPackageName.Substring(1, treeClassesPackageName.Length - 2);
+          } else
+          {
+            treeClassesPackageName = "";
+          }
+
+          if (visitorClassNameNode != null)
+          {
+            visitorClassName = visitorClassNameNode.GetText();
+            visitorClassName = visitorClassName.Substring(1, visitorClassName.Length - 2);
+          } else
+          {
+            visitorClassName = "";
+          }
+
+          if (visitorMethodPrefixNode != null)
+          {
+            visitorMethodPrefix = visitorMethodPrefixNode.GetText();
+            visitorMethodPrefix = visitorMethodPrefix.Substring(1, visitorMethodPrefix.Length - 2);
+          } else
+          {
+            visitorMethodPrefix = "";
+          }
+          if (visitorMethodSuffixNode != null)
+          {
+            visitorMethodSuffix = visitorMethodSuffixNode.GetText();
+            visitorMethodSuffix = visitorMethodSuffix.Substring(1, visitorMethodSuffix.Length - 2);
+          }
+          else
+          {
+            visitorMethodSuffix = "";
+          }
           var classes =
             GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(
               parserPackageName + "." + parserClassName);
+          var visitorClasses =
+            GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(
+              treeInterfacesPackageName + "." + visitorClassName);
           var elements = Declarations.Values;
           foreach (IDeclaredElement declaredElement in elements)
           {
             IEnumerator<ITypeElement> enumerator = classes.GetEnumerator();
             if (enumerator.MoveNext())
             {
-              ((RuleDeclaration) declaredElement).CollectDerivedDeclaredElements((IClass) enumerator.Current, treeInterfacesPackageName, treeClassesPackageName);
+              ((RuleDeclaration) declaredElement).CollectDerivedDeclaredElements((IClass) enumerator.Current, visitorClasses, treeInterfacesPackageName, treeClassesPackageName, visitorClassName, visitorMethodPrefix, visitorMethodSuffix);
             }
           }
         }
