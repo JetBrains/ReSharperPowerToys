@@ -63,7 +63,7 @@ namespace JetBrains.ReSharper.PsiPlugin.DaemonStage
           if (referenceExpression != null)
           {
             // this.xxx = ...
-            var name = referenceExpression.Name;
+            var name = referenceExpression.Text;
             if (referenceExpression.Qualifier is IThisExpression && name != SharedImplUtil.MISSING_DECLARATION_NAME)
             {
               FieldsDefinedInFunction.Add(myFunctions.Peek(), name);
