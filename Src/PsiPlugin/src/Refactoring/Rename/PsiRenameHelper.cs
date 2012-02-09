@@ -3,8 +3,10 @@ using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.Psi.Resolve;
+using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Cach;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
+using JetBrains.ReSharper.PsiPlugin.Tree;
 using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
 using JetBrains.ReSharper.Refactorings.Conflicts;
 using JetBrains.ReSharper.Refactorings.Rename;
@@ -115,21 +117,126 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
             IPsiSymbol symbol = symbols.ToArray()[0];
             var element =
               symbol.SourceFile.GetPsiFile<PsiLanguage>().FindNodeAt(new TreeTextRange(new TreeOffset(symbol.Offset), 1));
-            while (element != null)
+            ICollection<IPsiSymbol> parserPackageName = cache.GetSymbol("parserPackage");
+            ICollection<IPsiSymbol> parserClassName = cache.GetSymbol("parserClassName");
+            IList<IDeclaredElement> classes = new List<IDeclaredElement>();
+            foreach (var packageName in parserPackageName)
             {
-              if (element is IDeclaredElement)
+              foreach (var className in parserClassName)
               {
-                return (IDeclaredElement) element;
+                if (packageName.SourceFile == className.SourceFile)
+                {
+                  var sourceFile = packageName.SourceFile;
+                  classes.AddRange(
+                    sourceFile.PsiModule.GetPsiServices().CacheManager.GetDeclarationsCache(sourceFile.PsiModule, false,true).
+                      GetTypeElementsByCLRName(packageName.Value + "." + className.Value));
+                }
               }
-              element = element.Parent;
+            }
+
+            IClass parentClass = method.GetContainingType() as IClass;
+            if (parentClass != null)
+            {
+              if (classes.Contains(parentClass))
+              {
+
+                while (element != null)
+                {
+                  if (element is IDeclaredElement)
+                  {
+                    return (IDeclaredElement) element;
+                  }
+                  element = element.Parent;
+                }
+              }
             }
             return declaredElement;
           }
-          //todo check considence parser adn psi
-          /*foreach (var psiSymbol in symbols)
+        }
+        else
+        {
+          var cache = declaredElement.GetPsiServices().Solution.GetComponent<PsiCache>();
+          ICollection<IPsiSymbol> visitorClassName = cache.GetSymbol("visitorClassName");
+          ICollection<IPsiSymbol> visitorMetodSuffix = cache.GetSymbol("visitorMethodSuffix");
+          ICollection<IPsiSymbol> visitorMetodPrefix = cache.GetSymbol("\"visitMethodPrefix\"");
+          ICollection<IPsiSymbol> interfacesPackageName = cache.GetSymbol("psiInterfacePackageName");
+          Dictionary<ITypeElement, IList<IPsiSymbol>> classes = new Dictionary<ITypeElement, IList<IPsiSymbol>>();
+          foreach (var visitorName in visitorClassName)
           {
-           ICollection<IPsiSymbol> files = cache.GetSymbol()           
-          }*/
+            foreach (var methodSuffix in visitorMetodSuffix)
+            {
+              foreach (var methodPrefix in visitorMetodPrefix)
+              {
+                foreach (var packageName in interfacesPackageName)
+                {
+                  if((visitorName.SourceFile == methodSuffix.SourceFile) && (methodPrefix.SourceFile == packageName.SourceFile) && (packageName.SourceFile == methodSuffix.SourceFile))
+                  {
+                    var sourceFile = visitorName.SourceFile;
+                    var collection = sourceFile.PsiModule.GetPsiServices().CacheManager.GetDeclarationsCache(
+                      sourceFile.PsiModule, false, true).
+                      GetTypeElementsByCLRName(packageName.Value + "." + visitorName.Value);
+                    foreach (var typeElement in collection)
+                    {
+                      classes.Add(typeElement, new List<IPsiSymbol>(){visitorName, methodSuffix, methodPrefix, packageName});                     
+                    }
+                  }
+                }
+              }
+            }
+          }
+          if(classes.Count > 0)
+          {
+            IClass parentClass = method.GetContainingType() as IClass;
+            if(parentClass != null)
+            {
+              if(classes.ContainsKey(parentClass))
+              {
+                var list = classes[parentClass];
+                var visitorName = list[0];
+                var methodSuffix = list[1];
+                var methodPrefix = list[2];
+                var interfacesPackage = list[3];
+                var sourceFile = visitorName.SourceFile;
+                string name = method.ShortName;
+                if(name.Length > methodPrefix.Value.Length + methodSuffix.Value.Length)
+                {
+                  if(methodPrefix.Value.Length > 0)
+                  {
+                    name = name.Substring(methodPrefix.Value.Length, name.Length - methodPrefix.Value.Length);
+                  }
+                  if(methodSuffix.Value.Length > 0)
+                  {
+                    name = name.Substring(0, name.Length - methodSuffix.Value.Length);
+                  }
+                  var elements = cache.GetSymbol(NameFromCamelCase(name));
+                  foreach (var psiSymbol in elements)
+                  {
+                    if(psiSymbol.SourceFile == sourceFile)
+                    {
+                      PsiFile psiFile = sourceFile.GetPsiFile<PsiLanguage>() as PsiFile;
+                      IList<ISymbolInfo> infos = psiFile.FileRuleSymbolTable.GetSymbolInfos(name);
+                      foreach (ISymbolInfo info in infos)
+                      {
+                        var element = info.GetDeclaredElement();
+                        if(element is RuleDeclaration)
+                        {
+                          RuleDeclaration ruleDeclaration= element as RuleDeclaration;
+                          if(ruleDeclaration.DerivedVisitorMethods.Contains(method))
+                          {
+                            return ruleDeclaration;
+                          }
+                        }
+                      }
+                    }
+                  }
+                } else
+                {
+                  return declaredElement;
+                }
+              }
+            }
+          } 
+          return declaredElement;
         }
       }
 
@@ -180,6 +287,14 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
         }
       }
       return declaredElement;
+    }
+
+    private string NameFromCamelCase(string s)
+    {
+      string firstLetter = s.Substring(0, 1);
+      firstLetter = firstLetter.ToLower();
+      s = firstLetter + s.Substring(1, s.Length - 1);
+      return s;
     }
   }
 }

@@ -16,7 +16,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Cach
     /// <summary>
     /// Short name of a symbol
     /// </summary>
-    string Text { get; }
+    string Name { get; }
+
+    string Value { get; }
   }
 
   public interface IPersistentCacheItem : ICacheItem

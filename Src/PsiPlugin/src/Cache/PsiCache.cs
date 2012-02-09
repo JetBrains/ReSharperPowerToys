@@ -159,7 +159,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Cach
       {
         foreach (var oldDeclaration in myProjectFileToSymbolsMap[sourceFile])
         {
-          var oldName = oldDeclaration.Text;
+          var oldName = oldDeclaration.Name;
 
           var symbol = oldDeclaration as IPsiSymbol;
           if (symbol != null)
@@ -177,10 +177,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Cach
       {
         var symbol = declaration as IPsiSymbol;
         if (symbol != null)
-          myNameToSymbolsMap.Add(declaration.Text, symbol);
+          myNameToSymbolsMap.Add(declaration.Name, symbol);
         //var binding = declaration as IPsiTypeBinding;
         //if (binding != null)
-          //myNameToBindingMap.Add(declaration.Text, binding);
+          //myNameToBindingMap.Add(declaration.Name, binding);
       }
       myDirtyFiles.Remove(sourceFile);
     }
@@ -194,7 +194,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Cach
       {
         foreach (var oldDeclaration in myProjectFileToSymbolsMap[sourceFile])
         {
-          var oldName = oldDeclaration.Text;
+          var oldName = oldDeclaration.Name;
           var symbol = oldDeclaration as IPsiSymbol;
           if (symbol != null)
             myNameToSymbolsMap.Remove(oldName, symbol);
@@ -294,7 +294,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Cach
       /*IList<IPsiSymbol> list = new List<IPsiSymbol>();
       foreach(IPsiSymbol symbol in mySymbols)
       {
-        if(name.Equals(symbol.Text))
+        if(name.Equals(symbol.Name))
         {
           list.Add(symbol);
         }
