@@ -47,7 +47,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Cach
 
   public class PsiSymbol : IPsiSymbol
   {
-    private string myText;
+    private string myName;
+    private string myValue;
     private int myOffset;
     private IPsiSourceFile myPsiSourceFile;
     private StandartSymbolDeclarationKind myDeclarationKind;
@@ -56,32 +57,45 @@ namespace JetBrains.ReSharper.PsiPlugin.Cach
 
     public PsiSymbol(ITreeNode treeNode)
     {
+      myValue = "";
       if (treeNode is IRuleDeclaration)
       {
-        myText = ((IRuleDeclaration)treeNode).DeclaredName;
+        myName = ((IRuleDeclaration)treeNode).DeclaredName;
       }
       else if(treeNode is IOptionDefinition)
       {
         var option = treeNode as IOptionDefinition;
+        myName = option.OptionName.GetText();
         if(option.OptionIntegerValue != null)
         {
-          myText = option.OptionName.GetText() + option.OptionIntegerValue.GetText();
+          myValue = option.OptionIntegerValue.GetText();
         }
         if (option.OptionStringValue != null)
         {
-          myText = option.OptionName.GetText() + option.OptionStringValue.GetText();
+          myValue = option.OptionStringValue.GetText();
         }
         if (option.OptionIdentifierValue != null)
         {
-          myText = option.OptionName.GetText() + option.OptionIdentifierValue.GetText();
+          myValue = option.OptionIdentifierValue.GetText();
+        }
+        if(myValue.Length > 0)
+        {
+          if("\"".Equals(myValue.Substring(0,1)))
+          {
+            myValue = myValue.Substring(1, myValue.Length - 1);
+          }
+          if ("\"".Equals(myValue.Substring(myValue.Length - 1, 1)))
+          {
+            myValue = myValue.Substring(0, myValue.Length - 1);
+          }
         }
       } else
       {
-        myText = treeNode.GetText();
+        myName = treeNode.GetText();
       }
-      if(myText == null)
+      if(myName == null)
       {
-        myText = "";
+        myName = "";
       }
       myOffset = treeNode.GetNavigationRange().TextRange.StartOffset;
       myPsiSourceFile = treeNode.GetSourceFile();
@@ -168,14 +182,16 @@ namespace JetBrains.ReSharper.PsiPlugin.Cach
 
     public void Write(BinaryWriter writer)
     {
-      writer.Write(Text);
+      writer.Write(Name);
+      writer.Write(Value);
       writer.Write(Offset);
       writer.Write((int)myDeclarationKind);
     }
 
     public void Read(BinaryReader reader)
     {
-      myText = reader.ReadString();
+      myName = reader.ReadString();
+      myValue = reader.ReadString();
       myOffset = reader.ReadInt32();
       myDeclarationKind = (StandartSymbolDeclarationKind)reader.ReadInt32();
     }
@@ -185,11 +201,19 @@ namespace JetBrains.ReSharper.PsiPlugin.Cach
       get { return Guid; }
     }
 
-    public string Text
+    public string Name
     {
       get
       {
-        return myText;
+        return myName;
+      }
+    }
+
+    public string Value
+    {
+      get
+      {
+        return myValue;
       }
     }
   }
