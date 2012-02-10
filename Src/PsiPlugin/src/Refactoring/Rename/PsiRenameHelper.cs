@@ -50,7 +50,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
         var ruleDeclaration = declaredElement as RuleDeclaration;
         if (ruleDeclaration != null)
         {
-          ruleDeclaration.CollectDerivedDeclaredElements();
+          ruleDeclaration.UpdateDerivedDeclaredElements();
           foreach (IDeclaredElement element in ruleDeclaration.DerivedDeclaredElements)
           {
             yield return new PsiDerivedElementRename(element, "parse" + NameToCamelCase(newName),
@@ -172,10 +172,27 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
                   if((visitorName.SourceFile == methodSuffix.SourceFile) && (methodPrefix.SourceFile == packageName.SourceFile) && (packageName.SourceFile == methodSuffix.SourceFile))
                   {
                     var sourceFile = visitorName.SourceFile;
-                    var collection = sourceFile.PsiModule.GetPsiServices().CacheManager.GetDeclarationsCache(
-                      sourceFile.PsiModule, false, true).
-                      GetTypeElementsByCLRName(packageName.Value + "." + visitorName.Value);
-                    foreach (var typeElement in collection)
+                    ICollection<ITypeElement> visitorClasses = new List<ITypeElement>();
+                    foreach (var typeElement in sourceFile.GetPsiServices().CacheManager.GetDeclarationsCache(sourceFile.PsiModule, false, true).GetTypeElementsByCLRName(
+                        packageName.Value + "." + visitorName.Value))
+                    {
+                      visitorClasses.Add(typeElement);
+                    }
+                    var visitorGenericClasses =
+                      sourceFile.GetPsiServices().CacheManager.GetDeclarationsCache(sourceFile.PsiModule, false, true).GetTypeElementsByCLRName(
+                        packageName.Value + "." + visitorName.Value + "`1");
+                    foreach (var visitorGenericClass in visitorGenericClasses)
+                    {
+                      visitorClasses.Add(visitorGenericClass);
+                    }
+                    visitorGenericClasses =
+                      sourceFile.GetPsiServices().CacheManager.GetDeclarationsCache(sourceFile.PsiModule, false, true).GetTypeElementsByCLRName(
+                        packageName.Value + "." + visitorName.Value + "`2");
+                    foreach (var visitorGenericClass in visitorGenericClasses)
+                    {
+                      visitorClasses.Add(visitorGenericClass);
+                    }
+                    foreach (var typeElement in visitorClasses)
                     {
                       classes.Add(typeElement, new List<IPsiSymbol>(){visitorName, methodSuffix, methodPrefix, packageName});                     
                     }
@@ -221,10 +238,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
                         if(element is RuleDeclaration)
                         {
                           RuleDeclaration ruleDeclaration= element as RuleDeclaration;
-                          if(ruleDeclaration.DerivedVisitorMethods.Contains(method))
-                          {
+                          //if(ruleDeclaration.DerivedVisitorMethods.Contains(method))
+                          //{
                             return ruleDeclaration;
-                          }
+                          //}
                         }
                       }
                     }

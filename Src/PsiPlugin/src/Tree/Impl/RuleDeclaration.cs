@@ -148,10 +148,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
       myVisitorClassName = visitorClassName;
       myVisitorMethodPrefix = visitorMethodPrefix;
       myVisitorMethodSuffix = visitorMethodSuffix;
-      CollectDerivedDeclaredElements();
+      UpdateDerivedDeclaredElements();
     }
 
-    public void CollectDerivedDeclaredElements(){
+    public void UpdateDerivedDeclaredElements(){
       myDerivedDeclaredElements.Clear();
       myDerivedClasses.Clear();
       myDerivedInterfaces.Clear();
@@ -174,7 +174,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
           IEnumerable<IMethod> methods = visitorClass.Methods;
           foreach (IMethod method in methods)
           {
-            if ((myVisitorMethodPrefix + NameToCamelCase() + myVisitorMethodSuffix).Equals(method.ShortName))
+            string name = myVisitorMethodPrefix + NameToCamelCase() + myVisitorMethodSuffix;
+            if ((name).Equals(method.ShortName) || ((name + "`").Equals(method.ShortName)) || ((name + "``").Equals(method.ShortName)))
             {
               myDerivedVisitorMethods.Add(method);
             }
