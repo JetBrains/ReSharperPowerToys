@@ -242,9 +242,26 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
           var classes =
             GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(
               parserPackageName + "." + parserClassName);
-          var visitorClasses =
+          ICollection<ITypeElement> visitorClasses = new List<ITypeElement>();
+          foreach (var typeElement in GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(
+              treeInterfacesPackageName + "." + visitorClassName))
+          {
+            visitorClasses.Add(typeElement);
+          }
+          var visitorGenericClasses =
             GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(
-              treeInterfacesPackageName + "." + visitorClassName);
+              treeInterfacesPackageName + "." + visitorClassName + "`1");
+          foreach (var visitorGenericClass in visitorGenericClasses)
+          {
+            visitorClasses.Add(visitorGenericClass);
+          }
+          visitorGenericClasses =
+            GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(
+              treeInterfacesPackageName + "." + visitorClassName + "`2");
+          foreach (var visitorGenericClass in visitorGenericClasses)
+          {
+            visitorClasses.Add(visitorGenericClass);
+          }
           var elements = Declarations.Values;
           foreach (IDeclaredElement declaredElement in elements)
           {
