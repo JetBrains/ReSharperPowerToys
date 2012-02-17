@@ -5,7 +5,7 @@ using System.Text;
 
 namespace JetBrains.ReSharper.PsiPlugin.Resolve
 {
-  class OptionDeclaredElements
+  public class OptionDeclaredElements
   {
     public static IList<string> FileOptionNames = new List<string>()
                                                    {
@@ -44,6 +44,52 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
                                                      "publicChildRoleClass",
                                                      "generateWorkingPsi",
                                                      "parserMessagesClass"
+                                                   };
+
+    public static IList<string> NamespacesOptions = new List<string>()
+                                                      {
+                                                        "parserPackage",
+                                                        "psiInterfacePackageName",
+                                                        "tokenTypePackageName",
+                                                        "psiStubsPackageName",
+                                                        "parserGenRuntimePackageName",
+                                                        "customImplPackage",
+                                                        "customInterfacePackage"
+                                                      };
+
+    public static IList<string> ClassesOptions = new List<string>()
+                                                   {
+                                                     "parserClassName",
+                                                     "psiStubsBaseClass",
+                                                     "tokenTypeBeforeFirst",
+                                                     "tokenTypeFirst",
+                                                     "tokenTypeLast",
+                                                     "elementTypeBeforeFirst",
+                                                     "tokenClassName",
+                                                     "semanticVisitorClassName",
+                                                     "hierarchicalSemanticVisitorClassName",
+                                                     "visitorClassName",
+                                                     "visitorSuperClassName",
+                                                     "treeElementClassFQName",
+                                                     "leafElementClassFQName",
+                                                     "compositeElementClassFQName",
+                                                     "psiElementVisitorClassFQName",
+                                                     "tokenTypeClassFQName",
+                                                     "unexpectedTokenClassFQName",
+                                                     "syntaxErrorClassFQName",
+                                                     "lexerClassName",
+                                                     "psiElementClassFQName",
+                                                     "semanticPsiElementClassFQName",
+                                                     "tokenElementClassFQName",
+                                                     "objectClassFQName",
+                                                     "parserMessagesClass",
+                                                     "tokenBitsetThreshold"
+                                                   };
+ 
+    public static IList<string> MethodsOptions = new List<string>()
+                                                   {
+                                                     "createTokenElementMethodFQName",
+                                                     "languageType"
                                                    };
 
     public static IList<string> RuleOptionNames = new List<string>()
