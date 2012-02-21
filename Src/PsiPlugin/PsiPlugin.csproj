@@ -49,7 +49,7 @@
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.DocumentManager, Version=6.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\ReSharper\Main\Bin\JetBrains.Platform.ReSharper.DocumentManager.dll</HintPath>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.DocumentManager.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.DocumentModel">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.DocumentModel.dll</HintPath>
@@ -82,14 +82,14 @@
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Psi.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Psi.CSharp">
-      <HintPath>..\..\..\ReSharper\Main\Bin\JetBrains.ReSharper.Psi.CSharp.dll</HintPath>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Psi.CSharp.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Psi.Services">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Psi.Services.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Psi.Web, Version=6.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\ReSharper\Main\Bin\JetBrains.ReSharper.Psi.Web.dll</HintPath>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Psi.Web.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Resources, Version=6.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -141,6 +141,7 @@
     <Compile Include="src\Feature\Services\RepeatedChoiceWarning.cs" />
     <Compile Include="src\GeneratedDocument\CSharpFromPsiGeneratedDocumentService.cs" />
     <Compile Include="src\GeneratedDocument\CSharpFromPsiGenerator.cs" />
+    <Compile Include="src\GeneratedDocument\CSharpInPsiCustomModificationHandler.cs" />
     <Compile Include="src\Gen\**\*.cs" />
     <Compile Include="src\DaemonStage\ErrorElementHighlighting.cs" />
     <Compile Include="src\DaemonStage\FileStructureCollectorStage.cs" />
