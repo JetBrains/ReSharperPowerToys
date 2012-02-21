@@ -41,12 +41,22 @@ namespace JetBrains.ReSharper.PsiPlugin.Cach
           if (constructor != null)
             break;
         }
+
         Assertion.Assert(constructor != null, string.Format("Can not create item constructor with guid '{0}'", guid));
+
+        if(constructor == null)
+        {
+          return ret;
+        }
+
         for (int j = 0; j < count; j++)
         {
           var item = constructor(sourceFile);
-          item.Read(reader);
-          ret.Add(item);
+          if(item != null)
+          {
+            item.Read(reader);
+            ret.Add(item);
+          }
         }
       }
       return ret;

@@ -91,6 +91,25 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
             }
             if (OptionDeclaredElements.ClassesOptions.Contains(optionName))
             {
+              var classes = treeNode.GetPsiServices().CacheManager.GetDeclarationsCache(treeNode.GetPsiModule(), false, true).GetTypeElementsByCLRName(optionValueText);
+              foreach (var typeElement in classes)
+              {
+                if(typeElement is IClass)
+                {
+                  if(((IClass) typeElement).IsStatic)
+                  {
+                    var fields = ((IClass) typeElement).Fields;
+                    foreach (var field in fields)
+                    {
+                      var staticMap = GeneratedRangeMapFactory.CreateGeneratedRangeMap(myFile);
+                      staticMap.Add(new TreeTextRange<Generated>(new TreeOffset(), new TreeOffset(optionValueText.Length)),
+                              new TreeTextRange<Original>(new TreeOffset(startOffset), new TreeOffset(endOffset)));
+                      myGeneratedMethodBody.Append(new GenerationResults(CSharpLanguage.Instance, optionValueText + "." + field.ShortName + " a;\n",staticMap));
+                      return;
+                    }
+                  }
+                }
+              }
               var map = GeneratedRangeMapFactory.CreateGeneratedRangeMap(myFile);
               map.Add(new TreeTextRange<Generated>(new TreeOffset(), new TreeOffset(optionValueText.Length)),
                       new TreeTextRange<Original>(new TreeOffset(startOffset), new TreeOffset(endOffset)));
