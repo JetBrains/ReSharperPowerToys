@@ -92,6 +92,14 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
                                                      "languageType"
                                                    };
 
+    public static IList<string> DirectoryOptions = new List<string>()
+                                                     {
+                                                       "parserTargetSubdir",
+                                                       "psiInterfacesTargetSubdir",
+                                                       "psiStubsTargetSubdi",
+                                                       "testTargetSubdir"
+                                                     }; 
+
     public static IList<string> RuleOptionNames = new List<string>()
                                                    {
                                                      "customImpl",

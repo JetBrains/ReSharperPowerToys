@@ -177,7 +177,7 @@ namespace JetBrains.ReSharper.PsiPlugin.FindUsges
       {
         return mySearchDomainFactory.CreateSearchDomain(files[0]);
       }
-      return null;
+      return mySearchDomainFactory.CreateSearchDomain(declaredElement.GetSolution(), false);
     }
   }
 }
