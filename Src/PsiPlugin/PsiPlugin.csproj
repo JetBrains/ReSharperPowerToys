@@ -176,8 +176,11 @@
     <Compile Include="src\Resolve\OptionDeclaredElements.cs" />
     <Compile Include="src\Resolve\OptionPropertyDeclaredElement.cs" />
     <Compile Include="src\Resolve\PsiDeclaredElementType.cs" />
+    <Compile Include="src\Resolve\PsiFileReference.cs" />
+    <Compile Include="src\Resolve\PsiFolderReference.cs" />
     <Compile Include="src\Resolve\PsiOptionReference.cs" />
     <Compile Include="src\Resolve\PsiPathReference.cs" />
+    <Compile Include="src\Resolve\PsiPathReferenceUtil.cs" />
     <Compile Include="src\Resolve\PsiResolveInfo.cs" />
     <Compile Include="src\Resolve\PsiResolveUtil.cs" />
     <Compile Include="src\Resolve\PsiRoleReference.cs" />
@@ -193,6 +196,7 @@
     <Compile Include="src\Resolve\PsiReferenceBase.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="src\Tree\Impl\OptionStringValue.cs" />
     <Compile Include="src\Tree\Impl\PathDeclaration.cs" />
     <Compile Include="src\Tree\Impl\PathName.cs" />
     <Compile Include="src\Tree\Impl\RoleName.cs" />
