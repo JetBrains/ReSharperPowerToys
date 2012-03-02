@@ -17,6 +17,7 @@ using JetBrains.ReSharper.Psi.Web.References;
 using JetBrains.ReSharper.Psi.Web.Resolve;
 using JetBrains.ReSharper.Psi.Web.Util;
 using JetBrains.ReSharper.PsiPlugin.Util;
+using JetBrains.ReSharper.PsiPlugin.src.Cache;
 using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Resolve
@@ -106,10 +107,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
 
     public static ISymbolTable GetReferenceSymbolTable(IPathReference pathReference, bool useReferenceName, bool includeHttpHandlers = true)
     {
-      MSBuildPropertiesSearcher propertiesSearcher =
-        pathReference.GetTreeNode().GetSolution().GetComponent<MSBuildPropertiesSearcher>();
+      MSBuildPropertiesCache propertiesSearcher =
+        pathReference.GetTreeNode().GetSolution().GetComponent<MSBuildPropertiesCache>();
 
-      string productHomeDir = propertiesSearcher.GetProperty(pathReference.GetTreeNode().GetProject(),
+      string productHomeDir = propertiesSearcher.GetProjectPropertyByName(pathReference.GetTreeNode().GetProject(),
                                                                     "ProductHomeDir");
       FileSystemPath basePath = new FileSystemPath(productHomeDir);
       //FileSystemPath basePath = GetBasePath(pathReference);
@@ -147,7 +148,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
             try
             {
               string parserGenOutputBase =
-               propertiesSearcher.GetProperty(pathReference.GetTreeNode().GetProject(), "ParserGenOutputBase");
+               propertiesSearcher.GetProjectPropertyByName(pathReference.GetTreeNode().GetProject(), "ParserGenOutputBase");
               var path = basePath.Combine(parserGenOutputBase + "\\" + name);
               target = new PathDeclaredElement(name,psiServices, path);
             }
