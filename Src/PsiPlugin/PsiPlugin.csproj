@@ -110,6 +110,7 @@
     <Compile Include="src\Cache\IPsiCacheProvider.cs" />
     <Compile Include="src\Cache\IPsiCustomCacheBuilder.cs" />
     <Compile Include="src\Cache\IPsiSymbol.cs" />
+    <Compile Include="src\Cache\MSBuildPropertiesCache.cs" />
     <Compile Include="src\Cache\PsiCacheBuilder.cs" />
     <Compile Include="src\Cache\PsiCache.cs" />
     <Compile Include="src\Cache\PsiStandartCacheBuilder.cs" />
@@ -229,7 +230,6 @@
     <Compile Include="src\Tree\Impl\Whitespace.cs" />
     <Compile Include="src\Tree\IPsiStatement.cs" />
     <Compile Include="src\Tree\IPsiTreeNode.cs" />
-    <Compile Include="src\Util\MSBuildPropertiesSearcher.cs" />
     <Compile Include="src\Util\PsiDeclaredElementElementUtil.cs" />
     <Compile Include="src\Util\PsiElementFactory.cs" />
     <Compile Include="src\Util\PsiElementFactoryImpl.cs" />
