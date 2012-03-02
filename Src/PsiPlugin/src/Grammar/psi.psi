@@ -20,7 +20,7 @@ options {
   visitorSuperClassName="JetBrains.ReSharper.PsiPlugin.Tree.TreeNodeVisitorBase";
   "treeElementClassFQName"="JetBrains.ReSharper.Psi.ExtensionsAPI.Tree.TreeElement";
   "leafElementClassFQName"="JetBrains.ReSharper.PsiPlugin.Tree.PsiLeafElement";
-  "compositeElementClassFQName"="JetBrains.ReSharper.PsiPluin.Tree.PsiCompositeElement";
+  "compositeElementClassFQName"="JetBrains.ReSharper.PsiPlugin.Tree.PsiCompositeElement";
   "psiElementVisitorClassFQName"="JetBrains.ReSharper.PsiPlugin.Tree.TreeNodeVisitor";
   "tokenTypeClassFQName"="JetBrains.ReSharper.PsiPlugin.Parsing.PsiTokenType";
   "unexpectedTokenClassFQName"="Parsing.UnexpectedToken";

@@ -96,7 +96,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
                                                      {
                                                        "parserTargetSubdir",
                                                        "psiInterfacesTargetSubdir",
-                                                       "psiStubsTargetSubdi",
+                                                       "psiStubsTargetSubdir",
                                                        "testTargetSubdir"
                                                      }; 
 

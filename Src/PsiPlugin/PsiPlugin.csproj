@@ -13,7 +13,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>JetBrains.ReSharper.PsiPlugin</RootNamespace>
     <AssemblyName>JetBrains.ReSharper.PsiPlugin</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <PsiLanguageName>Psi</PsiLanguageName>
     <ProductHomeDir>$(MSBuildProjectDirectory)</ProductHomeDir>
@@ -75,6 +75,9 @@
     <Reference Include="JetBrains.ReSharper.Feature.Services">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.dll</HintPath>
     </Reference>
+    <Reference Include="JetBrains.ReSharper.Intentions.CSharp">
+      <HintPath>..\..\..\ReSharper\Main\bin\JetBrains.ReSharper.Intentions.CSharp.dll</HintPath>
+    </Reference>
     <Reference Include="JetBrains.ReSharper.NewRefactorings">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.NewRefactorings.dll</HintPath>
     </Reference>
@@ -95,6 +98,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Resources.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Build" />
+    <Reference Include="Microsoft.Build.Framework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -177,7 +182,6 @@
     <Compile Include="src\Resolve\OptionPropertyDeclaredElement.cs" />
     <Compile Include="src\Resolve\PsiDeclaredElementType.cs" />
     <Compile Include="src\Resolve\PsiFileReference.cs" />
-    <Compile Include="src\Resolve\PsiFolderReference.cs" />
     <Compile Include="src\Resolve\PsiOptionReference.cs" />
     <Compile Include="src\Resolve\PsiPathReference.cs" />
     <Compile Include="src\Resolve\PsiPathReferenceUtil.cs" />
@@ -225,6 +229,7 @@
     <Compile Include="src\Tree\Impl\Whitespace.cs" />
     <Compile Include="src\Tree\IPsiStatement.cs" />
     <Compile Include="src\Tree\IPsiTreeNode.cs" />
+    <Compile Include="src\Util\MSBuildPropertiesSearcher.cs" />
     <Compile Include="src\Util\PsiDeclaredElementElementUtil.cs" />
     <Compile Include="src\Util\PsiElementFactory.cs" />
     <Compile Include="src\Util\PsiElementFactoryImpl.cs" />
@@ -256,7 +261,9 @@
     <None Include="src\Gen\Psi.timestamp" />
     <None Include="src\Parsing\psi_lex.depends" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="src\QuickFixes\" />
+  </ItemGroup>
   <Import Project="$(ReSharperSdkTargets)\PluginWithoutReferences.Targets" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(ReSharperSdk)\tools\parserGen\ParserGen.Targets" />
