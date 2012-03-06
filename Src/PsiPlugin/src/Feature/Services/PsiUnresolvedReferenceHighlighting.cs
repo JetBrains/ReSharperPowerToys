@@ -7,18 +7,18 @@ using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.Impl;
 using JetBrains.ReSharper.Psi.Tree;
 
-[assembly: RegisterConfigurableSeverity("SyntaxError", null, HighlightingGroupIds.LanguageUsage, "Syntax Error", @"
-          Syntax error", JetBrains.ReSharper.Daemon.Severity.ERROR, false, Internal = false)]
+[assembly: RegisterConfigurableSeverity("UnresolvedReference", null, HighlightingGroupIds.LanguageUsage, "Unresolved reference", @"
+          Unresolved reference", JetBrains.ReSharper.Daemon.Severity.ERROR, false, Internal = false)]
 namespace JetBrains.ReSharper.PsiPlugin.Feature.Services
 {
-  [ConfigurableSeverityHighlighting("SyntaxError", "PSI", OverlapResolve = OverlapResolveKind.ERROR, ToolTipFormatString = myMessage)]
-  class PsiErrorElementHighlighting : IHighlightingWithRange
+  [ConfigurableSeverityHighlighting("UnresolvedReference", "PSI", OverlapResolve = OverlapResolveKind.ERROR, ToolTipFormatString = myMessage)]
+  class PsiUnresolvedReferenceHighlighting : IHighlightingWithRange
   {
     private ITreeNode myElement;
-    private const string myMessage = "Syntax error";
-    private string myError = "Syntax error";
+    private const string myMessage = "Unresolved reference";
+    private string myError = "Unresolved reference";
 
-    public PsiErrorElementHighlighting(ITreeNode element)
+    public PsiUnresolvedReferenceHighlighting(ITreeNode element)
     {
       myElement = element;
     }

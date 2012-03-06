@@ -40,7 +40,7 @@ namespace JetBrains.ReSharper.PsiPlugin.DaemonStage
           return;
         } else
         {
-          addHighLighting(colorConstantRange, element, consumer, new PsiErrorElementHighlighting(element,"Unresolved reference"));
+          addHighLighting(colorConstantRange, element, consumer, new PsiUnresolvedReferenceHighlighting(element));
           return;
         }
       }
@@ -53,7 +53,7 @@ namespace JetBrains.ReSharper.PsiPlugin.DaemonStage
           addHighLighting(colorConstantRange, element, consumer, new PsiVariableHighlighting(element));
         }  else
         {
-          addHighLighting(colorConstantRange, element, consumer, new PsiErrorElementHighlighting(element, "Unresolved reference"));
+          addHighLighting(colorConstantRange, element, consumer, new PsiUnresolvedReferenceHighlighting(element));
           return;
         }    
       }
@@ -67,7 +67,7 @@ namespace JetBrains.ReSharper.PsiPlugin.DaemonStage
         }
         else
         {
-          addHighLighting(colorConstantRange, element, consumer, new PsiErrorElementHighlighting(element, "Unresolved reference"));
+          addHighLighting(colorConstantRange, element, consumer, new PsiUnresolvedReferenceHighlighting(element));
           return;
         }
       }
