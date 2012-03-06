@@ -91,14 +91,14 @@ extras{
 	ruleBracketTypedParameters<PSI_PARAMETERS>?
 	optionsDefinition?
 	extrasDefinition<PSI_EXTRAS>?
-	COLON
 	ruleBody<PSI_BODY>
-	SEMICOLON
   ;
 
-ruleBody
+errorhandling ruleBody
 	:
+	COLON
 	psiExpression*
+	SEMICOLON
   ;
 
 modifier
@@ -115,7 +115,7 @@ ruleName
   ;
 
 
-roleGetterParameter
+errorhandling roleGetterParameter
 	:
 	LBRACE
 	(ROLE_KEYWORD
@@ -183,7 +183,7 @@ errorhandling extrasDefinition
 	RBRACE
   ;
 
-extraDefinition
+errorhandling extraDefinition
 extras{
 	get {methodName = "PathValue" path = <extraDefinition:PSI_PATH_VALUE> };
 }
@@ -267,7 +267,7 @@ errorhandling ruleParameters
 	| ruleBracketParameters
   ;
 
-ruleBracketTypedParameters
+errorhandling ruleBracketTypedParameters
 	:
 	LBRACKET
 	ruleName
@@ -364,7 +364,7 @@ afterQuote
 //	RBRACKET
 //  ;
 
-errorhandling pathsDeclaration
+pathsDeclaration
 	:
 	PATHS
 	LBRACE

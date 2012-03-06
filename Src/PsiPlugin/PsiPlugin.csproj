@@ -75,8 +75,8 @@
     <Reference Include="JetBrains.ReSharper.Feature.Services">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.dll</HintPath>
     </Reference>
-    <Reference Include="JetBrains.ReSharper.Intentions.CSharp">
-      <HintPath>..\..\..\ReSharper\Main\bin\JetBrains.ReSharper.Intentions.CSharp.dll</HintPath>
+    <Reference Include="JetBrains.ReSharper.Intentions">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Intentions.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.ReSharper.NewRefactorings">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.NewRefactorings.dll</HintPath>
@@ -141,6 +141,7 @@
     <Compile Include="src\Feature\Services\PsiCommentHighlighting.cs" />
     <Compile Include="src\Feature\Services\PsiRuleHighlighting.cs" />
     <Compile Include="src\Feature\Services\PsiStringLiteralHighlighting.cs" />
+    <Compile Include="src\Feature\Services\PsiUnresolvedReferenceHighlighting.cs" />
     <Compile Include="src\Feature\Services\PsiVariableHighlighting.cs" />
     <Compile Include="src\Feature\Services\FindUsges\PsiReferenceSearcher.cs" />
     <Compile Include="src\Feature\Services\FindUsges\PsiReferenceSearcherFactory.cs" />
@@ -176,6 +177,7 @@
     <Compile Include="src\Parsing\PsiTokenType.cs" />
     <Compile Include="src\Parsing\PsiTokenTypeGenerated.cs" />
     <Compile Include="src\Parsing\psi_lex.cs" />
+    <Compile Include="src\QuickFixes\PsiDummyCreateFromUsageStatisticsManager.cs" />
     <Compile Include="src\Refactoring\Rename\PsiAtomicRename.cs" />
     <Compile Include="src\Refactoring\Rename\PsiDerivedElementRename.cs" />
     <Compile Include="src\Refactoring\Rename\PsiRenameHelper.cs" />
@@ -194,6 +196,7 @@
     <Compile Include="src\Resolve\PsiVariableReference.cs" />
     <Compile Include="src\Resolve\RoleDeclaredElement.cs" />
     <Compile Include="src\Services\PsiDeclaredElementPresenter.cs" />
+    <Compile Include="src\Services\PsiFileTypeSpecificOwnerUtil.cs" />
     <Compile Include="src\Tree\Impl\ChildRole.cs" />
     <Compile Include="src\Tree\Impl\Comment.cs" />
     <Compile Include="src\Tree\Impl\Identifier.cs" />
@@ -261,9 +264,7 @@
     <None Include="src\Gen\Psi.timestamp" />
     <None Include="src\Parsing\psi_lex.depends" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="src\QuickFixes\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(ReSharperSdkTargets)\PluginWithoutReferences.Targets" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(ReSharperSdk)\tools\parserGen\ParserGen.Targets" />

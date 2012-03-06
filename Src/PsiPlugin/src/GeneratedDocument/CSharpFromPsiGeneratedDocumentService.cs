@@ -56,7 +56,23 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
 
     public ICollection<IPreCommitResult> ExecuteSecondaryDocumentCommitWork(PrimaryFileModificationInfo primaryFileModificationInfo, CachedPsiFile cachedPsiFile, TreeTextRange oldTreeRange, string newText)
     {
-      throw new NotImplementedException();
+     /* var newElement = primaryFileModificationInfo.NewElement;
+      var oldElement = primaryFileModificationInfo.OldElement;
+      if (oldElement == null || newElement == null)
+        return null;
+      if (!HasProjectedInnerElements(newElement) && !HasProjectedInnerElements(oldElement) && !HasProjectedOuterElements(newElement))
+      {
+        // change is unrelated, just fix ranges...
+        return CreateFixRangeTranslatorsCommitResult(cachedPsiFile, oldTreeRange, newText);
+      }
+
+      // try promote change to the secondary psi and reparse!
+      if (IsUnderScriptBlock(newElement))
+      {
+        return CreatePromotedDocumentChangeCommitResult(cachedPsiFile, oldTreeRange, newText);
+      }
+      */
+      return null;
     }
 
     public bool ProcessChangeFromGeneratedToPrimary(IPsiSourceFile sourceFile, TextRange range, string oldText, string newText, PsiLanguageType language)

@@ -56,7 +56,22 @@ namespace JetBrains.ReSharper.PsiPlugin.DaemonStage
         IErrorElement element = node as IErrorElement;
         if (element != null)
         {
-          AddHighlighting(consumer, element);
+          if (element.GetTextLength() == 0)
+          {
+            var parent = element.Parent;
+            while( (parent != null) && (parent.GetTextLength() == 0))
+            {
+              parent = parent.Parent;
+            }
+            if(parent != null)
+            {
+              AddHighlighting(consumer,parent);
+            }
+          }
+          else
+          {
+            AddHighlighting(consumer, element);
+          }
         }
       }
 
