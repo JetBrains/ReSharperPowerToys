@@ -1,8 +1,5 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using JetBrains.Application.Settings;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.Stages;
 using JetBrains.ReSharper.Psi;
@@ -11,28 +8,11 @@ using JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve.Managed;
 using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Resolve.Managed;
 using JetBrains.ReSharper.Psi.Tree;
-using JetBrains.ReSharper.Psi.Util;
 using JetBrains.ReSharper.PsiPlugin.Tree;
 using JetBrains.Util;
 
-namespace JetBrains.ReSharper.PsiPlugin.DaemonStage
+namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
 {
-  [DaemonStage(StagesBefore = new[] { typeof(GlobalFileStructureCollectorStage) }, StagesAfter = new[] { typeof(IdentifierHighlightingStage) })]
-  public class SmartResolverStage : PsiDaemonStageBase
-  {
-    public override ErrorStripeRequest NeedsErrorStripe(IPsiSourceFile sourceFile, IContextBoundSettingsStore settings)
-    {
-      return ErrorStripeRequest.NONE;
-    }
-
-    public override IDaemonStageProcess CreateProcess(IDaemonProcess process, IContextBoundSettingsStore settings, DaemonProcessKind processKind)
-    {
-      if (!IsSupported(process.SourceFile))
-        return null;
-      return new SmartResolverProcess(process);
-    }
-  }
-
   public class SmartResolverProcess : IDaemonStageProcess
   {
     private readonly IDaemonProcess myDaemonProcess;
@@ -66,11 +46,11 @@ namespace JetBrains.ReSharper.PsiPlugin.DaemonStage
       using (var fibers = DaemonProcess.CreateFibers())
       {
         scopeAction = (scope, context) =>
-        {
-          lock (allContexts)
-            allContexts.Add(scope, context);
-          fibers.EnqueueJob(() => new ScopeResolver(DaemonProcess, fileStructureCollector, scope, context, scopeAction).Process(scope));
-        };
+                        {
+                          lock (allContexts)
+                            allContexts.Add(scope, context);
+                          fibers.EnqueueJob(() => new ScopeResolver(DaemonProcess, fileStructureCollector, scope, context, scopeAction).Process(scope));
+                        };
 
         var initialContext = new ScopeContext(EmptySymbolTable.INSTANCE, 0, new ElementAccessContext(file), myDaemonProcess.FullRehighlightingRequired);
         //scopeAction((IScope)file, initialContext);
@@ -233,7 +213,7 @@ namespace JetBrains.ReSharper.PsiPlugin.DaemonStage
 
           //var infoWithUsings = resolveResult.Info as IResolveInfoWithUsings;
           //if ( /*resolveResult.DeclaredElement != null && */infoWithUsings != null)
-            //myContext.UsedUsings.AddRange(infoWithUsings.UsingDirectives);
+          //myContext.UsedUsings.AddRange(infoWithUsings.UsingDirectives);
         }
 
         if (myCheckRedundantQualifiers)

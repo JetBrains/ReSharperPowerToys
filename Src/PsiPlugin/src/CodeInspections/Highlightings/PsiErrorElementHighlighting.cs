@@ -1,7 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.Impl;
@@ -9,7 +5,7 @@ using JetBrains.ReSharper.Psi.Tree;
 
 [assembly: RegisterConfigurableSeverity("SyntaxError", null, HighlightingGroupIds.LanguageUsage, "Syntax Error", @"
           Syntax error", JetBrains.ReSharper.Daemon.Severity.ERROR, false, Internal = false)]
-namespace JetBrains.ReSharper.PsiPlugin.Feature.Services
+namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
 {
   [ConfigurableSeverityHighlighting("SyntaxError", "PSI", OverlapResolve = OverlapResolveKind.ERROR, ToolTipFormatString = myMessage)]
   class PsiErrorElementHighlighting : IHighlightingWithRange

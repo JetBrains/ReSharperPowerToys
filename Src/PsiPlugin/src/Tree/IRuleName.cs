@@ -9,7 +9,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree
 {
  public partial interface IRuleName
  {
-   void setReference(IReference reference);
    void SetName(string shortName);
+   IReference RuleNameReference { get; }
  }
 }

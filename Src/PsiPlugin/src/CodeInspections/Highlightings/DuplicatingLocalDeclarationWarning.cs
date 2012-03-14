@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System;
 using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.Impl;
 using JetBrains.ReSharper.Psi.Tree;
 
-[assembly: RegisterConfigurableSeverity("DuplicateDeclaration", null, HighlightingGroupIds.LanguageUsage, "Duplicate declaration", @"
-          Duplicate declaration", JetBrains.ReSharper.Daemon.Severity.ERROR, false, Internal = false)]
-
-namespace JetBrains.ReSharper.PsiPlugin.Feature.Services
+namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
 {
-  [ConfigurableSeverityHighlighting("DuplicateDeclaration", "PSI", OverlapResolve = OverlapResolveKind.ERROR, ToolTipFormatString = myMessage)]
+  [StaticSeverityHighlighting(Severity.INFO, HighlightingGroupIds.CompilerWarnings,
+    OverlapResolve = OverlapResolveKind.WARNING, ShowToolTipInStatusBar = false)]
   class DuplicatingLocalDeclarationWarning : IHighlightingWithRange
   {
     private ITreeNode myElement;
-    private const string myMessage = "Duplicate declaration";
     private string myError = "Duplicate declaration";
 
     public DuplicatingLocalDeclarationWarning(ITreeNode element)

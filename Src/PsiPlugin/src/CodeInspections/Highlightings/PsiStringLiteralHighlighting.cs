@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.Impl;
 using JetBrains.ReSharper.Psi.Tree;
 
-[assembly: RegisterConfigurableSeverity("string", null, HighlightingGroupIds.LanguageUsage, "string", @"
-          string", Severity.INFO, false, Internal = false)]
-namespace JetBrains.ReSharper.PsiPlugin.Feature.Services
+namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
 {
-    [ConfigurableSeverityHighlighting("string", "PSI", OverlapResolve = OverlapResolveKind.ERROR, ToolTipFormatString = myMessage)]
+  [StaticSeverityHighlighting(Severity.INFO, HighlightingGroupIds.CodeInfo,
+    OverlapResolve = OverlapResolveKind.NONE, ShowToolTipInStatusBar = false)]
   internal class PsiStringLiteralHighlighting : ICustomAttributeIdHighlighting, IHighlightingWithRange
   {
     private ITreeNode myElement;
     private readonly string myAtributeId = HighlightingAttributeIds.TYPE_INTERFACE_ATTRIBUTE;
-    private const string myMessage = "string";
 
     public PsiStringLiteralHighlighting(ITreeNode element)
     {
@@ -30,12 +24,13 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Services
 
     public string ToolTip
     {
-      get { return "string"; }
+      get { return null; }
+
     }
 
     public string ErrorStripeToolTip
     {
-      get { return "string"; }
+      get { return null; }
     }
 
     public int NavigationOffsetPatch
@@ -45,7 +40,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Services
 
     public DocumentRange CalculateRange()
     {
-      return myElement.GetNavigationRange();
+      return myElement.GetDocumentRange();
     }
 
     public string AttributeId
