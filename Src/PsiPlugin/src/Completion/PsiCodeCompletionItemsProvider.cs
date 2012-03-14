@@ -3,8 +3,10 @@ using JetBrains.ReSharper.Feature.Services.CodeCompletion.Impl;
 using JetBrains.ReSharper.Feature.Services.CodeCompletion.Infrastructure;
 using JetBrains.ReSharper.Feature.Services.Lookup;
 using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve;
 using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
+using JetBrains.ReSharper.PsiPlugin.Tree;
 using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
 
 namespace JetBrains.ReSharper.PsiPlugin.Completion
@@ -26,6 +28,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion
 
     private ISymbolTable GetSymbolTableOfReference(IReference reference)
     {
+      var treeNode = reference.GetTreeNode();
+      if(treeNode.Parent is IRuleDeclaration)
+      {
+        return EmptySymbolTable.INSTANCE;
+      }
       return reference.GetReferenceSymbolTable(false);
     }
   }

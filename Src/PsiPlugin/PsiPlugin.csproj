@@ -98,6 +98,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Resources.dll</HintPath>
     </Reference>
+    <Reference Include="JetBrains.ReSharper.VS">
+      <HintPath>..\..\..\ReSharper\Main\bin\JetBrains.ReSharper.VS.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Build" />
     <Reference Include="Microsoft.Build.Framework" />
     <Reference Include="System" />
@@ -118,11 +121,13 @@
     <Compile Include="src\Completion\KeywordCompletionUtil.cs" />
     <Compile Include="src\Completion\KeywordsBetterFilter.cs" />
     <Compile Include="src\Completion\LookupItems\PsiKeywordLookupItem.cs" />
+    <Compile Include="src\Completion\PsiAutomaticStrategy.cs" />
     <Compile Include="src\Completion\PsiCodeCompletionContext.cs" />
     <Compile Include="src\Completion\PsiCodeCompletionContextProvider.cs" />
     <Compile Include="src\Completion\PsiCodeCompletionItemsProvider.cs" />
     <Compile Include="src\Completion\PsiCompletionItemsProviderKeywords.cs" />
     <Compile Include="src\Completion\PsiDeclaredElementLookupItem.cs" />
+    <Compile Include="src\Completion\PsiIntellisenseManager.cs" />
     <Compile Include="src\Completion\PsiReparsedCompletionContext.cs" />
     <Compile Include="src\DaemonStage\IdentifierHighlightingStage.cs" />
     <Compile Include="src\DaemonStage\IdentifierHighlighterProcess.cs" />
@@ -192,7 +197,6 @@
     <Compile Include="src\Resolve\PsiResolveUtil.cs" />
     <Compile Include="src\Resolve\PsiRoleReference.cs" />
     <Compile Include="src\Resolve\PsiRuleReference.cs" />
-    <Compile Include="src\Resolve\PsiSymbolTable.cs" />
     <Compile Include="src\Resolve\PsiVariableReference.cs" />
     <Compile Include="src\Resolve\RoleDeclaredElement.cs" />
     <Compile Include="src\Services\PsiDeclaredElementPresenter.cs" />

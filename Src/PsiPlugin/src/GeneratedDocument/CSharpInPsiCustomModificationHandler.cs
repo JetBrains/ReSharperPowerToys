@@ -22,7 +22,8 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
   {
     public bool IsToAddImportsToDeepestScope(ITreeNode context)
     {
-      return context.GetSettingsStore().GetValue(CSharpUsingSettingsAccessor.AddImportsToDeepestScope);
+      //return context.GetSettingsStore().GetValue(CSharpUsingSettingsAccessor.AddImportsToDeepestScope);
+      return false;
     }
 
     public bool CanRemoveUsing(IDocument document, IUsingDirective usingDirective)
@@ -89,7 +90,8 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
 
     public bool PreferQualifiedReference(IQualifiableReference reference)
     {
-      return reference.GetTreeNode().GetSettingsStore().GetValue(CSharpUsingSettingsAccessor.PreferQualifiedReference);
+      //return reference.GetTreeNode().GetSettingsStore().GetValue(CSharpUsingSettingsAccessor.PreferQualifiedReference);
+      return true;
     }
 
     public string GetSpecialElementType(DeclaredElementPresenterStyle presenter, IDeclaredElement declaredElement, ISubstitution substitution)
