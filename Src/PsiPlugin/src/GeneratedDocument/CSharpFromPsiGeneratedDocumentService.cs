@@ -77,22 +77,25 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
 
     public bool ProcessChangeFromGeneratedToPrimary(IPsiSourceFile sourceFile, TextRange range, string oldText, string newText, PsiLanguageType language)
     {
-      throw new NotImplementedException();
+      //throw new NotImplementedException();
+      return false;
     }
 
     public void ProcessChangeFromPrimaryToGenerated(TreeTextRange range, string oldText, string newText, ISecondaryRangeTranslator rangeTranslator, IFile file, IPsiTransactionAction transactionAction)
     {
-      throw new NotImplementedException();
+      //throw new NotImplementedException();
     }
 
     public DocumentRange TryFindNavigationRangeInPrimaryDocument(ITreeNode element)
     {
-      throw new NotImplementedException();
+      //throw new NotImplementedException();
+      return element.GetNavigationRange();
     }
 
     public ISecondaryLexingProcess CreateSecondaryLexingService(ISolution solution, MixedLexer mixedLexer, IPsiSourceFile sourceFile = null)
     {
-      throw new NotImplementedException();
+      //throw new NotImplementedException();
+      return null;
     }
 
     public ILexerFactory LexerFactoryWithPreprocessor(PsiLanguageType primaryLanguage)
@@ -102,7 +105,8 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
 
     public bool CheckValid(IFile generatedFile)
     {
-      throw new NotImplementedException();
+      //throw new NotImplementedException();
+      return false;
     }
   }
 

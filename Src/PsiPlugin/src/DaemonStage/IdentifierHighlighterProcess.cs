@@ -10,6 +10,7 @@ using JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Feature.Services;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
+using JetBrains.ReSharper.PsiPlugin.Tree;
 using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
 
 namespace JetBrains.ReSharper.PsiPlugin.DaemonStage
@@ -34,7 +35,7 @@ namespace JetBrains.ReSharper.PsiPlugin.DaemonStage
       if (ruleName != null)
       {
         ResolveResultWithInfo resolve = ruleName.Resolve();
-        if ((resolve != null) && ((resolve.Result.DeclaredElement != null) || (resolve.Result.Candidates.Count > 0)))
+        if ((ruleName.Parent is IRuleDeclaration) || ((resolve != null) && ((resolve.Result.DeclaredElement != null) || (resolve.Result.Candidates.Count > 0))))
         {
           addHighLighting(colorConstantRange, element, consumer, new PsiRuleHighlighting((element)));
           return;

@@ -18,10 +18,14 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
     private int myCurrentTextLength;
     private GenerationResults myGeneratedMethodBody;
     private GenerationResults myGeneratedFile;
+    private IDictionary<string,string> ClassesToNamespaces = new Dictionary<string, string>(); 
 
     public CSharpFromPsiGenerator(IPsiFile file)
     {
       myFile = file;
+      ClassesToNamespaces.Add("parserClassName", "parserPackage");
+      ClassesToNamespaces.Add("psiStubsBaseClass", "psiStubsPackageName");
+      ClassesToNamespaces.Add("visitorClassName", "psiInterfacePackageName");
     }
 
     public GenerationResults Generate()
