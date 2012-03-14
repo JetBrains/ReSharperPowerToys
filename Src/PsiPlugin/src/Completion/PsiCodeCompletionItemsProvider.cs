@@ -16,7 +16,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion
   {
     protected override bool IsAvailable(PsiCodeCompletionContext context)
     {
-      if (context.BasicContext.CodeCompletionType != CodeCompletionType.BasicCompletion)
+      if (!((context.BasicContext.CodeCompletionType == CodeCompletionType.BasicCompletion) || (context.BasicContext.CodeCompletionType == CodeCompletionType.AutomaticCompletion)))
         return false;
 
       var reference = context.ReparsedContext.Reference;
