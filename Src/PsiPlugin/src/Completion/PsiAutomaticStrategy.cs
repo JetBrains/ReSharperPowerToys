@@ -48,7 +48,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion
 
     public bool ProcessSubsequentTyping(char c, ITextControl textControl)
     {
-      return IsIdentStart(c) || char.IsDigit(c);
+      return (IsIdentStart(c) || char.IsDigit(c)|| c == '_');
     }
 
     public bool AcceptsFile(IFile file, ITextControl textControl)
