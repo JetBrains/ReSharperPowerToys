@@ -186,13 +186,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
 
       var httpHandlersTable = new SymbolTable(psiServices);
       var projectFile = pathReference.GetTreeNode().GetSourceFile().ToProjectFile();
-      Assertion.AssertNotNull(projectFile, "projectFile == null");
-      WebConfigCache.GetData(projectFile)
-        .HttpHandlers
-        .Where(info => !info.ContainsWildcards)
-        .Select(info => basePath.Combine(info.Path))
-        .ForEach(path => httpHandlersTable.AddSymbol(
-          new PathDeclaredElement(psiServices, path), EmptySubstitution.INSTANCE, 1));
 
       return httpHandlersTable.Merge(symbolTableByPath);
     }

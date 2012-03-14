@@ -1,4 +1,4 @@
-﻿using JetBrains.Annotations;
+using JetBrains.Annotations;
 using JetBrains.Application.Settings;
 using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Daemon;
@@ -7,13 +7,12 @@ using JetBrains.ReSharper.Feature.Services.VisualElements;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CodeAnnotations;
 using JetBrains.ReSharper.Psi.Tree;
-using JetBrains.ReSharper.PsiPlugin.Feature.Services;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.Util.Special;
 
-namespace JetBrains.ReSharper.PsiPlugin.DaemonStage
+namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
 {
-  [DaemonStageAttribute(StagesBefore = new[] { typeof(LanguageSpecificDaemonStage) })]
+  [DaemonStage(StagesBefore = new[] { typeof(LanguageSpecificDaemonStage) })]
   public class ErrorElementHighlighting : PsiDaemonStageBase
   {
     private readonly CodeAnnotationsCache myCodeAnnotationsCache;

@@ -9,7 +9,7 @@ using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Tree;
 using JetBrains.Util;
 
-namespace JetBrains.ReSharper.PsiPlugin.DaemonStage
+namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
 {
   /// <summary>
   /// Base class for daemon stages which can incrementally re-highlight changed function only

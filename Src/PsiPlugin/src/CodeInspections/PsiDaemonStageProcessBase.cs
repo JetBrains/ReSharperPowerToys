@@ -10,7 +10,7 @@ using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Tree;
 using JetBrains.Util;
 
-namespace JetBrains.ReSharper.PsiPlugin.DaemonStage
+namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
 {
   public abstract class PsiDaemonStageProcessBase : TreeNodeVisitor<IHighlightingConsumer>, IRecursiveElementProcessor<IHighlightingConsumer>, IDaemonStageProcess
   {

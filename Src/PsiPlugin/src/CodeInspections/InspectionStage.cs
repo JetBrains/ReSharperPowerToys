@@ -6,7 +6,7 @@ using JetBrains.Application.Settings;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.PsiPlugin.DaemonStage;
+using JetBrains.ReSharper.PsiPlugin.CodeInspections;
 
 namespace JetBrains.ReSharper.PsiPlugin.Inspection
 {

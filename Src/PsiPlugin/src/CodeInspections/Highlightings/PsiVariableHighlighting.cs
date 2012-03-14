@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.Impl;
 using JetBrains.ReSharper.Psi.Tree;
 
-[assembly: RegisterConfigurableSeverity("Variable", null, HighlightingGroupIds.CodeSmell, "Variable",
-    @"Variable", Severity.INFO, false, Internal = false)]
-
-namespace JetBrains.ReSharper.PsiPlugin.Feature.Services
+namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
 {
-  [ConfigurableSeverityHighlighting("Variable", "PSI", OverlapResolve = OverlapResolveKind.ERROR, ToolTipFormatString = "Variable")]
+  [StaticSeverityHighlighting(Severity.INFO, HighlightingGroupIds.CodeInfo,
+    OverlapResolve = OverlapResolveKind.NONE, ShowToolTipInStatusBar = false)]
   internal class PsiVariableHighlighting : ICustomAttributeIdHighlighting, IHighlightingWithRange
   {
     private ITreeNode myElement;
@@ -30,12 +24,12 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Services
 
     public string ToolTip
     {
-      get { return "Variable"; }
+      get { return "null"; }
     }
 
     public string ErrorStripeToolTip
     {
-      get { return "Variable"; }
+      get { return "null"; }
     }
 
     public int NavigationOffsetPatch

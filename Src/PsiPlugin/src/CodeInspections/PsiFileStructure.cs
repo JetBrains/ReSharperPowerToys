@@ -1,34 +1,14 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using JetBrains.Application.Settings;
-using JetBrains.Application.src.Settings;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.Stages;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.Dependencies;
 using JetBrains.ReSharper.Psi.GeneratedCode;
-using JetBrains.ReSharper.Psi.Tree;
-using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.ReSharper.PsiPlugin.Tree;
-using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
 
-namespace JetBrains.ReSharper.PsiPlugin.DaemonStage
+namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
 {
-  [FileStructureExplorer]
-  public class PsiFileStructureExplorer : IFileStructureExplorer
-  {
-    public IFileStructure Run(IDaemonProcess process, IPsiSourceFile psiSourceFile, IContextBoundSettingsStore settingsStore)
-    {
-      var file = (IPsiFile)psiSourceFile.GetPsiFile<PsiLanguage>();
-      if (file == null)
-        return null;
-
-      return new PsiFileStructure(process, file, settingsStore);
-    }
-  }
-
   public class PsiFileStructure : FileStructureWithRegionsBase
   {
     private readonly IDaemonProcess myDaemonProcess;
@@ -52,13 +32,13 @@ namespace JetBrains.ReSharper.PsiPlugin.DaemonStage
     private void ProcessFile()
     {
       new RecursiveElementProcessor(node =>
-      {
-        if (node is IPsiCommentNode)
-        {
-          ProcessComment(node.GetTreeStartOffset(), ((IPsiCommentNode)node).CommentText);
-        }
+                                      {
+                                        if (node is IPsiCommentNode)
+                                        {
+                                          ProcessComment(node.GetTreeStartOffset(), ((IPsiCommentNode)node).CommentText);
+                                        }
 
-      }).Process(myFile);
+                                      }).Process(myFile);
 
       CloseAllRanges(myFile);
     }

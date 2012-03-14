@@ -1,39 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
 using JetBrains.Annotations;
 using JetBrains.Application.Settings;
 using JetBrains.DocumentModel;
-using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.Stages;
-using JetBrains.ReSharper.Feature.Services.VisualElements;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CodeAnnotations;
 using JetBrains.ReSharper.Psi.Tree;
-using JetBrains.ReSharper.PsiPlugin.Feature.Services;
-using JetBrains.ReSharper.PsiPlugin.Grammar;
+using JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings;
 using JetBrains.ReSharper.PsiPlugin.Parsing;
-using JetBrains.ReSharper.PsiPlugin.Tree;
 using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
-using JetBrains.Util;
 using JetBrains.Util.Special;
 
-namespace JetBrains.ReSharper.PsiPlugin.DaemonStage
+namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
 {
   [DaemonStage(StagesBefore = new[] { typeof(LanguageSpecificDaemonStage) })]
-  public class KeywordHighlighting : PsiDaemonStageBase
+  public class KeywordHighlightingStage : PsiDaemonStageBase
   {
-    private readonly CodeAnnotationsCache myCodeAnnotationsCache;
-
-    public KeywordHighlighting(CodeAnnotationsCache codeAnnotationsCache)
-    {
-      myCodeAnnotationsCache = codeAnnotationsCache;
-    }
-
     public override ErrorStripeRequest NeedsErrorStripe(IPsiSourceFile sourceFile, IContextBoundSettingsStore settings)
     {
       return ErrorStripeRequest.STRIPE_AND_ERRORS;
@@ -51,14 +34,9 @@ namespace JetBrains.ReSharper.PsiPlugin.DaemonStage
 
     private class KeywordHighlightingProcess : PsiIncrementalDaemonStageProcessBase
     {
-      private readonly VisualElementHighlighter myHighlighter;
-      private readonly IDocument myDocument;
-
       public KeywordHighlightingProcess(IDaemonProcess process, IContextBoundSettingsStore settingsStore)
         : base(process, settingsStore)
       {
-        myHighlighter = new VisualElementHighlighter(PsiLanguage.Instance, settingsStore);
-        myDocument = process.Document;
       }
 
       public override void VisitNode(ITreeNode node, IHighlightingConsumer consumer)

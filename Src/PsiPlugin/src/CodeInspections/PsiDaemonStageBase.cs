@@ -1,12 +1,11 @@
 ﻿using JetBrains.Annotations;
 using JetBrains.Application.Settings;
-using JetBrains.Application.Threading;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
-using IPsiFile = JetBrains.ReSharper.PsiPlugin.Tree.IPsiFile;
+using JetBrains.ReSharper.PsiPlugin.Tree;
 
-namespace JetBrains.ReSharper.PsiPlugin.DaemonStage
+namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
 {
   public abstract class PsiDaemonStageBase : IDaemonStage
   {

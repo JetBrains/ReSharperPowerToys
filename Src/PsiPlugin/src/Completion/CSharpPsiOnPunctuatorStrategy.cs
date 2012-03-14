@@ -15,7 +15,7 @@ using JetBrains.TextControl;
 
 namespace JetBrains.ReSharper.PsiPlugin.Completion
 {
-  [SolutionComponent]
+  //[SolutionComponent]
   public class CSharpPsiOnPunctuatorStrategy : IAutomaticCodeCompletionStrategy
   {
     private readonly CSharpIntellisenseManager myCSharpIntellisenseManager;

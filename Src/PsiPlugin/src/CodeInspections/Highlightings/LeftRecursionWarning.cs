@@ -1,21 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System;
 using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.Impl;
 using JetBrains.ReSharper.Psi.Tree;
 
-[assembly: RegisterConfigurableSeverity("LeftRecursion", null, HighlightingGroupIds.LanguageUsage, "Left recursion", @"
-          Left recursion", JetBrains.ReSharper.Daemon.Severity.WARNING, false, Internal = false)]
-namespace JetBrains.ReSharper.PsiPlugin.Feature.Services
+namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
 {
-  [ConfigurableSeverityHighlighting("LeftRecursion", "PSI", OverlapResolve = OverlapResolveKind.ERROR, ToolTipFormatString = myMessage)]
+  [StaticSeverityHighlighting(Severity.INFO, HighlightingGroupIds.CompilerWarnings,
+    OverlapResolve = OverlapResolveKind.WARNING, ShowToolTipInStatusBar = false)]
   class LeftRecursionWarning : IHighlightingWithRange
   {
     private ITreeNode myElement;
-    private const string myMessage = "Left recursion";
     private string myError = "Left recursion";
 
     public LeftRecursionWarning(ITreeNode element)

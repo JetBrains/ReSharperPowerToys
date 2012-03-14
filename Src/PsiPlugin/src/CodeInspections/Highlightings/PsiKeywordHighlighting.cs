@@ -1,17 +1,13 @@
-﻿using System;
 using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.Impl;
 using JetBrains.ReSharper.Psi.Tree;
-using JetBrains.TextControl.Markup;
-
-[assembly:RegisterConfigurableSeverity("Keyword", null, HighlightingGroupIds.CodeSmell, "Keyword",
-    @"Keyword", Severity.INFO, false, Internal = false)]
 
 
-namespace JetBrains.ReSharper.PsiPlugin.Feature.Services
+namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
 {
-   [ConfigurableSeverityHighlighting("Keyword", "PSI", OverlapResolve = OverlapResolveKind.ERROR, ToolTipFormatString = "Keyword")]
+  [StaticSeverityHighlighting(Severity.INFO, HighlightingGroupIds.CodeInfo,
+    OverlapResolve = OverlapResolveKind.NONE, ShowToolTipInStatusBar = false)]
   internal class PsiKeywordHighlighting : ICustomAttributeIdHighlighting, IHighlightingWithRange
   {
     private ITreeNode myElement;
@@ -29,12 +25,12 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Services
 
     public string ToolTip
     {
-      get { return "Keyword"; }
+      get { return null; }
     }
 
     public string ErrorStripeToolTip
     {
-      get { return "Keyword"; }
+      get { return null; }
     }
 
     public int NavigationOffsetPatch
