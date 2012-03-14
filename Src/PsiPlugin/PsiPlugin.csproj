@@ -75,6 +75,10 @@
     <Reference Include="JetBrains.ReSharper.Feature.Services">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.dll</HintPath>
     </Reference>
+    <Reference Include="JetBrains.ReSharper.Feature.Services.CSharp, Version=7.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\ReSharper\Main\bin\JetBrains.ReSharper.Feature.Services.CSharp.dll</HintPath>
+    </Reference>
     <Reference Include="JetBrains.ReSharper.Intentions">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Intentions.dll</HintPath>
     </Reference>
@@ -118,6 +122,8 @@
     <Compile Include="src\Cache\PsiCache.cs" />
     <Compile Include="src\Cache\PsiStandartCacheBuilder.cs" />
     <Compile Include="src\Cache\PsiStandartCacheProvider.cs" />
+    <Compile Include="src\Completion\CSharpPsiAutomaticStrategy.cs" />
+    <Compile Include="src\Completion\CSharpPsiOnPunctuatorStrategy.cs" />
     <Compile Include="src\Completion\KeywordCompletionUtil.cs" />
     <Compile Include="src\Completion\KeywordsBetterFilter.cs" />
     <Compile Include="src\Completion\LookupItems\PsiKeywordLookupItem.cs" />
