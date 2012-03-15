@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using JetBrains.DocumentModel;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
@@ -22,16 +19,13 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
   [GeneratedDocumentService(typeof(PsiProjectFileType))]
   class CSharpFromPsiGeneratedDocumentService : IGeneratedDocumentService
   {
-    protected readonly PsiProjectFileType myPsiProjectFileType;
-
     public CSharpFromPsiGeneratedDocumentService(PsiProjectFileType psiProjectFileType)
     {
-      myPsiProjectFileType = psiProjectFileType;
     }
 
     public ICollection<PsiLanguageType> GetSecondaryPsiLanguageTypes()
     {
-      return new List<PsiLanguageType>(){CSharpLanguage.Instance};
+      return new List<PsiLanguageType> {CSharpLanguage.Instance};
     }
 
     public bool CanHandle(ProjectFileType projectFileType)
@@ -45,13 +39,14 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
       var gen = new CSharpFromPsiGenerator(psiFile);
       var sourceFile = modificationInfo.SourceFile;
       var results = gen.Generate();
+      PsiLanguageType language = psiFile != null ? psiFile.Language : PsiLanguage.Instance;
       return new SecondaryDocumentGenerationResult(
-        sourceFile,
-        results.Text,
-        CSharpLanguage.Instance,
-        new RangeTranslatorWithGeneratedRangeMap(results.GeneratedRangeMap),
-        LexerFactoryWithPreprocessor(psiFile.Language)
-        );
+          sourceFile,
+          results.Text,
+          CSharpLanguage.Instance,
+          new RangeTranslatorWithGeneratedRangeMap(results.GeneratedRangeMap),
+          LexerFactoryWithPreprocessor(language)
+          );
     }
 
     public ICollection<IPreCommitResult> ExecuteSecondaryDocumentCommitWork(PrimaryFileModificationInfo primaryFileModificationInfo, CachedPsiFile cachedPsiFile, TreeTextRange oldTreeRange, string newText)

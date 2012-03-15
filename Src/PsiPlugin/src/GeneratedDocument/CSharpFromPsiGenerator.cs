@@ -30,7 +30,7 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
       myGeneratedMethodBody = new GenerationResults(CSharpLanguage.Instance, "", GeneratedRangeMapFactory.CreateGeneratedRangeMap(myFile));
       myGeneratedFile = new GenerationResults(CSharpLanguage.Instance, "", GeneratedRangeMapFactory.CreateGeneratedRangeMap(myFile));
 
-      addOptions(myFile);
+      AddOptions(myFile);
 
       myGeneratedFile.Append(new GenerationResults(CSharpLanguage.Instance, "class A{\n void foo(){\n", GeneratedRangeMapFactory.CreateGeneratedRangeMap(myFile)));
       myGeneratedFile.Append(myGeneratedMethodBody);
@@ -39,14 +39,14 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
       return myGeneratedFile;
     }
 
-    private void addOptions(ITreeNode treeNode)
+    private void AddOptions(ITreeNode treeNode)
     {
       if (treeNode is IOptionsDefinition || treeNode is IInterfacesDefinition || treeNode is IRuleDeclaration || treeNode is IPsiFile)
       {
         var child = treeNode.FirstChild;
         while (child != null)
         {
-          addOptions(child);
+          AddOptions(child);
           child = child.NextSibling;
         }
       }

@@ -8,10 +8,11 @@ using JetBrains.ReSharper.Psi.Tree;
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
 {
   [ConfigurableSeverityHighlighting("SyntaxError", "PSI", OverlapResolve = OverlapResolveKind.ERROR, ToolTipFormatString = Error)]
-  class PsiErrorElementHighlighting : IHighlightingWithRange
+  class PsiErrorElementHighlighting : IHighlightingWithRange, ICustomAttributeIdHighlighting
   {
     private readonly ITreeNode myElement;
     private const string Error = "Syntax error";
+    private const string AtributeId = HighlightingAttributeIds.ERROR_ATTRIBUTE;
 
     public PsiErrorElementHighlighting(ITreeNode element)
     {
@@ -41,6 +42,11 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
     public DocumentRange CalculateRange()
     {
       return myElement.GetNavigationRange();
+    }
+
+    public string AttributeId
+    {
+      get { return AtributeId; }
     }
   }
 }

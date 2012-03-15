@@ -8,10 +8,11 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
 {
   [StaticSeverityHighlighting(Severity.INFO, HighlightingGroupIds.CompilerWarnings,
     OverlapResolve = OverlapResolveKind.WARNING, ShowToolTipInStatusBar = false)]
-  class DuplicatingLocalDeclarationWarning : IHighlightingWithRange
+  class DuplicatingLocalDeclarationWarning : IHighlightingWithRange, ICustomAttributeIdHighlighting
   {
     private readonly ITreeNode myElement;
     private readonly string myError = "Duplicate declaration";
+    private const string AtributeId = HighlightingAttributeIds.WARNING_ATTRIBUTE;
 
     public DuplicatingLocalDeclarationWarning(ITreeNode element)
     {
@@ -46,6 +47,11 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
     public DocumentRange CalculateRange()
     {
       return myElement.GetNavigationRange();
+    }
+
+    public string AttributeId
+    {
+      get { return AtributeId; }
     }
   }
 }
