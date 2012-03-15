@@ -1,42 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using JetBrains.Application.Settings;
-using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.Stages;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.Naming.Interfaces;
 using JetBrains.ReSharper.Psi.Tree;
-using JetBrains.ReSharper.PsiPlugin.CodeInspections;
 using JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
-using JetBrains.ReSharper.PsiPlugin.Parsing;
 using JetBrains.ReSharper.PsiPlugin.Tree;
 using JetBrains.ReSharper.PsiPlugin.Util;
 using JetBrains.Util;
 
-namespace JetBrains.ReSharper.PsiPlugin.Inspection
+namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
 {
   internal class InspectionsProcess : PsiDaemonStageProcessBase
   {
-    //private readonly Stack<IFunctionExpression> myFunctions = new Stack<IFunctionExpression>();
-    private readonly PsiFileIndexProcess myFileIndex;
-    private readonly bool myIsStandaloneScript;
-    //private IPsiFile myFile;
-    private IDictionary<string, List<IDeclaration>> myDeclarations;
-    //private readonly INamingPolicyProvider myPolicyProvider;
+    private readonly IDictionary<string, List<IDeclaration>> myDeclarations;
 
     public InspectionsProcess(IDaemonProcess process, IContextBoundSettingsStore settings)
       : base(process, settings)
     {
-      myIsStandaloneScript = process.SourceFile.PrimaryPsiLanguage.Is<PsiLanguage>();
-      myFileIndex = process.GetStageProcess<PsiFileIndexProcess>();
-      //myFile = process.SourceFile.GetPsiFile(PsiLanguage.Instance) as IPsiFile;
+      process.SourceFile.PrimaryPsiLanguage.Is<PsiLanguage>();
+      process.GetStageProcess<PsiFileIndexProcess>();
+
       myDeclarations = new Dictionary<string, List<IDeclaration>>();
       VisitFile(process.SourceFile.GetPsiFile(PsiLanguage.Instance) as IPsiFile);
-      //myPolicyProvider = PsiServices.Naming.Policy.GetPolicyProvider(PsiLanguage.Instance, process.SourceFile, settings);
     }
 
     public override void Execute(Action<DaemonStageResult> commiter)
@@ -100,7 +89,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Inspection
         if(list.Count > 1)
         {
           var sequences = list.ToArray();
-          bool[] isRepeated = new bool[sequences.Count()];
+          var isRepeated = new bool[sequences.Count()];
           for (int i = 0; i < sequences.Count() - 1; ++i)
           {
             if (!isRepeated[i])
@@ -135,7 +124,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Inspection
         if (child is IRuleDeclaration)
         {
           var declaration = child as IRuleDeclaration;
-          if (declaration != null){
+          {
             string name = declaration.DeclaredName;
             if (myDeclarations.ContainsKey(name))
             {
@@ -144,8 +133,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Inspection
             }
             else
             {
-              var list = new List<IDeclaration>();
-              list.Add(declaration);
+              var list = new List<IDeclaration> {declaration};
               myDeclarations.Add(name, list);
             }
           }
@@ -170,8 +158,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Inspection
             }
             else
             {
-              var list = new List<IDeclaration>();
-              list.Add(declaration);
+              var list = new List<IDeclaration> {declaration};
               myDeclarations.Add(name, list);
             }
           }

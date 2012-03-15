@@ -10,8 +10,8 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
     OverlapResolve = OverlapResolveKind.WARNING, ShowToolTipInStatusBar = false)]
   class DuplicatingLocalDeclarationWarning : IHighlightingWithRange
   {
-    private ITreeNode myElement;
-    private string myError = "Duplicate declaration";
+    private readonly ITreeNode myElement;
+    private readonly string myError = "Duplicate declaration";
 
     public DuplicatingLocalDeclarationWarning(ITreeNode element)
     {

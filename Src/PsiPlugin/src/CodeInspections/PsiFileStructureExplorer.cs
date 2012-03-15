@@ -16,7 +16,7 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
       if (file == null)
         return null;
 
-      return new PsiFileStructure(process, file, settingsStore);
+      return new PsiFileStructure(file, settingsStore);
     }
   }
 }

@@ -7,12 +7,11 @@ using JetBrains.ReSharper.Psi.Tree;
           Unresolved reference", JetBrains.ReSharper.Daemon.Severity.ERROR, false, Internal = false)]
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
 {
-  [ConfigurableSeverityHighlighting("UnresolvedReference", "PSI", OverlapResolve = OverlapResolveKind.ERROR, ToolTipFormatString = myMessage)]
+  [ConfigurableSeverityHighlighting("UnresolvedReference", "PSI", OverlapResolve = OverlapResolveKind.ERROR, ToolTipFormatString = Error)]
   class PsiUnresolvedReferenceHighlighting : IHighlightingWithRange
   {
-    private ITreeNode myElement;
-    private const string myMessage = "Unresolved reference";
-    private string myError = "Unresolved reference";
+    private readonly ITreeNode myElement;
+    private const string Error = "Unresolved reference";
 
     public PsiUnresolvedReferenceHighlighting(ITreeNode element)
     {
@@ -26,12 +25,12 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
 
     public string ToolTip
     {
-      get { return myError; }
+      get { return Error; }
     }
 
     public string ErrorStripeToolTip
     {
-      get { return myError; }
+      get { return Error; }
     }
 
     public int NavigationOffsetPatch

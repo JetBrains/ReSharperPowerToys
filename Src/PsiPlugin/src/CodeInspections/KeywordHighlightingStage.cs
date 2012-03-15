@@ -1,16 +1,13 @@
 ﻿using System;
 using JetBrains.Annotations;
 using JetBrains.Application.Settings;
-using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.Stages;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.CodeAnnotations;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings;
 using JetBrains.ReSharper.PsiPlugin.Parsing;
 using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
-using JetBrains.Util.Special;
 
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
 {
@@ -27,8 +24,6 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
       if (!IsSupported(process.SourceFile))
         return null;
 
-      var project = process.SourceFile.ToProjectFile().IfNotNull(file => file.GetProject());
-      IDocument document = process.Document;
       return new KeywordHighlightingProcess(process, settings);
     }
 
@@ -47,7 +42,7 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
           AddHighlighting(consumer, node);
         } else
         {
-          PsiGenericToken token = node as PsiGenericToken;
+          var token = node as PsiGenericToken;
           if(token != null)
           {
             if(token.GetTokenType().IsStringLiteral)

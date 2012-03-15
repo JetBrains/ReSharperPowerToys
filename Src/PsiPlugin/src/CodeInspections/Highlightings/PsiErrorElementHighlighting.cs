@@ -4,15 +4,14 @@ using JetBrains.ReSharper.Daemon.Impl;
 using JetBrains.ReSharper.Psi.Tree;
 
 [assembly: RegisterConfigurableSeverity("SyntaxError", null, HighlightingGroupIds.LanguageUsage, "Syntax Error", @"
-          Syntax error", JetBrains.ReSharper.Daemon.Severity.ERROR, false, Internal = false)]
+          Syntax error", Severity.ERROR, false, Internal = false)]
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
 {
-  [ConfigurableSeverityHighlighting("SyntaxError", "PSI", OverlapResolve = OverlapResolveKind.ERROR, ToolTipFormatString = myMessage)]
+  [ConfigurableSeverityHighlighting("SyntaxError", "PSI", OverlapResolve = OverlapResolveKind.ERROR, ToolTipFormatString = Error)]
   class PsiErrorElementHighlighting : IHighlightingWithRange
   {
-    private ITreeNode myElement;
-    private const string myMessage = "Syntax error";
-    private string myError = "Syntax error";
+    private readonly ITreeNode myElement;
+    private const string Error = "Syntax error";
 
     public PsiErrorElementHighlighting(ITreeNode element)
     {
@@ -26,12 +25,12 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
 
     public string ToolTip
     {
-      get { return myError; }
+      get { return Error; }
     }
 
     public string ErrorStripeToolTip
     {
-      get { return myError; }
+      get { return Error; }
     }
 
     public int NavigationOffsetPatch

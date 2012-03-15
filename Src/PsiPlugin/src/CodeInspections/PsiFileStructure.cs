@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Application.Settings;
-using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.Stages;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.GeneratedCode;
@@ -11,15 +10,13 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
 {
   public class PsiFileStructure : FileStructureWithRegionsBase
   {
-    private readonly IDaemonProcess myDaemonProcess;
     private readonly IPsiFile myFile;
 
     private readonly JetHashSet<IPsiTypeMemberDeclaration> myTypeMembersToRehighlight = new JetHashSet<IPsiTypeMemberDeclaration>();
 
-    public PsiFileStructure(IDaemonProcess daemonProcess, IPsiFile file, IContextBoundSettingsStore settingsStore)
+    public PsiFileStructure(IPsiFile file, IContextBoundSettingsStore settingsStore)
       : base(file, settingsStore.EnumEntryIndices(GeneratedCodeSettingsAccessor.GeneratedCodeRegions).ToHashSet())
     {
-      myDaemonProcess = daemonProcess;
       myFile = file;
       ProcessFile();
     }
