@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using JetBrains.Application.Settings;
+﻿using JetBrains.Application.Settings;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.PsiPlugin.CodeInspections;
 
-namespace JetBrains.ReSharper.PsiPlugin.Inspection
+namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
 {
   public interface IPsiInspectionsProcessFactory
   {
@@ -44,9 +39,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Inspection
   }
 
   [ProjectFileType(typeof(KnownProjectFileType))]
-  public class PsiInspectionsProcessFactory : IPsiInspectionsProcessFactory
+  public sealed class PsiInspectionsProcessFactory : IPsiInspectionsProcessFactory
   {
-    public virtual IDaemonStageProcess CreateInspectionsProcess(IDaemonProcess process, IContextBoundSettingsStore settings)
+    public IDaemonStageProcess CreateInspectionsProcess(IDaemonProcess process, IContextBoundSettingsStore settings)
     {
       return new InspectionsProcess(process, settings);
     }

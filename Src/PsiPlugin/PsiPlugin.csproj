@@ -123,7 +123,7 @@
     <Compile Include="src\Cache\PsiStandartCacheBuilder.cs" />
     <Compile Include="src\Cache\PsiStandartCacheProvider.cs" />
     <Compile Include="src\CodeInspections\Highlightings\DuplicatingLocalDeclarationWarning.cs" />
-    <Compile Include="src\CodeInspections\Highlightings\ErrorElementHighlighting.cs" />
+    <Compile Include="src\CodeInspections\ErrorElementHighlighting.cs" />
     <Compile Include="src\CodeInspections\Highlightings\LeftRecursionWarning.cs" />
     <Compile Include="src\CodeInspections\Highlightings\PsiCommentHighlighting.cs" />
     <Compile Include="src\CodeInspections\Highlightings\PsiErrorElementHighlighting.cs" />

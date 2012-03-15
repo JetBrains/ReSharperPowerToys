@@ -16,7 +16,6 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
   public class SmartResolverProcess : IDaemonStageProcess
   {
     private readonly IDaemonProcess myDaemonProcess;
-    //private readonly HashSet<IUsingDirective> myUsedUsings = new HashSet<IUsingDirective>();
     private readonly Dictionary<IReference, IResolveResult> myUnqualifiedResolve = new Dictionary<IReference, IResolveResult>();
     private readonly Dictionary<IScope, bool> myVarTypeVisibility = new Dictionary<IScope, bool>();
     private readonly OneToSetMap<ITypeParameter, ITypeElement> myHiddenByTypeParameter = new OneToSetMap<ITypeParameter, ITypeElement>();
@@ -49,11 +48,8 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
                         {
                           lock (allContexts)
                             allContexts.Add(scope, context);
-                          fibers.EnqueueJob(() => new ScopeResolver(DaemonProcess, fileStructureCollector, scope, context, scopeAction).Process(scope));
+                          fibers.EnqueueJob(() => new ScopeResolver(fileStructureCollector, scope, context).Process(scope));
                         };
-
-        var initialContext = new ScopeContext(EmptySymbolTable.INSTANCE, 0, new ElementAccessContext(file), myDaemonProcess.FullRehighlightingRequired);
-        //scopeAction((IScope)file, initialContext);
       }
 
       MergeContextResults(allContexts);
@@ -63,7 +59,6 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
     {
       foreach (var context in allContexts)
       {
-        //myUsedUsings.UnionWith(context.Value.UsedUsings);
         myVarTypeVisibility.Add(context.Key, context.Value.VarTypeVisibility);
         foreach (var pair in context.Value.UnqualifiedResolve)
           myUnqualifiedResolve.Add(pair.Key, pair.Value);
@@ -78,8 +73,6 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
       public readonly int Level;
       public readonly IAccessContext AccessContext;
       public readonly bool CheckRedundantQualifiers;
-
-      //private readonly HashSet<IUsingDirective> myUsedUsings = new HashSet<IUsingDirective>();
       private readonly Dictionary<IReference, IResolveResult> myUnqualifiedResolve = new Dictionary<IReference, IResolveResult>();
       private readonly Dictionary<ITypeParameter, IList<ITypeElement>> myHiddenByTypeParameter = new Dictionary<ITypeParameter, IList<ITypeElement>>();
 
@@ -102,22 +95,15 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
       {
         get { return myUnqualifiedResolve; }
       }
-
-      /*public HashSet<IUsingDirective> UsedUsings
-      {
-        get { return myUsedUsings; }
-      }*/
     }
 
     #region ReferenceResolver
 
     private class ScopeResolver : NonQualifiedReferencesResolveBase
     {
-      private readonly IDaemonProcess myDaemonProcess;
       private readonly PsiFileStructure myFileStructure;
       private readonly IScope myScope;
       private readonly ScopeContext myContext;
-      private readonly Action<IScope, ScopeContext> myScopeProcessor;
 
       /// <summary>
       /// Indicates wether resolve for redundant qualifier check should be done
@@ -125,28 +111,15 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
       /// </summary>
       private bool myCheckRedundantQualifiers;
 
-      public ScopeResolver(IDaemonProcess daemonProcess, PsiFileStructure fileStructure, IScope scope, ScopeContext context, Action<IScope, ScopeContext> scopeProcessor)
+      public ScopeResolver(PsiFileStructure fileStructure, IScope scope, ScopeContext context)
         : base(SymbolTableMode.FULL)
       {
         myResolveContext = new UniversalContext(scope.GetPsiModule());
 
-        myDaemonProcess = daemonProcess;
         myFileStructure = fileStructure;
         myScope = scope;
         myContext = context;
-        myScopeProcessor = scopeProcessor;
         myCheckRedundantQualifiers = myContext.CheckRedundantQualifiers;
-      }
-
-      protected override bool ScopeShouldBeVisited(IScope scope)
-      {
-        return scope == myScope || !ForkOnScope(scope);
-      }
-
-      private bool ForkOnScope(IScope scope)
-      {
-        //return PsiFunctionDeclarationNavigator.GetByBody(scope as IBlock) != null;
-        throw new NotImplementedException();
       }
 
       protected override Pair<ISymbolTable, int> GetInitialSymbolTable(SymbolTableMode mode)
@@ -185,43 +158,13 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
       {
         foreach (var reference in element.GetFirstClassReferences())
         {
-          ResolveResultWithInfo resolveResult;
-
           var qualifiableReference = reference as IQualifiableReference;
           if (qualifiableReference == null || qualifiableReference.IsQualified)
           {
-            resolveResult = reference.ResolveWithInfo(myResolveContext);
+            ResolveResultWithInfo resolveResult = reference.ResolveWithInfo(myResolveContext);
             if (reference is IManagedReference)
               reference.CurrentResolveResult = resolveResult;
           }
-          else
-          {
-            resolveResult = ResolveNonqualifiedQualifiableReference(myResolveContext, qualifiableReference, SymbolTable, AccessContext);
-
-            // Check for redundant qualifiers. Do it only for references in changed range
-            /*if (myCheckRedundantQualifiers)
-            {
-              var referenceExpression = element as IReferenceExpression;
-              if (referenceExpression != null)
-                CheckRedundantQualifierForReferenceExpression(referenceExpression);
-
-              var referenceName = element as IReferenceName;
-              if (referenceName != null)
-                CheckRedundantQualifierForReferenceName(referenceName);
-            }*/
-          }
-
-          //var infoWithUsings = resolveResult.Info as IResolveInfoWithUsings;
-          //if ( /*resolveResult.DeclaredElement != null && */infoWithUsings != null)
-          //myContext.UsedUsings.AddRange(infoWithUsings.UsingDirectives);
-        }
-
-        if (myCheckRedundantQualifiers)
-        {
-          /*if ((element is IThisExpression) ||
-              (element is IPredefinedTypeExpression) ||
-              (element is IBaseExpression))
-            CheckRedundantQualifierForReferenceExpression((IPsiExpression)element);*/
         }
 
         var scope = element as IScope;
@@ -229,176 +172,16 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
         {
           if (scope == myScope)
             myContext.VarTypeVisibility = IsVarTypeVisible();
-          else if (ForkOnScope(scope))
-            myScopeProcessor(scope, new ScopeContext(SymbolTable, Level, AccessContext, myCheckRedundantQualifiers));
         }
 
-        //var typeParameterDeclaration = element as ITypeParameterDeclaration;
-        /*if (typeParameterDeclaration != null)
-        {
-          var typeParameter = typeParameterDeclaration.DeclaredElement;
-          if (typeParameter != null)
-            myContext.HiddenByTypeParameter[typeParameter] = GetHiddenByTypeParameter(typeParameter);
-        }*/
       }
-
-      /*private IList<ITypeElement> GetHiddenByTypeParameter(ITypeParameter typeParameter)
-      {
-        var result = new LocalList<ITypeElement>();
-        foreach (var info in mySymbolTable.GetAllSymbolInfos(typeParameter.ShortName))
-        {
-          var typeElement = info.GetDeclaredElement() as ITypeElement;
-          if (typeElement != null && !Equals(typeElement, typeParameter))
-          {
-            if (!(typeElement is ITypeMember) || AccessUtil.IsSymbolAccessible((ITypeMember)typeElement, AccessContext))
-              result.Add(typeElement);
-          }
-        }
-
-        return result.ResultingList();
-      }*/
 
       private bool IsVarTypeVisible()
       {
-        // ReSharper disable LoopCanBeConvertedToQuery
-        /*foreach (var info in mySymbolTable.GetAllSymbolInfos("var"))
-        {
-          var typeElement = info.GetDeclaredElement() as ITypeElement;
-          if (typeElement != null && typeElement.TypeParameters.Count == 0)
-            return true;
-        }*/
-
         return false;
-        // ReSharper restore LoopCanBeConvertedToQuery
       }
-
-      /*private void CheckRedundantQualifierForReferenceExpression(IPsiExpression qualifier)
-      {
-        if (!IsPossiblyRedundantQualifierExpression(qualifier))
-          return;
-
-        // move up
-        bool stopResolve = false;
-        if (qualifier is IReferenceExpression)
-          stopResolve = ShouldStopResolve(((IReferenceExpression)qualifier).Reference.Resolve().Result);
-        var referenceExpression = ReferenceExpressionNavigator.GetByQualifierExpression(qualifier);
-
-        while (referenceExpression != null)
-        {
-          if (ProcessingIsFinished)
-            break;
-
-          if (!stopResolve)
-          {
-            IReferenceExpression referenceExpressionNode = referenceExpression;
-            if (referenceExpressionNode.NameIdentifier == null)
-              goto Next;
-            var referenceExpressionReference = referenceExpression.Reference;
-
-            var result = referenceExpressionReference.ResolveAsUnqualified(new ResolveContext(referenceExpressionNode.GetPsiModule()), mySymbolTable);
-            if (result.DeclaredElement != null && result.ResolveErrorType == ResolveErrorType.OK)
-            {
-              myContext.UnqualifiedResolve[referenceExpression.Reference] = result.Result;
-              stopResolve = ShouldStopResolve(result.Result);
-            }
-            else
-            {
-              myContext.UnqualifiedResolve[referenceExpression.Reference] = null;
-            }
-          }
-          else
-          {
-            myContext.UnqualifiedResolve[referenceExpression.Reference] = null;
-          }
-
-        Next:
-          referenceExpression = ReferenceExpressionNavigator.GetByQualifierExpression(referenceExpression);
-        }
-      }*/
-
-      /*private static bool ShouldStopResolve(IResolveResult resolveResult)
-      {
-        var declaredElement = resolveResult.DeclaredElement;
-        return !(declaredElement is INamespace || declaredElement is ITypeElement || declaredElement is IExternAlias);
-      }*/
-
-      /*private bool IsPossiblyRedundantQualifierExpression(IPsiExpression qualifier)
-      {
-        var referenceExpression = qualifier as IReferenceExpression;
-        if (referenceExpression != null)
-        {
-          if (referenceExpression.QualifierExpression != null)
-            return false;
-
-          if (!referenceExpression.Reference.QualifyingAliasName(myResolveContext).IsGlobalAlias())
-          {
-            IDeclaredElement resolveResult = referenceExpression.Reference.Resolve().DeclaredElement;
-            if (resolveResult is IExternAlias)
-              return false;
-          }
-
-          return true;
-        }
-
-        return (qualifier is IThisExpression) ||
-               (qualifier is IPredefinedTypeExpression) ||
-               (qualifier is IBaseExpression);
-      }*/
-
-      /*private void CheckRedundantQualifierForReferenceName(IReferenceName qualifier)
-      {
-        Assertion.Assert(qualifier.Qualifier == null, "qualifier.Qualifier == null");
-
-        // Check for extern alias problems
-        if (!qualifier.Reference.GetExternAliasName().IsGlobalAlias())
-        {
-          IDeclaredElement resolveResult = qualifier.Reference.Resolve().DeclaredElement;
-          if (resolveResult is IExternAlias)
-            return;
-        }
-
-        // move up
-        var referenceName = ReferenceNameNavigator.GetByQualifier(qualifier);
-        while (referenceName != null)
-        {
-          if (ProcessingIsFinished)
-            break;
-
-          if (referenceName.NameIdentifier != null)
-          {
-            var result = referenceName.Reference.ResolveAsUnqualified(mySymbolTable);
-            myContext.UnqualifiedResolve[referenceName.Reference] = result.ResolveErrorType == ResolveErrorType.OK ? result.Result : null;
-          }
-
-          referenceName = ReferenceNameNavigator.GetByQualifier(referenceName);
-        }
-      }*/
     }
 
     #endregion
-
-    /*public bool IsUsingDirectiveUsed(IUsingDirective directive)
-    {
-      return myUsedUsings.Contains(directive);
-    }*/
-
-    public bool IsVarTypeVisibleInScope(IScope scope)
-    {
-      bool value;
-      return myVarTypeVisibility.TryGetValue(scope, out value) && value;
-    }
-
-    public IEnumerable<ITypeElement> GetTypesHiddenByTypeParameter(ITypeParameter typeParameter)
-    {
-      return myHiddenByTypeParameter[typeParameter];
-    }
-
-    public IResolveResult GetUnqualifiedResolve(IReference reference)
-    {
-      IResolveResult value;
-      if (myUnqualifiedResolve.TryGetValue(reference, out value))
-        return value;
-      return null;
-    }
   }
 }

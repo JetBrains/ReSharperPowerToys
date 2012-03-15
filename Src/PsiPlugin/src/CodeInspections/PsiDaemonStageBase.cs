@@ -31,7 +31,7 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
       return manager.GetPsiFile<PsiLanguage>(sourceFile) as IPsiFile;
     }
 
-    protected virtual bool IsSupported(IPsiSourceFile sourceFile)
+    protected bool IsSupported(IPsiSourceFile sourceFile)
     {
       if (sourceFile == null || !sourceFile.IsValid())
         return false;

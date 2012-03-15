@@ -10,8 +10,8 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
     OverlapResolve = OverlapResolveKind.NONE, ShowToolTipInStatusBar = false)]
   internal class PsiKeywordHighlighting : ICustomAttributeIdHighlighting, IHighlightingWithRange
   {
-    private ITreeNode myElement;
-    private readonly string myAtributeId = HighlightingAttributeIds.CONSTANT_IDENTIFIER_ATTRIBUTE;
+    private readonly ITreeNode myElement;
+    private const string AtributeId = HighlightingAttributeIds.CONSTANT_IDENTIFIER_ATTRIBUTE;
 
     public PsiKeywordHighlighting(ITreeNode element)
     {
@@ -45,7 +45,7 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
 
      public string AttributeId
      {
-       get { return myAtributeId; }
+       get { return AtributeId; }
      }
   }
 }

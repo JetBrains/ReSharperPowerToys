@@ -1,4 +1,3 @@
-using System;
 using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.Impl;
@@ -10,19 +9,14 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
     OverlapResolve = OverlapResolveKind.WARNING, ShowToolTipInStatusBar = false)]
   class RepeatedChoiceWarning : IHighlightingWithRange
   {
-    private ITreeNode myElement;
-    private string myError = "Repeated choice";
+    private readonly ITreeNode myElement;
+    private const string Error = "Repeated choice";
 
     public RepeatedChoiceWarning(ITreeNode element)
     {
       myElement = element;
     }
 
-    public RepeatedChoiceWarning(ITreeNode element, String message)
-    {
-      myElement = element;
-      myError = message;
-    }
     public bool IsValid()
     {
       return true;
@@ -30,12 +24,12 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
 
     public string ToolTip
     {
-      get { return myError; }
+      get { return Error; }
     }
 
     public string ErrorStripeToolTip
     {
-      get { return myError; }
+      get { return Error; }
     }
 
     public int NavigationOffsetPatch

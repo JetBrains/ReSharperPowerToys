@@ -10,8 +10,8 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
     OverlapResolve = OverlapResolveKind.WARNING, ShowToolTipInStatusBar = false)]
   class LeftRecursionWarning : IHighlightingWithRange
   {
-    private ITreeNode myElement;
-    private string myError = "Left recursion";
+    private readonly ITreeNode myElement;
+    private readonly string myError = "Left recursion";
 
     public LeftRecursionWarning(ITreeNode element)
     {
