@@ -136,8 +136,6 @@
     <Compile Include="src\CodeInspections\PsiFileStructure.cs" />
     <Compile Include="src\CodeInspections\PsiVisualElementFactory.cs" />
     <Compile Include="src\CodeInspections\SmartResolverProcess.cs" />
-    <Compile Include="src\Completion\CSharpPsiAutomaticStrategy.cs" />
-    <Compile Include="src\Completion\CSharpPsiOnPunctuatorStrategy.cs" />
     <Compile Include="src\Completion\KeywordCompletionUtil.cs" />
     <Compile Include="src\Completion\KeywordsBetterFilter.cs" />
     <Compile Include="src\Completion\LookupItems\PsiKeywordLookupItem.cs" />
@@ -146,7 +144,6 @@
     <Compile Include="src\Completion\PsiCodeCompletionContextProvider.cs" />
     <Compile Include="src\Completion\PsiCodeCompletionItemsProvider.cs" />
     <Compile Include="src\Completion\PsiCompletionItemsProviderKeywords.cs" />
-    <Compile Include="src\Completion\PsiDeclaredElementLookupItem.cs" />
     <Compile Include="src\Completion\PsiIntellisenseManager.cs" />
     <Compile Include="src\Completion\PsiReparsedCompletionContext.cs" />
     <Compile Include="src\CodeInspections\IdentifierHighlightingStage.cs" />

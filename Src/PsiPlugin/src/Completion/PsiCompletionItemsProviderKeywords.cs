@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using JetBrains.ReSharper.Feature.Services.CodeCompletion;
 using JetBrains.ReSharper.Feature.Services.CodeCompletion.Infrastructure;
 using JetBrains.ReSharper.Feature.Services.Lookup;
@@ -29,26 +27,13 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion
       return type == CodeCompletionType.AutomaticCompletion || type == CodeCompletionType.BasicCompletion;
     }
 
-    private static TextLookupItemBase CreateKeyworkLookupItem(string x, PsiCodeCompletionContext context)
+    private static TextLookupItemBase CreateKeyworkLookupItem(string x)
     {
-      return new PsiKeywordLookupItem(x, GetSuffix(x));
+      return new PsiKeywordLookupItem(x, GetSuffix());
     }
 
-    private static string GetSuffix(string keyword)
+    private static string GetSuffix()
     {
-      /*switch (keyword)
-      {
-        case "break":
-        case "continue":
-          return ";";
-        case "this":
-        case "null":
-        case "true":
-        case "false":
-          return "";
-        case "while":
-          return "";
-      }*/
       return " ";
     }
 
@@ -57,7 +42,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion
       var psiFile = context.BasicContext.File as IPsiFile;
       if (psiFile == null)
         return false;
-      foreach (var textLookupItem in KeywordCompletionUtil.GetAplicableKeywords(psiFile, context.BasicContext.SelectedTreeRange).Select(name => CreateKeyworkLookupItem(name, context)))
+      foreach (var textLookupItem in KeywordCompletionUtil.GetAplicableKeywords(psiFile, context.BasicContext.SelectedTreeRange).Select(CreateKeyworkLookupItem))
       {
         textLookupItem.InitializeRanges(context.Ranges, context.BasicContext);
         collector.AddAtDefaultPlace(textLookupItem);
@@ -67,25 +52,25 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion
 
     protected TextLookupRanges EvaluateRanges(ISpecificCodeCompletionContext context)
     {
-      IPsiFile file = context.BasicContext.File as IPsiFile;
-      /*var shortNameRange =
-        context.BasicContext.CodeCompletionType != CodeCompletionType.AutomaticCompletion &&
-        context.BasicContext.CodeCompletionType != CodeCompletionType.ImportCompletion;
-      var selectionRange = context.BasicContext.SelectedRange.TextRange;*/
+      var file = context.BasicContext.File as IPsiFile;
 
       var selectionRange = context.BasicContext.SelectedRange;
 
-      var token = file.FindNodeAt(selectionRange) as ITokenNode;
+      if (file != null)
+      {
+        var token = file.FindNodeAt(selectionRange) as ITokenNode;
 
-      var tokenRange = token.GetNavigationRange();
+        if (token != null)
+        {
+          var tokenRange = token.GetNavigationRange();
 
-      //if (textChanged == ReferenceTextChangeType.Changed)
-        //return new TextLookupRanges(selectionRange, shortNameRange, selectionRange);
+          var insertRange = new TextRange(tokenRange.TextRange.StartOffset, selectionRange.TextRange.EndOffset);
+          var replaceRange = new TextRange(tokenRange.TextRange.StartOffset, Math.Max(tokenRange.TextRange.EndOffset, selectionRange.TextRange.EndOffset));
 
-      var insertRange = new TextRange(tokenRange.TextRange.StartOffset, selectionRange.TextRange.EndOffset);
-      var replaceRange = new TextRange(tokenRange.TextRange.StartOffset, Math.Max(tokenRange.TextRange.EndOffset, selectionRange.TextRange.EndOffset));
-
-      return new TextLookupRanges(insertRange, false, replaceRange);
+          return new TextLookupRanges(insertRange, false, replaceRange);
+        }
+      }
+      return new TextLookupRanges(TextRange.InvalidRange, false, TextRange.InvalidRange);
     }
   }
 }
