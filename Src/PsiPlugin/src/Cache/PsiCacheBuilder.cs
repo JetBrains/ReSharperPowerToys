@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using JetBrains.Annotations;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
@@ -10,18 +9,18 @@ using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.ReSharper.PsiPlugin.Tree;
 using JetBrains.Util;
 
-namespace JetBrains.ReSharper.PsiPlugin.Cach
+namespace JetBrains.ReSharper.PsiPlugin.Cache
 {
   internal class PsiCacheBuilder
   {
     private readonly IPsiCustomCacheBuilder[] myBuilders;
 
-    private PsiCacheBuilder(IPsiSourceFile sourceFile, bool isFrameworkFile, IEnumerable<IPsiCacheProvider> providers)
+    private PsiCacheBuilder(IPsiSourceFile sourceFile, IEnumerable<IPsiCacheProvider> providers)
     {
-      myBuilders = providers.Select(x => x.CreateCustomBuilder(sourceFile, isFrameworkFile)).ToArray();
+      myBuilders = providers.Select(x => x.CreateCustomBuilder(sourceFile)).ToArray();
     }
 
-    private IList<ICacheItem> GetSymbols()
+    private IEnumerable<ICacheItem> GetSymbols()
     {
       return myBuilders.SelectMany(x => x.Symbols).ToList();
     }
@@ -37,7 +36,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Cach
         Func<IPsiSourceFile, IPersistentCacheItem> constructor = null;
         foreach (var provider in providers)
         {
-          constructor = provider.CreateItemConstructor(guid);
+          constructor = provider.CreateItemConstructor();
           if (constructor != null)
             break;
         }
@@ -62,7 +61,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Cach
       return ret;
     }
 
-    public static void Write(IList<IPersistentCacheItem> symbolsOfProjectFile, BinaryWriter writer)
+    public static void Write(IEnumerable<IPersistentCacheItem> symbolsOfProjectFile, BinaryWriter writer)
     {
       var groups = new OneToListMap<string, IPersistentCacheItem>();
 
@@ -110,18 +109,18 @@ namespace JetBrains.ReSharper.PsiPlugin.Cach
     }
 
     [CanBeNull]
-    public static IList<ICacheItem> Build(IPsiSourceFile sourceFile, bool isFromFramework, IEnumerable<IPsiCacheProvider> providers)
+    public static IEnumerable<ICacheItem> Build(IPsiSourceFile sourceFile, IEnumerable<IPsiCacheProvider> providers)
     {
       var file = sourceFile.GetPsiFile<PsiLanguage>() as IPsiFile;
       if (file == null)
         return null;
-      return Build(sourceFile, isFromFramework, providers, file);
+      return Build(sourceFile, providers, file);
     }
 
     [CanBeNull]
-    public static IList<ICacheItem> Build(IPsiSourceFile sourceFile, bool isFromFramework, IEnumerable<IPsiCacheProvider> providers, ITreeNode rootNode)
+    public static IEnumerable<ICacheItem> Build(IPsiSourceFile sourceFile, IEnumerable<IPsiCacheProvider> providers, ITreeNode rootNode)
     {
-      var ret = new PsiCacheBuilder(sourceFile, isFromFramework, providers);
+      var ret = new PsiCacheBuilder(sourceFile, providers);
       ret.Build(rootNode);
       return ret.GetSymbols();
     }

@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using JetBrains.DataFlow;
 using JetBrains.ProjectModel;
 using JetBrains.ProjectModel.impl;
 using JetBrains.Util;
 
-namespace JetBrains.ReSharper.PsiPlugin.src.Cache
+namespace JetBrains.ReSharper.PsiPlugin.Cache
 {
   [SolutionComponent]
   internal class MSBuildPropertiesCache
   {
     private readonly ViewableProjectsCollection myViewableProjectsCollection;
 
-    private Dictionary<IProject, Dictionary<string, string>> myData;
+    private readonly Dictionary<IProject, Dictionary<string, string>> myData;
 
     public MSBuildPropertiesCache(Lifetime lifetime, ViewableProjectsCollection viewableProjectsCollection)
     {
@@ -67,7 +66,8 @@ namespace JetBrains.ReSharper.PsiPlugin.src.Cache
           {
             cachedProperties.Add(property.Name, property.EvaluatedValue);
           }
-          return projectInstance.GetProperty(name).EvaluatedValue;
+          var projectPropertyInstance = projectInstance.GetProperty(name);
+          if (projectPropertyInstance != null) return projectPropertyInstance.EvaluatedValue;
         }
 
       }
