@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
+﻿using System.Drawing;
 using JetBrains.ReSharper.Feature.Services.Lookup;
 using JetBrains.UI.RichText;
 using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Completion.LookupItems
 {
-  class PsiKeywordLookupItem: TextLookupItemBase, IKeywordLookupItem
+  sealed class PsiKeywordLookupItem: TextLookupItemBase, IKeywordLookupItem
   {
     public PsiKeywordLookupItem(string text, string suffix)
     {

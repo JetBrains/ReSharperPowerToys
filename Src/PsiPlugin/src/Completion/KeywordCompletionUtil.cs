@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Parsing;
 using JetBrains.ReSharper.PsiPlugin.Tree;
-using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Completion
 {
-  internal class KeywordCompletionUtil
+  internal static class KeywordCompletionUtil
   {
     public static IEnumerable<string> GetAplicableKeywords(IPsiFile file, TreeTextRange referenceRange)
     {
@@ -83,7 +79,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion
         list.Add("ROLE");
         list.Add("getter");
       }
-      //return new List<string>(){"abstract","errorhandling","extras","get","getter","options","interface","interfaces","isCached","private","paths","returnType","ROLE","cached","null","LIST","SEP"};
       return list;
     }
 

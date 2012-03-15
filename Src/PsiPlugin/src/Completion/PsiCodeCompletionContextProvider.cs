@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using JetBrains.Application.Settings;
-using JetBrains.ReSharper.Feature.Services.CodeCompletion.Impl;
+﻿using JetBrains.ReSharper.Feature.Services.CodeCompletion.Impl;
 using JetBrains.ReSharper.Feature.Services.CodeCompletion.Infrastructure;
-using JetBrains.ReSharper.Feature.Services.Lookup;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
@@ -15,18 +9,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion
   [IntellisensePart]
   internal class PsiCodeCompletionContextProvider : CodeCompletionContextProviderBase
   {
-    private readonly ILanguageManager myLanguageManager;
-    private readonly ISettingsStore mySettingsStore;
-    private readonly LookupItemsOwnerFactory myLookupItemsOwnerFactory;
-    private readonly PsiIntellisenseManager myIntellisenseManager;
-
-    /*public PsiCodeCompletionContextProvider(PsiIntellisenseManager intellisenseManager, ILanguageManager languageManager, ISettingsStore settingsStore, LookupItemsOwnerFactory factory)
-    {
-      myLookupItemsOwnerFactory = factory;
-      mySettingsStore = settingsStore;
-      myLanguageManager = languageManager;
-      myIntellisenseManager = intellisenseManager;
-    }*/
 
     public override bool IsApplicable(CodeCompletionContext context)
     {
