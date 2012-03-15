@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.IO;
 
-namespace JetBrains.ReSharper.PsiPlugin.Cach
+namespace JetBrains.ReSharper.PsiPlugin.Cache
 {
   public interface ICacheItem
   {

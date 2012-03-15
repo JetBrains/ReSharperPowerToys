@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using JetBrains.Annotations;
-using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
-using JetBrains.ReSharper.PsiPlugin.Resolve;
 using JetBrains.ReSharper.PsiPlugin.Tree;
 using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
 
-namespace JetBrains.ReSharper.PsiPlugin.Cach
+namespace JetBrains.ReSharper.PsiPlugin.Cache
 {
   /// <summary>
   /// Customization point for pdi properties
@@ -27,22 +22,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Cach
     /// Owner PSI source file
     /// </summary>
     IPsiSourceFile SourceFile { get; }
-    /// <summary>
-    /// Offset where name of symbol is specified
-    /// </summary>
-    int NavigationOffset { get; }
-    /// <summary>
-    /// DeclaredElementType element that is declared by this symbol
-    /// </summary>
-    DeclaredElementType GetElementType();
-    /// <summary>
-    /// Restore tree node that declares this symbol
-    /// </summary>
-    ITreeNode FindDeclaration(ITreeNode nodeAtOffset);
-    /// <summary>
-    /// Returns true for intentionally declared symbols (like var, {sss:} not just e = ???)
-    /// </summary>
-    bool IsExplicit();
   }
 
   public class PsiSymbol : IPsiSymbol
@@ -50,10 +29,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Cach
     private string myName;
     private string myValue;
     private int myOffset;
-    private IPsiSourceFile myPsiSourceFile;
+    private readonly IPsiSourceFile myPsiSourceFile;
     private StandartSymbolDeclarationKind myDeclarationKind;
 
-    public const string Guid = "std-symbol";
+    private const string Guid = "std-symbol";
 
     public PsiSymbol(ITreeNode treeNode)
     {
@@ -126,58 +105,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Cach
     public IPsiSourceFile SourceFile
     {
       get { return myPsiSourceFile; }
-    }
-
-    public int NavigationOffset
-    {
-      get { return Offset; }
-    }
-
-    public DeclaredElementType GetElementType()
-    {
-      if (myDeclarationKind == StandartSymbolDeclarationKind.Rule)
-      {
-        return PsiDeclaredElementType.Rule;
-      }
-      if (myDeclarationKind == StandartSymbolDeclarationKind.Role)
-      {
-        return PsiDeclaredElementType.Role;
-      }
-      if (myDeclarationKind == StandartSymbolDeclarationKind.Option)
-      {
-        return PsiDeclaredElementType.Option;
-      }
-      if (myDeclarationKind == StandartSymbolDeclarationKind.Variable)
-      {
-        return PsiDeclaredElementType.Variable;
-      }
-      if (myDeclarationKind == StandartSymbolDeclarationKind.Path)
-      {
-        return PsiDeclaredElementType.Path;
-      }
-      return null;
-    }
-
-    public ITreeNode FindDeclaration(ITreeNode nodeAtOffset)
-    {
-      while (nodeAtOffset != null)
-      {
-        if (IsDeclaration(nodeAtOffset))
-          return nodeAtOffset;
-        nodeAtOffset = nodeAtOffset.Parent;
-      }
-      return null;
-    }
-
-    private bool IsDeclaration(ITreeNode treeNode)
-    {
-      return ((treeNode is RuleDeclaration) || (treeNode is RoleName) || (treeNode is PathDeclaration) ||
-              (treeNode is VariableDeclaration) || (treeNode is OptionDefinition));
-    }
-
-    public bool IsExplicit()
-    {
-      return true;
     }
 
     public void Write(BinaryWriter writer)

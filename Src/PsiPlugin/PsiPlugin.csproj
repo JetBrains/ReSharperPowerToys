@@ -134,6 +134,7 @@
     <Compile Include="src\CodeInspections\Highlightings\PsiVariableHighlighting.cs" />
     <Compile Include="src\CodeInspections\Highlightings\RepeatedChoiceWarning.cs" />
     <Compile Include="src\CodeInspections\PsiFileStructure.cs" />
+    <Compile Include="src\CodeInspections\PsiVisualElementFactory.cs" />
     <Compile Include="src\CodeInspections\SmartResolverProcess.cs" />
     <Compile Include="src\Completion\CSharpPsiAutomaticStrategy.cs" />
     <Compile Include="src\Completion\CSharpPsiOnPunctuatorStrategy.cs" />

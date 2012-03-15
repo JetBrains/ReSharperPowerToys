@@ -1,7 +1,5 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
-using System.Text;
 using JetBrains.Annotations;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
@@ -11,30 +9,17 @@ using JetBrains.ReSharper.Psi.Impl;
 using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Psi.Util;
-using JetBrains.ReSharper.Psi.Web.Cache;
 using JetBrains.ReSharper.Psi.Web.PathMapping;
 using JetBrains.ReSharper.Psi.Web.References;
 using JetBrains.ReSharper.Psi.Web.Resolve;
 using JetBrains.ReSharper.Psi.Web.Util;
-using JetBrains.ReSharper.PsiPlugin.Util;
-using JetBrains.ReSharper.PsiPlugin.src.Cache;
+using JetBrains.ReSharper.PsiPlugin.Cache;
 using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Resolve
 {
   public static class PsiPathReferenceUtil
   {
-    /*public static FileSystemPath GetRootPath([CanBeNull] IProject project)
-    {
-      return WebFilesUtil.GetProjectPath(project);
-    }*/
-
-    /*public static FileSystemPath GetRootPath([NotNull] IProjectItem projectItem)
-    {
-      var project = projectItem.GetProject();
-      Assertion.AssertNotNull(project, "file == null");
-      return WebFilesUtil.GetProjectPath(project);
-    }*/
 
     public static FileSystemPath GetRootPath([NotNull] IPathReference pathReference)
     {
@@ -45,18 +30,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
       return FileSystemPath.Empty;
     }
 
-    /*public static string ConvertToRootRelativePath([NotNull] IProjectItem projectItem, FileSystemPath path)
-    {
-      return ConvertToRootRelativePath(GetRootPath(projectItem), path);
-    }*/
-
-    /*public static string ConvertToRootRelativePath(FileSystemPath root, FileSystemPath path)
-    {
-      var relPath = root.IsPrefixOf(path) ? path.RemovePrefix(root) : path;
-      return (relPath.IsAbsolute ? relPath.ToUri().ToString() : PathDeclaredElement.WebRootPath.Combine(relPath).FullPath)
-        .Replace(FileSystemDefinition.AltDirectorySeparatorChar, '/')
-        .Replace(FileSystemDefinition.DirectorySeparatorChar, '/');
-    }*/
 
     private static FileSystemPath GetBasePathBeforeMapping(IQualifiableReference pathReference)
     {

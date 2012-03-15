@@ -117,9 +117,9 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
             if (OptionDeclaredElements.MethodsOptions.Contains(optionName))
             {
               var map = GeneratedRangeMapFactory.CreateGeneratedRangeMap(myFile);
-              map.Add(new TreeTextRange<Generated>(new TreeOffset(), new TreeOffset(optionValueText.Length)),
+              map.Add(new TreeTextRange<Generated>(new TreeOffset(8), new TreeOffset(optionValueText.Length + 8)),
                 new TreeTextRange<Original>(new TreeOffset(startOffset), new TreeOffset(endOffset)));
-              myGeneratedMethodBody.Append(new GenerationResults(CSharpLanguage.Instance, optionValueText + "\n", map));
+              myGeneratedMethodBody.Append(new GenerationResults(CSharpLanguage.Instance,"var a = " + optionValueText + ";\n", map));
             }
           }
         }
