@@ -11,13 +11,12 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
   internal class PsiCommentHighlighting : ICustomAttributeIdHighlighting, IHighlightingWithRange
   {
     private readonly ITreeNode myNode;
+    private const string AtributeId = HighlightingAttributeIds.JAVA_SCRIPT_XML_DOC_TAG;
 
     public PsiCommentHighlighting(ITreeNode node)
     {
       myNode = node;
     }
-
-    private const string AtributeId = HighlightingAttributeIds.JAVA_SCRIPT_XML_DOC_TAG;
 
     public bool IsValid()
     {

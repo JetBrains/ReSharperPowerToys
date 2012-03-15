@@ -1,33 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.ExtensionsAPI;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Finder;
 using JetBrains.ReSharper.Psi.Impl.Search;
-using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Search;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Psi.Util;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
-using JetBrains.ReSharper.PsiPlugin.Tree;
-using JetBrains.ReSharper.PsiPlugin.Util;
 using JetBrains.Util;
 
-namespace JetBrains.ReSharper.PsiPlugin.FindUsges
+namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.FindUsges
 {
   internal class PsiReferenceSearcher : IDomainSpecificSearcher
   {
     private readonly HashSet<IDeclaredElement> myElements;
     private readonly HashSet<string> myNames;
-    private readonly bool myFindCandidates;
     private readonly bool mySearchForLateBound;
     private readonly bool myHasUnnamedElement;
 
     public PsiReferenceSearcher(IDomainSpecificSearcherFactory searchWordsProvider, IEnumerable<IDeclaredElement> elements, bool findCandidates, bool searchForLateBound)
     {
-      myFindCandidates = findCandidates;
       mySearchForLateBound = searchForLateBound;
       myElements = new HashSet<IDeclaredElement>(elements);
 

@@ -1,19 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using JetBrains.DocumentModel;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp;
-using JetBrains.ReSharper.Psi.CSharp.CodeStyle;
 using JetBrains.ReSharper.Psi.CSharp.Impl.CustomHandlers;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve;
 using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
-using JetBrains.Application.Settings;
 
 namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
 {
@@ -22,7 +17,6 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
   {
     public bool IsToAddImportsToDeepestScope(ITreeNode context)
     {
-      //return context.GetSettingsStore().GetValue(CSharpUsingSettingsAccessor.AddImportsToDeepestScope);
       return false;
     }
 
@@ -90,7 +84,6 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
 
     public bool PreferQualifiedReference(IQualifiableReference reference)
     {
-      //return reference.GetTreeNode().GetSettingsStore().GetValue(CSharpUsingSettingsAccessor.PreferQualifiedReference);
       return true;
     }
 
