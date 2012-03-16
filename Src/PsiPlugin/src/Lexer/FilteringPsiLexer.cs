@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using JetBrains.ReSharper.Psi.Parsing;
+﻿using JetBrains.ReSharper.Psi.Parsing;
+using JetBrains.ReSharper.PsiPlugin.Parsing;
 
-namespace JetBrains.ReSharper.PsiPlugin.Parsing
+namespace JetBrains.ReSharper.PsiPlugin.Lexer
 {
     public class FilteringPsiLexer : FilteringLexer
     {

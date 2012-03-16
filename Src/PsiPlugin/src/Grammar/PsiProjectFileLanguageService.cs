@@ -18,9 +18,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Grammar
       public override ILexerFactory GetMixedLexerFactory(ISolution solution, IBuffer buffer, IPsiSourceFile sourceFile = null)
       {
           {
-              // first, try to detect real PsiLanguageType, not default one
-              var lang = sourceFile.ToProjectFile().IfNotNull(GetPsiLanguageType) ?? PsiLanguageType;
-              return new PsiLexerFactory(lang.LanguageService().GetPrimaryLexerFactory(), sourceFile, LanguageType);
+              return new PsiLexerFactory();
           }
       }
 

@@ -7,9 +7,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Grammar
   public class PsiProjectFileType : KnownProjectFileType
   {
     public new const string Name = "PSI";
-    public new static readonly PsiProjectFileType Instance;
+    public static readonly PsiProjectFileType Instance = new PsiProjectFileType();
 
-    private PsiProjectFileType() : base(Name, "Psi", new[] {PSI_EXTENSION})
+    private PsiProjectFileType() : base(Name, "Psi", new[] {PsiExtension})
     {
     }
 
@@ -25,6 +25,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Grammar
     {
     }
 
-    public const string PSI_EXTENSION = ".psi";
+    public const string PsiExtension = ".psi";
   }
 }
