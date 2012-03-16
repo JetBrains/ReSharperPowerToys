@@ -293,7 +293,6 @@
     <Compile Include="src\Parsing\PsiTokenType.cs" />
     <Compile Include="src\Parsing\PsiTokenTypeGenerated.cs" />
     <Compile Include="src\Parsing\psi_lex.cs" />
-    <Compile Include="src\QuickFixes\PsiDummyCreateFromUsageStatisticsManager.cs" />
     <Compile Include="src\Refactoring\Rename\PsiAtomicRename.cs" />
     <Compile Include="src\Refactoring\Rename\PsiDerivedElementRename.cs" />
     <Compile Include="src\Refactoring\Rename\PsiRenameHelper.cs" />

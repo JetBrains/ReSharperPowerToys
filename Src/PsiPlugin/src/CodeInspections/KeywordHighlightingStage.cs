@@ -37,7 +37,7 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
       public override void VisitNode(ITreeNode node, IHighlightingConsumer consumer)
       {
         String s = node.GetText();
-        if (PsiLexer.isKeyword(s))
+        if (PsiLexer.IsKeyword(s))
         {
           AddHighlighting(consumer, node);
         } else

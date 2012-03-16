@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using JetBrains.Application;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 using JetBrains.ReSharper.Psi.Parsing;
-using JetBrains.ReSharper.PsiPlugin.Tree;
 using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
 using JetBrains.Text;
 using JetBrains.Util;
@@ -40,10 +36,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
           anchor = parent;
           parent = parent.parent;
         }
-
-        //DocCommentBlock docCommentBlock = null;
-        var isDocumentable = parent is IPsiFile;
-        TreeElement oldSon = null;
 
         // proceed with inserting tokens
         while (myLexer.TokenType != null && myLexer.TokenStart < leafOffset)
@@ -104,7 +96,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
 
       if (trimTokens)
       {
-        using (var container = new DummyContainer(lexer.Buffer, root))
+        using (var container = new DummyContainer(root))
         {
           inserter.Run(container);
         }
@@ -129,10 +121,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
         public override CompositeElement Create() { throw new InvalidOperationException(); }
       }
 
-      public DummyContainer(IBuffer buffer, TreeElement element)
+      public DummyContainer(TreeElement element)
       {
         AppendNewChild(element);
-        //AppendNewChild(new EofToken(buffer));
       }
 
       public override NodeType NodeType

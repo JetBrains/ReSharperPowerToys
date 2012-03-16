@@ -4,30 +4,17 @@ using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Lexer;
-using JetBrains.ReSharper.PsiPlugin.Tree;
 using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
 
 namespace JetBrains.ReSharper.PsiPlugin.Parsing
 {
- internal class PsiParser : PsiParserGenerated, IPsiParser, ITokenOffsetProvider
+ internal class PsiParser : PsiParserGenerated, IPsiParser
   {
-    private ILexer myOriginalLexer;
-    private SeldomInterruptChecker myCheckForInterrupt;
-    protected IPsiSourceFile mySourceFile;
+    private readonly ILexer myOriginalLexer;
+    private readonly SeldomInterruptChecker myCheckForInterrupt;
+    protected IPsiSourceFile SourceFile;
 
-    public PsiParser()
-    {
-      myCheckForInterrupt = new SeldomInterruptChecker();
-    }
-
-    public PsiParser(IPsiSourceFile  sourceFile)
-    {
-      myCheckForInterrupt = new SeldomInterruptChecker();
-      mySourceFile = sourceFile;
-
-    }
-
-    public PsiParser(ILexer lexer)
+   public PsiParser(ILexer lexer)
     {
       myCheckForInterrupt = new SeldomInterruptChecker();
       myOriginalLexer = lexer;
@@ -79,7 +66,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
     {
       var file = base.parsePsiFile();
       PsiFile psiFile = (PsiFile) file;
-      psiFile.SetSourceFile(mySourceFile);
+      psiFile.SetSourceFile(SourceFile);
       psiFile.CreateRulesSymbolTable();
       psiFile.CreateOptionSymbolTable(isFileReal);
       return psiFile;
