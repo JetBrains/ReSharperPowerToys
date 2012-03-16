@@ -22,12 +22,9 @@ options {
   "lexerClassName"="JetBrains.ReSharper.Psi.Parsing.ILexer";
   "psiClassesPrefix"="";
   "psiElementClassFQName"="JetBrains.ReSharper.PsiPlugin.Tree.IPsiTreeNode";
-//  "semanticPsiElementClassFQName"="JetBrains.ReSharper.PsiPlugin.Tree.IPsiElement";
   customImplPackage="JetBrains.ReSharper.PsiPlugin.Tree.Impl";
   customInterfacePackage="JetBrains.ReSharper.PsiPlugin.Tree";
   "interfaceNamePrefix"="I"; 
-//  "sourceInterfaceNamePrefix"="Source";
-//  "sourceInterfaceNameSuffix"="Node";
   "tokenElementClassFQName"="JetBrains.ReSharper.Psi.Tree.ITokenNode";   
   "customImplSuffix"="";
   "objectClassFQName"="System.Object";
@@ -36,15 +33,6 @@ options {
   parserMessagesClass="JetBrains.ReSharper.PsiPlugin.Parsing.ParserMessages";
   generateWorkingPsi;
 }
-
-//abstract errorElement options { 
-  //interfaceName = "JetBrains.ReSharper.Psi.Tree.IErrorElement"; 
-  //elementType="ERROR_ELEMENT";
-  //}
-  //:
-    //IDENTIFIER?
-    //| BAD_CHARACTER
-  //;
 
 errorhandling psiFile options {
 	stubBase="PsiFileElement";
@@ -228,18 +216,10 @@ predicated
 	| AND variableName ruleParameters? quantifier?
   ;
 
-//predicator
-//	:
-//	AND
-//	| EXCL
-//  ;
-
 simpleExpression
 	:
 	(parenExpression
 	| listExpression
-	//| braceExpression
-	//| bracketExpression
 	| ruleName (BACK_QUOTE afterQuote)? ruleParameters ?) 
   ;
 
@@ -340,20 +320,6 @@ afterQuote
 	:
 	IDENTIFIER
   ;
-
-//braceExpression
-//	:
-//	LBRACE
-//	psiExpression
-//	RBRACE
-//  ;
-
-//bracketExpression
-//	:
-//	LBRACKET
-//	psiExpression
-//	RBRACKET
-//  ;
 
 pathsDeclaration
 	:

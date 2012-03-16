@@ -31,18 +31,15 @@ namespace JetBrains.ReSharper.PsiPlugin.Grammar
 
         public override IParser CreateParser(ILexer lexer, IPsiModule module, IPsiSourceFile sourceFile)
         {
-            return new Parser(LanguageType, lexer, sourceFile);
+            return new Parser(lexer, sourceFile);
         }
 
-        private class Parser : PsiParser, IParser
+        private class Parser : PsiParser
         {
-            private readonly PsiLanguageType myLanguageType;
-
-            public Parser(PsiLanguageType languageType, ILexer lexer, IPsiSourceFile sourceFile) : base(lexer)
-            {
-                myLanguageType = languageType;
-                mySourceFile = sourceFile;
-            }
+          public Parser(ILexer lexer, IPsiSourceFile sourceFile) : base(lexer)
+          {
+            mySourceFile = sourceFile;
+          }
         }
 
         public override bool IsFilteredNode(ITreeNode node)

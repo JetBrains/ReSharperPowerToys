@@ -10,23 +10,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Lexer
 {
     class PsiLexerFactory : ILexerFactory
     {
-        private readonly ILexerFactory myLexerFactory;
-        private readonly IPsiSourceFile mySourceFile;
-        private readonly ProjectFileType myProjectFileType;
-
-        public static PsiLexerFactory Instance = new PsiLexerFactory();
-
-        public PsiLexerFactory()
-        {
-            
-        }
-
-        public PsiLexerFactory(ILexerFactory lexerFactory, [NotNull] IPsiSourceFile sourceFile, ProjectFileType projectFileType)
-        {
-            myLexerFactory = lexerFactory;
-            mySourceFile = sourceFile;
-            myProjectFileType = projectFileType;
-        }
+      public static PsiLexerFactory Instance = new PsiLexerFactory();
 
         public ILexer CreateLexer(IBuffer buffer)
         {
