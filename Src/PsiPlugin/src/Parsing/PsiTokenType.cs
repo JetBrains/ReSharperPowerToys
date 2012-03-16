@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using JetBrains.Annotations;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 using JetBrains.ReSharper.Psi.Parsing;
@@ -15,8 +11,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
 {
     public interface IPsiTokenNodeType
     {
-        [CanBeNull]
-        string Presentation { get; }
     }
 
     public static partial class PsiTokenType

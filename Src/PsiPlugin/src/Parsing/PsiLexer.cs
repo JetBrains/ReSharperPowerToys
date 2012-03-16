@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.Text;
 using JetBrains.Util;
@@ -9,92 +10,92 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
 {
   public class PsiLexer : PsiLexerGenerated
   {
-    private static readonly TokenNodeType[] ourHash = new TokenNodeType[65536];
+    private static readonly TokenNodeType[] OurHash = new TokenNodeType[65536];
 
-    private static readonly Dictionary<TokenNodeType, string> ourTokenTextMap = new Dictionary<TokenNodeType, string>();
-    private static readonly Dictionary<TokenNodeType, string> ourKeywordTextMap = new Dictionary<TokenNodeType, string>();
+    private static readonly Dictionary<TokenNodeType, string> OurTokenTextMap = new Dictionary<TokenNodeType, string>();
+    private static readonly Dictionary<TokenNodeType, string> OurKeywordTextMap = new Dictionary<TokenNodeType, string>();
 
 
 
     static PsiLexer()
     {
 
-      ourKeywordTextMap[PsiTokenType.ABSTRACT] = "abstract";
-      ourKeywordTextMap[PsiTokenType.ERRORHANDLING] = "errorhandling";
-      ourKeywordTextMap[PsiTokenType.EXTRAS] = "extras";
-      ourKeywordTextMap[PsiTokenType.GET] = "get";
-      ourKeywordTextMap[PsiTokenType.GETTER] = "getter";
-      ourKeywordTextMap[PsiTokenType.OPTIONS] = "options";
-      ourKeywordTextMap[PsiTokenType.INTERFACE] = "interface";
-      ourKeywordTextMap[PsiTokenType.INTERFACES] = "interfaces";
-      ourKeywordTextMap[PsiTokenType.PRIVATE] = "private";
-      ourKeywordTextMap[PsiTokenType.PATHS] = "paths";
-      ourKeywordTextMap[PsiTokenType.RETURN_TYPE] = "returnType";
-      ourKeywordTextMap[PsiTokenType.ROLE_KEYWORD] = "ROLE";
-      ourKeywordTextMap[PsiTokenType.NULL_KEYWORD] = "null";
-      ourKeywordTextMap[PsiTokenType.LIST_KEYWORD] = "LIST";
-      ourKeywordTextMap[PsiTokenType.SEP_KEYWORD] = "SEP";
+      OurKeywordTextMap[PsiTokenType.ABSTRACT] = "abstract";
+      OurKeywordTextMap[PsiTokenType.ERRORHANDLING] = "errorhandling";
+      OurKeywordTextMap[PsiTokenType.EXTRAS] = "extras";
+      OurKeywordTextMap[PsiTokenType.GET] = "get";
+      OurKeywordTextMap[PsiTokenType.GETTER] = "getter";
+      OurKeywordTextMap[PsiTokenType.OPTIONS] = "options";
+      OurKeywordTextMap[PsiTokenType.INTERFACE] = "interface";
+      OurKeywordTextMap[PsiTokenType.INTERFACES] = "interfaces";
+      OurKeywordTextMap[PsiTokenType.PRIVATE] = "private";
+      OurKeywordTextMap[PsiTokenType.PATHS] = "paths";
+      OurKeywordTextMap[PsiTokenType.RETURN_TYPE] = "returnType";
+      OurKeywordTextMap[PsiTokenType.ROLE_KEYWORD] = "ROLE";
+      OurKeywordTextMap[PsiTokenType.NULL_KEYWORD] = "null";
+      OurKeywordTextMap[PsiTokenType.LIST_KEYWORD] = "LIST";
+      OurKeywordTextMap[PsiTokenType.SEP_KEYWORD] = "SEP";
 
-      ourTokenTextMap[PsiTokenType.LPARENTH] = "(";
-      ourTokenTextMap[PsiTokenType.RPARENTH] = ")";
-      ourTokenTextMap[PsiTokenType.LBRACE] = "{";
-      ourTokenTextMap[PsiTokenType.RBRACE] = "}";
-      ourTokenTextMap[PsiTokenType.LBRACKET] = "[";
-      ourTokenTextMap[PsiTokenType.RBRACKET] = "]";
-      ourTokenTextMap[PsiTokenType.SEMICOLON] = ";";
-      ourTokenTextMap[PsiTokenType.COMMA] = ",";
-      ourTokenTextMap[PsiTokenType.DOT] = ".";
-      ourTokenTextMap[PsiTokenType.EQ] = "=";
-      ourTokenTextMap[PsiTokenType.GT] = ">";
-      ourTokenTextMap[PsiTokenType.LT] = "<";
-      ourTokenTextMap[PsiTokenType.EXCL] = "!";
-      ourTokenTextMap[PsiTokenType.TILDE] = "~";
-      ourTokenTextMap[PsiTokenType.AT] = "@";
-      ourTokenTextMap[PsiTokenType.SHARP] = "#";
-      ourTokenTextMap[PsiTokenType.BACK_QUOTE] = "`";
-      ourTokenTextMap[PsiTokenType.QUEST] = "?";
-      ourTokenTextMap[PsiTokenType.COLON] = ":";
-      ourTokenTextMap[PsiTokenType.PLUS] = "+";
-      ourTokenTextMap[PsiTokenType.MINUS] = "-";
-      ourTokenTextMap[PsiTokenType.ASTERISK] = "*";
-      ourTokenTextMap[PsiTokenType.DIV] = "/";
-      ourTokenTextMap[PsiTokenType.AND] = "&";
-      ourTokenTextMap[PsiTokenType.OR] = "|";
-      ourTokenTextMap[PsiTokenType.XOR] = "^";
-      ourTokenTextMap[PsiTokenType.PERC] = "%";
-      ourTokenTextMap[PsiTokenType.EQEQ] = "==";
-      ourTokenTextMap[PsiTokenType.LE] = "<=";
-      ourTokenTextMap[PsiTokenType.GE] = ">=";
-      ourTokenTextMap[PsiTokenType.NE] = "!=";
-      ourTokenTextMap[PsiTokenType.ANDAND] = "&&";
-      ourTokenTextMap[PsiTokenType.OROR] = "||";
-      ourTokenTextMap[PsiTokenType.PLUSPLUS] = "++";
-      ourTokenTextMap[PsiTokenType.MINUSMINUS] = "--";
-      ourTokenTextMap[PsiTokenType.LTLT] = "<<";
-      ourTokenTextMap[PsiTokenType.GTGT] = ">>";
-      ourTokenTextMap[PsiTokenType.PLUSEQ] = "+=";
-      ourTokenTextMap[PsiTokenType.MINUSEQ] = "-=";
-      ourTokenTextMap[PsiTokenType.ASTERISKEQ] = "*=";
-      ourTokenTextMap[PsiTokenType.DIVEQ] = "/=";
-      ourTokenTextMap[PsiTokenType.ANDEQ] = "&=";
-      ourTokenTextMap[PsiTokenType.OREQ] = "|=";
-      ourTokenTextMap[PsiTokenType.XOREQ] = "^=";
-      ourTokenTextMap[PsiTokenType.PERCEQ] = "%=";
-      ourTokenTextMap[PsiTokenType.LTLTEQ] = "<<=";
-      ourTokenTextMap[PsiTokenType.GTGTEQ] = ">>=";
-      ourTokenTextMap[PsiTokenType.DOUBLE_COLON] = "::";
-      ourTokenTextMap[PsiTokenType.DOUBLE_QUEST] = "??";
-      ourTokenTextMap[PsiTokenType.ARROW] = "->";
-      ourTokenTextMap[PsiTokenType.LAMBDA_ARROW] = "=>";
+      OurTokenTextMap[PsiTokenType.LPARENTH] = "(";
+      OurTokenTextMap[PsiTokenType.RPARENTH] = ")";
+      OurTokenTextMap[PsiTokenType.LBRACE] = "{";
+      OurTokenTextMap[PsiTokenType.RBRACE] = "}";
+      OurTokenTextMap[PsiTokenType.LBRACKET] = "[";
+      OurTokenTextMap[PsiTokenType.RBRACKET] = "]";
+      OurTokenTextMap[PsiTokenType.SEMICOLON] = ";";
+      OurTokenTextMap[PsiTokenType.COMMA] = ",";
+      OurTokenTextMap[PsiTokenType.DOT] = ".";
+      OurTokenTextMap[PsiTokenType.EQ] = "=";
+      OurTokenTextMap[PsiTokenType.GT] = ">";
+      OurTokenTextMap[PsiTokenType.LT] = "<";
+      OurTokenTextMap[PsiTokenType.EXCL] = "!";
+      OurTokenTextMap[PsiTokenType.TILDE] = "~";
+      OurTokenTextMap[PsiTokenType.AT] = "@";
+      OurTokenTextMap[PsiTokenType.SHARP] = "#";
+      OurTokenTextMap[PsiTokenType.BACK_QUOTE] = "`";
+      OurTokenTextMap[PsiTokenType.QUEST] = "?";
+      OurTokenTextMap[PsiTokenType.COLON] = ":";
+      OurTokenTextMap[PsiTokenType.PLUS] = "+";
+      OurTokenTextMap[PsiTokenType.MINUS] = "-";
+      OurTokenTextMap[PsiTokenType.ASTERISK] = "*";
+      OurTokenTextMap[PsiTokenType.DIV] = "/";
+      OurTokenTextMap[PsiTokenType.AND] = "&";
+      OurTokenTextMap[PsiTokenType.OR] = "|";
+      OurTokenTextMap[PsiTokenType.XOR] = "^";
+      OurTokenTextMap[PsiTokenType.PERC] = "%";
+      OurTokenTextMap[PsiTokenType.EQEQ] = "==";
+      OurTokenTextMap[PsiTokenType.LE] = "<=";
+      OurTokenTextMap[PsiTokenType.GE] = ">=";
+      OurTokenTextMap[PsiTokenType.NE] = "!=";
+      OurTokenTextMap[PsiTokenType.ANDAND] = "&&";
+      OurTokenTextMap[PsiTokenType.OROR] = "||";
+      OurTokenTextMap[PsiTokenType.PLUSPLUS] = "++";
+      OurTokenTextMap[PsiTokenType.MINUSMINUS] = "--";
+      OurTokenTextMap[PsiTokenType.LTLT] = "<<";
+      OurTokenTextMap[PsiTokenType.GTGT] = ">>";
+      OurTokenTextMap[PsiTokenType.PLUSEQ] = "+=";
+      OurTokenTextMap[PsiTokenType.MINUSEQ] = "-=";
+      OurTokenTextMap[PsiTokenType.ASTERISKEQ] = "*=";
+      OurTokenTextMap[PsiTokenType.DIVEQ] = "/=";
+      OurTokenTextMap[PsiTokenType.ANDEQ] = "&=";
+      OurTokenTextMap[PsiTokenType.OREQ] = "|=";
+      OurTokenTextMap[PsiTokenType.XOREQ] = "^=";
+      OurTokenTextMap[PsiTokenType.PERCEQ] = "%=";
+      OurTokenTextMap[PsiTokenType.LTLTEQ] = "<<=";
+      OurTokenTextMap[PsiTokenType.GTGTEQ] = ">>=";
+      OurTokenTextMap[PsiTokenType.DOUBLE_COLON] = "::";
+      OurTokenTextMap[PsiTokenType.DOUBLE_QUEST] = "??";
+      OurTokenTextMap[PsiTokenType.ARROW] = "->";
+      OurTokenTextMap[PsiTokenType.LAMBDA_ARROW] = "=>";
 
-      for (int i = 0; i < ourHash.Length; i++)
-        ourHash[i] = PsiTokenType.IDENTIFIER;
+      for (int i = 0; i < OurHash.Length; i++)
+        OurHash[i] = PsiTokenType.IDENTIFIER;
       for (IDictionaryEnumerator ide = keywords.GetEnumerator(); ide.MoveNext();)
       {
         ushort hash = CalcHash((string) ide.Entry.Key);
-        Assertion.Assert(ourHash[hash] == PsiTokenType.IDENTIFIER,
+        Assertion.Assert(OurHash[hash] == PsiTokenType.IDENTIFIER,
                          "The condition (ourHash[hash] == PsiTokenType.IDENTIFIER) is false.");
-        ourHash[hash] = (TokenNodeType) ide.Entry.Value;
+        OurHash[hash] = (TokenNodeType) ide.Entry.Value;
       }
     }
 
@@ -105,10 +106,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
 
     private static ushort CalcHash(string str)
     {
-      ushort hash = 0;
-      for (int i = 0; i < str.Length; i++)
-        hash = IncHash(hash, str[i]);
-      return hash;
+      return str.Aggregate<char, ushort>(0, IncHash);
     }
 
     private static ushort IncHash(ushort hash, char c)
@@ -118,20 +116,20 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
 
     public static string GetTokenText(TokenNodeType token)
     {
-      if (ourTokenTextMap.ContainsKey(token))
+      if (OurTokenTextMap.ContainsKey(token))
       {
-        return ourTokenTextMap.GetValue(token);
+        return OurTokenTextMap.GetValue(token);
       } 
-      if(ourKeywordTextMap.ContainsKey(token))
+      if(OurKeywordTextMap.ContainsKey(token))
       {
-        return ourKeywordTextMap.GetValue(token);
+        return OurKeywordTextMap.GetValue(token);
       }
       return token.ToString();
     }
 
-    public static bool isKeyword(String s)
+    public static bool IsKeyword(String s)
     {
-      return ourKeywordTextMap.ContainsValue(s);
+      return OurKeywordTextMap.ContainsValue(s);
     }
   }
 }

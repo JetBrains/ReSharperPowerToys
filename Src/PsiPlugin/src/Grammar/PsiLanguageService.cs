@@ -38,7 +38,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Grammar
         {
           public Parser(ILexer lexer, IPsiSourceFile sourceFile) : base(lexer)
           {
-            mySourceFile = sourceFile;
+            SourceFile = sourceFile;
           }
         }
 
