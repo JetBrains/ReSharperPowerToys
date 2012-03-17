@@ -19,6 +19,7 @@ using JetBrains.CommonControls;
 using JetBrains.IDE.TreeBrowser;
 using JetBrains.ReSharper.Feature.Services.Util;
 using JetBrains.ReSharper.Features.Common.TreePsiBrowser;
+using JetBrains.ReSharper.Features.Shared.TreePsiBrowser;
 using JetBrains.ReSharper.Psi;
 using JetBrains.TreeModels;
 using JetBrains.UI.TreeView;

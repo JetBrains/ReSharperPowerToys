@@ -22,7 +22,6 @@ using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Generate;
 using JetBrains.ReSharper.Feature.Services.Generate.Actions;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.DeclaredElements;
 
 namespace JetBrains.ReSharper.PowerToys.GenerateDispose
 {
