@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-using JetBrains.ReSharper.Features.Common.TreePsiBrowser;
+using JetBrains.ReSharper.Features.Shared.TreePsiBrowser;
 using JetBrains.ReSharper.Psi;
 
 namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
