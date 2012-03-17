@@ -1,0 +1,17 @@
+|a|(0)
+	:
+	|b|(1)
+  ;
+
+|private|(2) |b|(3)
+	:
+	|c|(4)
+  ;
+
+
+---------------------------------------------------------
+(0): ReSharper Method Identifier: Rule
+(1): ReSharper Method Identifier: Rule
+(2): ReSharper Constant Identifier: Keyword
+(3): ReSharper Method Identifier: Rule
+(4): ReSharper Underlined Error Highlighting: Unresolved reference
