@@ -1,34 +1,26 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve;
 using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Tree;
-using JetBrains.ReSharper.PsiPlugin.Resolve;
-using JetBrains.ReSharper.PsiPlugin.Util;
-using JetBrains.Util;
 
-namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
+namespace JetBrains.ReSharper.PsiPlugin.Resolve
 {
   public abstract class PsiReferenceBase : TreeReferenceBase<ITreeNode>, ICompleteableReference
   {
-    protected ITreeNode myTreeNode;
-    protected string myName;
+    protected readonly ITreeNode TreeNode;
+    protected string Name;
 
     public PsiReferenceBase(ITreeNode node) : base(node)
     {
-      myTreeNode = node;
-      myName = node.GetText();
+      TreeNode = node;
+      Name = node.GetText();
     }
 
     public override ResolveResultWithInfo ResolveWithoutCache()
     {
       ISymbolTable table = GetReferenceSymbolTable(true);
       IList<DeclaredElementInstance> elements = new List<DeclaredElementInstance>();
-      if (table != null)
       {
         IList<ISymbolInfo> infos = table.GetSymbolInfos(GetName());
         foreach (ISymbolInfo info in infos)
@@ -43,12 +35,12 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
 
     public ITreeNode GetTreeNode()
     {
-      return myTreeNode;
+      return TreeNode;
     }
 
     public override string GetName()
     {
-      return myName;
+      return Name;
     }
 
     public override IAccessContext GetAccessContext()
@@ -63,7 +55,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
 
     public override TreeTextRange GetTreeTextRange()
     {
-      return new TreeTextRange(new TreeOffset(myTreeNode.GetNavigationRange().TextRange.StartOffset), myTreeNode.GetText().Length);
+      return new TreeTextRange(new TreeOffset(TreeNode.GetNavigationRange().TextRange.StartOffset), TreeNode.GetText().Length);
     }
 
 
