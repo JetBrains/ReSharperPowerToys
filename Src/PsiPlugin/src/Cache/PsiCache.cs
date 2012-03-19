@@ -33,7 +33,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
     private readonly IPsiConfiguration myPsiConfiguration;
     public DependencyStore DependencyStore { get; private set; }
 
-    private const int VERSION = 4;
+    private const int VERSION = 7;
 
     public PsiCache(Lifetime lifetime,
       IPsiServices psiServices,
