@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Xml;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
-using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
 using JetBrains.Util;
 using JetBrains.Util.DataStructures;
 
@@ -12,9 +10,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
 {
   class OptionPropertyDeclaredElement : IDeclaredElement
   {
-    private IPsiSourceFile myFile;
-    private string myName;
-    private IPsiServices myServices;
+    private readonly IPsiSourceFile myFile;
+    private readonly string myName;
+    private readonly IPsiServices myServices;
 
     public OptionPropertyDeclaredElement(IPsiSourceFile file, string name, IPsiServices services)
     {
@@ -65,7 +63,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
 
     public HybridCollection<IPsiSourceFile> GetSourceFiles()
     {
-      return new HybridCollection<IPsiSourceFile>() {myFile};
+      return new HybridCollection<IPsiSourceFile> {myFile};
     }
 
     public bool HasDeclarationsIn(IPsiSourceFile sourceFile)
