@@ -295,7 +295,8 @@
     <Compile Include="src\Parsing\psi_lex.cs" />
     <Compile Include="src\Refactoring\Rename\PsiAtomicRename.cs" />
     <Compile Include="src\Refactoring\Rename\PsiDerivedElementRename.cs" />
-    <Compile Include="src\Refactoring\Rename\PsiRenameHelper.cs" />
+    <Compile Include="src\Refactoring\Rename\PsiPrimaryDeclaredElementForRenameProvider.cs" />
+    <Compile Include="src\Refactoring\Rename\PsiRenamesFactory.cs" />
     <Compile Include="src\Resolve\OptionDeclaredElements.cs" />
     <Compile Include="src\Resolve\OptionPropertyDeclaredElement.cs" />
     <Compile Include="src\Resolve\PsiDeclaredElementType.cs" />
@@ -303,7 +304,6 @@
     <Compile Include="src\Resolve\PsiOptionReference.cs" />
     <Compile Include="src\Resolve\PsiPathReference.cs" />
     <Compile Include="src\Resolve\PsiPathReferenceUtil.cs" />
-    <Compile Include="src\Resolve\PsiResolveInfo.cs" />
     <Compile Include="src\Resolve\PsiResolveUtil.cs" />
     <Compile Include="src\Resolve\PsiRoleReference.cs" />
     <Compile Include="src\Resolve\PsiRuleReference.cs" />
