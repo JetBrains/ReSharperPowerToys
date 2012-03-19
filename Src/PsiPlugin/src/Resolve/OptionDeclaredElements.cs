@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace JetBrains.ReSharper.PsiPlugin.Resolve
 {
-  public class OptionDeclaredElements
+  public static class OptionDeclaredElements
   {
-    public static IList<string> FileOptionNames = new List<string>()
-                                                   {
+    public static readonly IList<string> FileOptionNames = new List<string>
+                                                    {
                                                      "parserClassName",
                                                      "parserPackage",
                                                      "psiInterfacePackageName",
@@ -46,7 +43,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
                                                      "parserMessagesClass"
                                                    };
 
-    public static IList<string> NamespacesOptions = new List<string>()
+    public static readonly IList<string> NamespacesOptions = new List<string>
                                                       {
                                                         "parserPackage",
                                                         "psiInterfacePackageName",
@@ -57,7 +54,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
                                                         "customInterfacePackage"
                                                       };
 
-    public static IList<string> ClassesOptions = new List<string>()
+    public static readonly IList<string> ClassesOptions = new List<string>
                                                    {
                                                      "parserClassName",
                                                      "psiStubsBaseClass",
@@ -86,13 +83,13 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
                                                      "tokenBitsetThreshold"
                                                    };
  
-    public static IList<string> MethodsOptions = new List<string>()
+    public static readonly IList<string> MethodsOptions = new List<string>
                                                    {
                                                      "createTokenElementMethodFQName",
                                                      "languageType"
                                                    };
 
-    public static IList<string> DirectoryOptions = new List<string>()
+    public static readonly IList<string> DirectoryOptions = new List<string>
                                                      {
                                                        "parserTargetSubdir",
                                                        "psiInterfacesTargetSubdir",
@@ -100,7 +97,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
                                                        "testTargetSubdir"
                                                      }; 
 
-    public static IList<string> RuleOptionNames = new List<string>()
+    public static readonly IList<string> RuleOptionNames = new List<string>
                                                    {
                                                      "customImpl",
                                                      "customInterface",

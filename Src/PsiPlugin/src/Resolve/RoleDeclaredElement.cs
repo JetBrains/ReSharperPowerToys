@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Xml;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
@@ -13,10 +10,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
 {
   class RoleDeclaredElement : IDeclaredElement
   {
-    private IFile myFile;
+    private readonly IFile myFile;
     private string myName;
-    private IPsiServices myServices;
-    private bool myChangeName = false;
+    private readonly IPsiServices myServices;
     private string myNewName;
 
     public RoleDeclaredElement(IFile file, string name, IPsiServices services)
@@ -102,11 +98,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
       get { return myFile; }
     }
 
-    public bool ChangeName
-    {
-      get { return myChangeName; }
-      set { myChangeName = value; }
-    }
+    public bool ChangeName { get; set; }
 
     public string NewName
     {

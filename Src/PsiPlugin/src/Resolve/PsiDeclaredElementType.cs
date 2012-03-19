@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.ReSharper.PsiPlugin.Services;
@@ -12,8 +9,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
 {
   public class PsiDeclaredElementType : DeclaredElementType
   {
-    private IDeclaredElementPresenter myElementPresenter;
-    private static PsiLanguageType myLanguage = PsiLanguage.Instance;
+    private readonly IDeclaredElementPresenter myElementPresenter;
+    private static readonly PsiLanguageType Language = PsiLanguage.Instance;
 
     private readonly string myImageName;
 
@@ -23,7 +20,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
     public static readonly PsiDeclaredElementType Variable = new PsiDeclaredElementType("Variable", "psiVariable.png");
     public static readonly PsiDeclaredElementType Path = new PsiDeclaredElementType("Path", "psiPath.png");
 
-    public PsiDeclaredElementType(string name, String imageName)
+    private PsiDeclaredElementType(string name, String imageName)
       : base(name)
     {
       myElementPresenter = new PsiDeclaredElementPresenter();
@@ -44,12 +41,12 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
 
     public override bool IsPresentable(PsiLanguageType language)
     {
-      return (myLanguage == language);
+      return (Equals(Language, language));
     }
 
     public override string PresentableName
     {
-      get { throw new NotImplementedException(); }
+      get { return "Psi"; }
     }
 
     protected override IDeclaredElementPresenter DefaultPresenter

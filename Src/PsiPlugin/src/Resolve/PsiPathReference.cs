@@ -16,7 +16,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
 
     public override ISymbolTable GetReferenceSymbolTable(bool useReferenceName)
     {
-      var file = myTreeNode.GetContainingFile() as PsiFile;
+      var file = TreeNode.GetContainingFile() as PsiFile;
       if (file == null)
         return EmptySymbolTable.INSTANCE;
       return file.FilePathSymbolTable;
@@ -24,11 +24,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
 
     public override IReference BindTo(IDeclaredElement element)
     {
-      IPathName pathName = (IPathName)GetTreeNode();
+      var pathName = (IPathName)GetTreeNode();
       if (pathName.Parent != null)
       {
         PsiTreeUtil.ReplaceChild(pathName, pathName.FirstChild, element.ShortName);
-        //pathName.SetName(element.ShortName);
       }
       IReference reference = new PsiPathReference(pathName);
       pathName.SetReference(reference);
@@ -38,11 +37,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
     public override IReference BindTo(IDeclaredElement element, ISubstitution substitution)
     {
       return BindTo(element);
-    }
-
-    public void SetName(string shortName)
-    {
-      myName = shortName;
     }
   }
 }

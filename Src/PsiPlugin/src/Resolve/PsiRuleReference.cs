@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve;
 using JetBrains.ReSharper.Psi.Resolve;
@@ -23,7 +20,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
       ISymbolTable table = GetReferenceSymbolTable(true);
       IList<DeclaredElementInstance> elements = new List<DeclaredElementInstance>();
       RuleDeclaration ruleDeclaration = null;
-      if (table != null)
       {
         IList<ISymbolInfo> infos = table.GetSymbolInfos(GetName());
         foreach (ISymbolInfo info in infos)
@@ -67,7 +63,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
       {
         return EmptySymbolTable.INSTANCE;
       }
-      var file = myTreeNode.GetContainingFile() as PsiFile;
+      var file = TreeNode.GetContainingFile() as PsiFile;
       if (file == null)
         return EmptySymbolTable.INSTANCE;
       return file.FileRuleSymbolTable;
@@ -75,7 +71,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
 
     public override IReference BindTo(IDeclaredElement element)
     {
-      IRuleName ruleName = (IRuleName)GetTreeNode();
+      var ruleName = (IRuleName)GetTreeNode();
       if (ruleName.Parent != null)
       {
         PsiTreeUtil.ReplaceChild(ruleName, ruleName.FirstChild, element.ShortName);
@@ -91,7 +87,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
 
     public void SetName(string shortName)
     {
-      myName = shortName;
+      Name = shortName;
     }
   }
 }

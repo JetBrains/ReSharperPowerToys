@@ -11,7 +11,6 @@ using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Psi.Util;
 using JetBrains.ReSharper.Psi.Web.PathMapping;
 using JetBrains.ReSharper.Psi.Web.References;
-using JetBrains.ReSharper.Psi.Web.Resolve;
 using JetBrains.ReSharper.Psi.Web.Util;
 using JetBrains.ReSharper.PsiPlugin.Cache;
 using JetBrains.Util;
@@ -20,8 +19,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
 {
   public static class PsiPathReferenceUtil
   {
-
-    public static FileSystemPath GetRootPath([NotNull] IPathReference pathReference)
+    private static FileSystemPath GetRootPath([NotNull] IPathReference pathReference)
     {
       var project = pathReference.GetTreeNode().GetPsiModule().ContainingProjectModule as IProject;
       if (project != null)
@@ -59,34 +57,14 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
       return FileSystemPath.Empty;
     }
 
-    public static FileSystemPath GetBasePath(IQualifiableReference pathReference)
-    {
-      var basePathBeforeMapping = GetBasePathBeforeMapping(pathReference);
-      var qualifierReference = pathReference.GetQualifier() as IReference;
-      if (qualifierReference != null)
-      {
-        var resolveResultWithInfo = qualifierReference.Resolve();
-        if (resolveResultWithInfo.ResolveErrorType == WebResolveErrorType.PATH_MAPPED)
-        {
-          var mapping = WebPathMappingManager.GetPathMapping((IPathReference)pathReference);
-          var mappedPath = mapping.GetRealPaths(basePathBeforeMapping).FirstOrDefault();
-          if (mappedPath != null)
-            return mappedPath;
-        }
-      }
-
-      return basePathBeforeMapping;
-    }
-
     public static ISymbolTable GetReferenceSymbolTable(IPathReference pathReference, bool useReferenceName, bool includeHttpHandlers = true)
     {
-      MSBuildPropertiesCache propertiesSearcher =
+      var propertiesSearcher =
         pathReference.GetTreeNode().GetSolution().GetComponent<MSBuildPropertiesCache>();
 
       string productHomeDir = propertiesSearcher.GetProjectPropertyByName(pathReference.GetTreeNode().GetProject(),
                                                                     "ProductHomeDir");
-      FileSystemPath basePath = new FileSystemPath(productHomeDir);
-      //FileSystemPath basePath = GetBasePath(pathReference);
+      var basePath = new FileSystemPath(productHomeDir);
       if (basePath.IsEmpty)
       {
         return EmptySymbolTable.INSTANCE;
@@ -158,7 +136,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
         return symbolTableByPath;
 
       var httpHandlersTable = new SymbolTable(psiServices);
-      var projectFile = pathReference.GetTreeNode().GetSourceFile().ToProjectFile();
 
       return httpHandlersTable.Merge(symbolTableByPath);
     }
@@ -176,113 +153,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
       {
         myQualifierInfo.AddDependencies(store, accessName);
       }
-
-      public void AddUsingDependenciesTo(IDependencyStore store, string accessName)
-      {
-      }
-    }
-
-    public static ISymbolFilter[] GetSmartSymbolFilters(IPathReference pathReference)
-    {
-      return new ISymbolFilter[]
-      {
-        //new PathInWebsiteFilter(GetRootPath(pathReference))
-      };
-    }
-
-    public static ISymbolFilter[] GetSmartSymbolFilters(IFileReference fileReference)
-    {
-      var filters = new LocalList<ISymbolFilter>(GetSmartSymbolFilters((IPathReference)fileReference));
-      filters.Add(new FileFilters.IsProjectFileFilter(fileReference.ExpectedFileType));
-
-      var extensions = fileReference.ExpectedExtensions;
-      if (extensions.Count > 0)
-        filters.Add(new FileFilters.ExtensionFilter(extensions));
-
-      return filters.ToArray();
-    }
-
-    public static ISymbolFilter[] GetFolderSmartSymbolFilters(IPathReference folderReference)
-    {
-      return ArrayUtil.Add(GetSmartSymbolFilters(folderReference), FileFilters.IsProjectFolder);
-    }
-
-    public static ISymbolFilter[] GetCompletionFilters(IPathReference pathReference)
-    {
-      return new ISymbolFilter[]
-      {
-        //new PathInWebsiteFilter(GetRootPath(pathReference))
-      };
-    }
-
-    public static ISymbolTable GetQualifierSymbolTable(IPathReference pathReference)
-    {
-      var declaredElement = pathReference.Resolve().DeclaredElement as IPathDeclaredElement;
-      if (declaredElement != null)
-      {
-        var psiServices = pathReference.GetTreeNode().GetPsiServices();
-        return PathReferenceUtil.GetSymbolTableByPath(declaredElement.Path, psiServices, declaredElement.Path.Directory, GetRootPath(pathReference), true);
-      }
-
-      return EmptySymbolTable.INSTANCE;
-    }
-
-    [NotNull]
-    public static ISymbolFilter[] AddNoCircularPathReferenceFilter([NotNull] ISymbolFilter[] filters, [NotNull] IPathReference pathReference)
-    {
-      var projectFile = pathReference.GetTreeNode().GetSourceFile().ToProjectFile();
-      if (projectFile == null)
-        return filters;
-      var self = projectFile.Location;
-      return ArrayUtil.Add(filters, new FileFilters.PredicateFilter(path => path != self));
-    }
-
-    public static ResolveResultWithInfo CheckResolveResut(IIgnorablePathReference pathReference, ResolveResultWithInfo resolveResult)
-    {
-      var name = pathReference.GetName();
-      var resolveResultWithInfo = FileResolveUtil.CheckResolveResut(resolveResult, name);
-      if (pathReference.CanBeMappedOrIgnored)
-      {
-        var pathDeclaredElement = resolveResultWithInfo.DeclaredElement as IPathDeclaredElement;
-        if (resolveResultWithInfo.ResolveErrorType != ResolveErrorType.OK && pathDeclaredElement != null && !pathDeclaredElement.Path.IsNullOrEmpty())
-        {
-          var mapping = WebPathMappingManager.GetPathMapping(pathReference);
-
-          var pathState = mapping.GetPathState(pathDeclaredElement.Path);
-          // mapped path
-          if ((pathState & PathState.MAPPED) != 0)
-          {
-            var mappedPaths = mapping.GetRealPaths(pathDeclaredElement.Path);
-            if (mappedPaths.Any())
-              return new ResolveResultWithInfo(resolveResultWithInfo.Result, WebResolveErrorType.PATH_MAPPED);
-          }
-
-          // ignored path
-          if ((pathState & PathState.IGNORED_OR_PART_OF) != 0)
-            return new ResolveResultWithInfo(resolveResultWithInfo.Result, WebResolveErrorType.PATH_IGNORED);
-        }
-      }
-      return resolveResultWithInfo;
-    }
-
-    public static FileSystemPath GetPathUnmapped(IIgnorablePathReference pathReference, IPathDeclaredElement pathDeclaredElement)
-    {
-      if (!pathReference.CanBeMappedOrIgnored)
-        return pathDeclaredElement.Path;
-
-      var pathMapping = WebPathMappingManager.GetPathMapping(pathReference).GetRealToWebPathMapping();
-
-      for (var path = pathDeclaredElement.Path; !path.IsEmpty; path = path.Directory)
-      {
-        FileSystemPath webPath;
-        if (pathMapping.TryGetValue(path, out webPath))
-        {
-          var tail = pathDeclaredElement.Path.ConvertToRelativePath(path);
-          return webPath.Combine(tail);
-        }
-      }
-
-      return pathDeclaredElement.Path;
     }
   }
 }

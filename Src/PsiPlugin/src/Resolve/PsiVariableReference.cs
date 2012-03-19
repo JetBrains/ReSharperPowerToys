@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using JetBrains.ReSharper.Psi;
+﻿using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve;
 using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Tree;
-using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
 using JetBrains.ReSharper.PsiPlugin.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Resolve
@@ -21,7 +16,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
 
     public override ISymbolTable GetReferenceSymbolTable(bool useReferenceName)
     {
-      ITreeNode node = myTreeNode;
+      ITreeNode node = TreeNode;
       while(node != null)
       {
         if(node is IRuleDeclaration)
@@ -38,7 +33,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
 
     public override IReference BindTo(IDeclaredElement element)
     {
-      IVariableName variableName = (IVariableName)GetTreeNode();
+      var variableName = (IVariableName)GetTreeNode();
       if (variableName.Parent != null)
       {
         PsiTreeUtil.ReplaceChild(variableName, variableName.FirstChild, element.ShortName);
@@ -54,7 +49,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
 
     public void SetName(string shortName)
     {
-      myName = shortName;
+      Name = shortName;
     }
   }
 }

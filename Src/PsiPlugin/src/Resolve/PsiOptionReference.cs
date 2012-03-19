@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using JetBrains.ReSharper.Psi;
+﻿using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve;
 using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Tree;
@@ -20,7 +16,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
 
     public override ISymbolTable GetReferenceSymbolTable(bool useReferenceName)
     {
-      var file = myTreeNode.GetContainingFile() as PsiFile;
+      var file = TreeNode.GetContainingFile() as PsiFile;
       if (file == null)
         return EmptySymbolTable.INSTANCE;
       return file.FileOptionSymbolTable;
@@ -28,7 +24,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
 
     public override IReference BindTo(IDeclaredElement element)
     {
-      IOptionName optionName = (IOptionName)GetTreeNode();
+      var optionName = (IOptionName)GetTreeNode();
       if (optionName.Parent != null)
       {
         if (!(element.ShortName.Equals(optionName.FirstChild.GetText())))
