@@ -77,7 +77,7 @@
     </Reference>
     <Reference Include="JetBrains.ReSharper.Feature.Services.CSharp, Version=7.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\ReSharper\Main\bin\JetBrains.ReSharper.Feature.Services.CSharp.dll</HintPath>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.CSharp.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Intentions">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Intentions.dll</HintPath>
@@ -103,7 +103,7 @@
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Resources.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.ReSharper.VS">
-      <HintPath>..\..\..\ReSharper\Main\bin\JetBrains.ReSharper.VS.dll</HintPath>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.VS.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Build" />
     <Reference Include="Microsoft.Build.Framework" />
@@ -384,7 +384,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(ReSharperSdk)\Tools\parserGen\ParserGen.Targets" />
   <Import Project="$(ReSharperSdk)\Tools\CsLex\CsLex.Targets" />
-  <Import Project="$(ReSharperSdk)\Tools\MSBuild\JetBrains\JetBrains.Build.Common.Targets" />
+  <Import Project="$(ReSharperSdk)\Tools\MSBuild\JetBrains.Build.Common.Targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
