@@ -3,6 +3,7 @@ using JetBrains.Application;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 using JetBrains.ReSharper.Psi.Parsing;
+using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
 using JetBrains.Text;
 using JetBrains.Util;
@@ -81,6 +82,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
         : base(PsiTokenType.EOF, buffer, new TreeOffset(buffer.Length), new TreeOffset(buffer.Length))
       {
       }
+
+      public override PsiLanguageType Language
+      {
+        get { return PsiLanguage.Instance; }
+      }
     }
 
     public static void Run(TreeElement node, ILexer lexer, ITokenOffsetProvider offsetProvider, bool trimTokens, SeldomInterruptChecker interruptChecker)
@@ -117,7 +123,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
         public static readonly NodeType Instance = new DummyNodeType();
 
         private DummyNodeType() : base("DummyContainer") { }
-        public override PsiLanguageType LanguageType { get { return UnknownLanguage.Instance; } }
+        //public override PsiLanguageType LanguageType { get { return UnknownLanguage.Instance; } }
         public override CompositeElement Create() { throw new InvalidOperationException(); }
       }
 
@@ -129,6 +135,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
       public override NodeType NodeType
       {
         get { return DummyNodeType.Instance; }
+      }
+
+      public override PsiLanguageType Language
+      {
+        get { return PsiLanguage.Instance; ; }
       }
 
       public void Dispose()

@@ -6,6 +6,7 @@ using JetBrains.ReSharper.Psi.Impl;
 using JetBrains.ReSharper.Psi.Impl.PsiManagerImpl;
 using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Tree;
+using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.ReSharper.PsiPlugin.Parsing;
 using JetBrains.ReSharper.PsiPlugin.Resolve;
 
@@ -447,5 +448,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
       }
     }
 
+    public override PsiLanguageType Language
+    {
+      get { return PsiLanguage.Instance; }
+    }
   }
 }

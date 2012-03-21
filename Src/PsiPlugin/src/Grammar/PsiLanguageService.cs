@@ -24,11 +24,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Grammar
             return new FilteringPsiLexer(lexer);
         }
 
-        public override string GetTokenReprByTokenType(TokenNodeType token)
-        {
-            return null;
-        }
-
         public override IParser CreateParser(ILexer lexer, IPsiModule module, IPsiSourceFile sourceFile)
         {
             return new Parser(lexer, sourceFile);

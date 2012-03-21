@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using JetBrains.Application.Settings;
 using System.Linq;
 using JetBrains.Application;
 using JetBrains.Application.Progress;
