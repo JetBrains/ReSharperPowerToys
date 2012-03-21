@@ -85,6 +85,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.CSharp.dll</HintPath>
     </Reference>
+    <Reference Include="JetBrains.ReSharper.Feature.Services.Navigation">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Navigation.dll</HintPath>
+    </Reference>
     <Reference Include="JetBrains.ReSharper.Intentions">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Intentions.dll</HintPath>
     </Reference>
