@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
+using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.ReSharper.Psi.Tree;
+using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.Text;
 
 namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
@@ -26,21 +26,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
       return visitor.VisitNode(this, context);
     }
 
-    /*public IPsiNamespaceDeclaration GetContainingNamespaceDeclaration()
-    {
-      return GetContainingNode<IPsiNamespaceDeclaration>(false);
-    }
-
-    public IPsiTypeMemberDeclaration GetContainingTypeMemberDeclaration()
-    {
-      return GetContainingNode<IPsiTypeMemberDeclaration>(false);
-    }
-
-    public IPsiTypeDeclaration GetContainingTypeDeclaration()
-    {
-      return GetContainingNode<IPsiTypeDeclaration>(false);
-    }*/
-
     public TokenNodeType GetTokenType()
     {
       return (TokenNodeType)NodeType;
@@ -60,6 +45,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
     public override IBuffer GetTextAsBuffer()
     {
       return new StringBuffer(GetText());
+    }
+
+    public override PsiLanguageType Language
+    {
+      get { return PsiLanguage.Instance; }
     }
   }
 }

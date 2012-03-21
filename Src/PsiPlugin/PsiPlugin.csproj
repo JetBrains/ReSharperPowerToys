@@ -54,10 +54,12 @@
     <Reference Include="JetBrains.Platform.ReSharper.DocumentModel">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.DocumentModel.dll</HintPath>
     </Reference>
-    <Reference Include="JetBrains.Platform.ReSharper.ProjectModel">
+    <Reference Include="JetBrains.Platform.ReSharper.ProjectModel, Version=7.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.ProjectModel.dll</HintPath>
     </Reference>
-    <Reference Include="JetBrains.Platform.ReSharper.Shell">
+    <Reference Include="JetBrains.Platform.ReSharper.Shell, Version=7.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.Shell.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.TextControl">
@@ -69,8 +71,12 @@
     <Reference Include="JetBrains.Platform.ReSharper.Util">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.Util.dll</HintPath>
     </Reference>
-    <Reference Include="JetBrains.ReSharper.Daemon">
+    <Reference Include="JetBrains.ReSharper.Daemon, Version=7.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Daemon.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Daemon.Engine">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Daemon.Engine.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Feature.Services">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.dll</HintPath>
@@ -347,6 +353,7 @@
     <Compile Include="src\Tree\Impl\Whitespace.cs" />
     <Compile Include="src\Tree\IPsiStatement.cs" />
     <Compile Include="src\Tree\IPsiTreeNode.cs" />
+    <Compile Include="src\Tree\PsiCompositeNodeType.cs" />
     <Compile Include="src\Util\PsiDeclaredElementElementUtil.cs" />
     <Compile Include="src\Util\PsiElementFactory.cs" />
     <Compile Include="src\Util\PsiElementFactoryImpl.cs" />

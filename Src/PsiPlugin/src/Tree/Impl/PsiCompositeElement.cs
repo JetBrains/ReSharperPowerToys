@@ -2,10 +2,11 @@
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 using JetBrains.ReSharper.Psi.Tree;
+using JetBrains.ReSharper.PsiPlugin.Grammar;
 
 namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
 {
-    internal class PsiCompositeElement : CompositeElement, IPsiTreeNode
+    internal abstract class PsiCompositeElement : CompositeElement, IPsiTreeNode
     {
         public virtual void Accept(TreeNodeVisitor visitor)
         {
@@ -22,34 +23,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
             return visitor.VisitNode(this, context);
         }
 
-        /*public IPsiNamespaceDeclaration GetContainingNamespaceDeclaration()
-        {
-            return GetContainingNode<IPsiNamespaceDeclaration>(false);
-        }
 
-        public IPsiTypeMemberDeclaration GetContainingTypeMemberDeclaration()
+        public override PsiLanguageType Language
         {
-            return GetContainingNode<IPsiTypeMemberDeclaration>(false);
-        }
-
-        public IPsiTypeDeclaration GetContainingTypeDeclaration()
-        {
-            return GetContainingNode<IPsiTypeDeclaration>(false);
-        }*/
-
-        public IPsiStatement GetContainingStatement()
-        {
-            return GetContainingNode<IPsiStatement>(false);
-        }
-
-        public PsiLanguageType PresentationLanguage
-        {
-            get { return Language; }
-        }
-
-        public override NodeType NodeType
-        {
-            get { throw new NotImplementedException(); }
+          get { return PsiLanguage.Instance; }
         }
     }
 }

@@ -33,11 +33,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
                 get { return null; }
             }
 
-            public override PsiLanguageType LanguageType
-            {
-                get { return PsiLanguage.Instance; }
-            }
-
             public override bool IsWhitespace
             {
                 get { return this == WHITE_SPACE || this == NEW_LINE; }
@@ -77,6 +72,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
             {
                 return new Whitespace(buffer.GetText(new TextRange(startOffset.Offset, endOffset.Offset)));
             }
+
+          public override string TokenRepresentation
+          {
+            get { return " "; }
+          }
         }
 
         private sealed class NewLineNodeType : PsiTokenNodeType
@@ -87,6 +87,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
             {
                 return new NewLine(buffer.GetText(new TextRange(startOffset.Offset, endOffset.Offset)));
             }
+
+          public override string TokenRepresentation
+          {
+            get { return "\n"; }
+          }
         }
 
         private class GenericTokenNodeType : PsiTokenNodeType
@@ -113,6 +118,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
             {
                 return new PsiGenericToken(this, buffer.GetText(new TextRange(startOffset.Offset, endOffset.Offset)));
             }
+
+          public override string TokenRepresentation
+          {
+            get { return myPresentation; }
+          }
         }
 
         private class CommentNodeType : GenericTokenNodeType
@@ -156,17 +166,64 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
             {
                 return new Identifier(buffer.GetText(new TextRange(startOffset.Offset, endOffset.Offset)));
             }
+
+          public override string TokenRepresentation
+          {
+            get { return "identifier"; }
+          }
         }
 
-        private abstract class KeywordTokenNodeType : PsiTokenNodeType
+        private class FixedTokenNodeType : GenericTokenNodeType
         {
-            protected KeywordTokenNodeType(string s) : base(s) { }
+          private readonly string myRepresentation;
 
-            public override string Presentation
-            {
-                get { return "'" + PsiLexer.GetTokenText(this) + "'"; }
-            }
+          public FixedTokenNodeType(string s, string representation)
+            : base(s)
+          {
+            myRepresentation = representation;
+          }
+
+          public override LeafElementBase Create(IBuffer buffer, TreeOffset startOffset, TreeOffset endOffset)
+          {
+            return new FixedTokenElement(this);
+          }
+
+          public override string TokenRepresentation
+          {
+            get { return myRepresentation; }
+          }
         }
+
+        private class FixedTokenElement : PsiTokenBase
+        {
+          private readonly FixedTokenNodeType myKeywordTokenNodeType;
+
+          public FixedTokenElement(FixedTokenNodeType keywordTokenNodeType)
+          {
+            myKeywordTokenNodeType = keywordTokenNodeType;
+          }
+
+          public override NodeType NodeType
+          {
+            get { return myKeywordTokenNodeType; }
+          }
+
+          public override int GetTextLength()
+          {
+            return myKeywordTokenNodeType.TokenRepresentation.Length;
+          }
+
+          public override string GetText()
+          {
+            return myKeywordTokenNodeType.TokenRepresentation;
+          }
+        }
+
+        private class KeywordTokenNodeType : FixedTokenNodeType
+        {
+          public KeywordTokenNodeType(string s, string representation) : base(s, representation) { }
+        }
+
 
         public static readonly TokenNodeType NEW_LINE = new NewLineNodeType();
         public static readonly TokenNodeType WHITE_SPACE = new WhitespaceNodeType ();
