@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using JetBrains.ProjectModel;
+using JetBrains.ProjectModel.Properties;
 using JetBrains.ReSharper.Daemon.Test;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
 using NUnit.Framework;
+using PlatformID = JetBrains.ProjectModel.PlatformID;
 
 namespace PsiPluginTest.Highlighting
 {
@@ -17,9 +15,9 @@ namespace PsiPluginTest.Highlighting
       get { return @"highlighting"; }
     }
 
-    public override ProjectLanguage DefaultProjectLanguage
+    public override IProjectProperties GetProjectProperties(PlatformID platformId)
     {
-      get { return ProjectLanguage.UNKNOWN; }
+      throw new NotImplementedException();
     }
 
     protected override PsiLanguageType CompilerIdsLanguage

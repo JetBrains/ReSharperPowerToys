@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Xml;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
@@ -13,8 +10,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
 {
   internal partial class VariableDeclaration : IDeclaredElement
   {
-    private IList<IDeclaredElement> myDerivedDeclaredElements = new List<IDeclaredElement>();
-
     public void SetName(string name)
     {
       PsiTreeUtil.ReplaceChild(FirstChild, FirstChild.FirstChild, name);
@@ -24,20 +19,18 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
     {
       ITreeNode variableName = FirstChild;
       int offset = variableName.GetNavigationRange().TextRange.StartOffset;
-      return new TreeTextRange(new TreeOffset(offset), variableName.GetText().Length); //ruleName.GetNavigationRange());
+      return new TreeTextRange(new TreeOffset(offset), variableName.GetText().Length);
     }
 
     public IList<IDeclaration> GetDeclarations()
     {
-      var list = new List<IDeclaration>();
-      list.Add(this);
+      var list = new List<IDeclaration> {this};
       return list;
     }
 
     public IList<IDeclaration> GetDeclarationsIn(IPsiSourceFile sourceFile)
     {
-      var list = new List<IDeclaration>();
-      list.Add(this);
+      var list = new List<IDeclaration> {this};
       return list;
     }
 
@@ -78,10 +71,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
 
     public string DeclaredName
     {
-      get { return getDeclaredName(); }
+      get { return GetDeclaredName(); }
     }
 
-    private string getDeclaredName()
+    private string GetDeclaredName()
     {
       return GetText();
     }
@@ -90,11 +83,5 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
     {
       get { return PsiLanguage.Instance; }
     }
-
-    public IList<IDeclaredElement> DerivedDeclaredElements
-    {
-      get { return myDerivedDeclaredElements; }
-    }
-
   }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Xml;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve;
@@ -20,16 +16,15 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
 {
   internal partial class RuleDeclaration : IDeclaredElement
   {
-    private IList<IDeclaredElement> myDerivedDeclaredElements = new List<IDeclaredElement>();
-    private IList<IDeclaredElement> myDerivedClasses = new List<IDeclaredElement>();
-    private IList<IDeclaredElement> myDerivedInterfaces = new List<IDeclaredElement>();
-    private IList<IDeclaredElement> myDerivedVisitorMethods = new List<IDeclaredElement>();
+    private readonly IList<IDeclaredElement> myDerivedDeclaredElements = new List<IDeclaredElement>();
+    private readonly IList<IDeclaredElement> myDerivedClasses = new List<IDeclaredElement>();
+    private readonly IList<IDeclaredElement> myDerivedInterfaces = new List<IDeclaredElement>();
+    private readonly IList<IDeclaredElement> myDerivedVisitorMethods = new List<IDeclaredElement>();
 
-    private IClass myParserClass = null;
+    private IClass myParserClass;
     private ICollection<ITypeElement> myVisitorClasses; 
     private string myTreeInterfacesPackageName;
     private string myTreeClassesPackageName;
-    private string myVisitorClassName;
     private string myVisitorMethodPrefix;
     private string myVisitorMethodSuffix;
 
@@ -42,20 +37,18 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
     {
       ITreeNode ruleName = RuleName;
       int offset = ruleName.GetNavigationRange().TextRange.StartOffset;
-      return new TreeTextRange(new TreeOffset(offset), ruleName.GetText().Length); //ruleName.GetNavigationRange());
+      return new TreeTextRange(new TreeOffset(offset), ruleName.GetText().Length);
     }
 
     public IList<IDeclaration> GetDeclarations()
     {
-      var list = new List<IDeclaration>();
-      list.Add(this);
+      var list = new List<IDeclaration> {this};
       return list;
     }
 
     public IList<IDeclaration> GetDeclarationsIn(IPsiSourceFile sourceFile)
     {
-      var list = new List<IDeclaration>();
-      list.Add(this);
+      var list = new List<IDeclaration> {this};
       return list;
     }
 
@@ -96,10 +89,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
 
     public string DeclaredName
     {
-      get { return getDeclaredName(); }
+      get { return GetDeclaredName(); }
     }
 
-    private string getDeclaredName()
+    private string GetDeclaredName()
     {
       return RuleName.GetText();
     }
@@ -109,22 +102,22 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
       get { return PsiLanguage.Instance; }
     }
 
-    public IList<IDeclaredElement> DerivedDeclaredElements
+    public IEnumerable<IDeclaredElement> DerivedDeclaredElements
     {
       get { return myDerivedDeclaredElements; }
     }
 
-    public IList<IDeclaredElement> DerivedClasses
+    public IEnumerable<IDeclaredElement> DerivedClasses
     {
       get { return myDerivedClasses; }
     }
 
-    public IList<IDeclaredElement> DerivedInterfaces
+    public IEnumerable<IDeclaredElement> DerivedInterfaces
     {
       get { return myDerivedInterfaces; }
     }
 
-    public IList<IDeclaredElement> DerivedVisitorMethods
+    public IEnumerable<IDeclaredElement> DerivedVisitorMethods
     {
       get { return myDerivedVisitorMethods; }
     }
@@ -139,13 +132,12 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
       get { return myVisitorMethodSuffix; }
     }
  
-    public void CollectDerivedDeclaredElements(IClass parserClass, ICollection<ITypeElement> visitorClasses, string treeInterfacesPackageName, string treeClassesPackageName, string visitorClassName, string visitorMethodPrefix, string visitorMethodSuffix)
+    public void CollectDerivedDeclaredElements(IClass parserClass, ICollection<ITypeElement> visitorClasses, string treeInterfacesPackageName, string treeClassesPackageName, string visitorMethodPrefix, string visitorMethodSuffix)
     {
       myParserClass = parserClass;
       myVisitorClasses = visitorClasses;
       myTreeInterfacesPackageName = treeInterfacesPackageName;
       myTreeClassesPackageName = treeClassesPackageName;
-      myVisitorClassName = visitorClassName;
       myVisitorMethodPrefix = visitorMethodPrefix;
       myVisitorMethodSuffix = visitorMethodSuffix;
       UpdateDerivedDeclaredElements();
@@ -158,39 +150,61 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
       myDerivedVisitorMethods.Clear();
       if (myParserClass != null)
       {
-        IEnumerable<IMethod> methods = myParserClass.Methods;
-        foreach (IMethod method in methods)
-        {
-          if (("parse" + NameToCamelCase()).Equals(method.ShortName))
-          {
-            myDerivedDeclaredElements.Add(method);
-          }
-        }
+        UpdateParserMethods();
       }
       if(myVisitorClasses != null)
       {
-        foreach (var visitorClass in myVisitorClasses)
-        {
-          IEnumerable<IMethod> methods = visitorClass.Methods;
-          foreach (IMethod method in methods)
-          {
-            string name = myVisitorMethodPrefix + NameToCamelCase() + myVisitorMethodSuffix;
-            if ((name).Equals(method.ShortName) || ((name + "`").Equals(method.ShortName)) || ((name + "``").Equals(method.ShortName)))
-            {
-              myDerivedVisitorMethods.Add(method);
-            }
-          }         
-        }
+        UpdateVisitorClasses();
       }
+
+      UpdateClasses();
+
+      UpdateInterfaces();
+    }
+
+    private void UpdateInterfaces()
+    {
+      var interfaces = GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(myTreeInterfacesPackageName + "." + "I" + NameToCamelCase());
+      foreach (ITypeElement declaredElement in interfaces)
+      {
+        myDerivedInterfaces.Add(declaredElement);
+      }
+    }
+
+    private void UpdateClasses()
+    {
       var classes = GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(myTreeClassesPackageName + "." + NameToCamelCase());
-      foreach (IDeclaredElement declaredElement in classes)
+      foreach (ITypeElement declaredElement in classes)
       {
         myDerivedClasses.Add(declaredElement);
       }
-      classes = GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(myTreeInterfacesPackageName + "." + "I" + NameToCamelCase());
-      foreach (IDeclaredElement declaredElement in classes)
+    }
+
+    private void UpdateVisitorClasses()
+    {
+      foreach (var visitorClass in myVisitorClasses)
       {
-        myDerivedInterfaces.Add(declaredElement);
+        IEnumerable<IMethod> methods = visitorClass.Methods;
+        foreach (IMethod method in methods)
+        {
+          string name = myVisitorMethodPrefix + NameToCamelCase() + myVisitorMethodSuffix;
+          if ((name).Equals(method.ShortName) || ((name + "`").Equals(method.ShortName)) || ((name + "``").Equals(method.ShortName)))
+          {
+            myDerivedVisitorMethods.Add(method);
+          }
+        }
+      }
+    }
+
+    private void UpdateParserMethods()
+    {
+      IEnumerable<IMethod> methods = myParserClass.Methods;
+      foreach (IMethod method in methods)
+      {
+        if (("parse" + NameToCamelCase()).Equals(method.ShortName))
+        {
+          myDerivedDeclaredElements.Add(method);
+        }
       }
     }
 
@@ -217,13 +231,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
       TreeElement newElement = parser.ParseStatement();
       if((newElement.GetTextLength() == newLength) && (";".Equals(newElement.GetText().Substring(newElement.GetTextLength() - 1))))
       {
-        GetContainingNode<PsiFile>(false).ClearTables();
+        var psiFile = GetContainingNode<PsiFile>();
+        if (psiFile != null) psiFile.ClearTables();
         return newElement as IRuleDeclaration;
       }
-      else
-      {
-        return null;
-      }
+      return null;
     }
 
     public bool IsOpened
@@ -244,15 +256,15 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
     public ISymbolTable VariableSymbolTable
     {
       get { IList<VariableDeclaration> elements = PsiTreeUtil.getAllChildren<VariableDeclaration>(this).AsIList();
-        ISymbolTable table;
         if(Parameters != null)
         {
           ITreeNode child = Parameters.FirstChild;
           while(child != null)
           {
-            if(child is VariableDeclaration)
+            var variableDeclaration = child as VariableDeclaration;
+            if (variableDeclaration != null)
             {
-              elements.Add((VariableDeclaration) child);
+              elements.Add(variableDeclaration);
             }
             child = child.NextSibling;
           }

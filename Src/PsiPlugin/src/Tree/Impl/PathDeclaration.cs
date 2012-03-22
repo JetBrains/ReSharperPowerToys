@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Xml;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
@@ -27,15 +24,13 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
 
     public IList<IDeclaration> GetDeclarations()
     {
-      var list = new List<IDeclaration>();
-      list.Add(this);
+      var list = new List<IDeclaration> {this};
       return list;
     }
 
     public IList<IDeclaration> GetDeclarationsIn(IPsiSourceFile sourceFile)
     {
-      var list = new List<IDeclaration>();
-      list.Add(this);
+      var list = new List<IDeclaration> {this};
       return list;
     }
 
@@ -76,10 +71,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
 
     public string DeclaredName
     {
-      get { return getDeclaredName(); }
+      get { return GetDeclaredName(); }
     }
 
-    private string getDeclaredName()
+    private string GetDeclaredName()
     {
       return PathName.GetText();
     }

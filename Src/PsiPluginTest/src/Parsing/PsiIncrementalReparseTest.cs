@@ -21,7 +21,6 @@ namespace PsiPluginTest.Parsing
     [Test]
     public void test001()
     {
-      //DoNamedTest();
       DoTestFiles("test001.psi");
     }
   }

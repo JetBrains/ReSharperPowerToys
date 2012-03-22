@@ -66,11 +66,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Util
             var str = (string)arg;
             sb.Append(str);
           }
-          else if (arg is IPsiStatement)
-          {
-            markers.Add(new ParameterMarker(new TreeTextRange(new TreeOffset(sb.Length), new TreeOffset(sb.Length + 1)), paramNum));
-            sb.Append(";");
-          }
           else if (arg is IType)
           {
             markers.Add(new ParameterMarker(new TreeTextRange(new TreeOffset(sb.Length), new TreeOffset(sb.Length + 1)), paramNum));
@@ -165,14 +160,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Util
           if (node == null)
             return null;
           //((IPsiExpression) node).ReplaceBy((IPsiExpression) arg);
-        }
-        else if (arg is IPsiStatement)
-        {
-          Assertion.Assert(((ITreeNode)arg).IsValid(), "((ITreeNode)arg).IsValid()");
-          ITreeNode node = FindNodeAtRangeByType(nodes[i], typeof(IPsiStatement));
-          if (node == null)
-            return null;
-          ((IPsiStatement)node).ReplaceBy((IPsiStatement)arg);
         }
         else if (arg is ITreeNode)
         {

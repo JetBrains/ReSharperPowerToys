@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using JetBrains.ReSharper.Refactorings;
 using NUnit.Framework;
 
 namespace PsiPluginTest.Parsing.Rename
 {
+  [Category("PSI")]
   class PsiRenameTest : RenameTestBase
   {
     protected override String RelativeTestDataPath
