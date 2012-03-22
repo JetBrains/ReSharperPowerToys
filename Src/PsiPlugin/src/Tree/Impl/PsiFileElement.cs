@@ -1,5 +1,4 @@
 ﻿using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
-using JetBrains.ReSharper.PsiPlugin.Tree;
 
 namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
 {

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 using JetBrains.ReSharper.Psi.Parsing;
@@ -12,7 +9,7 @@ using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
 {
-    internal class Comment : PsiGenericToken, IPsiCommentNode, IChameleonNode
+    internal sealed class Comment : PsiGenericToken, IPsiCommentNode, IChameleonNode
     {
         public Comment(TokenNodeType nodeType, string text)
             : base(nodeType, text)
@@ -29,10 +26,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
             get
             {
                 if (NodeType == PsiTokenType.C_STYLE_COMMENT)
-                    return CommentType.MULTILINE_COMMENT;
+                    return CommentType.MultilineComment;
                 string text = GetText();
-                if (text.StartsWith("///") && !text.StartsWith("////")) return CommentType.DOC_COMMENT;
-                return CommentType.END_OF_LINE_COMMENT;
+                if (text.StartsWith("///") && !text.StartsWith("////")) return CommentType.DocComment;
+                return CommentType.EndOfLineComment;
             }
         }
 
@@ -43,11 +40,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
                 string text = GetText();
                 switch (CommentType)
                 {
-                    case CommentType.END_OF_LINE_COMMENT:
+                    case CommentType.EndOfLineComment:
                         return text.Substring(2);
-                    case CommentType.DOC_COMMENT:
+                    case CommentType.DocComment:
                         return text.Substring(3);
-                    case CommentType.MULTILINE_COMMENT:
+                    case CommentType.MultilineComment:
                         {
                             var length = text.Length - (text.EndsWith("*/") ? 4 : 2);
                             if (length <= 0)
@@ -64,11 +61,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
             TreeOffset startOffset = GetTreeStartOffset();
             switch (CommentType)
             {
-                case CommentType.END_OF_LINE_COMMENT:
+                case CommentType.EndOfLineComment:
                     return new TreeTextRange(startOffset + 2, startOffset + GetTextLength());
-                case CommentType.DOC_COMMENT:
+                case CommentType.DocComment:
                     return new TreeTextRange(startOffset + 3, startOffset + GetTextLength());
-                case CommentType.MULTILINE_COMMENT:
+                case CommentType.MultilineComment:
                     {
                         string text = GetText();
                         var length = text.Length - (text.EndsWith("*/") ? 4 : 2);
@@ -85,7 +82,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
             return textRange.ContainedIn(TreeTextRange.FromLength(GetTextLength())) ? this : null;
         }
 
-        public virtual IChameleonNode ReSync(CachingLexer cachingLexer, TreeTextRange changedRange, int insertedTextLen)
+        public IChameleonNode ReSync(CachingLexer cachingLexer, TreeTextRange changedRange, int insertedTextLen)
         {
             TreeTextRange oldRange = this.GetTreeTextRange();
 

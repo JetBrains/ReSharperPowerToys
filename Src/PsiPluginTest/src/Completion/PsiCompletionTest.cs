@@ -11,19 +11,12 @@ namespace PsiPluginTest.Completion
   [TestFixture]
   [TestReferences("System.Core.dll")]
   [Category("Code Completion")]
-  //[Category("PSI")]
-  //[TestFileExtension(JavaScriptProjectFileType.JS_EXTENSION)]
   public class PsiCompletionTest : CodeCompletionTestBase
   {
     protected override String RelativeTestDataPath
     {
       get { return @"completion"; }
     }
-
-    /*protected override IEnumerable<CodeCompletionType> GetCodeCompletionTypes()
-    {
-      return new[] { CodeCompletionType.BasicCompletion};
-    }*/
 
     [Test]
     public void test001() { DoTestFiles("test001.psi"); }

@@ -29,7 +29,6 @@ options {
   "customImplSuffix"="";
   "objectClassFQName"="System.Object";
   tokenBitsetThreshold=4;
-  //languageType="JetBrains.ReSharper.PsiPlugin.Grammar.PsiLanguage.Instance";
   elementTypeBaseClass="JetBrains.ReSharper.PsiPlugin.Tree.PsiCompositeNodeType";
   parserMessagesClass="JetBrains.ReSharper.PsiPlugin.Parsing.ParserMessages";
   generateWorkingPsi;

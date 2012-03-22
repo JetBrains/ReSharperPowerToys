@@ -35,165 +35,45 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="JetBrains.Platform.ReSharper.ProjectModel, Version=6.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="JetBrains.Platform.ReSharper.ProjectModel, Version=7.0.4.259, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.ProjectModel.dll</HintPath>
+      <HintPath>..\..\..\..\Program Files (x86)\JetBrains\ReSharper\v7.0\SDK\Bin\JetBrains.Platform.ReSharper.ProjectModel.dll</HintPath>
     </Reference>
-    <Reference Include="JetBrains.Platform.ReSharper.Shell, Version=6.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="JetBrains.Platform.ReSharper.Shell, Version=7.0.4.259, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.Shell.dll</HintPath>
+      <HintPath>..\..\..\..\Program Files (x86)\JetBrains\ReSharper\v7.0\SDK\Bin\JetBrains.Platform.ReSharper.Shell.dll</HintPath>
     </Reference>
-    <Reference Include="JetBrains.Platform.ReSharper.TestFramework">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.TestFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.Platform.ReSharper.Util, Version=6.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="JetBrains.Platform.ReSharper.TestFramework, Version=7.0.4.259, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.Util.dll</HintPath>
+      <HintPath>..\..\..\..\Program Files (x86)\JetBrains\ReSharper\v7.0\SDK\Bin\JetBrains.Platform.ReSharper.TestFramework.dll</HintPath>
     </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.Asp">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Asp.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.Asp.CSharp">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Asp.CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.Asp.JavaScript">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Asp.JavaScript.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.Asp.Tests">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Asp.Tests.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.Asp.VB">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Asp.VB.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.Asxx">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Asxx.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.Asxx.CSharp">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Asxx.CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.Asxx.Tests">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Asxx.Tests.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.BuildScripts">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.BuildScripts.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.CSharp">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.Css">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Css.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.Css.Tests">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Css.Tests.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.ExternalSources">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.ExternalSources.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.ExternalSources.CSharp">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.ExternalSources.CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.ExternalSources.Tests">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.ExternalSources.Tests.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.ExternalSources.VB">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.ExternalSources.VB.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.Html">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Html.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.Html.Css">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Html.Css.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.Html.Javascript">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Html.Javascript.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.Html.Tests">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Html.Tests.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.JavaScript">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.JavaScript.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.Razor">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.Razor.CSharp">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Razor.CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.Razor.JavaScript">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Razor.JavaScript.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.Resx">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Resx.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.Tests.Basic">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Tests.Basic.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.Tests.CSharp">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Tests.CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.VB">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.VB.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.Web">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Web.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.WebConfig">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.WebConfig.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.Xaml">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Xaml.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.Xaml.CSharp">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Xaml.CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.Xaml.Tests">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Xaml.Tests.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.Xaml.VB">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Xaml.VB.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.Xml">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Xml.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Features.Finding">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Features.Finding.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.FeaturesTestFramework, Version=6.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="JetBrains.Platform.ReSharper.Util, Version=7.0.4.259, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.FeaturesTestFramework.dll</HintPath>
+      <HintPath>..\..\..\..\Program Files (x86)\JetBrains\ReSharper\v7.0\SDK\Bin\JetBrains.Platform.ReSharper.Util.dll</HintPath>
     </Reference>
-    <Reference Include="JetBrains.ReSharper.IntentionsTests, Version=6.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="JetBrains.ReSharper.FeaturesTestFramework, Version=7.0.4.259, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.IntentionsTests.dll</HintPath>
+      <HintPath>..\..\..\..\Program Files (x86)\JetBrains\ReSharper\v7.0\SDK\Bin\JetBrains.ReSharper.FeaturesTestFramework.dll</HintPath>
     </Reference>
-    <Reference Include="JetBrains.ReSharper.Psi, Version=6.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="JetBrains.ReSharper.Psi, Version=7.0.4.259, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Psi.dll</HintPath>
+      <HintPath>..\..\..\..\Program Files (x86)\JetBrains\ReSharper\v7.0\SDK\Bin\JetBrains.ReSharper.Psi.dll</HintPath>
     </Reference>
-    <Reference Include="JetBrains.ReSharper.PsiPlugin, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="JetBrains.ReSharper.Resources, Version=7.0.4.259, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\PsiPlugin\bin\JetBrains.ReSharper.PsiPlugin.dll</HintPath>
+      <HintPath>..\..\..\..\Program Files (x86)\JetBrains\ReSharper\v7.0\SDK\Bin\JetBrains.ReSharper.Resources.dll</HintPath>
     </Reference>
-    <Reference Include="JetBrains.ReSharper.PsiTests">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.PsiTests.dll</HintPath>
+    <Reference Include="JetBrains.ReSharper.TestFramework, Version=7.0.4.259, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\JetBrains\ReSharper\v7.0\SDK\Bin\JetBrains.ReSharper.TestFramework.dll</HintPath>
     </Reference>
-    <Reference Include="JetBrains.ReSharper.Refactorings.Test">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Refactorings.Test.dll</HintPath>
+    <Reference Include="JetBrains.ReSharper.TestResources, Version=7.0.4.259, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\JetBrains\ReSharper\v7.0\SDK\Bin\JetBrains.ReSharper.TestResources.dll</HintPath>
     </Reference>
-    <Reference Include="JetBrains.ReSharper.Resources">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Resources.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.TestFramework">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.TestFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.TestResources">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.TestResources.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>$(ReSharperSdkBinaries)\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\JetBrains\ReSharper\v7.0\SDK\Bin\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

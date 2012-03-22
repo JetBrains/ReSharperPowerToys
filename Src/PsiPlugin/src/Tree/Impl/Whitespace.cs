@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 using JetBrains.ReSharper.PsiPlugin.Parsing;
 
@@ -9,7 +6,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
 {
     internal abstract class WhitespaceBase : PsiTokenBase, IWhitespaceNode
     {
-        protected readonly string myText;
+        private readonly string myText;
 
         protected WhitespaceBase(string text)
         {

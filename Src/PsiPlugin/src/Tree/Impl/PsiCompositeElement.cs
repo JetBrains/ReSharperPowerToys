@@ -1,7 +1,5 @@
-﻿using System;
-using JetBrains.ReSharper.Psi;
+﻿using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
-using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
 
 namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl

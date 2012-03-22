@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve;
-using JetBrains.ReSharper.Psi.Impl;
-using JetBrains.ReSharper.Psi.Impl.PsiManagerImpl;
 using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
@@ -14,26 +11,25 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
 {
   internal partial class PsiFile
   {
-    private ISymbolTable myRuleSymbolTable = null;
-    private ISymbolTable myOptionSymbolTable = null;
-    private ISymbolTable myRoleSymbolTable = null;
-    private ISymbolTable myPathSymbolTable = null;
-    private IPsiModule myModule;
-    private string tokenTypeClassFQName = "";
-    private string parserClassName = "";
-    private string parserPackageName = "";
-    private string treeInterfacesPackageName = "";
-    private string treeClassesPackageName = "";
-    private string visitorClassName = "";
-    private string visitorMethodPrefix = "";
-    private string visitorMethodSuffix = "";
+    private ISymbolTable myRuleSymbolTable;
+    private ISymbolTable myOptionSymbolTable;
+    private ISymbolTable myRoleSymbolTable;
+    private ISymbolTable myPathSymbolTable;
+    private string myTokenTypeClassFqName = "";
+    private string myParserClassName = "";
+    private string myParserPackageName = "";
+    private string myTreeInterfacesPackageName = "";
+    private string myTreeClassesPackageName = "";
+    private string myVisitorClassName = "";
+    private string myVisitorMethodPrefix = "";
+    private string myVisitorMethodSuffix = "";
 
-    protected Dictionary<string, IDeclaredElement> Declarations = new Dictionary<string, IDeclaredElement>();
+    protected readonly Dictionary<string, IDeclaredElement> Declarations = new Dictionary<string, IDeclaredElement>();
 
     protected override void ClearCachedData()
     {
       base.ClearCachedData();
-      tokenTypeClassFQName = "";
+      myTokenTypeClassFqName = "";
       myRuleSymbolTable = null;
       myOptionSymbolTable = null;
       myRoleSymbolTable = null;
@@ -50,7 +46,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
       Declarations.Clear();
     }
 
-    public void CollectDeclarations()
+    private void CollectDeclarations()
     {
       ITreeNode child = firstChild;
       while (child != null)
@@ -63,7 +59,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
         }
         child = child.NextSibling;
       }
-      child = Interfaces as ITreeNode;
+      child = Interfaces;
       if(child != null)
       {
         child = child.FirstChild;
@@ -93,10 +89,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
         myRuleSymbolTable = null;
       }
 
-      IOptionsDefinition optionsDefinition = FirstChild as IOptionsDefinition;
+      var optionsDefinition = FirstChild as IOptionsDefinition;
       if (optionsDefinition != null)
       {
-        IOptionDefinition optionDefinition;
         ITreeNode child = optionsDefinition.FirstChild;
         ITreeNode tokenTypeClassFQNameNode = null;
         ITreeNode parserClassNameNode = null;
@@ -108,11 +103,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
         ITreeNode visitorMethodPrefixNode = null;
         while (child != null)
         {
-          optionDefinition = child as IOptionDefinition;
+          var optionDefinition = child as IOptionDefinition;
           if (optionDefinition != null)
           {
             IOptionName optionName = optionDefinition.OptionName;
-            PsiTokenBase token = (optionName.FirstChild as PsiTokenBase);
+            var token = (optionName.FirstChild as PsiTokenBase);
             if (token.NodeType.Equals(PsiTokenType.STRING_LITERAL))
             {
               if ("\"tokenTypeClassFQName\"".Equals(token.GetText()))
@@ -153,129 +148,151 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
         }
         if (tokenTypeClassFQNameNode != null)
         {
-          tokenTypeClassFQName = tokenTypeClassFQNameNode.GetText();
-          tokenTypeClassFQName = tokenTypeClassFQName.Substring(1, tokenTypeClassFQName.Length - 2);
-          var classes =
-            GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(
-              tokenTypeClassFQName);
-          IEnumerator<ITypeElement> enumerator = classes.GetEnumerator();
-          if (enumerator.MoveNext())
-          {
-            IClass tokenTypeClass = enumerator.Current as IClass;
-            if (tokenTypeClass != null)
-            {
-              IEnumerable<IField> fields = tokenTypeClass.Fields;
-              IList<IDeclaredElement> elements = new List<IDeclaredElement>();
-              foreach (IField field in fields)
-              {
-                if (field.IsReadonly && field.IsStatic)
-                {
-                  elements.Add(field);
-                }
-              }
-              ISymbolTable tokenSymbolTable = ResolveUtil.CreateSymbolTable(elements, 0);
-              myRuleSymbolTable = myRuleSymbolTable.Merge(tokenSymbolTable);
-            }
-          }
+          AddTokensToSymbolTable(tokenTypeClassFQNameNode);
         }
 
         if ((parserPackageNode != null) && (parserClassNameNode != null))
         {
-          if (parserClassNameNode != null)
-          {
-            parserClassName = parserClassNameNode.GetText();
-            parserClassName = parserClassName.Substring(1, parserClassName.Length - 2);
-          } else
-          {
-            parserClassName = "";
-          }
-          if (parserPackageName != null)
-          {
-            parserPackageName = parserPackageNode.GetText();
-            parserPackageName = parserPackageName.Substring(1, parserPackageName.Length - 2);
-          } else
-          {
-            parserPackageName = "";
-          }
-          if (treeInterfacesPackageNode != null)
-          {
-            treeInterfacesPackageName = treeInterfacesPackageNode.GetText();
-            treeInterfacesPackageName = treeInterfacesPackageName.Substring(1, treeInterfacesPackageName.Length - 2);
-          } else
-          {
-            treeInterfacesPackageName = "";
-          }
-          if (treeClassesPackageNode != null)
-          {
-            treeClassesPackageName = treeClassesPackageNode.GetText();
-            treeClassesPackageName = treeClassesPackageName.Substring(1, treeClassesPackageName.Length - 2);
-          } else
-          {
-            treeClassesPackageName = "";
-          }
-
-          if (visitorClassNameNode != null)
-          {
-            visitorClassName = visitorClassNameNode.GetText();
-            visitorClassName = visitorClassName.Substring(1, visitorClassName.Length - 2);
-          } else
-          {
-            visitorClassName = "";
-          }
-
-          if (visitorMethodPrefixNode != null)
-          {
-            visitorMethodPrefix = visitorMethodPrefixNode.GetText();
-            visitorMethodPrefix = visitorMethodPrefix.Substring(1, visitorMethodPrefix.Length - 2);
-          } else
-          {
-            visitorMethodPrefix = "";
-          }
-          if (visitorMethodSuffixNode != null)
-          {
-            visitorMethodSuffix = visitorMethodSuffixNode.GetText();
-            visitorMethodSuffix = visitorMethodSuffix.Substring(1, visitorMethodSuffix.Length - 2);
-          }
-          else
-          {
-            visitorMethodSuffix = "";
-          }
-          var classes =
-            GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(
-              parserPackageName + "." + parserClassName);
-          ICollection<ITypeElement> visitorClasses = new List<ITypeElement>();
-          foreach (var typeElement in GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(
-              treeInterfacesPackageName + "." + visitorClassName))
-          {
-            visitorClasses.Add(typeElement);
-          }
-          var visitorGenericClasses =
-            GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(
-              treeInterfacesPackageName + "." + visitorClassName + "`1");
-          foreach (var visitorGenericClass in visitorGenericClasses)
-          {
-            visitorClasses.Add(visitorGenericClass);
-          }
-          visitorGenericClasses =
-            GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(
-              treeInterfacesPackageName + "." + visitorClassName + "`2");
-          foreach (var visitorGenericClass in visitorGenericClasses)
-          {
-            visitorClasses.Add(visitorGenericClass);
-          }
-          var elements = Declarations.Values;
-          foreach (IDeclaredElement declaredElement in elements)
-          {
-            IEnumerator<ITypeElement> enumerator = classes.GetEnumerator();
-            if (enumerator.MoveNext())
-            {
-              ((RuleDeclaration) declaredElement).CollectDerivedDeclaredElements((IClass) enumerator.Current, visitorClasses, treeInterfacesPackageName, treeClassesPackageName, visitorClassName, visitorMethodPrefix, visitorMethodSuffix);
-            }
-          }
+          AddDerivedElementsToSymbolTable(visitorMethodSuffixNode, treeInterfacesPackageNode, parserPackageNode, parserClassNameNode, treeClassesPackageNode, visitorMethodPrefixNode, visitorClassNameNode);
         }
       }
 
       return myRuleSymbolTable;
+    }
+
+    private void AddDerivedElementsToSymbolTable(ITreeNode visitorMethodSuffixNode, ITreeNode treeInterfacesPackageNode, ITreeNode parserPackageNode, ITreeNode parserClassNameNode, ITreeNode treeClassesPackageNode, ITreeNode visitorMethodPrefixNode, ITreeNode visitorClassNameNode)
+    {
+      if (parserClassNameNode != null)
+      {
+        myParserClassName = parserClassNameNode.GetText();
+        myParserClassName = myParserClassName.Substring(1, myParserClassName.Length - 2);
+      }
+      else
+      {
+        myParserClassName = "";
+      }
+      if (myParserPackageName != null)
+      {
+        myParserPackageName = parserPackageNode.GetText();
+        myParserPackageName = myParserPackageName.Substring(1, myParserPackageName.Length - 2);
+      }
+      else
+      {
+        myParserPackageName = "";
+      }
+      if (treeInterfacesPackageNode != null)
+      {
+        myTreeInterfacesPackageName = treeInterfacesPackageNode.GetText();
+        myTreeInterfacesPackageName = myTreeInterfacesPackageName.Substring(1, myTreeInterfacesPackageName.Length - 2);
+      }
+      else
+      {
+        myTreeInterfacesPackageName = "";
+      }
+      if (treeClassesPackageNode != null)
+      {
+        myTreeClassesPackageName = treeClassesPackageNode.GetText();
+        myTreeClassesPackageName = myTreeClassesPackageName.Substring(1, myTreeClassesPackageName.Length - 2);
+      }
+      else
+      {
+        myTreeClassesPackageName = "";
+      }
+
+      if (visitorClassNameNode != null)
+      {
+        myVisitorClassName = visitorClassNameNode.GetText();
+        myVisitorClassName = myVisitorClassName.Substring(1, myVisitorClassName.Length - 2);
+      }
+      else
+      {
+        myVisitorClassName = "";
+      }
+
+      if (visitorMethodPrefixNode != null)
+      {
+        myVisitorMethodPrefix = visitorMethodPrefixNode.GetText();
+        myVisitorMethodPrefix = myVisitorMethodPrefix.Substring(1, myVisitorMethodPrefix.Length - 2);
+      }
+      else
+      {
+        myVisitorMethodPrefix = "";
+      }
+      if (visitorMethodSuffixNode != null)
+      {
+        myVisitorMethodSuffix = visitorMethodSuffixNode.GetText();
+        myVisitorMethodSuffix = myVisitorMethodSuffix.Substring(1, myVisitorMethodSuffix.Length - 2);
+      }
+      else
+      {
+        myVisitorMethodSuffix = "";
+      }
+
+      CollectDerivedElements();
+    }
+
+    private void CollectDerivedElements()
+    {
+      var classes =
+        GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(
+          myParserPackageName + "." + myParserClassName);
+      ICollection<ITypeElement> visitorClasses = new List<ITypeElement>();
+      foreach (var typeElement in GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(
+        myTreeInterfacesPackageName + "." + myVisitorClassName))
+      {
+        visitorClasses.Add(typeElement);
+      }
+      var visitorGenericClasses =
+        GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(
+          myTreeInterfacesPackageName + "." + myVisitorClassName + "`1");
+      foreach (var visitorGenericClass in visitorGenericClasses)
+      {
+        visitorClasses.Add(visitorGenericClass);
+      }
+      visitorGenericClasses =
+        GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(
+          myTreeInterfacesPackageName + "." + myVisitorClassName + "`2");
+      foreach (var visitorGenericClass in visitorGenericClasses)
+      {
+        visitorClasses.Add(visitorGenericClass);
+      }
+      var elements = Declarations.Values;
+      foreach (IDeclaredElement declaredElement in elements)
+      {
+        IEnumerator<ITypeElement> enumerator = classes.GetEnumerator();
+        if (enumerator.MoveNext())
+        {
+          ((RuleDeclaration) declaredElement).CollectDerivedDeclaredElements((IClass) enumerator.Current, visitorClasses, myTreeInterfacesPackageName, myTreeClassesPackageName, myVisitorMethodPrefix, myVisitorMethodSuffix);
+        }
+      }
+    }
+
+    private void AddTokensToSymbolTable(ITreeNode tokenTypeClassFQNameNode)
+    {
+      myTokenTypeClassFqName = tokenTypeClassFQNameNode.GetText();
+      myTokenTypeClassFqName = myTokenTypeClassFqName.Substring(1, myTokenTypeClassFqName.Length - 2);
+      var classes =
+        GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(
+          myTokenTypeClassFqName);
+      IEnumerator<ITypeElement> enumerator = classes.GetEnumerator();
+      if (enumerator.MoveNext())
+      {
+        var tokenTypeClass = enumerator.Current as IClass;
+        if (tokenTypeClass != null)
+        {
+          IEnumerable<IField> fields = tokenTypeClass.Fields;
+          IList<IDeclaredElement> elements = new List<IDeclaredElement>();
+          foreach (IField field in fields)
+          {
+            if (field.IsReadonly && field.IsStatic)
+            {
+              elements.Add(field);
+            }
+          }
+          ISymbolTable tokenSymbolTable = ResolveUtil.CreateSymbolTable(elements, 0);
+          myRuleSymbolTable = myRuleSymbolTable.Merge(tokenSymbolTable);
+        }
+      }
     }
 
     public ISymbolTable CreateOptionSymbolTable(bool ifFileReal)
@@ -309,39 +326,39 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
         }
         return myOptionSymbolTable;
       }
-      else
-      {
-        return EmptySymbolTable.INSTANCE;
-      }
+      return EmptySymbolTable.INSTANCE;
     }
 
-    public ISymbolTable CreateRoleSymbolTable()
+    private ISymbolTable CreateRoleSymbolTable()
     {
       IList<IDeclaredElement> roleDeclaredElements = new List<IDeclaredElement>();
       IList<string> roles = new List<string>();
       ITreeNode child = FirstChild;
       while (child != null)
       {
-        if (child is IRuleDeclaration)
+        var ruleDeclaration = child as IRuleDeclaration;
+        if (ruleDeclaration != null)
         {
-          IExtrasDefinition extras = ((IRuleDeclaration) child).Extras;
+          IExtrasDefinition extras = (ruleDeclaration).Extras;
           if (extras != null)
           {
             ITreeNode extrasChild = extras.FirstChild;
             while (extrasChild != null)
             {
               extrasChild = extrasChild.NextSibling;
-              if (extrasChild is IExtraDefinition)
+              var extraDefinition = extrasChild as IExtraDefinition;
+              if (extraDefinition != null)
               {
-                IPathValue pathValue = ((IExtraDefinition) extrasChild).PathValue;
+                IPathValue pathValue = (extraDefinition).PathValue;
                 if (pathValue != null)
                 {
                   ITreeNode pathElement = pathValue.FirstChild;
                   while (pathElement != null)
                   {
-                    if (pathElement is IPathElement)
+                    var element = pathElement as IPathElement;
+                    if (element != null)
                     {
-                      IRoleName roleName = ((IPathElement) pathElement).RoleName;
+                      IRoleName roleName = (element).RoleName;
                       if ((roleName != null) && (!roles.Contains(roleName.GetText())))
                       {
                         roles.Add(roleName.GetText());
@@ -365,18 +382,19 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
       return myRoleSymbolTable;
     }
 
-    public ISymbolTable CreatePathSymbolTable()
+    private ISymbolTable CreatePathSymbolTable()
     {
       IList<IDeclaredElement> pathDeclaredElements = new List<IDeclaredElement>();
-      ITreeNode child = Paths as ITreeNode;
+      var child = Paths as ITreeNode;
       if (child != null)
       {
         child = child.FirstChild;
         while (child != null)
         {
-          if (child is PathDeclaration)
+          var pathDeclaration = child as PathDeclaration;
+          if (pathDeclaration != null)
           {
-            pathDeclaredElements.Add((PathDeclaration) child);
+            pathDeclaredElements.Add(pathDeclaration);
           }
           child = child.NextSibling;
         }
@@ -396,9 +414,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
           return myRuleSymbolTable;
         lock (this)
         {
-          if (myRuleSymbolTable == null)
-            myRuleSymbolTable = CreateRulesSymbolTable();
-          return myRuleSymbolTable;
+          return myRuleSymbolTable ?? (myRuleSymbolTable = CreateRulesSymbolTable());
         }
       }
     }
@@ -411,9 +427,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
           return myOptionSymbolTable;
         lock (this)
         {
-          if (myOptionSymbolTable == null)
-            myOptionSymbolTable = CreateOptionSymbolTable(true);
-          return myOptionSymbolTable;
+          return myOptionSymbolTable ?? (myOptionSymbolTable = CreateOptionSymbolTable(true));
         }
       }
     }
@@ -426,9 +440,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
           return myRoleSymbolTable;
         lock (this)
         {
-          if (myRoleSymbolTable == null)
-            myRoleSymbolTable = CreateRoleSymbolTable();
-          return myRoleSymbolTable;
+          return myRoleSymbolTable ?? (myRoleSymbolTable = CreateRoleSymbolTable());
         }
       }
     }
@@ -441,9 +453,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
           return myPathSymbolTable;
         lock (this)
         {
-          if (myPathSymbolTable == null)
-            myPathSymbolTable = CreatePathSymbolTable();
-          return myPathSymbolTable;
+          return myPathSymbolTable ?? (myPathSymbolTable = CreatePathSymbolTable());
         }
       }
     }

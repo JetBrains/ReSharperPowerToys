@@ -319,7 +319,6 @@
     <Compile Include="src\Resolve\PsiVariableReference.cs" />
     <Compile Include="src\Resolve\RoleDeclaredElement.cs" />
     <Compile Include="src\Services\PsiDeclaredElementPresenter.cs" />
-    <Compile Include="src\Services\PsiFileTypeSpecificOwnerUtil.cs" />
     <Compile Include="src\Tree\Impl\ChildRole.cs" />
     <Compile Include="src\Tree\Impl\Comment.cs" />
     <Compile Include="src\Tree\Impl\Identifier.cs" />
@@ -343,7 +342,6 @@
     <Compile Include="src\Tree\IRuleDeclaration.cs" />
     <Compile Include="src\Tree\Impl\PsiFile.cs" />
     <Compile Include="src\Tree\Impl\PsiFileElement.cs" />
-    <Compile Include="src\Tree\Impl\PsiPsiFileProperties.cs" />
     <Compile Include="src\Tree\IPsiCommentNode.cs" />
     <Compile Include="src\Tree\IPsiFile.cs" />
     <Compile Include="src\Tree\IPsiIdentifier.cs" />
