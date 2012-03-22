@@ -1,24 +1,20 @@
 using System;
-using JetBrains.Annotations;
 using JetBrains.Application.Progress;
 using JetBrains.Application.Settings;
-using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.Stages;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Tree;
-using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
 {
   public abstract class PsiDaemonStageProcessBase : TreeNodeVisitor<IHighlightingConsumer>, IRecursiveElementProcessor<IHighlightingConsumer>, IDaemonStageProcess
   {
     private readonly IDaemonProcess myDaemonProcess;
-    private readonly IDocument myDocument;
     private readonly IPsiFile myFile;
 
-    protected readonly IContextBoundSettingsStore mySettingsStore;
+    protected readonly IContextBoundSettingsStore SettingsStore;
 
     protected IPsiServices PsiServices { get; private set; }
 
@@ -27,50 +23,20 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
       get { return myDaemonProcess; }
     }
 
-    [NotNull]
-    public PsiFileStructure FileStructure
-    {
-      get
-      {
-        var globalStructureProcess = DaemonProcess.GetStageProcess<GlobalFileStructureCollectorStage.Process>();
-        Assertion.Assert(globalStructureProcess != null, "globalStructureProcess != null");
-        var PsiFileStructure = globalStructureProcess.Get<PsiFileStructure>();
-        Assertion.Assert(PsiFileStructure != null, "PsiFileStructure != null");
-        return PsiFileStructure;
-      }
-    }
-
     protected PsiDaemonStageProcessBase(IDaemonProcess process, IContextBoundSettingsStore settingsStore)
     {
       myDaemonProcess = process;
-      mySettingsStore = settingsStore;
+      SettingsStore = settingsStore;
       PsiServices = process.Solution.GetPsiServices();
       myFile = PsiDaemonStageBase.GetPsiFile(myDaemonProcess.SourceFile);
     }
 
-    /*protected PsiDaemonStageProcessBase(IDaemonProcess process)
-    {
-      myDaemonProcess = process;
-      myFile = PsiDaemonStageBase.GetPsiFile(myDaemonProcess.SourceFile);
-      myDocument = process.Document;
-      //myTypeConversionRule = new PsiTypeConversionRule(PsiModule);
-    }*/
 
     protected void HighlightInFile(Action<IPsiFile, IHighlightingConsumer> fileHighlighter, Action<DaemonStageResult> commiter)
     {
-      var consumer = new DefaultHighlightingConsumer(this, mySettingsStore);
+      var consumer = new DefaultHighlightingConsumer(this, SettingsStore);
       fileHighlighter(File, consumer);
       commiter(new DaemonStageResult(consumer.Highlightings));
-    }
-
-    public IDocument Document
-    {
-      get { return myDocument; }
-    }
-
-    public IPsiModule PsiModule
-    {
-      get { return DaemonProcess.PsiModule; }
     }
 
     public IPsiFile File
