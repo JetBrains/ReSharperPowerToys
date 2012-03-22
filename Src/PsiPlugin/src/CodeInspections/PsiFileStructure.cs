@@ -12,18 +12,11 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
   {
     private readonly IPsiFile myFile;
 
-    private readonly JetHashSet<IPsiTypeMemberDeclaration> myTypeMembersToRehighlight = new JetHashSet<IPsiTypeMemberDeclaration>();
-
     public PsiFileStructure(IPsiFile file, IContextBoundSettingsStore settingsStore)
       : base(file, settingsStore.EnumEntryIndices(GeneratedCodeSettingsAccessor.GeneratedCodeRegions).ToHashSet())
     {
       myFile = file;
       ProcessFile();
-    }
-
-    public ICollection<IPsiTypeMemberDeclaration> MembersToRehighlight
-    {
-      get { return myTypeMembersToRehighlight; }
     }
 
     private void ProcessFile()

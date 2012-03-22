@@ -255,7 +255,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
 
     public ISymbolTable VariableSymbolTable
     {
-      get { IList<VariableDeclaration> elements = PsiTreeUtil.getAllChildren<VariableDeclaration>(this).AsIList();
+      get { IList<VariableDeclaration> elements = PsiTreeUtil.GetAllChildren<VariableDeclaration>(this).AsIList();
         if(Parameters != null)
         {
           ITreeNode child = Parameters.FirstChild;

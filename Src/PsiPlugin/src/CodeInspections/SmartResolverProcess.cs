@@ -8,7 +8,6 @@ using JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve.Managed;
 using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Resolve.Managed;
 using JetBrains.ReSharper.Psi.Tree;
-using JetBrains.ReSharper.PsiPlugin.Tree;
 using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
@@ -39,35 +38,9 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
       var fileStructureCollector = DaemonProcess.GetStageProcess<GlobalFileStructureCollectorStage.Process>().Get<PsiFileStructure>();
       Assertion.Assert(fileStructureCollector != null, "fileStructureCollector != null");
 
-      var allContexts = new Dictionary<IScope, ScopeContext>();
-      Action<IScope, ScopeContext> scopeAction = null;
-
-      using (var fibers = DaemonProcess.CreateFibers())
-      {
-        scopeAction = (scope, context) =>
-                        {
-                          lock (allContexts)
-                            allContexts.Add(scope, context);
-                          fibers.EnqueueJob(() => new ScopeResolver(fileStructureCollector, scope, context).Process(scope));
-                        };
-      }
-
-      MergeContextResults(allContexts);
     }
 
-    private void MergeContextResults(IEnumerable<KeyValuePair<IScope, ScopeContext>> allContexts)
-    {
-      foreach (var context in allContexts)
-      {
-        myVarTypeVisibility.Add(context.Key, context.Value.VarTypeVisibility);
-        foreach (var pair in context.Value.UnqualifiedResolve)
-          myUnqualifiedResolve.Add(pair.Key, pair.Value);
-        foreach (var pair in context.Value.HiddenByTypeParameter)
-          myHiddenByTypeParameter.AddRange(pair.Key, pair.Value);
-      }
-    }
-
-    private class ScopeContext
+    private abstract class ScopeContext
     {
       public readonly ISymbolTable SymbolTable;
       public readonly int Level;
@@ -130,28 +103,6 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
       protected override IAccessContext GetInitialAccessContext()
       {
         return myContext.AccessContext;
-      }
-
-      public override void ProcessBeforeInterior(ITreeNode element)
-      {
-        base.ProcessBeforeInterior(element);
-
-        var memberDeclaration = element as IPsiTypeMemberDeclaration;
-        if (memberDeclaration != null && !myContext.CheckRedundantQualifiers)
-        {
-          Assertion.Assert(!myCheckRedundantQualifiers, "!myCheckRedundantQualifiers");
-          if (myFileStructure.MembersToRehighlight.Contains(memberDeclaration))
-            myCheckRedundantQualifiers = true;
-        }
-      }
-
-      public override void ProcessAfterInterior(ITreeNode element)
-      {
-        base.ProcessAfterInterior(element);
-
-        var typeMemberDeclaration = element as IPsiTypeMemberDeclaration;
-        if (typeMemberDeclaration != null && !myContext.CheckRedundantQualifiers)
-          myCheckRedundantQualifiers = false;
       }
 
       protected override void VisitElement(ITreeNode element)

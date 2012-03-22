@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using JetBrains.Application;
 using JetBrains.ReSharper.Psi.ExtensionsAPI;
 using JetBrains.ReSharper.Psi.Tree;
@@ -11,7 +9,7 @@ using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Util
 {
-  internal class PsiTreeUtil
+  internal static class PsiTreeUtil
   {
     public static ITreeNode GetFirstChild<T>(ITreeNode element) where T:ITreeNode
     {
@@ -51,14 +49,14 @@ namespace JetBrains.ReSharper.PsiPlugin.Util
       }
     }
 
-    public static ICollection<T> getAllChildren<T>(ITreeNode parent)
+    public static ICollection<T> GetAllChildren<T>(ITreeNode parent)
     {
       IList<T> list = new List<T>();
-      getAllChildren<T>(parent, list);
+      GetAllChildren(parent, list);
       return list;
-    } 
+    }
 
-    public static void getAllChildren<T>(ITreeNode parent, ICollection<T> collection)
+    private static void GetAllChildren<T>(ITreeNode parent, ICollection<T> collection)
     {
       ITreeNode child = parent.FirstChild;
       while (child != null)
@@ -67,7 +65,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Util
         {
           collection.Add((T)child);
         }
-        getAllChildren(child,collection);
+        GetAllChildren(child,collection);
         child = child.NextSibling;
       }
     }
@@ -79,7 +77,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Util
       return s1.Equals(s2);
     }
 
-    public static string GetTextWhithoutWhitespaces(ITreeNode treeNode)
+    private static string GetTextWhithoutWhitespaces(ITreeNode treeNode)
     {
       string s = "";
       if(treeNode.FirstChild == null)

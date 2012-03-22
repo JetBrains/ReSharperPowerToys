@@ -334,7 +334,6 @@
     <Compile Include="src\Tree\Impl\VariableName.cs" />
     <Compile Include="src\Tree\IPathDeclaration.cs" />
     <Compile Include="src\Tree\IPathName.cs" />
-    <Compile Include="src\Tree\IPsiTypeMemberDeclaration.cs" />
     <Compile Include="src\Tree\IRoleName.cs" />
     <Compile Include="src\Tree\IRuleName.cs" />
     <Compile Include="src\Tree\Impl\RuleDeclaration.cs" />
@@ -352,7 +351,6 @@
     <Compile Include="src\Tree\Impl\PsiGenericToken.cs" />
     <Compile Include="src\Tree\Impl\PsiTokenBase.cs" />
     <Compile Include="src\Tree\Impl\Whitespace.cs" />
-    <Compile Include="src\Tree\IPsiStatement.cs" />
     <Compile Include="src\Tree\IPsiTreeNode.cs" />
     <Compile Include="src\Tree\PsiCompositeNodeType.cs" />
     <Compile Include="src\Util\PsiDeclaredElementElementUtil.cs" />
