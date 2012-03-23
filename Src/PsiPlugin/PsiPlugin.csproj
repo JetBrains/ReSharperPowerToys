@@ -122,15 +122,12 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="src\Cache\ICacheItem.cs" />
-    <Compile Include="src\Cache\IPsiCacheProvider.cs" />
-    <Compile Include="src\Cache\IPsiCustomCacheBuilder.cs" />
     <Compile Include="src\Cache\IPsiSymbol.cs" />
     <Compile Include="src\Cache\MSBuildPropertiesCache.cs" />
     <Compile Include="src\Cache\PsiCacheBuilder.cs" />
     <Compile Include="src\Cache\PsiCache.cs" />
-    <Compile Include="src\Cache\PsiStandartCacheBuilder.cs" />
-    <Compile Include="src\Cache\PsiStandartCacheProvider.cs" />
+    <Compile Include="src\Cache\PsiOptionSymbol.cs" />
+    <Compile Include="src\Cache\PsiRuleSymbol.cs" />
     <Compile Include="src\CodeInspections\Highlightings\DuplicatingLocalDeclarationWarning.cs" />
     <Compile Include="src\CodeInspections\ErrorElementHighlighting.cs" />
     <Compile Include="src\CodeInspections\Highlightings\LeftRecursionWarning.cs" />

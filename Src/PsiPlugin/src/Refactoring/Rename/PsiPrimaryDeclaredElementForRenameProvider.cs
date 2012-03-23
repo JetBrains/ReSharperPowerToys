@@ -7,6 +7,7 @@ using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
 using JetBrains.ReSharper.Refactorings.Rename;
 using JetBrains.Util;
+using System.Linq;
 
 namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
 {
@@ -38,7 +39,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
       string interfaceName = interfaceElement.ShortName;
       interfaceName = interfaceName.Substring(1, interfaceName.Length - 1);
       var cache = declaredElement.GetPsiServices().Solution.GetComponent<PsiCache>();
-      ICollection<IPsiSymbol> symbols = cache.GetSymbol(PsiRenamesFactory.NameFromCamelCase(interfaceName));
+      var symbols = cache.GetSymbols(PsiRenamesFactory.NameFromCamelCase(interfaceName)).ToList();
       if (symbols.Count > 0)
       {
         IPsiSymbol symbol = symbols.ToArray()[0];
@@ -62,7 +63,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
       var classElement = declaredElement as IClass;
       string className = classElement.ShortName;
       var cache = declaredElement.GetPsiServices().Solution.GetComponent<PsiCache>();
-      ICollection<IPsiSymbol> symbols = cache.GetSymbol(PsiRenamesFactory.NameFromCamelCase(className));
+      var symbols = cache.GetSymbols(PsiRenamesFactory.NameFromCamelCase(className)).ToList();
       if (symbols.Count > 0)
       {
         IPsiSymbol symbol = symbols.ToArray()[0];
@@ -93,14 +94,13 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
       {
         string ruleName = methodName.Substring("parse".Length, methodName.Length - "parse".Length);
         var cache = declaredElement.GetPsiServices().Solution.GetComponent<PsiCache>();
-        ICollection<IPsiSymbol> symbols = cache.GetSymbol(PsiRenamesFactory.NameFromCamelCase(ruleName));
+        var symbols = cache.GetSymbols(PsiRenamesFactory.NameFromCamelCase(ruleName)).ToList();
         if (symbols.Count > 0)
         {
           IPsiSymbol symbol = symbols.ToArray()[0];
-          var element =
-            symbol.SourceFile.GetPsiFile<PsiLanguage>().FindNodeAt(new TreeTextRange(new TreeOffset(symbol.Offset), 1));
-          ICollection<IPsiSymbol> parserPackageName = cache.GetSymbol("parserPackage");
-          ICollection<IPsiSymbol> parserClassName = cache.GetSymbol("parserClassName");
+          var element = symbol.SourceFile.GetPsiFile<PsiLanguage>().FindNodeAt(new TreeTextRange(new TreeOffset(symbol.Offset), 1));
+          var parserPackageName = cache.GetOptionSymbols("parserPackage").ToList();
+          var parserClassName = cache.GetOptionSymbols("parserClassName").ToList();
           IList<IDeclaredElement> classes = new List<IDeclaredElement>();
           foreach (var packageName in parserPackageName)
           {
@@ -172,7 +172,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
               {
                 name = name.Substring(0, name.Length - methodSuffix.Value.Length);
               }
-              var elements = cache.GetSymbol(NameFromCamelCase(name));
+              var elements = cache.GetSymbols(NameFromCamelCase(name));
               foreach (var psiSymbol in elements)
               {
                 if (psiSymbol.SourceFile == sourceFile)
@@ -210,13 +210,13 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
       }
     }
 
-    private static Dictionary<ITypeElement, IList<IPsiSymbol>> GetVisitorClasses(PsiCache cache)
+    private static Dictionary<ITypeElement, IList<PsiOptionSymbol>> GetVisitorClasses(PsiCache cache)
     {
-      ICollection<IPsiSymbol> visitorClassName = cache.GetSymbol("visitorClassName");
-      ICollection<IPsiSymbol> visitorMetodSuffix = cache.GetSymbol("visitorMethodSuffix");
-      ICollection<IPsiSymbol> visitorMetodPrefix = cache.GetSymbol("\"visitMethodPrefix\"");
-      ICollection<IPsiSymbol> interfacesPackageName = cache.GetSymbol("psiInterfacePackageName");
-      var classes = new Dictionary<ITypeElement, IList<IPsiSymbol>>();
+      var visitorClassName = cache.GetOptionSymbols("visitorClassName").ToList();
+      var visitorMetodSuffix = cache.GetOptionSymbols("visitorMethodSuffix").ToList();
+      var visitorMetodPrefix = cache.GetOptionSymbols("\"visitMethodPrefix\"").ToList();
+      var interfacesPackageName = cache.GetOptionSymbols("psiInterfacePackageName").ToList();
+      var classes = new Dictionary<ITypeElement, IList<PsiOptionSymbol>>();
       foreach (var visitorName in visitorClassName)
       {
         foreach (var methodSuffix in visitorMetodSuffix)
@@ -250,7 +250,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
                 }
                 foreach (var typeElement in visitorClasses)
                 {
-                  classes.Add(typeElement, new List<IPsiSymbol> {visitorName, methodSuffix, methodPrefix, packageName});
+                  classes.Add(typeElement, new List<PsiOptionSymbol> {visitorName, methodSuffix, methodPrefix, packageName});
                 }
               }
             }
