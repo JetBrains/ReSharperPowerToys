@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using JetBrains.Application.Settings;
 using System.Linq;
 using JetBrains.Application;
 using JetBrains.Application.Progress;
@@ -8,7 +7,6 @@ using JetBrains.DocumentManagers.impl;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Caches;
-using JetBrains.ReSharper.Psi.Dependencies;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Psi.Util.Caches;
@@ -20,41 +18,29 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
   [PsiComponent]
   public class PsiCache : ICache
   {
-    protected readonly JetHashSet<IPsiSourceFile> DirtyFiles = new JetHashSet<IPsiSourceFile>();
+    private readonly JetHashSet<IPsiSourceFile> myDirtyFiles = new JetHashSet<IPsiSourceFile>();
 
-    protected readonly OneToSetMap<string, IPsiSymbol> NameToSymbolsMap = new OneToSetMap<string, IPsiSymbol>();
+    private readonly OneToSetMap<string, IPsiSymbol> myNameToSymbolsMap = new OneToSetMap<string, IPsiSymbol>();
+    private readonly OneToListMap<IPsiSourceFile, PsiRuleSymbol> myProjectFileToSymbolsMap = new OneToListMap<IPsiSourceFile, PsiRuleSymbol>();
 
-    protected readonly OneToListMap<IPsiSourceFile, IPersistentCacheItem> ProjectFileToSymbolsMap = new OneToListMap<IPsiSourceFile, IPersistentCacheItem>();
+    private readonly OneToSetMap<string, PsiOptionSymbol> myNameToSymbolsOptionMap = new OneToSetMap<string, PsiOptionSymbol>();
 
-    public IPsiServices PsiServices { get; private set; }
-    private PsiPersistentCache myPersistentCache;
+    private PsiPersistentCache<CachePair> myPersistentCache;
 
-    protected readonly IShellLocks ShellLocks;
-    protected readonly IEnumerable<IPsiCacheProvider> Providers;
+    private readonly IShellLocks myShellLocks;
     private readonly IPsiConfiguration myPsiConfiguration;
-    public DependencyStore DependencyStore { get; private set; }
 
     private const int VERSION = 7;
 
     public PsiCache(Lifetime lifetime,
       IPsiServices psiServices,
-      DependencyStore dependencyStore,
       IShellLocks shellLocks,
       CacheManager cacheManager,
-      IEnumerable<IPsiCacheProvider> providers,
       IPsiConfiguration psiConfiguration)
     {
       myPsiConfiguration = psiConfiguration;
-      Providers = providers;
-      DependencyStore = dependencyStore;
-      PsiServices = psiServices;
-      ShellLocks = shellLocks;
+      myShellLocks = shellLocks;
       lifetime.AddBracket(() => cacheManager.RegisterCache(this), () => cacheManager.UnregisterCache(this));
-    }
-
-    protected int Version
-    {
-      get { return VERSION; }
     }
 
     private static bool Accepts(IPsiSourceFile sourceFile)
@@ -70,38 +56,39 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
       Assertion.Assert(myPersistentCache == null, "myPersistentCache == null");
 
       using (ReadLockCookie.Create())
-        myPersistentCache = new PsiPersistentCache(ShellLocks, Version, "PsiCache", myPsiConfiguration);
+        myPersistentCache = new PsiPersistentCache<CachePair>(myShellLocks, VERSION, "PsiCache", myPsiConfiguration);
 
-      var data = new Dictionary<IPsiSourceFile, IList<IPersistentCacheItem>>();
+      var data = new Dictionary<IPsiSourceFile, CachePair>();
 
       if (myPersistentCache.Load(progress, persistentIdIndex,
         (file, reader) =>
         {
           using (ReadLockCookie.Create())
           {
-            return PsiCacheBuilder.Read(reader, file, Providers);
+            return PsiCacheBuilder.Read(reader, file);
           }
         },
-        (projectFile, javaScriptCacheData) =>
+        (projectFile, psiSymbols) =>
         {
           if (projectFile != null)
-            data[projectFile] = javaScriptCacheData;
+            data[projectFile] = psiSymbols;
         }) != LoadResult.OK)
+
+
       {
         // clear all...
         ((ICache)this).Release();
         return null;
       }
-
       return data;
     }
 
     public void MergeLoaded(object data)
     {
-      var parts = (Dictionary<IPsiSourceFile, IList<IPersistentCacheItem>>)data;
+      var parts = (Dictionary<IPsiSourceFile, CachePair>)data;
       foreach (var pair in parts)
       {
-        if (pair.Key.IsValid() && !DirtyFiles.Contains(pair.Key))
+        if (pair.Key.IsValid() && !myDirtyFiles.Contains(pair.Key))
           ((ICache)this).Merge(pair.Key, pair.Value);
       }
     }
@@ -112,7 +99,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
         return;
 
       Assertion.Assert(myPersistentCache != null, "myPersistentCache != null");
-      myPersistentCache.Save(progress, persistentIdIndex, (writer, file, data) => PsiCacheBuilder.Write(data, writer));
+      myPersistentCache.Save(progress, persistentIdIndex, (writer, file, data) => 
+        PsiCacheBuilder.Write(data, writer));
       myPersistentCache.Dispose();
       myPersistentCache = null;
     }
@@ -120,77 +108,91 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
     public void MarkAsDirty(IPsiSourceFile sourceFile)
     {
       if (Accepts(sourceFile))
-        DirtyFiles.Add(sourceFile);
+        myDirtyFiles.Add(sourceFile);
     }
 
     public bool UpToDate(IPsiSourceFile sourceFile)
     {
-      ShellLocks.AssertReadAccessAllowed();
+      myShellLocks.AssertReadAccessAllowed();
+
       if (!Accepts(sourceFile))
         return true;
-      return !DirtyFiles.Contains(sourceFile) && ProjectFileToSymbolsMap.ContainsKey(sourceFile);
+      return !myDirtyFiles.Contains(sourceFile) && myProjectFileToSymbolsMap.ContainsKey(sourceFile);
     }
 
     public object Build(IPsiSourceFile sourceFile, bool isStartup)
     {
-      var ret = PsiCacheBuilder.Build(sourceFile, Providers);
-      if (ret == null)
-        return null;
-      return ret.OfType<IPersistentCacheItem>().ToList();
+      return PsiCacheBuilder.Build(sourceFile);
     }
 
     public void Merge(IPsiSourceFile sourceFile, object builtPart)
     {
-      ShellLocks.AssertWriteAccessAllowed();
+      myShellLocks.AssertWriteAccessAllowed();
 
-      var data = builtPart as IList<IPersistentCacheItem>;
-      if (data == null)
-        return;
+      var data = builtPart as IList<IPsiSymbol>;
 
-      if (myPersistentCache != null)
-        myPersistentCache.AddDataToSave(sourceFile, data);
-
-      // clear old declarations cache...
-      if (ProjectFileToSymbolsMap.ContainsKey(sourceFile))
+      if (data != null)
       {
-        foreach (var oldDeclaration in ProjectFileToSymbolsMap[sourceFile])
+        var ruleData = new List<PsiRuleSymbol>();
+        var optionData = new List<PsiOptionSymbol>();
+        foreach (var symbol in data)
         {
-          var oldName = oldDeclaration.Name;
+          if(symbol is PsiRuleSymbol)
+          {
+            ruleData.Add((PsiRuleSymbol) symbol);
+          }
+          if(symbol is PsiOptionSymbol)
+          {
+            optionData.Add((PsiOptionSymbol) symbol);
+          }
+        }
+        if (myPersistentCache != null)
+          myPersistentCache.AddDataToSave(sourceFile, new CachePair(ruleData,optionData));
 
-          var symbol = oldDeclaration as IPsiSymbol;
-          if (symbol != null)
-            NameToSymbolsMap.Remove(oldName, symbol);
+        // clear old declarations cache...
+        //rules
+        if (myProjectFileToSymbolsMap.ContainsKey(sourceFile))
+        {
+          foreach (var oldDeclaration in myProjectFileToSymbolsMap[sourceFile])
+          {
+            var oldName = oldDeclaration.Name;
+            myNameToSymbolsMap.Remove(oldName, oldDeclaration);
+          }
+        }
+
+        //options
+        //myProjectFileToSymbolsOptionMap.AddValueRange(sourceFile, optionData);
+        foreach (var declaration in optionData)
+        {
+          myNameToSymbolsOptionMap.Add(declaration.Name, declaration);
+        }
+        myDirtyFiles.Remove(sourceFile);
+
+        myProjectFileToSymbolsMap.RemoveKey(sourceFile);
+
+        // add to projectFile to data map...
+        myProjectFileToSymbolsMap.AddValueRange(sourceFile, ruleData);
+        foreach (var declaration in ruleData)
+        {
+          myNameToSymbolsMap.Add(declaration.Name, declaration);
         }
       }
-      ProjectFileToSymbolsMap.RemoveKey(sourceFile);
-
-      // add to projectFile to data map...
-      ProjectFileToSymbolsMap.AddValueRange(sourceFile, data);
-      foreach (var declaration in data)
-      {
-        var symbol = declaration as IPsiSymbol;
-        if (symbol != null)
-          NameToSymbolsMap.Add(declaration.Name, symbol);
-      }
-      DirtyFiles.Remove(sourceFile);
     }
 
     public void OnFileRemoved(IPsiSourceFile sourceFile)
     {
-      ShellLocks.AssertWriteAccessAllowed();
+      myShellLocks.AssertWriteAccessAllowed();
 
-      DirtyFiles.Remove(sourceFile);
-      if (ProjectFileToSymbolsMap.ContainsKey(sourceFile))
+      myDirtyFiles.Remove(sourceFile);
+      if (myProjectFileToSymbolsMap.ContainsKey(sourceFile))
       {
-        foreach (var oldDeclaration in ProjectFileToSymbolsMap[sourceFile])
+        foreach (var oldDeclaration in myProjectFileToSymbolsMap[sourceFile])
         {
           var oldName = oldDeclaration.Name;
-          var symbol = oldDeclaration as IPsiSymbol;
-          if (symbol != null)
-            NameToSymbolsMap.Remove(oldName, symbol);
+          myNameToSymbolsMap.Remove(oldName, oldDeclaration);
         }
       }
-      ProjectFileToSymbolsMap.RemoveKey(sourceFile);
+      myProjectFileToSymbolsMap.RemoveKey(sourceFile);
       if (myPersistentCache != null)
         myPersistentCache.MarkDataToDelete(sourceFile);
     }
@@ -220,10 +222,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
     {
       if (elementContainingChanges != null)
       {
-        ShellLocks.AssertWriteAccessAllowed();
+        myShellLocks.AssertWriteAccessAllowed();
         var projectFile = elementContainingChanges.GetSourceFile();
         if (projectFile != null && Accepts(projectFile))
-          DirtyFiles.Add(projectFile);
+          myDirtyFiles.Add(projectFile);
       }
     }
 
@@ -231,11 +233,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
     {
       foreach (var sourceFile in args.ProjectFile.ToSourceFiles())
       {
-        ShellLocks.AssertWriteAccessAllowed();
+        myShellLocks.AssertWriteAccessAllowed();
         if (Accepts(sourceFile))
         {
-          ShellLocks.AssertWriteAccessAllowed();
-          DirtyFiles.Add(sourceFile);
+          myShellLocks.AssertWriteAccessAllowed();
+          myDirtyFiles.Add(sourceFile);
         }
       }
     }
@@ -252,16 +254,15 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
 
     public void SyncUpdate(bool underTransaction)
     {
-      ShellLocks.AssertReadAccessAllowed();
+      myShellLocks.AssertReadAccessAllowed();
 
-      if (DirtyFiles.Count > 0)
-        foreach (var projectFile in new List<IPsiSourceFile>(DirtyFiles))
+      if (myDirtyFiles.Count > 0)
+        foreach (var projectFile in new List<IPsiSourceFile>(myDirtyFiles))
           using (WriteLockCookie.Create())
           {
-            var ret = PsiCacheBuilder.Build(projectFile, Providers);
-            //mySymbols.AddRange(ret.OfType<IPsiSymbol>());
+            var ret = PsiCacheBuilder.Build(projectFile);
             if (ret != null)
-              ((ICache)this).Merge(projectFile, ret.OfType<IPersistentCacheItem>().ToList());
+              ((ICache)this).Merge(projectFile, ret.ToList());
             else
               ((ICache)this).Merge(projectFile, null);
           }
@@ -273,15 +274,20 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
 
     public bool HasDirtyFiles
     {
-      get { return !DirtyFiles.IsEmpty(); }
+      get { return !myDirtyFiles.IsEmpty(); }
     }
 
-    public ICollection<IPsiSymbol> GetSymbol(string name)
+    public IEnumerable<IPsiSymbol> GetSymbols(string name)
     {
-      return NameToSymbolsMap[name];
+      return myNameToSymbolsMap[name];
     }
 
-    private class PsiPersistentCache : SimplePersistentCache<IList<IPersistentCacheItem>>
+    public IEnumerable<PsiOptionSymbol> GetOptionSymbols(string name)
+    {
+      return myNameToSymbolsOptionMap[name];
+    }
+
+    private class PsiPersistentCache<T> : SimplePersistentCache<T>
     {
       public PsiPersistentCache(IShellLocks locks, int formatVersion, string cacheDirectoryName, IPsiConfiguration psiConfiguration)
         : base(locks, formatVersion, cacheDirectoryName, psiConfiguration) { }
@@ -291,5 +297,27 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
         get { return "Psi Caches"; }
       }
     }
+  }
+
+  public class CachePair
+  {
+    private readonly IList<PsiRuleSymbol> myRules;
+    private readonly IList<PsiOptionSymbol> myOptions;
+
+    public CachePair(IList<PsiRuleSymbol> rules, IList<PsiOptionSymbol> options)
+    {
+      myRules = rules;
+      myOptions = options;
+    }
+
+    public IList<PsiRuleSymbol> Rules
+    {
+      get { return myRules; }
+    }
+
+    public IList<PsiOptionSymbol> Options
+    {
+      get { return myOptions; }
+    } 
   }
 }

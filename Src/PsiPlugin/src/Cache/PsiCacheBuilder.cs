@@ -1,128 +1,151 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using JetBrains.Annotations;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.ReSharper.PsiPlugin.Tree;
-using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Cache
 {
-  internal class PsiCacheBuilder
+  internal class PsiCacheBuilder : IRecursiveElementProcessor
   {
-    private readonly IPsiCustomCacheBuilder[] myBuilders;
+    private readonly List<IPsiSymbol> mySymbols = new List<IPsiSymbol>();
+    private readonly IPsiSourceFile mySourceFile;
 
-    private PsiCacheBuilder(IPsiSourceFile sourceFile, IEnumerable<IPsiCacheProvider> providers)
+    private PsiCacheBuilder(IPsiSourceFile sourceFile)
     {
-      myBuilders = providers.Select(x => x.CreateCustomBuilder(sourceFile)).ToArray();
+      mySourceFile = sourceFile;
     }
 
-    private IEnumerable<ICacheItem> GetSymbols()
+    public void VisitOptionDefinition(IOptionDefinition optionDefinition)
     {
-      return myBuilders.SelectMany(x => x.Symbols).ToList();
-    }
-
-    public static IList<IPersistentCacheItem> Read(BinaryReader reader, IPsiSourceFile sourceFile, IEnumerable<IPsiCacheProvider> providers)
-    {
-      var groupsCount = reader.ReadUInt32();
-      var ret = new List<IPersistentCacheItem>();
-      for (var i = 0; i < groupsCount; i++)
+      var name = optionDefinition.OptionName.GetText();
+      var offset = optionDefinition.GetNavigationRange().TextRange.StartOffset;
+      var psiSourceFile = optionDefinition.GetSourceFile();
+      string value = "";
+      var valueNode = optionDefinition.OptionStringValue;
+      if(valueNode != null)
       {
-        var guid = reader.ReadString();
-        var count = reader.ReadInt32();
-        Func<IPsiSourceFile, IPersistentCacheItem> constructor = null;
-        foreach (var provider in providers)
-        {
-          constructor = provider.CreateItemConstructor();
-          if (constructor != null)
-            break;
-        }
-
-        Assertion.Assert(constructor != null, string.Format("Can not create item constructor with guid '{0}'", guid));
-
-        if(constructor == null)
-        {
-          return ret;
-        }
-
-        for (int j = 0; j < count; j++)
-        {
-          var item = constructor(sourceFile);
-          if(item != null)
-          {
-            item.Read(reader);
-            ret.Add(item);
-          }
-        }
+        value = valueNode.GetText();
       }
+      mySymbols.Add(new PsiOptionSymbol(name, offset, value, psiSourceFile));
+    }
+
+    public void VisitRuleDeclaration(IRuleDeclaration ruleDeclaration)
+    {
+      var name = ruleDeclaration.DeclaredName;
+      var offset = ruleDeclaration.GetNavigationRange().TextRange.StartOffset;
+      var psiSourceFile = ruleDeclaration.GetSourceFile();
+      mySymbols.Add(new PsiRuleSymbol(name, offset, psiSourceFile));
+    }
+
+    private ICollection<IPsiSymbol> GetSymbols()
+    {
+      return mySymbols;
+    }
+
+    public static CachePair Read(BinaryReader reader, IPsiSourceFile sourceFile)
+    {
+      var ruleData = ReadRules(reader, sourceFile);
+      var optionData = ReadOptions(reader, sourceFile);
+
+      return new CachePair(ruleData, optionData);
+    }
+
+    private static IList<PsiRuleSymbol> ReadRules(BinaryReader reader, IPsiSourceFile sourceFile)
+    {
+      var count = reader.ReadInt32();
+      var ret = new List<PsiRuleSymbol>();
+
+      for (int i = 0; i < count; i++)
+      {
+        var symbol = new PsiRuleSymbol(sourceFile);
+        symbol.Read(reader);
+        ret.Add(symbol);
+      }
+
       return ret;
     }
 
-    public static void Write(IEnumerable<IPersistentCacheItem> symbolsOfProjectFile, BinaryWriter writer)
+    private static IList<PsiOptionSymbol> ReadOptions(BinaryReader reader, IPsiSourceFile sourceFile)
     {
-      var groups = new OneToListMap<string, IPersistentCacheItem>();
+      var count = reader.ReadInt32();
+      var ret = new List<PsiOptionSymbol>();
 
-      // prepare groups...
-      foreach (var item in symbolsOfProjectFile)
-        groups.Add(item.SymbolTypeGuid, item);
-
-      writer.Write(groups.Keys.Count);
-
-      foreach (var pair in groups)
+      for (int i = 0; i < count; i++)
       {
-        var giud = pair.Key;
-        var items = pair.Value;
-        writer.Write(giud);
-        writer.Write(items.Count);
-
-        foreach (var item in items)
-          item.Write(writer);
+        var symbol = new PsiOptionSymbol(sourceFile);
+        symbol.Read(reader);
+        ret.Add(symbol);
       }
+
+      return ret;
     }
 
-    private void Build(ITreeNode node)
+    public static void Write(CachePair pair, BinaryWriter writer)
     {
-      // scan before element
-      List<Action> results = null;
+      var ruleItems = pair.Rules;
+      writer.Write(ruleItems.Count);
 
-      foreach (var builder in myBuilders)
+      foreach (var ruleItem in ruleItems)
       {
-        var result = builder.ScanBeforeChildren(node);
-        if (result != null)
-        {
-          if (results == null)
-            results = new List<Action>();
-          results.Add(result);
-        }
+        ruleItem.Write(writer);
       }
 
-      for (var child = node.FirstChild; child != null; child = child.NextSibling)
-        Build(child);
+      var optionItems = pair.Options;
+      writer.Write(optionItems.Count);
 
-      // scan after element
-      if (results != null)
-        foreach (var action in results)
-          action();
+      foreach (var optionItem in optionItems)
+      {
+        optionItem.Write(writer);
+      }
     }
 
     [CanBeNull]
-    public static IEnumerable<ICacheItem> Build(IPsiSourceFile sourceFile, IEnumerable<IPsiCacheProvider> providers)
+    public static ICollection<IPsiSymbol> Build(IPsiSourceFile sourceFile)
     {
       var file = sourceFile.GetPsiFile<PsiLanguage>() as IPsiFile;
       if (file == null)
         return null;
-      return Build(sourceFile, providers, file);
+      return Build(sourceFile, file);
     }
 
     [CanBeNull]
-    public static IEnumerable<ICacheItem> Build(IPsiSourceFile sourceFile, IEnumerable<IPsiCacheProvider> providers, ITreeNode rootNode)
+    public static ICollection<IPsiSymbol> Build(IPsiSourceFile sourceFile, IPsiFile file)
     {
-      var ret = new PsiCacheBuilder(sourceFile, providers);
-      ret.Build(rootNode);
+      var ret = new PsiCacheBuilder(sourceFile);
+      file.ProcessDescendants(ret);
       return ret.GetSymbols();
+    }
+
+    public bool InteriorShouldBeProcessed(ITreeNode element)
+    {
+      return true;
+    }
+
+    public void ProcessBeforeInterior(ITreeNode element)
+    {
+      var optionDefinition = element as IOptionDefinition;
+      if(optionDefinition != null)
+      {
+        VisitOptionDefinition(optionDefinition);
+        return;
+      }
+      var ruleDeclaration = element as IRuleDeclaration;
+      if(ruleDeclaration != null)
+      {
+        VisitRuleDeclaration(ruleDeclaration);
+      }
+    }
+
+    public void ProcessAfterInterior(ITreeNode element)
+    {
+    }
+
+    public bool ProcessingIsFinished
+    {
+      get { return false; }
     }
   }
 }
