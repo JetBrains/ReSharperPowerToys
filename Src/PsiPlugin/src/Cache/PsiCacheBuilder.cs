@@ -28,6 +28,14 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
       if(valueNode != null)
       {
         value = valueNode.GetText();
+        if("\"".Equals(value.Substring(0,1)))
+        {
+          value = value.Substring(1, value.Length - 1);
+        }
+        if ("\"".Equals(value.Substring(value.Length - 1, 1)))
+        {
+          value = value.Substring(0, value.Length - 1);
+        }
       }
       mySymbols.Add(new PsiOptionSymbol(name, offset, value, psiSourceFile));
     }
