@@ -27,8 +27,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
         {
             return base.ToString() + " spaces:" + "\"" + GetText() + "\"";
         }
-
-        public abstract bool IsNewLine { get; }
     }
 
     internal class Whitespace : WhitespaceBase
@@ -43,7 +41,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
             get { return PsiTokenType.WHITE_SPACE; }
         }
 
-        public override bool IsNewLine
+        public virtual bool IsNewLine
         {
             get { return false; }
         }
@@ -61,7 +59,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
             get { return PsiTokenType.NEW_LINE; }
         }
 
-        public override bool IsNewLine
+        public virtual bool IsNewLine
         {
             get { return true; }
         }

@@ -19,7 +19,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
     {
       ITreeNode pathName = PathName;
       int offset = pathName.GetNavigationRange().TextRange.StartOffset;
-      return new TreeTextRange(new TreeOffset(offset), pathName.GetText().Length); //ruleName.GetNavigationRange());
+      return new TreeTextRange(new TreeOffset(offset), pathName.GetText().Length);
     }
 
     public IList<IDeclaration> GetDeclarations()

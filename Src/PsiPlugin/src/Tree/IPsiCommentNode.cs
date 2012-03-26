@@ -11,6 +11,5 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree
 
     public interface IPsiCommentNode : ICommentNode
     {
-        CommentType CommentType { get; }
     }
 }

@@ -14,6 +14,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Util
 
     public abstract IRuleName CreateIdentifierExpression(string name);
 
-    public ISolution Solution { get; protected set; }
+    protected ISolution Solution { get; set; }
   }
 }
