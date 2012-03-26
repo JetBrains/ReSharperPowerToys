@@ -5,7 +5,6 @@ using JetBrains.ReSharper.PsiPlugin.Lexer;
 using JetBrains.Text;
 using System.Drawing;
 using JetBrains.UI;
-using JetBrains.Util.Special;
 
 namespace JetBrains.ReSharper.PsiPlugin.Grammar
 {
