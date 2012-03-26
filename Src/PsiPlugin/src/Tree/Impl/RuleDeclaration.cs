@@ -227,13 +227,17 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
 
       int newLength = currLength - changedRange.Length + insertedTextLen;
 
-      var parser = (IPsiParser)Language.LanguageService().CreateParser(new ProjectedLexer(cachingLexer, new TextRange(currStartOffset.Offset, currStartOffset.Offset + newLength)), GetPsiModule(), GetSourceFile());
-      TreeElement newElement = parser.ParseStatement();
-      if((newElement.GetTextLength() == newLength) && (";".Equals(newElement.GetText().Substring(newElement.GetTextLength() - 1))))
+      var languageService = Language.LanguageService();
+      if (languageService != null)
       {
-        var psiFile = GetContainingNode<PsiFile>();
-        if (psiFile != null) psiFile.ClearTables();
-        return newElement as IRuleDeclaration;
+        var parser = (IPsiParser)languageService.CreateParser(new ProjectedLexer(cachingLexer, new TextRange(currStartOffset.Offset, currStartOffset.Offset + newLength)), GetPsiModule(), GetSourceFile());
+        TreeElement newElement = parser.ParseStatement();
+        if((newElement.GetTextLength() == newLength) && (";".Equals(newElement.GetText().Substring(newElement.GetTextLength() - 1))))
+        {
+          var psiFile = GetContainingNode<PsiFile>();
+          if (psiFile != null) psiFile.ClearTables();
+          return newElement as IRuleDeclaration;
+        }
       }
       return null;
     }

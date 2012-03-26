@@ -21,7 +21,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
             return base.ToString() + "(CommentType:" + Enum.Format(typeof(CommentType), CommentType, "G") + ")";
         }
 
-        public CommentType CommentType
+        private CommentType CommentType
         {
             get
             {

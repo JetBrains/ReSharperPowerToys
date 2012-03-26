@@ -4,6 +4,5 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree
 {
     public interface IWhitespaceNode : ITokenNode
     {
-        bool IsNewLine { get; }
     }  
 }

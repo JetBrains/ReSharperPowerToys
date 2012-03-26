@@ -160,8 +160,8 @@
     <Compile Include="src\CodeInspections\PsiIdentifierToolTipProvider.cs" />
     <Compile Include="src\CodeInspections\PsiIncrementalDaemonStageProcessBase.cs" />
     <Compile Include="src\CodeInspections\SmartResolverStage.cs" />
-    <Compile Include="src\Feature\Services\FindUsges\PsiReferenceSearcher.cs" />
-    <Compile Include="src\Feature\Services\FindUsges\PsiReferenceSearcherFactory.cs" />
+    <Compile Include="src\Feature\Services\FindUsages\PsiReferenceSearcher.cs" />
+    <Compile Include="src\Feature\Services\FindUsages\PsiReferenceSearcherFactory.cs" />
     <Compile Include="src\GeneratedDocument\CSharpFromPsiGeneratedDocumentService.cs" />
     <Compile Include="src\GeneratedDocument\CSharpFromPsiGenerator.cs" />
     <Compile Include="src\GeneratedDocument\CSharpInPsiCustomModificationHandler.cs" />
@@ -396,9 +396,6 @@
   </Target>
   -->
   <Target Name="BeforeBuild">
-     <Copy
-        SourceFiles="$(ReSharperSdk)\Tools\parserGen\Unicode.lex"
-        DestinationFolder=".\obj\"
-     />
+    <Copy SourceFiles="$(ReSharperSdk)\Tools\parserGen\Unicode.lex" DestinationFolder=".\obj\" />
   </Target>
 </Project>

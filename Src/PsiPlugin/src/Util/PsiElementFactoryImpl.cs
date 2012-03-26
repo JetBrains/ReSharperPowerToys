@@ -33,10 +33,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Util
       return (PsiParser)myLanguageService.CreateParser(myLanguageService.GetPrimaryLexerFactory().CreateLexer(new StringBuffer(text)), null, null);
     }
 
-    #region IElementFactory members
-
-    #endregion
-
     #region Nested type: ParameterMarker
 
     #endregion

@@ -24,7 +24,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
     private string myVisitorMethodPrefix = "";
     private string myVisitorMethodSuffix = "";
 
-    protected readonly Dictionary<string, IDeclaredElement> Declarations = new Dictionary<string, IDeclaredElement>();
+    private readonly Dictionary<string, IDeclaredElement> Declarations = new Dictionary<string, IDeclaredElement>();
 
     protected override void ClearCachedData()
     {
@@ -236,6 +236,20 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
       var classes =
         GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(
           myParserPackageName + "." + myParserClassName);
+      var visitorClasses = CollectVisitorClasses();
+      var elements = Declarations.Values;
+      foreach (IDeclaredElement declaredElement in elements)
+      {
+        IEnumerator<ITypeElement> enumerator = classes.GetEnumerator();
+        if (enumerator.MoveNext())
+        {
+          ((RuleDeclaration) declaredElement).CollectDerivedDeclaredElements((IClass) enumerator.Current, visitorClasses, myTreeInterfacesPackageName, myTreeClassesPackageName, myVisitorMethodPrefix, myVisitorMethodSuffix);
+        }
+      }
+    }
+
+    private ICollection<ITypeElement> CollectVisitorClasses()
+    {
       ICollection<ITypeElement> visitorClasses = new List<ITypeElement>();
       foreach (var typeElement in GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(
         myTreeInterfacesPackageName + "." + myVisitorClassName))
@@ -256,15 +270,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
       {
         visitorClasses.Add(visitorGenericClass);
       }
-      var elements = Declarations.Values;
-      foreach (IDeclaredElement declaredElement in elements)
-      {
-        IEnumerator<ITypeElement> enumerator = classes.GetEnumerator();
-        if (enumerator.MoveNext())
-        {
-          ((RuleDeclaration) declaredElement).CollectDerivedDeclaredElements((IClass) enumerator.Current, visitorClasses, myTreeInterfacesPackageName, myTreeClassesPackageName, myVisitorMethodPrefix, myVisitorMethodSuffix);
-        }
-      }
+      return visitorClasses;
     }
 
     private void AddTokensToSymbolTable(ITreeNode tokenTypeClassFQNameNode)

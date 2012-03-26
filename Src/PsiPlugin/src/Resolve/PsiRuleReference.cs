@@ -19,39 +19,13 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
     {
       ISymbolTable table = GetReferenceSymbolTable(true);
       IList<DeclaredElementInstance> elements = new List<DeclaredElementInstance>();
-      RuleDeclaration ruleDeclaration = null;
       {
         IList<ISymbolInfo> infos = table.GetSymbolInfos(GetName());
         foreach (ISymbolInfo info in infos)
         {
-          if (info.GetDeclaredElement() is RuleDeclaration)
-          {
-            ruleDeclaration = info.GetDeclaredElement() as RuleDeclaration;
-          }
           var element = new DeclaredElementInstance(info.GetDeclaredElement(), EmptySubstitution.INSTANCE);
           elements.Add(element);
         }
-      }
-      if (ruleDeclaration != null)
-      {
-        /*IList<IDeclaredElement> derivedClasses = ruleDeclaration.DerivedClasses;
-        foreach (var declaredElement in derivedClasses)
-        {
-          var element = new DeclaredElementInstance(declaredElement, EmptySubstitution.INSTANCE);
-          elements.Add(element);
-        }
-        IList<IDeclaredElement> derivedInterfaces = ruleDeclaration.DerivedInterfaces;
-        foreach (var declaredElement in derivedInterfaces)
-        {
-          var element = new DeclaredElementInstance(declaredElement, EmptySubstitution.INSTANCE);
-          elements.Add(element);
-        }
-        IList<IDeclaredElement> derivedMethods = ruleDeclaration.DerivedDeclaredElements;
-        foreach (var declaredElement in derivedMethods)
-        {
-          var element = new DeclaredElementInstance(declaredElement, EmptySubstitution.INSTANCE);
-          elements.Add(element);
-        }*/
       }
       return new ResolveResultWithInfo(ResolveResultFactory.CreateResolveResultFinaly(elements),
                                                   ResolveErrorType.OK);
