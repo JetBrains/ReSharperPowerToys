@@ -10,7 +10,7 @@ using JetBrains.ReSharper.Psi.Util;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.Util;
 
-namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.FindUsges
+namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.FindUsages
 {
   internal class PsiReferenceSearcher : IDomainSpecificSearcher
   {
@@ -19,7 +19,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.FindUsges
     private readonly bool mySearchForLateBound;
     private readonly bool myHasUnnamedElement;
 
-    public PsiReferenceSearcher(IDomainSpecificSearcherFactory searchWordsProvider, IEnumerable<IDeclaredElement> elements, bool findCandidates, bool searchForLateBound)
+    public PsiReferenceSearcher(IDomainSpecificSearcherFactory searchWordsProvider, IEnumerable<IDeclaredElement> elements, bool searchForLateBound)
     {
       mySearchForLateBound = searchForLateBound;
       myElements = new HashSet<IDeclaredElement>(elements);

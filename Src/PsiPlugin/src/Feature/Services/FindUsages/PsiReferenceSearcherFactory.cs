@@ -1,21 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.ExtensionsAPI;
-using JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve;
-using JetBrains.ReSharper.Psi.Impl.Search.SearchDomain;
 using JetBrains.ReSharper.Psi.Search;
-using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Psi.Util;
-using JetBrains.ReSharper.PsiPlugin.Feature.Services.FindUsges;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.ReSharper.PsiPlugin.Util;
 using JetBrains.Util;
-using JetBrains.Util.DataStructures;
 
-namespace JetBrains.ReSharper.PsiPlugin.FindUsges
+namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.FindUsages
 {
   [PsiSharedComponent]
   internal class PsiSearcherFactory : IDomainSpecificSearcherFactory
@@ -110,7 +103,7 @@ namespace JetBrains.ReSharper.PsiPlugin.FindUsges
 
     public IDomainSpecificSearcher CreateReferenceSearcher(ICollection<IDeclaredElement> elements, bool findCandidates)
     {
-      return new PsiReferenceSearcher(this, elements, findCandidates, false);
+      return new PsiReferenceSearcher(this, elements, false);
     }
 
     public IDomainSpecificSearcher CreateTextOccurenceSearcher(ICollection<IDeclaredElement> elements)
@@ -127,16 +120,15 @@ namespace JetBrains.ReSharper.PsiPlugin.FindUsges
 
     public IDomainSpecificSearcher CreateLateBoundReferenceSearcher(ICollection<IDeclaredElement> elements)
     {
-      return new PsiReferenceSearcher(this, elements, true, true);
+      return new PsiReferenceSearcher(this, elements, true);
     }
 
     public IDomainSpecificSearcher CreateAnonymousTypeSearcher(IList<AnonymousTypeDescriptor> typeDescription, bool caseSensitive)
     {
-      //return new PsiAnonymousTypeSearcher(typeDescription, caseSensitive);
       return null;
     }
 
-    public IDomainSpecificSearcher CreateConstantExpressionSearcher(Psi.ConstantValue constantValue, bool onlyLiteralExpression)
+    public IDomainSpecificSearcher CreateConstantExpressionSearcher(ConstantValue constantValue, bool onlyLiteralExpression)
     {
       return new ConstantExpressionDomainSpecificSearcher<PsiLanguage>(constantValue, onlyLiteralExpression);
     }
@@ -155,13 +147,6 @@ namespace JetBrains.ReSharper.PsiPlugin.FindUsges
 
     public JetTuple<ICollection<IDeclaredElement>, bool> GetNavigateToTargets(IDeclaredElement element)
     {
-      /*var queryDeclaredElement = element as IQueryDeclaredElement;
-      if (queryDeclaredElement != null)
-      {
-        var rangeVariable = queryDeclaredElement.Declaration.DeclaredElement;
-        return new JetTuple<ICollection<IDeclaredElement>, bool>(new[] { rangeVariable }, false);
-      }*/
-
       return null;
     }
 
@@ -172,7 +157,6 @@ namespace JetBrains.ReSharper.PsiPlugin.FindUsges
 
     public ISearchDomain GetDeclaredElementSearchDomain(IDeclaredElement declaredElement)
     {
-      /*if (declaredElement is IExternAlias)*/
       var files = declaredElement.GetSourceFiles();
       if (files.Count > 0)
       {

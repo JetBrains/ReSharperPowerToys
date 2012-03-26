@@ -50,80 +50,117 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
           child = child.NextSibling;
         }
       }
-      if (treeNode is IOptionDefinition)
+      var optionDefinition = treeNode as IOptionDefinition;
+      if (optionDefinition != null)
       {
-        var value = (treeNode as IOptionDefinition).OptionStringValue;
-        if (value != null)
+        AddOption(optionDefinition);
+      }
+    }
+
+    private void AddOption(IOptionDefinition optionDefinition)
+    {
+      var value = optionDefinition.OptionStringValue;
+      if (value != null)
+      {
+        var optionName = GetOptionNameWithoutQuotes(optionDefinition);
+
+        string optionValueText = value.GetText();
+        int startOffset = value.GetTreeStartOffset().Offset;
+        if ((optionValueText.Length > 0) && ("\"".Equals(optionValueText.Substring(0, 1))))
         {
-          string optionName = (treeNode as IOptionDefinition).OptionName.GetText();
-          if ((optionName.Length > 0) && ("\"".Equals(optionName.Substring(0, 1))))
-          {
-            optionName = optionName.Substring(1, optionName.Length - 1);
-          }
-          if ((optionName.Length > 0) && ("\"".Equals(optionName.Substring(optionName.Length - 1, 1))))
-          {
-            optionName = optionName.Substring(0, optionName.Length - 1);
-          }
+          optionValueText = optionValueText.Substring(1, optionValueText.Length - 1);
+          startOffset++;
+        }
+        int endOffset = value.GetTreeEndOffset().Offset;
+        if ((optionValueText.Length > 0) && ("\"".Equals(optionValueText.Substring(optionValueText.Length - 1, 1))))
+        {
+          optionValueText = optionValueText.Substring(0, optionValueText.Length - 1);
+          endOffset--;
+        }
 
-          string optionValueText = value.GetText();
-          int startOffset = value.GetTreeStartOffset().Offset;
-          if ((optionValueText.Length > 0) && ("\"".Equals(optionValueText.Substring(0, 1))))
+        if (optionValueText.Length > 0)
+        {
+          if (OptionDeclaredElements.NamespacesOptions.Contains(optionName))
           {
-            optionValueText = optionValueText.Substring(1, optionValueText.Length - 1);
-            startOffset++;
+            AddNamespaceOption(endOffset, optionValueText, startOffset);
           }
-          int endOffset = value.GetTreeEndOffset().Offset;
-          if ((optionValueText.Length > 0) && ("\"".Equals(optionValueText.Substring(optionValueText.Length - 1, 1))))
+          else if (OptionDeclaredElements.ClassesOptions.Contains(optionName))
           {
-            optionValueText = optionValueText.Substring(0, optionValueText.Length - 1);
-            endOffset--;
+            AddClassesOption(optionDefinition, endOffset, startOffset, optionValueText);
           }
-
-          if (optionValueText.Length > 0)
+          else if (OptionDeclaredElements.MethodsOptions.Contains(optionName))
           {
-            if (OptionDeclaredElements.NamespacesOptions.Contains(optionName))
-            {
-              var map = GeneratedRangeMapFactory.CreateGeneratedRangeMap(myFile);
-              map.Add(new TreeTextRange<Generated>(new TreeOffset(6), new TreeOffset(6 + optionValueText.Length)),
-                new TreeTextRange<Original>(new TreeOffset(startOffset), new TreeOffset(endOffset)));
-              myGeneratedFile.Append(new GenerationResults(CSharpLanguage.Instance, "using " + optionValueText + ";\n", map));
-            }
-            if (OptionDeclaredElements.ClassesOptions.Contains(optionName))
-            {
-              var classes = treeNode.GetPsiServices().CacheManager.GetDeclarationsCache(treeNode.GetPsiModule(), false, true).GetTypeElementsByCLRName(optionValueText);
-              foreach (var typeElement in classes)
-              {
-                var cls = typeElement as IClass;
-
-                // check for static class (it should be Abstract and Sealed)
-                if (cls != null && cls.IsAbstract && cls.IsSealed)
-                {
-                  var fields = cls.Fields;
-                  foreach (var field in fields)
-                  {
-                    var staticMap = GeneratedRangeMapFactory.CreateGeneratedRangeMap(myFile);
-                    staticMap.Add(new TreeTextRange<Generated>(new TreeOffset(), new TreeOffset(optionValueText.Length)),
-                      new TreeTextRange<Original>(new TreeOffset(startOffset), new TreeOffset(endOffset)));
-                    myGeneratedMethodBody.Append(new GenerationResults(CSharpLanguage.Instance, optionValueText + "." + field.ShortName + " a;\n", staticMap));
-                    return;
-                  }
-                }
-              }
-              var map = GeneratedRangeMapFactory.CreateGeneratedRangeMap(myFile);
-              map.Add(new TreeTextRange<Generated>(new TreeOffset(), new TreeOffset(optionValueText.Length)),
-                new TreeTextRange<Original>(new TreeOffset(startOffset), new TreeOffset(endOffset)));
-              myGeneratedMethodBody.Append(new GenerationResults(CSharpLanguage.Instance, optionValueText + " a;\n", map));
-            }
-            if (OptionDeclaredElements.MethodsOptions.Contains(optionName))
-            {
-              var map = GeneratedRangeMapFactory.CreateGeneratedRangeMap(myFile);
-              map.Add(new TreeTextRange<Generated>(new TreeOffset(8), new TreeOffset(optionValueText.Length + 8)),
-                new TreeTextRange<Original>(new TreeOffset(startOffset), new TreeOffset(endOffset)));
-              myGeneratedMethodBody.Append(new GenerationResults(CSharpLanguage.Instance,"var a = " + optionValueText + ";\n", map));
-            }
+            AddMethodOption(endOffset, optionValueText, startOffset);
           }
         }
       }
+    }
+
+    private static string GetOptionNameWithoutQuotes(IOptionDefinition optionDefinition)
+    {
+      string optionName = optionDefinition.OptionName.GetText();
+      if ((optionName.Length > 0) && ("\"".Equals(optionName.Substring(0, 1))))
+      {
+        optionName = optionName.Substring(1, optionName.Length - 1);
+      }
+      if ((optionName.Length > 0) && ("\"".Equals(optionName.Substring(optionName.Length - 1, 1))))
+      {
+        optionName = optionName.Substring(0, optionName.Length - 1);
+      }
+      return optionName;
+    }
+
+    private void AddClassesOption(IOptionDefinition optionDefinition, int endOffset, int startOffset, string optionValueText)
+    {
+      var classes = optionDefinition.GetPsiServices().CacheManager.GetDeclarationsCache(optionDefinition.GetPsiModule(), false, true).GetTypeElementsByCLRName(optionValueText);
+      foreach (var typeElement in classes)
+      {
+        var cls = typeElement as IClass;
+
+        // check for static class (it should be Abstract and Sealed)
+        if (cls != null && cls.IsAbstract && cls.IsSealed)
+        {
+          var fields = cls.Fields;
+          foreach (var field in fields)
+          {
+            AddStaticClassOption(endOffset, startOffset, optionValueText, field);
+            return;
+          }
+        }
+      }
+      AddClassOption(endOffset, startOffset, optionValueText);
+    }
+
+    private void AddClassOption(int endOffset, int startOffset, string optionValueText)
+    {
+      var map = GeneratedRangeMapFactory.CreateGeneratedRangeMap(myFile);
+      map.Add(new TreeTextRange<Generated>(new TreeOffset(), new TreeOffset(optionValueText.Length)),
+        new TreeTextRange<Original>(new TreeOffset(startOffset), new TreeOffset(endOffset)));
+      myGeneratedMethodBody.Append(new GenerationResults(CSharpLanguage.Instance, optionValueText + " a;\n", map));
+    }
+
+    private void AddStaticClassOption(int endOffset, int startOffset, string optionValueText, IField field)
+    {
+      var staticMap = GeneratedRangeMapFactory.CreateGeneratedRangeMap(myFile);
+      staticMap.Add(new TreeTextRange<Generated>(new TreeOffset(), new TreeOffset(optionValueText.Length)),
+        new TreeTextRange<Original>(new TreeOffset(startOffset), new TreeOffset(endOffset)));
+      myGeneratedMethodBody.Append(new GenerationResults(CSharpLanguage.Instance, optionValueText + "." + field.ShortName + " a;\n", staticMap));
+    }
+
+    private void AddMethodOption(int endOffset, string optionValueText, int startOffset)
+    {
+      var map = GeneratedRangeMapFactory.CreateGeneratedRangeMap(myFile);
+      map.Add(new TreeTextRange<Generated>(new TreeOffset(8), new TreeOffset(optionValueText.Length + 8)),
+        new TreeTextRange<Original>(new TreeOffset(startOffset), new TreeOffset(endOffset)));
+      myGeneratedMethodBody.Append(new GenerationResults(CSharpLanguage.Instance, "var a = " + optionValueText + ";\n", map));
+    }
+
+    private void AddNamespaceOption(int endOffset, string optionValueText, int startOffset)
+    {
+      var map = GeneratedRangeMapFactory.CreateGeneratedRangeMap(myFile);
+      map.Add(new TreeTextRange<Generated>(new TreeOffset(6), new TreeOffset(6 + optionValueText.Length)),
+        new TreeTextRange<Original>(new TreeOffset(startOffset), new TreeOffset(endOffset)));
+      myGeneratedFile.Append(new GenerationResults(CSharpLanguage.Instance, "using " + optionValueText + ";\n", map));
     }
   }
 }

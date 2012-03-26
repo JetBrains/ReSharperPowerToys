@@ -51,45 +51,25 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
 
     public ICollection<IPreCommitResult> ExecuteSecondaryDocumentCommitWork(PrimaryFileModificationInfo primaryFileModificationInfo, CachedPsiFile cachedPsiFile, TreeTextRange oldTreeRange, string newText)
     {
-     /* var newElement = primaryFileModificationInfo.NewElement;
-      var oldElement = primaryFileModificationInfo.OldElement;
-      if (oldElement == null || newElement == null)
-        return null;
-      if (!HasProjectedInnerElements(newElement) && !HasProjectedInnerElements(oldElement) && !HasProjectedOuterElements(newElement))
-      {
-        // change is unrelated, just fix ranges...
-        return CreateFixRangeTranslatorsCommitResult(cachedPsiFile, oldTreeRange, newText);
-      }
-
-      // try promote change to the secondary psi and reparse!
-      if (IsUnderScriptBlock(newElement))
-      {
-        return CreatePromotedDocumentChangeCommitResult(cachedPsiFile, oldTreeRange, newText);
-      }
-      */
       return null;
     }
 
     public bool ProcessChangeFromGeneratedToPrimary(IPsiSourceFile sourceFile, TextRange range, string oldText, string newText, PsiLanguageType language)
     {
-      //throw new NotImplementedException();
       return false;
     }
 
     public void ProcessChangeFromPrimaryToGenerated(TreeTextRange range, string oldText, string newText, ISecondaryRangeTranslator rangeTranslator, IFile file, IPsiTransactionAction transactionAction)
     {
-      //throw new NotImplementedException();
     }
 
     public DocumentRange TryFindNavigationRangeInPrimaryDocument(ITreeNode element)
     {
-      //throw new NotImplementedException();
       return element.GetNavigationRange();
     }
 
     public ISecondaryLexingProcess CreateSecondaryLexingService(ISolution solution, MixedLexer mixedLexer, IPsiSourceFile sourceFile = null)
     {
-      //throw new NotImplementedException();
       return null;
     }
 
@@ -100,7 +80,6 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
 
     public bool CheckValid(IFile generatedFile)
     {
-      //throw new NotImplementedException();
       return false;
     }
   }
