@@ -33,87 +33,79 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
       HighlightInFile((file, consumer) => file.ProcessDescendants(this, consumer), commiter);
     }
 
-    public override void VisitNode(ITreeNode element, IHighlightingConsumer consumer)
+    public override void VisitRuleName(IRuleName ruleName, IHighlightingConsumer consumer)
     {
-      var ruleName = element as IRuleName;
+      string name = ruleName.GetText();
+      if (myDeclarations.ContainsKey(name))
+      {
+        var list = myDeclarations.GetValue(name);
+        if (list.Count > 1)
+        {
+          consumer.AddHighlighting(new DuplicatingLocalDeclarationWarning(ruleName), File);
+        }
+      }
+      base.VisitRuleName(ruleName, consumer);
+    }
+
+    public override void VisitRuleDeclaration(IRuleDeclaration ruleDeclaration, IHighlightingConsumer consumer)
+    {
+      IRuleBody body = ruleDeclaration.Body;
+      var child = PsiTreeUtil.GetFirstChild<IRuleName>(body);
+      var ruleName = child as IRuleName;
       if (ruleName != null)
       {
-        string name = ruleName.GetText();
-        if (myDeclarations.ContainsKey(name))
+        if (ruleName.GetText().Equals(ruleDeclaration.DeclaredName))
         {
-          var list = myDeclarations.GetValue(name);
-          if (list.Count > 1)
-          {
-            consumer.AddHighlighting(new DuplicatingLocalDeclarationWarning(ruleName), File);
-          }
+          consumer.AddHighlighting(new LeftRecursionWarning(ruleName), File);
         }
       }
+      base.VisitRuleDeclaration(ruleDeclaration, consumer);
+    }
 
-      var ruleDeclaration = element as IRuleDeclaration;
-      if(ruleDeclaration != null)
+    public override void VisitPsiExpression(IPsiExpression psiExpression, IHighlightingConsumer consumer)
+    {
+      var child = psiExpression.FirstChild;
+      IList<ISequence> list = new List<ISequence>();
+      while (child != null)
       {
-        IRuleBody body = ruleDeclaration.Body;
-        var child = PsiTreeUtil.GetFirstChild<IRuleName>(body);
-        /*while ((child != null) && !(child is IRuleName))
+        if (child is ISequence)
         {
-          child = child.NextSibling;
-        }*/
-        ruleName = child as IRuleName;
-        if (ruleName != null)
-        {
-          if (ruleName.GetText().Equals(ruleDeclaration.DeclaredName))
-          {
-            consumer.AddHighlighting(new LeftRecursionWarning(ruleName), File);
-          }
+          list.Add(child as ISequence);
         }
+        if (child is IChoiceTail)
+        {
+          list.Add((child as IChoiceTail).Sequence);
+        }
+        child = child.NextSibling;
       }
 
-      var psiExpression = element as IPsiExpression;
-      if(psiExpression != null)
+      if (list.Count > 1)
       {
-        var child = psiExpression.FirstChild;
-        IList<ISequence> list = new List<ISequence>();
-        while ( child != null)
+        var sequences = list.ToArray();
+        var isRepeated = new bool[sequences.Count()];
+        for (int i = 0; i < sequences.Count() - 1; ++i)
         {
-          if(child is ISequence)
+          if (!isRepeated[i])
           {
-            list.Add(child as ISequence);
-          }
-          if( child is IChoiceTail)
-          {
-            list.Add((child as IChoiceTail).Sequence);
-          }
-          child = child.NextSibling;
-        }
-
-        if(list.Count > 1)
-        {
-          var sequences = list.ToArray();
-          var isRepeated = new bool[sequences.Count()];
-          for (int i = 0; i < sequences.Count() - 1; ++i)
-          {
-            if (!isRepeated[i])
+            var sequence1 = sequences[i];
+            for (int j = i + 1; j < sequences.Count(); ++j)
             {
-              var sequence1 = sequences[i];
-              for (int j = i + 1; j < sequences.Count(); ++j)
+              var sequence2 = sequences[j];
+              if (PsiTreeUtil.EqualsElements(sequence1, sequence2))
               {
-                var sequence2 = sequences[j];
-                if(PsiTreeUtil.EqualsElements(sequence1, sequence2))
+                if (!isRepeated[i])
                 {
-                  if (!isRepeated[i])
-                  {
-                    consumer.AddHighlighting(new RepeatedChoiceWarning(sequence1), File);
-                    isRepeated[i] = true;
-                  }
-                  consumer.AddHighlighting(new RepeatedChoiceWarning(sequence2), File);
-                  isRepeated[j] = true;
+                  consumer.AddHighlighting(new RepeatedChoiceWarning(sequence1), File);
+                  isRepeated[i] = true;
                 }
+                consumer.AddHighlighting(new RepeatedChoiceWarning(sequence2), File);
+                isRepeated[j] = true;
               }
             }
           }
         }
       }
-      base.VisitNode(element, consumer);
+      base.VisitPsiExpression(psiExpression, consumer);
     }
 
     private void VisitFile(IPsiFile element)

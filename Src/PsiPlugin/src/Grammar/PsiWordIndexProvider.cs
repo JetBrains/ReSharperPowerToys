@@ -12,12 +12,12 @@ namespace JetBrains.ReSharper.PsiPlugin.Grammar
 
     public bool IsIdentifierFirstLetter(char ch)
     {
-      return WordIndexTokenizerUtil.IsLetterFast(ch) || ch == '_' || ch == '$';
+      return ch.IsLetterFast() || ch == '_' || ch == '$';
     }
 
     public bool IsIdentifierSecondLetter(char ch)
     {
-      return WordIndexTokenizerUtil.IsLetterOrDigitFast(ch) || ch == '_' || ch == '$';
+      return ch.IsLetterOrDigitFast() || ch == '_' || ch == '$';
     }
 
   }

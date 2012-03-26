@@ -4,7 +4,7 @@ using JetBrains.ReSharper.Daemon.Impl;
 using JetBrains.ReSharper.Psi.Tree;
 
 [assembly: RegisterConfigurableSeverity("UnresolvedReference", null, HighlightingGroupIds.LanguageUsage, "Unresolved reference", @"
-          Unresolved reference", JetBrains.ReSharper.Daemon.Severity.ERROR, false, Internal = false)]
+          Unresolved reference", Severity.ERROR, false, Internal = false)]
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
 {
   [ConfigurableSeverityHighlighting("UnresolvedReference", "PSI", OverlapResolve = OverlapResolveKind.ERROR, ToolTipFormatString = Error)]

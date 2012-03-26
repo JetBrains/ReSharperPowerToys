@@ -14,9 +14,9 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
     private readonly IDaemonProcess myDaemonProcess;
     private readonly IPsiFile myFile;
 
-    protected readonly IContextBoundSettingsStore SettingsStore;
+    private readonly IContextBoundSettingsStore mySettingsStore;
 
-    protected IPsiServices PsiServices { get; private set; }
+    private IPsiServices PsiServices { get; set; }
 
     public IDaemonProcess DaemonProcess
     {
@@ -26,7 +26,7 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
     protected PsiDaemonStageProcessBase(IDaemonProcess process, IContextBoundSettingsStore settingsStore)
     {
       myDaemonProcess = process;
-      SettingsStore = settingsStore;
+      mySettingsStore = settingsStore;
       PsiServices = process.Solution.GetPsiServices();
       myFile = PsiDaemonStageBase.GetPsiFile(myDaemonProcess.SourceFile);
     }
@@ -34,7 +34,7 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
 
     protected void HighlightInFile(Action<IPsiFile, IHighlightingConsumer> fileHighlighter, Action<DaemonStageResult> commiter)
     {
-      var consumer = new DefaultHighlightingConsumer(this, SettingsStore);
+      var consumer = new DefaultHighlightingConsumer(this, mySettingsStore);
       fileHighlighter(File, consumer);
       commiter(new DaemonStageResult(consumer.Highlightings));
     }
@@ -66,16 +66,16 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
 
     virtual public void ProcessAfterInterior(ITreeNode element, IHighlightingConsumer consumer)
     {
-      var PsiElement = element as IPsiTreeNode;
-      if (PsiElement != null)
+      var psiElement = element as IPsiTreeNode;
+      if (psiElement != null)
       {
-        var tokenNode = PsiElement as ITokenNode;
+        var tokenNode = psiElement as ITokenNode;
         if (tokenNode == null || !tokenNode.GetTokenType().IsWhitespace)
-          PsiElement.Accept(this, consumer);
+          psiElement.Accept(this, consumer);
       }
       else
       {
-        VisitNode(element, consumer);
+        //VisitNode(element, consumer);
       }
     }
 

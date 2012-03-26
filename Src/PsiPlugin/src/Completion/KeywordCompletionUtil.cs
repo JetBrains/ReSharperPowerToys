@@ -14,19 +14,24 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion
       //var ret = new HashSet<string>();
       IList<string> list = new List<string>();
       var token = file.FindNodeAt(referenceRange) as ITokenNode;
+      if(token == null)
+      {
+        return list;
+      }
 
-      ITreeNode currentNode;
+      ITreeNode currentNode = null;
       ITreeNode child;
-      if (token.GetTokenType() == PsiTokenType.IDENTIFIER)
-      {
-        currentNode = token.Parent.Parent;
-        child = token.Parent;
-      }
-      else
-      {
-        currentNode = token.Parent;
-        child = token;
-      }
+
+        if (token.GetTokenType() == PsiTokenType.IDENTIFIER)
+        {
+          currentNode = token.Parent.Parent;
+          child = token.Parent;
+        }
+        else
+        {
+          currentNode = token.Parent;
+          child = token;
+        } 
 
       if (currentNode is IRuleDeclaration)
       {

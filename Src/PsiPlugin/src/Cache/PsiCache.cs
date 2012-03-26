@@ -20,9 +20,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
   {
     private readonly JetHashSet<IPsiSourceFile> myDirtyFiles = new JetHashSet<IPsiSourceFile>();
 
-    private readonly OneToSetMap<string, IPsiSymbol> myNameToSymbolsMap = new OneToSetMap<string, IPsiSymbol>();
-    private readonly OneToListMap<IPsiSourceFile, PsiRuleSymbol> myProjectFileToSymbolsMap = new OneToListMap<IPsiSourceFile, PsiRuleSymbol>();
-
+    private readonly OneToSetMap<string, IPsiSymbol> myNameToSymbolsRuleMap = new OneToSetMap<string, IPsiSymbol>();
+    private readonly OneToListMap<IPsiSourceFile, PsiRuleSymbol> myProjectFileToSymbolsRuleMap = new OneToListMap<IPsiSourceFile, PsiRuleSymbol>();
+    private readonly OneToListMap<IPsiSourceFile, PsiOptionSymbol> myProjectFileToSymbolsOptionMap = new OneToListMap<IPsiSourceFile, PsiOptionSymbol>();
     private readonly OneToSetMap<string, PsiOptionSymbol> myNameToSymbolsOptionMap = new OneToSetMap<string, PsiOptionSymbol>();
 
     private PsiPersistentCache<CachePair> myPersistentCache;
@@ -117,7 +117,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
 
       if (!Accepts(sourceFile))
         return true;
-      return !myDirtyFiles.Contains(sourceFile) && myProjectFileToSymbolsMap.ContainsKey(sourceFile);
+      return !myDirtyFiles.Contains(sourceFile) && myProjectFileToSymbolsRuleMap.ContainsKey(sourceFile) && myProjectFileToSymbolsOptionMap.ContainsKey(sourceFile);
     }
 
     public object Build(IPsiSourceFile sourceFile, bool isStartup)
@@ -151,30 +151,41 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
 
         // clear old declarations cache...
         //rules
-        if (myProjectFileToSymbolsMap.ContainsKey(sourceFile))
+        if (myProjectFileToSymbolsRuleMap.ContainsKey(sourceFile))
         {
-          foreach (var oldDeclaration in myProjectFileToSymbolsMap[sourceFile])
+          foreach (var oldDeclaration in myProjectFileToSymbolsRuleMap[sourceFile])
           {
             var oldName = oldDeclaration.Name;
-            myNameToSymbolsMap.Remove(oldName, oldDeclaration);
+            myNameToSymbolsRuleMap.Remove(oldName, oldDeclaration);
           }
         }
 
-        //options
+        //option
+        if (myProjectFileToSymbolsOptionMap.ContainsKey(sourceFile))
+        {
+          foreach (var oldDeclaration in myProjectFileToSymbolsOptionMap[sourceFile])
+          {
+            var oldName = oldDeclaration.Name;
+            myNameToSymbolsOptionMap.Remove(oldName, oldDeclaration);
+          }
+        }
+
         //myProjectFileToSymbolsOptionMap.AddValueRange(sourceFile, optionData);
+        myDirtyFiles.Remove(sourceFile);
+
+        myProjectFileToSymbolsRuleMap.RemoveKey(sourceFile);
+        myProjectFileToSymbolsOptionMap.RemoveKey(sourceFile);
+
+        // add to projectFile to data map...
+        myProjectFileToSymbolsRuleMap.AddValueRange(sourceFile, ruleData);
+        myProjectFileToSymbolsOptionMap.AddValueRange(sourceFile, optionData);
+        foreach (var declaration in ruleData)
+        {
+          myNameToSymbolsRuleMap.Add(declaration.Name, declaration);
+        }
         foreach (var declaration in optionData)
         {
           myNameToSymbolsOptionMap.Add(declaration.Name, declaration);
-        }
-        myDirtyFiles.Remove(sourceFile);
-
-        myProjectFileToSymbolsMap.RemoveKey(sourceFile);
-
-        // add to projectFile to data map...
-        myProjectFileToSymbolsMap.AddValueRange(sourceFile, ruleData);
-        foreach (var declaration in ruleData)
-        {
-          myNameToSymbolsMap.Add(declaration.Name, declaration);
         }
       }
     }
@@ -184,15 +195,24 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
       myShellLocks.AssertWriteAccessAllowed();
 
       myDirtyFiles.Remove(sourceFile);
-      if (myProjectFileToSymbolsMap.ContainsKey(sourceFile))
+      if (myProjectFileToSymbolsRuleMap.ContainsKey(sourceFile))
       {
-        foreach (var oldDeclaration in myProjectFileToSymbolsMap[sourceFile])
+        foreach (var oldDeclaration in myProjectFileToSymbolsRuleMap[sourceFile])
         {
           var oldName = oldDeclaration.Name;
-          myNameToSymbolsMap.Remove(oldName, oldDeclaration);
+          myNameToSymbolsRuleMap.Remove(oldName, oldDeclaration);
         }
       }
-      myProjectFileToSymbolsMap.RemoveKey(sourceFile);
+      if (myProjectFileToSymbolsOptionMap.ContainsKey(sourceFile))
+      {
+        foreach (var oldDeclaration in myProjectFileToSymbolsOptionMap[sourceFile])
+        {
+          var oldName = oldDeclaration.Name;
+          myNameToSymbolsOptionMap.Remove(oldName, oldDeclaration);
+        }
+      }
+      myProjectFileToSymbolsRuleMap.RemoveKey(sourceFile);
+      myProjectFileToSymbolsOptionMap.RemoveKey(sourceFile);
       if (myPersistentCache != null)
         myPersistentCache.MarkDataToDelete(sourceFile);
     }
@@ -279,7 +299,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
 
     public IEnumerable<IPsiSymbol> GetSymbols(string name)
     {
-      return myNameToSymbolsMap[name];
+      return myNameToSymbolsRuleMap[name];
     }
 
     public IEnumerable<PsiOptionSymbol> GetOptionSymbols(string name)

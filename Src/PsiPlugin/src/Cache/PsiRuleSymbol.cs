@@ -21,9 +21,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
       myPsiSourceFile = psiSourceFile;
     }
 
-    private const string Guid = "std-symbol";
-
-
     public int Offset
     {
       get { return myOffset; }
