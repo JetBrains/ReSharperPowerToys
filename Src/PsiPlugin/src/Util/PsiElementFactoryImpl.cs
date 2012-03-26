@@ -49,7 +49,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Util
 
     private ITreeNode CreateExpression(string format, string name)
     {
-      var node = CreateParser(name + "\n" + ":" + "token" + "\n" + ";").parsePsiFile(false) as IPsiFile;
+      var node = CreateParser(name + "\n" + ":" + "token" + "\n" + ";").ParsePsiFile(false) as IPsiFile;
       if (node == null)
         throw new ElementFactoryException(string.Format("Cannot create expression '{0}'", format));
       SandBox.CreateSandBoxFor(node, myModule);

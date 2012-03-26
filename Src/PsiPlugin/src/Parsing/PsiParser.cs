@@ -59,16 +59,19 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
 
     public override TreeElement parsePsiFile()
     {
-      return parsePsiFile(true);
+      return ParsePsiFile(true);
     }
 
-    public TreeElement parsePsiFile(bool isFileReal)
+    public TreeElement ParsePsiFile(bool isFileReal)
     {
       var file = base.parsePsiFile();
-      PsiFile psiFile = (PsiFile) file;
-      psiFile.SetSourceFile(SourceFile);
-      psiFile.CreateRulesSymbolTable();
-      psiFile.CreateOptionSymbolTable(isFileReal);
+      var psiFile = file as PsiFile;
+      if (psiFile != null)
+      {
+        psiFile.SetSourceFile(SourceFile);
+        psiFile.CreateRulesSymbolTable();
+        psiFile.CreateOptionSymbolTable(isFileReal);
+      }
       return psiFile;
     }
 
