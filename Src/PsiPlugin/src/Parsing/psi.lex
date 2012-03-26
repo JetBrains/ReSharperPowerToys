@@ -45,7 +45,7 @@ NOT_NEW_LINE_NUMBER_WS=([^\#\u0085)\u2028\u2029\n\r\ \t\f\u0009\u000B\u000C])
 INPUT_CHARACTER={NOT_NEW_LINE}
 ASTERISKS="*"+
 
-%include ../../../../Lib/Unicode.lex
+%include ../../obj/Unicode.lex
 
 WHITE_SPACE_CHAR=({UNICODE_ZS}|(\u0009)|(\u000B)|(\u000C)|(\u200B)|(\uFEFF)|{NULL_CHAR})
 
