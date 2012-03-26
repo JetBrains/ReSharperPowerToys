@@ -395,4 +395,10 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="BeforeBuild">
+     <Copy
+        SourceFiles="$(ReSharperSdk)\Tools\parserGen\Unicode.lex"
+        DestinationFolder=".\obj\"
+     />
+  </Target>
 </Project>
