@@ -40,7 +40,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
       mySymbols.Add(new PsiOptionSymbol(name, offset, value, psiSourceFile));
     }
 
-    public void VisitRuleDeclaration(IRuleDeclaration ruleDeclaration)
+    private void VisitRuleDeclaration(IRuleDeclaration ruleDeclaration)
     {
       var name = ruleDeclaration.DeclaredName;
       var offset = ruleDeclaration.GetNavigationRange().TextRange.StartOffset;
@@ -120,7 +120,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
     }
 
     [CanBeNull]
-    public static ICollection<IPsiSymbol> Build(IPsiSourceFile sourceFile, IPsiFile file)
+    private static ICollection<IPsiSymbol> Build(IPsiSourceFile sourceFile, IPsiFile file)
     {
       var ret = new PsiCacheBuilder(sourceFile);
       file.ProcessDescendants(ret);

@@ -1,5 +1,4 @@
-﻿using System.IO;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using JetBrains.ReSharper.Psi;
 
 namespace JetBrains.ReSharper.PsiPlugin.Cache
@@ -18,10 +17,5 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
     /// Owner PSI source file
     /// </summary>
     IPsiSourceFile SourceFile { get; }
-
-    string Name { get; }
-
-    void Read(BinaryReader reader);
-    void Write(BinaryWriter writer);
   }
 }
