@@ -19,19 +19,19 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion
         return list;
       }
 
-      ITreeNode currentNode = null;
+      ITreeNode currentNode;
       ITreeNode child;
 
-        if (token.GetTokenType() == PsiTokenType.IDENTIFIER)
-        {
-          currentNode = token.Parent.Parent;
-          child = token.Parent;
-        }
-        else
-        {
-          currentNode = token.Parent;
-          child = token;
-        } 
+      if (token.GetTokenType() == PsiTokenType.IDENTIFIER)
+      {
+        currentNode = token.Parent.Parent;
+        child = token.Parent;
+      }
+      else
+      {
+        currentNode = token.Parent;
+        child = token;
+      } 
 
       if (currentNode is IRuleDeclaration)
       {
