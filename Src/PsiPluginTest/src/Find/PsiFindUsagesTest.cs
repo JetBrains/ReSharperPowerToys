@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi.Search;
 using JetBrains.ReSharper.TestFramework;
@@ -25,4 +25,4 @@ namespace PsiPluginTest.Find
 
     [Test] public void test1() {DoTestOneFile("test1.psi");}
   }
-}
+}*/
