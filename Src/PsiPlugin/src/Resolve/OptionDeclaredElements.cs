@@ -36,7 +36,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
                                                      "separateHierarchies",
                                                      "tokenBitsetThreshold",
                                                      "suppressVisitor",
-                                                     "languageType",
                                                      "publicChildRolePrefix",
                                                      "publicChildRoleClass",
                                                      "generateWorkingPsi",
@@ -86,7 +85,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
     public static readonly IList<string> MethodsOptions = new List<string>
                                                    {
                                                      "createTokenElementMethodFQName",
-                                                     "languageType"
                                                    };
 
     public static readonly IList<string> DirectoryOptions = new List<string>
