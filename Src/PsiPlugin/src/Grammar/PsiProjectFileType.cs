@@ -25,6 +25,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Grammar
     {
     }
 
-    private const string PsiExtension = ".psi";
+    public const string PsiExtension = ".psi";
   }
 }

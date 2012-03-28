@@ -33,18 +33,18 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
       HighlightInFile((file, consumer) => file.ProcessDescendants(this, consumer), commiter);
     }
 
-    public override void VisitRuleName(IRuleName ruleName, IHighlightingConsumer consumer)
+    public override void VisitRuleDeclaredName(IRuleDeclaredName ruleDeclaredName, IHighlightingConsumer consumer)
     {
-      string name = ruleName.GetText();
+      string name = ruleDeclaredName.GetText();
       if (myDeclarations.ContainsKey(name))
       {
         var list = myDeclarations.GetValue(name);
         if (list.Count > 1)
         {
-          consumer.AddHighlighting(new DuplicatingLocalDeclarationWarning(ruleName), File);
+          consumer.AddHighlighting(new DuplicatingLocalDeclarationWarning(ruleDeclaredName), File);
         }
       }
-      base.VisitRuleName(ruleName, consumer);
+      base.VisitRuleDeclaredName(ruleDeclaredName, consumer);
     }
 
     public override void VisitRuleDeclaration(IRuleDeclaration ruleDeclaration, IHighlightingConsumer consumer)

@@ -33,10 +33,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
 
     public override ISymbolTable GetReferenceSymbolTable(bool useReferenceName)
     {
-      if (myOwner.Parent is IRuleDeclaration)
-      {
-        return EmptySymbolTable.INSTANCE;
-      }
       var file = TreeNode.GetContainingFile() as PsiFile;
       if (file == null)
         return EmptySymbolTable.INSTANCE;
