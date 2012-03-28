@@ -1,8 +1,8 @@
 ﻿using System;
-using JetBrains.ReSharper.Refactorings;
 using NUnit.Framework;
+using JetBrains.ReSharper.Refactorings;
 
-namespace PsiPluginTest.Parsing.Rename
+namespace PsiPluginTest.Refactoring.Rename
 {
   [Category("PSI")]
   class PsiRenameTest : RenameTestBase

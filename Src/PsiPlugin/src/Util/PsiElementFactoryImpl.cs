@@ -45,16 +45,29 @@ namespace JetBrains.ReSharper.PsiPlugin.Util
 
     private ITreeNode CreateExpression(string format, string name)
     {
-      var node = CreateParser(name + "\n" + ":" + "token" + "\n" + ";").ParsePsiFile(false) as IPsiFile;
+      var node = CreateParser(name + "\n" + ":" + name + "\n" + ";").ParsePsiFile(false) as IPsiFile;
       if (node == null)
         throw new ElementFactoryException(string.Format("Cannot create expression '{0}'", format));
       SandBox.CreateSandBoxFor(node, myModule);
       var ruleDeclaration = node.FirstChild as IRuleDeclaration;
       if(ruleDeclaration != null)
       {
-        return ruleDeclaration.RuleName;
+        var ruleBody = ruleDeclaration.Body;
+        var child = ruleBody.FirstChild;
+        while(child != null && ! (child is IPsiExpression))
+        {
+          child = child.NextSibling;
+        }
+        while(child != null && !(child is IRuleName))
+        {
+          child = child.FirstChild;
+        }
+        if(child != null)
+        {
+          return child;
+        }
       }
-      throw new ElementFactoryException(string.Format("Cannot create expression '{0}'", format));
+      throw new ElementFactoryException(string.Format("Cannot create expression '{0}'" + name, format));
     }
   }
 }

@@ -65,7 +65,7 @@ extras{
 }
 	: 
 	modifier*
-	ruleName<PSI_RULE_NAME>
+	ruleDeclaredName<PSI_RULE_NAME>
 	roleGetterParameter?
 	ruleBracketTypedParameters<PSI_PARAMETERS>?
 	optionsDefinition?
@@ -86,6 +86,11 @@ modifier
 	| INTERFACE
 	| PRIVATE
 	| ABSTRACT
+  ;
+
+ruleDeclaredName
+	:
+	IDENTIFIER
   ;
 
 ruleName

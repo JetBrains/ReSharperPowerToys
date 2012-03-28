@@ -37,43 +37,43 @@
   <ItemGroup>
     <Reference Include="JetBrains.Platform.ReSharper.ProjectModel, Version=7.0.4.259, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Program Files (x86)\JetBrains\ReSharper\v7.0\SDK\Bin\JetBrains.Platform.ReSharper.ProjectModel.dll</HintPath>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.ProjectModel.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.Shell, Version=7.0.4.259, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Program Files (x86)\JetBrains\ReSharper\v7.0\SDK\Bin\JetBrains.Platform.ReSharper.Shell.dll</HintPath>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.Shell.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.TestFramework, Version=7.0.4.259, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Program Files (x86)\JetBrains\ReSharper\v7.0\SDK\Bin\JetBrains.Platform.ReSharper.TestFramework.dll</HintPath>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.TestFramework.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.Util, Version=7.0.4.259, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Program Files (x86)\JetBrains\ReSharper\v7.0\SDK\Bin\JetBrains.Platform.ReSharper.Util.dll</HintPath>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.Util.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.ReSharper.FeaturesTestFramework, Version=7.0.4.259, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Program Files (x86)\JetBrains\ReSharper\v7.0\SDK\Bin\JetBrains.ReSharper.FeaturesTestFramework.dll</HintPath>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.FeaturesTestFramework.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Psi, Version=7.0.4.259, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Program Files (x86)\JetBrains\ReSharper\v7.0\SDK\Bin\JetBrains.ReSharper.Psi.dll</HintPath>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Psi.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Resources, Version=7.0.4.259, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Program Files (x86)\JetBrains\ReSharper\v7.0\SDK\Bin\JetBrains.ReSharper.Resources.dll</HintPath>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Resources.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.ReSharper.TestFramework, Version=7.0.4.259, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Program Files (x86)\JetBrains\ReSharper\v7.0\SDK\Bin\JetBrains.ReSharper.TestFramework.dll</HintPath>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.TestFramework.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.ReSharper.TestResources, Version=7.0.4.259, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Program Files (x86)\JetBrains\ReSharper\v7.0\SDK\Bin\JetBrains.ReSharper.TestResources.dll</HintPath>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.TestResources.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Program Files (x86)\JetBrains\ReSharper\v7.0\SDK\Bin\nunit.framework.dll</HintPath>
+      <HintPath>$(ReSharperSdkBinaries)\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

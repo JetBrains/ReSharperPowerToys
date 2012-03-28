@@ -4,13 +4,14 @@ using JetBrains.ReSharper.Psi.Search;
 using JetBrains.ReSharper.TestFramework;
 using NUnit.Framework;
 using PlatformID = JetBrains.ProjectModel.PlatformID;
+using JetBrains.ReSharper.Psi.Search;
 
 namespace PsiPluginTest.Find
 {
   [TestFixture]
   [Category("Find")]
   [TestNetFramework4]
-  class PsiFindUsagesTest : JetBrains.ReSharper.Psi.Find.Test.FindUsagesTestBase
+  class PsiFindUsagesTest : FindUsagesTestBase
   {
     protected override String RelativeTestDataPath
     {

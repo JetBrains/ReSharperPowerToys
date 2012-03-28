@@ -97,7 +97,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion
       var sibling = child;
       while (sibling != null)
       {
-        if (sibling is IRuleName)
+        if (sibling is IRuleDeclaredName)
         {
           return true;
         }
@@ -112,7 +112,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion
       var sibling = child;
       while (sibling != null)
       {
-        if (sibling is IRuleName)
+        if (sibling is IRuleDeclaredName)
         {
           return true;
         }

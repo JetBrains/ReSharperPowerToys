@@ -17,14 +17,20 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
     {
     }
 
+    public override void VisitRuleDeclaredName(IRuleDeclaredName ruleDeclaredName, IHighlightingConsumer consumer)
+    {
+      var colorConstantRange = ruleDeclaredName.GetDocumentRange();
+      AddHighLighting(colorConstantRange, ruleDeclaredName, consumer, new PsiRuleHighlighting(ruleDeclaredName));
+      base.VisitRuleDeclaredName(ruleDeclaredName, consumer);
+    }
+
     public override void VisitRuleName(IRuleName ruleName, IHighlightingConsumer consumer)
     {
       var colorConstantRange = ruleName.GetDocumentRange();
 
       var resolve = ruleName.RuleNameReference.Resolve();
 
-      var isRuleResolved = ruleName.Parent is IRuleDeclaration || 
-        resolve.Result.DeclaredElement != null || (resolve.Result.Candidates.Count > 0);
+      var isRuleResolved =  resolve.Result.DeclaredElement != null || (resolve.Result.Candidates.Count > 0);
       if (isRuleResolved)
         AddHighLighting(colorConstantRange, ruleName, consumer, new PsiRuleHighlighting(ruleName));
       else
