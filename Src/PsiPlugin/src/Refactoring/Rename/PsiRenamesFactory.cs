@@ -38,7 +38,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
         }
         foreach (IDeclaredElement element in ruleDeclaration.DerivedInterfaces)
         {
-          yield return new PsiDerivedElementRename(element, "I" + NameToCamelCase(newName),
+          yield return new PsiDerivedElementRename(element, ruleDeclaration.InterfacePrefix + NameToCamelCase(newName),
             doNotAddBindingConflicts);
         }
         foreach(IDeclaredElement element in ruleDeclaration.DerivedVisitorMethods)
