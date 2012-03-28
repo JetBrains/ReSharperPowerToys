@@ -37,25 +37,45 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
     {
       var interfaceElement = declaredElement as IInterface;
       string interfaceName = interfaceElement.ShortName;
-      interfaceName = interfaceName.Substring(1, interfaceName.Length - 1);
       var cache = declaredElement.GetPsiServices().Solution.GetComponent<PsiCache>();
-      var symbols = cache.GetSymbols(PsiRenamesFactory.NameFromCamelCase(interfaceName)).ToList();
-      if (symbols.Count > 0)
+      var prefixes = cache.GetOptionSymbols("\"interfaceNamePrefix\"");
+      IList<IPsiSymbol> symbols = new List<IPsiSymbol>();
+      foreach (var prefix in prefixes)
       {
-        IPsiSymbol symbol = symbols.ToArray()[0];
-        var element =
-          symbol.SourceFile.GetPsiFile<PsiLanguage>().FindNodeAt(new TreeTextRange(new TreeOffset(symbol.Offset), 1));
-        while (element != null)
+        var prefixValue = prefix.Value;
+        if((prefixValue.Length < interfaceName.Length)&&(prefixValue.Equals(interfaceName.Substring(0,prefixValue.Length))))
         {
-          if (element is IDeclaredElement)
+          var shortInterfaceName = PsiRenamesFactory.NameFromCamelCase(interfaceName.Substring(prefixValue.Length, interfaceName.Length - prefixValue.Length));
+          var allSymbols = cache.GetSymbols(PsiRenamesFactory.NameFromCamelCase(shortInterfaceName)).ToList();
+          foreach (var symbol in allSymbols)
           {
-            return (IDeclaredElement) element;
+            if(symbol.SourceFile == prefix.SourceFile)
+            {
+              symbols.Add(symbol);
+            }
           }
-          element = element.Parent;
         }
+      }
+
+      if(symbols.Count == 0)
+      {
         return declaredElement;
       }
-      return null;
+
+
+      IPsiSymbol returnSymbol = symbols.ToArray()[0];
+      var element =
+        returnSymbol.SourceFile.GetPsiFile<PsiLanguage>().FindNodeAt(new TreeTextRange(new TreeOffset(returnSymbol.Offset), 1));
+      while (element != null)
+      {
+        if (element is IDeclaredElement)
+        {
+          return (IDeclaredElement) element;
+        }
+        element = element.Parent;
+      }
+      return declaredElement;
+
     }
 
     private static IDeclaredElement PrimaryDeclaredElementForClass(IDeclaredElement declaredElement)
@@ -148,15 +168,15 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
     private IDeclaredElement PrimaryDeclaredElementForVisitorMethod(IDeclaredElement declaredElement, IMethod method)
     {
       var cache = declaredElement.GetPsiServices().Solution.GetComponent<PsiCache>();
-      var classes = GetVisitorClasses(cache);
-      if (classes.Count > 0)
+      var classesWithInfo = GetVisitorClasses(cache);
+      if (classesWithInfo.Count > 0)
       {
         var parentClass = method.GetContainingType() as IClass;
         if (parentClass != null)
         {
-          if (classes.ContainsKey(parentClass))
+          if (classesWithInfo.ContainsKey(parentClass))
           {
-            var list = classes[parentClass];
+            var list = classesWithInfo[parentClass];
             var visitorName = list[0];
             var methodSuffix = list[1];
             var methodPrefix = list[2];

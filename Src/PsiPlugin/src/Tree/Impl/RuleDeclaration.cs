@@ -27,6 +27,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
     private string myTreeClassesPackageName;
     private string myVisitorMethodPrefix;
     private string myVisitorMethodSuffix;
+    private string myInterfacePrefix;
 
     public void SetName(string name)
     {
@@ -131,13 +132,19 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
     {
       get { return myVisitorMethodSuffix; }
     }
- 
-    public void CollectDerivedDeclaredElements(IClass parserClass, ICollection<ITypeElement> visitorClasses, string treeInterfacesPackageName, string treeClassesPackageName, string visitorMethodPrefix, string visitorMethodSuffix)
+
+    public string InterfacePrefix
+    {
+      get { return myInterfacePrefix; }
+    }
+
+    public void CollectDerivedDeclaredElements(IClass parserClass, ICollection<ITypeElement> visitorClasses, string treeInterfacesPackageName, string treeClassesPackageName, string interfacePrefix, string visitorMethodPrefix, string visitorMethodSuffix)
     {
       myParserClass = parserClass;
       myVisitorClasses = visitorClasses;
       myTreeInterfacesPackageName = treeInterfacesPackageName;
       myTreeClassesPackageName = treeClassesPackageName;
+      myInterfacePrefix = interfacePrefix;
       myVisitorMethodPrefix = visitorMethodPrefix;
       myVisitorMethodSuffix = visitorMethodSuffix;
       UpdateDerivedDeclaredElements();
@@ -164,7 +171,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
 
     private void UpdateInterfaces()
     {
-      var interfaces = GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(myTreeInterfacesPackageName + "." + "I" + NameToCamelCase());
+      var interfaces = GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(myTreeInterfacesPackageName + "." + myInterfacePrefix + NameToCamelCase());
       foreach (ITypeElement declaredElement in interfaces)
       {
         myDerivedInterfaces.Add(declaredElement);

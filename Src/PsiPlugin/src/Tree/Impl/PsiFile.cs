@@ -21,6 +21,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
     private string myTreeInterfacesPackageName = "";
     private string myTreeClassesPackageName = "";
     private string myVisitorClassName = "";
+    private string myInterfacePrefix = "";
     private string myVisitorMethodPrefix = "";
     private string myVisitorMethodSuffix = "";
 
@@ -99,6 +100,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
         ITreeNode treeInterfacesPackageNode = null;
         ITreeNode treeClassesPackageNode = null;
         ITreeNode visitorClassNameNode = null;
+        ITreeNode interfacePrefixNode = null;
         ITreeNode visitorMethodSuffixNode = null;
         ITreeNode visitorMethodPrefixNode = null;
         while (child != null)
@@ -143,6 +145,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
             {
               visitorMethodSuffixNode = optionDefinition.OptionStringValue;
             }
+            if ("\"interfaceNamePrefix\"".Equals(optionName.GetText()))
+            {
+              interfacePrefixNode = optionDefinition.OptionStringValue;
+            }
           }
           child = child.NextSibling;
         }
@@ -153,14 +159,14 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
 
         if ((parserPackageNode != null) && (parserClassNameNode != null))
         {
-          AddDerivedElementsToSymbolTable(visitorMethodSuffixNode, treeInterfacesPackageNode, parserPackageNode, parserClassNameNode, treeClassesPackageNode, visitorMethodPrefixNode, visitorClassNameNode);
+          AddDerivedElementsToSymbolTable(visitorMethodSuffixNode, treeInterfacesPackageNode, parserPackageNode, parserClassNameNode, treeClassesPackageNode, interfacePrefixNode, visitorMethodPrefixNode, visitorClassNameNode);
         }
       }
 
       return myRuleSymbolTable;
     }
 
-    private void AddDerivedElementsToSymbolTable(ITreeNode visitorMethodSuffixNode, ITreeNode treeInterfacesPackageNode, ITreeNode parserPackageNode, ITreeNode parserClassNameNode, ITreeNode treeClassesPackageNode, ITreeNode visitorMethodPrefixNode, ITreeNode visitorClassNameNode)
+    private void AddDerivedElementsToSymbolTable(ITreeNode visitorMethodSuffixNode, ITreeNode treeInterfacesPackageNode, ITreeNode parserPackageNode, ITreeNode parserClassNameNode, ITreeNode treeClassesPackageNode, ITreeNode interfacePrefixNode, ITreeNode visitorMethodPrefixNode, ITreeNode visitorClassNameNode)
     {
       if (parserClassNameNode != null)
       {
@@ -227,6 +233,15 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
       {
         myVisitorMethodSuffix = "";
       }
+      if (interfacePrefixNode != null)
+      {
+        myInterfacePrefix = interfacePrefixNode.GetText();
+        myInterfacePrefix = myInterfacePrefix.Substring(1, myInterfacePrefix.Length - 2);
+      }
+      else
+      {
+        myInterfacePrefix = "_";
+      }
 
       CollectDerivedElements();
     }
@@ -243,7 +258,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
         IEnumerator<ITypeElement> enumerator = classes.GetEnumerator();
         if (enumerator.MoveNext())
         {
-          ((RuleDeclaration) declaredElement).CollectDerivedDeclaredElements((IClass) enumerator.Current, visitorClasses, myTreeInterfacesPackageName, myTreeClassesPackageName, myVisitorMethodPrefix, myVisitorMethodSuffix);
+          ((RuleDeclaration) declaredElement).CollectDerivedDeclaredElements((IClass) enumerator.Current, visitorClasses, myTreeInterfacesPackageName, myTreeClassesPackageName, myInterfacePrefix, myVisitorMethodPrefix, myVisitorMethodSuffix);
         }
       }
     }

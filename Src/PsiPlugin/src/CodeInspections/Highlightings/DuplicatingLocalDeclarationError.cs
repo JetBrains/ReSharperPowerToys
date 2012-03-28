@@ -4,14 +4,15 @@ using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.Impl;
 using JetBrains.ReSharper.Psi.Tree;
 
+[assembly: RegisterConfigurableSeverity("Duplicate declaration", null, HighlightingGroupIds.LanguageUsage, "Duplicate declaration", @"
+          Duplicate declaration", Severity.ERROR, false, Internal = false)]
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
 {
-  [StaticSeverityHighlighting(Severity.INFO, HighlightingGroupIds.CompilerWarnings,
-    OverlapResolve = OverlapResolveKind.ERROR, ShowToolTipInStatusBar = false)]
+  [ConfigurableSeverityHighlighting("Duplicate declaration", "PSI", OverlapResolve = OverlapResolveKind.ERROR, ToolTipFormatString = Error)]
   class DuplicatingLocalDeclarationError : IHighlightingWithRange, ICustomAttributeIdHighlighting
   {
     private readonly ITreeNode myElement;
-    private readonly string myError = "Duplicate declaration";
+    private const string Error = "Duplicate declaration";
     private const string AtributeId = HighlightingAttributeIds.ERROR_ATTRIBUTE;
 
     public DuplicatingLocalDeclarationError(ITreeNode element)
@@ -19,11 +20,6 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
       myElement = element;
     }
 
-    public DuplicatingLocalDeclarationError(ITreeNode element, String message)
-    {
-      myElement = element;
-      myError = message;
-    }
     public bool IsValid()
     {
       return true;
@@ -31,12 +27,12 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
 
     public string ToolTip
     {
-      get { return myError; }
+      get { return Error; }
     }
 
     public string ErrorStripeToolTip
     {
-      get { return myError; }
+      get { return Error; }
     }
 
     public int NavigationOffsetPatch
