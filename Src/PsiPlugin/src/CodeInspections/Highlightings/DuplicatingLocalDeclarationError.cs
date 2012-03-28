@@ -7,19 +7,19 @@ using JetBrains.ReSharper.Psi.Tree;
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
 {
   [StaticSeverityHighlighting(Severity.INFO, HighlightingGroupIds.CompilerWarnings,
-    OverlapResolve = OverlapResolveKind.WARNING, ShowToolTipInStatusBar = false)]
-  class DuplicatingLocalDeclarationWarning : IHighlightingWithRange, ICustomAttributeIdHighlighting
+    OverlapResolve = OverlapResolveKind.ERROR, ShowToolTipInStatusBar = false)]
+  class DuplicatingLocalDeclarationError : IHighlightingWithRange, ICustomAttributeIdHighlighting
   {
     private readonly ITreeNode myElement;
     private readonly string myError = "Duplicate declaration";
-    private const string AtributeId = HighlightingAttributeIds.WARNING_ATTRIBUTE;
+    private const string AtributeId = HighlightingAttributeIds.ERROR_ATTRIBUTE;
 
-    public DuplicatingLocalDeclarationWarning(ITreeNode element)
+    public DuplicatingLocalDeclarationError(ITreeNode element)
     {
       myElement = element;
     }
 
-    public DuplicatingLocalDeclarationWarning(ITreeNode element, String message)
+    public DuplicatingLocalDeclarationError(ITreeNode element, String message)
     {
       myElement = element;
       myError = message;

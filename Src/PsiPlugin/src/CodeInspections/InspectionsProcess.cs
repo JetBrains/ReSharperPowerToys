@@ -41,7 +41,7 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
         var list = myDeclarations.GetValue(name);
         if (list.Count > 1)
         {
-          consumer.AddHighlighting(new DuplicatingLocalDeclarationWarning(ruleDeclaredName), File);
+          consumer.AddHighlighting(new DuplicatingLocalDeclarationError(ruleDeclaredName), File);
         }
       }
       base.VisitRuleDeclaredName(ruleDeclaredName, consumer);
