@@ -1,4 +1,4 @@
-﻿/*using System;
+﻿using System;
 using JetBrains.ProjectModel.Properties;
 using JetBrains.ReSharper.Daemon.Test;
 using JetBrains.ReSharper.Psi;
@@ -30,4 +30,4 @@ namespace PsiPluginTest.Highlighting
     [Test]
     public void test002() { DoTestFiles("test002.psi"); }
   }
-}*/
+}
