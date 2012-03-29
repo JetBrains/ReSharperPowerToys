@@ -19,13 +19,22 @@ namespace PsiPluginTest.Completion
     }
 
     [Test]
-    public void test001() { DoTestFiles("test001.psi"); }
+    public void test001()
+    {
+      DoTestFiles("test001.psi");
+    }
 
     [Test]
-    public void test002() { DoTestFiles("test002.psi"); }
+    public void test002()
+    {
+      DoTestFiles("test002.psi");
+    }
 
     [Test]
-    public void test003() { DoTestFiles("test003.psi"); }
+    public void test003()
+    {
+      DoTestFiles("test003.psi");
+    }
 
     protected override bool ExecuteAction
     {

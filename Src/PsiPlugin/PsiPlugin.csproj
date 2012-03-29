@@ -162,9 +162,9 @@
     <Compile Include="src\CodeInspections\SmartResolverStage.cs" />
     <Compile Include="src\Feature\Services\FindUsages\PsiReferenceSearcher.cs" />
     <Compile Include="src\Feature\Services\FindUsages\PsiReferenceSearcherFactory.cs" />
-    <Compile Include="src\GeneratedDocument\CSharpFromPsiGeneratedDocumentService.cs" />
-    <Compile Include="src\GeneratedDocument\CSharpFromPsiGenerator.cs" />
-    <Compile Include="src\GeneratedDocument\CSharpInPsiCustomModificationHandler.cs" />
+    <Compile Include="src\Gen\GeneratedDocument\CSharpFromPsiGeneratedDocumentService.cs" />
+    <Compile Include="src\Gen\GeneratedDocument\CSharpFromPsiGenerator.cs" />
+    <Compile Include="src\Gen\GeneratedDocument\CSharpInPsiCustomModificationHandler.cs" />
     <Compile Include="src\Gen\Parsing\Psi\ErrorMessages.cs" />
     <Compile Include="src\Gen\Parsing\Psi\PsiParserGenerated.cs" />
     <Compile Include="src\Gen\Parsing\Psi\TokenBitsets.cs" />
