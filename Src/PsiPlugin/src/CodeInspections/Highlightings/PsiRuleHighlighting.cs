@@ -7,10 +7,11 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
 {
   [StaticSeverityHighlighting(Severity.INFO, HighlightingGroupIds.CodeInfo,
     OverlapResolve = OverlapResolveKind.NONE, ShowToolTipInStatusBar = false)]
+
   internal class PsiRuleHighlighting : ICustomAttributeIdHighlighting, IHighlightingWithRange
   {
     private readonly ITreeNode myElement;
-    private const string AtributeId = HighlightingAttributeIds.METHOD_IDENTIFIER_ATTRIBUTE;
+    private const string Attribute = HighlightingAttributeIds.METHOD_IDENTIFIER_ATTRIBUTE;
 
     public PsiRuleHighlighting(ITreeNode element)
     {
@@ -44,7 +45,7 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
 
     public string AttributeId
     {
-      get { return AtributeId; }
+      get { return Attribute; }
     }
   }
 }
