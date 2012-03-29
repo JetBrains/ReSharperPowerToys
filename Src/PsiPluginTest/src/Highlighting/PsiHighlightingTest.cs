@@ -1,5 +1,6 @@
 ﻿using System;
 using JetBrains.ProjectModel.Properties;
+using JetBrains.ProjectModel.Properties.Common;
 using JetBrains.ReSharper.Daemon.Test;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
@@ -17,7 +18,7 @@ namespace PsiPluginTest.Highlighting
 
     public override IProjectProperties GetProjectProperties(PlatformID platformId)
     {
-      throw new NotImplementedException();
+      return UnknownProjectPropertiesFactory.CreateUnknownProjectProperties(platformId);
     }
 
     protected override PsiLanguageType CompilerIdsLanguage
@@ -26,8 +27,14 @@ namespace PsiPluginTest.Highlighting
     }
 
     [Test]
-    public void test001() { DoTestFiles("test001.psi"); }
+    public void test001()
+    {
+      DoTestFiles("test001.psi");
+    }
     [Test]
-    public void test002() { DoTestFiles("test002.psi"); }
+    public void test002()
+    {
+      DoTestFiles("test002.psi");
+    }
   }
 }
