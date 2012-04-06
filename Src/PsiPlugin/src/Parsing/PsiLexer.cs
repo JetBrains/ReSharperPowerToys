@@ -131,5 +131,12 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
     {
       return OurKeywordTextMap.ContainsValue(s);
     }
+
+    public static bool IsWhitespace(string s)
+    {
+      var lexer = new PsiLexer(new StringBuffer(s));
+      lexer.Start();
+      return lexer.TokenType != null && lexer.TokenType.IsWhitespace && lexer.TokenEnd == s.Length;
+    }
   }
 }

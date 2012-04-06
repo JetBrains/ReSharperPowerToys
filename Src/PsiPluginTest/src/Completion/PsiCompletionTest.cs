@@ -42,6 +42,12 @@ namespace PsiPluginTest.Completion
       DoTestFiles("test004.psi");
     }
 
+    [Test]
+    public void test005()
+    {
+      DoTestFiles("test005.psi");
+    }
+
     protected override bool ExecuteAction
     {
       get { return true; }

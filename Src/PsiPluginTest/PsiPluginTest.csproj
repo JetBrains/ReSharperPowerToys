@@ -79,6 +79,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
     <Compile Include="src\Completion\PsiCompletionTest.cs" />
     <Compile Include="src\Find\PsiFindUsagesTest.cs" />
     <Compile Include="src\Highlighting\PsiHighlightingTest.cs" />
@@ -94,9 +95,6 @@
       <Project>{F412CECA-91A8-4175-85A2-E7F7B72F30CE}</Project>
       <Name>PsiPlugin</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(ReSharperSdkTargets)\Plugin.Tests.Targets" />
