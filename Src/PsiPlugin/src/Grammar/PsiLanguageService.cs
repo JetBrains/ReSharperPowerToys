@@ -1,7 +1,10 @@
-﻿using JetBrains.ReSharper.Psi;
+﻿using JetBrains.Annotations;
+using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.Psi.CodeStyle;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Caches2;
 using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.ReSharper.Psi.Tree;
+using JetBrains.ReSharper.PsiPlugin.Formatter;
 using JetBrains.ReSharper.PsiPlugin.Lexer;
 using JetBrains.ReSharper.PsiPlugin.Parsing;
 
@@ -10,11 +13,15 @@ namespace JetBrains.ReSharper.PsiPlugin.Grammar
     [Language(typeof(PsiLanguage))]
     public class PsiLanguageService : LanguageService
     {
-        public PsiLanguageService(PsiLanguageType psiLanguageType, IConstantValueService constantValueService) : base(psiLanguageType, constantValueService)
+      private readonly PsiCodeFormatter myFormatter;
+
+      public PsiLanguageService(PsiLanguageType psiLanguageType, IConstantValueService constantValueService, PsiCodeFormatter formatter) : base(psiLanguageType, constantValueService)
+
         {
+          myFormatter = formatter;
         }
 
-        public override ILexerFactory GetPrimaryLexerFactory()
+      public override ILexerFactory GetPrimaryLexerFactory()
         {
             return PsiLexerFactory.Instance;
         }
@@ -62,5 +69,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Grammar
         {
             get { return null; }
         }
+
+      public override ICodeFormatter CodeFormatter
+      {
+        get { return myFormatter; }
+      }
+
     }
 }

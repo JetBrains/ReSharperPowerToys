@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using JetBrains.ProjectModel.Properties;
 using JetBrains.ProjectModel.Properties.Common;
 using JetBrains.ReSharper.Daemon.Test;
@@ -16,7 +17,7 @@ namespace PsiPluginTest.Highlighting
       get { return @"highlighting"; }
     }
 
-    public override IProjectProperties GetProjectProperties(PlatformID platformId)
+    public override IProjectProperties GetProjectProperties(PlatformID platformId, ICollection<IProjectFlavour> flavours)
     {
       return UnknownProjectPropertiesFactory.CreateUnknownProjectProperties(platformId);
     }
