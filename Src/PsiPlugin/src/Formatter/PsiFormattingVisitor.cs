@@ -1,10 +1,6 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
-using JetBrains.ReSharper.Psi.CSharp.CodeStyle.FormatSettings;
-using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.PsiPlugin.Tree;
-using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
-using IVariableDeclaration = JetBrains.ReSharper.PsiPlugin.Tree.IVariableDeclaration;
 
 namespace JetBrains.ReSharper.PsiPlugin.Formatter
 {
@@ -32,22 +28,22 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 
     public override IEnumerable<string> VisitRuleDeclaration(IRuleDeclaration ruleDeclarationParam, PsiFmtStageContext context)
     {
-      return base.VisitRuleDeclaration(ruleDeclarationParam, context);
+      return base.VisitRuleDeclaration(ruleDeclarationParam, context) ?? FormattingStageUtil.GetNodesSpace(0, 0, 0, false, context, myData);
     }
 
     public override IEnumerable<string> VisitRuleBody(IRuleBody ruleBodyParam, PsiFmtStageContext context)
     {
-      return base.VisitRuleBody(ruleBodyParam, context);
+      return base.VisitRuleBody(ruleBodyParam, context) ?? FormattingStageUtil.GetNodesSpace(0, 0, 0, false, context, myData);
     }
 
     public override IEnumerable<string> VisitOptionsDefinition(IOptionsDefinition optionsDefinitionParam, PsiFmtStageContext context)
     {
-      return base.VisitOptionsDefinition(optionsDefinitionParam, context);
+      return base.VisitOptionsDefinition(optionsDefinitionParam, context) ?? FormattingStageUtil.GetNodesSpace(0, 0, 0, false, context, myData);
     }
  
     public override IEnumerable<string> VisitExtrasDefinition(IExtrasDefinition extrasDefinitionParam, PsiFmtStageContext context)
     {
-      return base.VisitExtrasDefinition(extrasDefinitionParam, context);
+      return base.VisitExtrasDefinition(extrasDefinitionParam, context) ?? FormattingStageUtil.GetNodesSpace(0, 0, 0, false, context, myData);
     }
 
   }
