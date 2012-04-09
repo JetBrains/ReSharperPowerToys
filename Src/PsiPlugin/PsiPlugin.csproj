@@ -163,7 +163,6 @@
     <Compile Include="src\Feature\Services\FindUsages\PsiReferenceSearcher.cs" />
     <Compile Include="src\Feature\Services\FindUsages\PsiReferenceSearcherFactory.cs" />
     <Compile Include="src\Formatter\FormattingStageData.cs" />
-    <Compile Include="src\Formatter\FormattingStageUtil.cs" />
     <Compile Include="src\Formatter\IPsiCodeFormatterExtension.cs" />
     <Compile Include="src\Formatter\IPsiCodeFormatterFactory.cs" />
     <Compile Include="src\Formatter\PsiCodeFormatterFactory.cs" />
@@ -173,6 +172,7 @@
     <Compile Include="src\Formatter\PsiFormatterHelper.cs" />
     <Compile Include="src\Formatter\PsiFormattingStage.cs" />
     <Compile Include="src\Formatter\PsiFormattingVisitor.cs" />
+    <Compile Include="src\Formatter\PsiIndentingStage.cs" />
     <Compile Include="src\Gen\GeneratedDocument\CSharpFromPsiGeneratedDocumentService.cs" />
     <Compile Include="src\Gen\GeneratedDocument\CSharpFromPsiGenerator.cs" />
     <Compile Include="src\Gen\GeneratedDocument\CSharpInPsiCustomModificationHandler.cs" />

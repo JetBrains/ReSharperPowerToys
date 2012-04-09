@@ -1,4 +1,5 @@
-﻿using JetBrains.Application.Settings;
+﻿using System.Collections.Generic;
+using JetBrains.Application.Settings;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Psi;
@@ -25,7 +26,7 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
       return IsSupported(sourceFile) ? ErrorStripeRequest.STRIPE_AND_ERRORS : ErrorStripeRequest.NONE;
     }
 
-    public override IDaemonStageProcess CreateProcess(IDaemonProcess process, IContextBoundSettingsStore settings, DaemonProcessKind processKind)
+    public override IEnumerable<IDaemonStageProcess> CreateProcess(IDaemonProcess process, IContextBoundSettingsStore settings, DaemonProcessKind processKind)
     {
       if (!IsSupported(process.SourceFile))
         return null;
@@ -34,7 +35,7 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
       if (factory == null)
         return null;
 
-      return factory.CreateInspectionsProcess(process, settings);
+      return new List<IDaemonStageProcess>(){factory.CreateInspectionsProcess(process, settings)};
     }
   }
 
