@@ -1,12 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using JetBrains.Annotations;
 using JetBrains.Application.Progress;
 using JetBrains.Application.Settings;
 using JetBrains.DataFlow;
-using JetBrains.DocumentModel;
-using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CodeStyle;
 using JetBrains.ReSharper.Psi.Impl.CodeStyle;

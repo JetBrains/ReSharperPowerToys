@@ -163,6 +163,7 @@
     <Compile Include="src\Feature\Services\FindUsages\PsiReferenceSearcher.cs" />
     <Compile Include="src\Feature\Services\FindUsages\PsiReferenceSearcherFactory.cs" />
     <Compile Include="src\Formatter\FormattingStageData.cs" />
+    <Compile Include="src\Formatter\FormattingStageUtil.cs" />
     <Compile Include="src\Formatter\IPsiCodeFormatterExtension.cs" />
     <Compile Include="src\Formatter\IPsiCodeFormatterFactory.cs" />
     <Compile Include="src\Formatter\PsiCodeFormatterFactory.cs" />
