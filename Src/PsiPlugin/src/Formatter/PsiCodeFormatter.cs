@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using JetBrains.Annotations;
@@ -98,7 +97,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
             {
               var data = new FormattingStageData(formatterSettings, context, profile, myExtensions.ToList());
               PsiFormattingStage.DoFormat(data, subPi.CreateSubProgress(1));
-              //PsiIndentingStage.DoIndent(formatterSettings, context, false, subPi.CreateSubProgress(1));
+              PsiIndentingStage.DoIndent(formatterSettings, context, false, subPi.CreateSubProgress(1));
             }
           }
         }
@@ -106,7 +105,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
         {
           using (var subPi = pi.CreateSubProgress(4))
           {
-            //PsiIndentingStage.DoIndent(formatterSettings, context, false, subPi);
+            PsiIndentingStage.DoIndent(formatterSettings, context, false, subPi);
           }
         }
       }

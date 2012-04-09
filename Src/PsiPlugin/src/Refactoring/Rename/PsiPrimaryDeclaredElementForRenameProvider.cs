@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using JetBrains.DocumentModel;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Resolve;
@@ -65,7 +66,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
 
       IPsiSymbol returnSymbol = symbols.ToArray()[0];
       var element =
-        returnSymbol.SourceFile.GetPsiFile<PsiLanguage>().FindNodeAt(new TreeTextRange(new TreeOffset(returnSymbol.Offset), 1));
+        returnSymbol.SourceFile.GetPsiFile<PsiLanguage>(new DocumentRange(returnSymbol.SourceFile.Document, 0)).FindNodeAt(new TreeTextRange(new TreeOffset(returnSymbol.Offset), 1));
       while (element != null)
       {
         if (element is IDeclaredElement)
@@ -88,7 +89,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
       {
         IPsiSymbol symbol = symbols.ToArray()[0];
         var element =
-          symbol.SourceFile.GetPsiFile<PsiLanguage>().FindNodeAt(new TreeTextRange(new TreeOffset(symbol.Offset), 1));
+          symbol.SourceFile.GetPsiFile<PsiLanguage>(new DocumentRange(symbol.SourceFile.Document, 0)).FindNodeAt(new TreeTextRange(new TreeOffset(symbol.Offset), 1));
         while (element != null)
         {
           if (element is IDeclaredElement)
@@ -118,7 +119,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
         if (symbols.Count > 0)
         {
           IPsiSymbol symbol = symbols.ToArray()[0];
-          var element = symbol.SourceFile.GetPsiFile<PsiLanguage>().FindNodeAt(new TreeTextRange(new TreeOffset(symbol.Offset), 1));
+          var element = symbol.SourceFile.GetPsiFile<PsiLanguage>(new DocumentRange(symbol.SourceFile.Document, 0)).FindNodeAt(new TreeTextRange(new TreeOffset(symbol.Offset), 1));
           var parserPackageName = cache.GetOptionSymbols("parserPackage").ToList();
           var parserClassName = cache.GetOptionSymbols("parserClassName").ToList();
           IList<IDeclaredElement> classes = new List<IDeclaredElement>();
@@ -197,7 +198,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
               {
                 if (psiSymbol.SourceFile == sourceFile)
                 {
-                  var psiFile = sourceFile.GetPsiFile<PsiLanguage>() as PsiFile;
+                  var psiFile = sourceFile.GetPsiFile<PsiLanguage>(new DocumentRange(psiSymbol.SourceFile.Document, 0)) as PsiFile;
                   if (psiFile != null)
                   {
                     IList<ISymbolInfo> infos = psiFile.FileRuleSymbolTable.GetSymbolInfos(name);

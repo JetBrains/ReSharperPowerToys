@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using JetBrains.Annotations;
+using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
@@ -113,7 +114,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
     [CanBeNull]
     public static ICollection<IPsiSymbol> Build(IPsiSourceFile sourceFile)
     {
-      var file = sourceFile.GetPsiFile<PsiLanguage>() as IPsiFile;
+      var file = sourceFile.GetPsiFile<PsiLanguage>(new DocumentRange(sourceFile.Document, 0)) as IPsiFile;
       if (file == null)
         return null;
       return Build(sourceFile, file);

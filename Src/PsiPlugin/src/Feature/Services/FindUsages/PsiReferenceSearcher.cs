@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.ExtensionsAPI;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Finder;
@@ -48,7 +49,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.FindUsages
       if (myElements.All(element => !CanContainReferencesTo(sourceFile, element)))
         return false;
 
-      IFile psiFile = sourceFile.GetPsiFile<PsiLanguage>();
+      IFile psiFile = sourceFile.GetPsiFile<PsiLanguage>(new DocumentRange(sourceFile.Document, 0));
       return psiFile != null && ProcessElement(psiFile, consumer);
     }
 

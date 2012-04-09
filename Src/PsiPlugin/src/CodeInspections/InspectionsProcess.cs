@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Application.Settings;
+using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.Stages;
 using JetBrains.ReSharper.Psi;
@@ -25,7 +26,7 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
       process.GetStageProcess<PsiFileIndexProcess>();
 
       myDeclarations = new Dictionary<string, List<IDeclaration>>();
-      VisitFile(process.SourceFile.GetPsiFile(PsiLanguage.Instance) as IPsiFile);
+      VisitFile(process.SourceFile.GetPsiFile<PsiLanguage>(new DocumentRange(process.SourceFile.Document, 0)) as IPsiFile);
     }
 
     public override void Execute(Action<DaemonStageResult> commiter)

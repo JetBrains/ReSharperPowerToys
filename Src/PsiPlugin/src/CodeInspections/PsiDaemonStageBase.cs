@@ -1,5 +1,7 @@
-﻿using JetBrains.Annotations;
+﻿using System.Collections.Generic;
+using JetBrains.Annotations;
 using JetBrains.Application.Settings;
+using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
@@ -9,7 +11,7 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
 {
   public abstract class PsiDaemonStageBase : IDaemonStage
   {
-    public abstract IDaemonStageProcess CreateProcess(IDaemonProcess process, IContextBoundSettingsStore settings, DaemonProcessKind processKind);
+    public abstract IEnumerable<IDaemonStageProcess> CreateProcess(IDaemonProcess process, IContextBoundSettingsStore settings, DaemonProcessKind processKind);
 
     public virtual ErrorStripeRequest NeedsErrorStripe(IPsiSourceFile sourceFile, IContextBoundSettingsStore settings)
     {
@@ -28,7 +30,7 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
     {
       var manager = PsiManager.GetInstance(sourceFile.GetSolution());
       manager.AssertAllDocumentAreCommited();
-      return manager.GetPsiFile<PsiLanguage>(sourceFile) as IPsiFile;
+      return manager.GetPsiFile<PsiLanguage>(new DocumentRange(sourceFile.Document, 0)) as IPsiFile;
     }
 
     protected bool IsSupported(IPsiSourceFile sourceFile)

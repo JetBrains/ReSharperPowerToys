@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using JetBrains.Annotations;
 using JetBrains.Application.Settings;
 using JetBrains.ReSharper.Daemon;
@@ -21,11 +22,11 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
       return ErrorStripeRequest.STRIPE_AND_ERRORS;
     }
 
-    public override IDaemonStageProcess CreateProcess(IDaemonProcess process, IContextBoundSettingsStore settings, DaemonProcessKind processKind)
+    public override IEnumerable<IDaemonStageProcess> CreateProcess(IDaemonProcess process, IContextBoundSettingsStore settings, DaemonProcessKind processKind)
     {
       if (!IsSupported(process.SourceFile))
         return null;
-      return new KeywordHighlightingProcess(process, settings);
+      return new List<IDaemonStageProcess>() {new KeywordHighlightingProcess(process, settings)};
     }
 
     private class KeywordHighlightingProcess : PsiIncrementalDaemonStageProcessBase
