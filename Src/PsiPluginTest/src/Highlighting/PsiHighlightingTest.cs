@@ -17,7 +17,7 @@ namespace PsiPluginTest.Highlighting
       get { return @"highlighting"; }
     }
 
-    public override IProjectProperties GetProjectProperties(PlatformID platformId, ICollection<IProjectFlavour> flavours)
+    public override IProjectProperties GetProjectProperties(PlatformID platformId, ICollection<Guid> flavours)
     {
       return UnknownProjectPropertiesFactory.CreateUnknownProjectProperties(platformId);
     }

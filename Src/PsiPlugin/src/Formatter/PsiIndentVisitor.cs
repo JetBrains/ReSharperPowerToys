@@ -3,26 +3,37 @@ using JetBrains.ReSharper.PsiPlugin.Tree;
 
 namespace JetBrains.ReSharper.PsiPlugin.Formatter
 {
-  internal class PsiIndentVisitor : TreeNodeVisitor<FormattingStageContext, string>
+  public class PsiIndentVisitor : TreeNodeVisitor<FormattingStageContext, string>
   {
+    private PsiCodeFormattingSettings myFormattingSettings;
+    private PsiIndentCache myIndentCache;
+    private string myContIndent;
+
+    public PsiIndentVisitor(PsiCodeFormattingSettings formattingSettings, PsiIndentCache indentCache)
+    {
+      myFormattingSettings = formattingSettings;
+      myIndentCache = indentCache;
+      myContIndent = formattingSettings.GlobalSettings.InsertTabs ? new string('\t', 1) : new string(' ', 1 * formattingSettings.GlobalSettings.IndentSize);
+    }
+
     public override string VisitExtrasDefinition(IExtrasDefinition extrasDefinitionParam, FormattingStageContext context)
     {
-      return base.VisitExtrasDefinition(extrasDefinitionParam, context);
+      return myIndentCache.GetLineIndent(extrasDefinitionParam);
     }
 
     public override string VisitOptionsDefinition(IOptionsDefinition optionsDefinitionParam, FormattingStageContext context)
     {
-      return base.VisitOptionsDefinition(optionsDefinitionParam, context);
+      return myIndentCache.GetLineIndent(optionsDefinitionParam);
     }
 
     public override string VisitRuleBody(IRuleBody ruleBodyParam, FormattingStageContext context)
     {
-      return base.VisitRuleBody(ruleBodyParam, context);
+      return myIndentCache.GetLineIndent(ruleBodyParam);
     }
 
     public override string VisitRuleDeclaration(IRuleDeclaration ruleDeclarationParam, FormattingStageContext context)
     {
-      return base.VisitRuleDeclaration(ruleDeclarationParam, context);
+      return myIndentCache.GetLineIndent(ruleDeclarationParam);
     }
   }
 }
