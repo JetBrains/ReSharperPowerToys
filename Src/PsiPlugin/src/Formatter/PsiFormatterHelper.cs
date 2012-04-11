@@ -65,7 +65,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 
     private static IEnumerable<IWhitespaceNode> GetLineFeedsTo(this ITreeNode fromNode, ITreeNode toNode)
     {
-      return  (IEnumerable<IWhitespaceNode>) fromNode.GetWhitespacesTo(toNode).Where(wsNode => (wsNode == PsiTokenType.NEW_LINE) && (wsNode is IWhitespaceNode));
+      return  fromNode.GetWhitespacesTo(toNode).Where(wsNode => (wsNode == PsiTokenType.NEW_LINE) && (wsNode is IWhitespaceNode)).Cast<IWhitespaceNode>();
     }
 
     private static int GetLineFeedsCountTo(this ITreeNode fromNode, ITreeNode toNode)

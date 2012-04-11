@@ -51,6 +51,21 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       if (rightToken is IWhitespaceNode || rightToken.GetTokenType() == PsiTokenType.WHITE_SPACE)
         return null;
 
+      if (leftToken.GetTokenType() == PsiTokenType.LBRACE || leftToken.GetTokenType() == PsiTokenType.RBRACE || leftToken.GetTokenType() == PsiTokenType.RBRACE || leftToken.GetTokenType() == PsiTokenType.RBRACKET)
+      {
+        return null;
+      }
+
+      if (rightToken.GetTokenType() == PsiTokenType.LBRACE || rightToken.GetTokenType() == PsiTokenType.RBRACE || rightToken.GetTokenType() == PsiTokenType.RBRACE || rightToken.GetTokenType() == PsiTokenType.RBRACKET)
+      {
+        return null;
+      }
+
+      if(rightToken.GetTokenType() == PsiTokenType.ASTERISK || rightToken.GetTokenType() == PsiTokenType.QUEST)
+      {
+        return null;
+      }
+
       if ((leftToken == PsiTokenType.COLON || leftToken == PsiTokenType.SEMICOLON) &&
       (!(rightToken.GetTokenType() == PsiTokenType.C_STYLE_COMMENT || rightToken.GetTokenType() == PsiTokenType.END_OF_LINE_COMMENT)))
       {

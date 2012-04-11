@@ -6,6 +6,7 @@ using JetBrains.ReSharper.Psi.CodeStyle;
 using JetBrains.ReSharper.Psi.Impl.CodeStyle;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Parsing;
+using JetBrains.ReSharper.PsiPlugin.Tree;
 using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Formatter
@@ -77,12 +78,26 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 
     private static bool IsSingleLine(PsiFmtStageContext context, FormattingStageData data)
     {
-      foreach (var extension in data.Extensions)
+      var leftChild = context.LeftChild;
+      var rightChild = context.RightChild;
+      if(leftChild is IModifier)
+      {
+        return true;
+      }
+      if (leftChild.GetTokenType() == PsiTokenType.ABSTRACT || leftChild.GetTokenType() == PsiTokenType.ERRORHANDLING || leftChild.GetTokenType() == PsiTokenType.PRIVATE)
+      {
+        return true;
+      }
+      if(leftChild.GetTokenType() == PsiTokenType.EXTRAS || leftChild.GetTokenType() == PsiTokenType.OPTIONS)
+      {
+        return true;
+      }
+      /*foreach (var extension in data.Extensions)
       {
         var formatSingleLine = extension.FormatSingleLine(context.LeftChild);
         if (formatSingleLine.HasValue)
           return formatSingleLine.Value;
-      }
+      }*/
       return false;
     }
   }

@@ -12,7 +12,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
   {
     public PsiFormattingVisitor CreateFormattingVisitor(FormattingStageData formattingData)
     {
-      throw new NotImplementedException();
+      return new PsiFormattingVisitor(formattingData);
     }
   }
 }

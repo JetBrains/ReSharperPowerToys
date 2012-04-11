@@ -28,22 +28,22 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 
     public override IEnumerable<string> VisitRuleDeclaration(IRuleDeclaration ruleDeclarationParam, PsiFmtStageContext context)
     {
-      return base.VisitRuleDeclaration(ruleDeclarationParam, context) ?? FormattingStageUtil.GetNodesSpace(0, 0, 0, false, context, myData);
+      return FormattingStageUtil.GetNodesSpace(1, 1, 1, false, context, myData);
     }
 
     public override IEnumerable<string> VisitRuleBody(IRuleBody ruleBodyParam, PsiFmtStageContext context)
     {
-      return base.VisitRuleBody(ruleBodyParam, context) ?? FormattingStageUtil.GetNodesSpace(0, 0, 0, false, context, myData);
+      return FormattingStageUtil.GetNodesSpace(1, 1, 1, false, context, myData);
     }
 
     public override IEnumerable<string> VisitOptionsDefinition(IOptionsDefinition optionsDefinitionParam, PsiFmtStageContext context)
     {
-      return base.VisitOptionsDefinition(optionsDefinitionParam, context) ?? FormattingStageUtil.GetNodesSpace(0, 0, 0, false, context, myData);
+      return FormattingStageUtil.GetNodesSpace(1, 1, 1, false, context, myData);
     }
  
     public override IEnumerable<string> VisitExtrasDefinition(IExtrasDefinition extrasDefinitionParam, PsiFmtStageContext context)
     {
-      return base.VisitExtrasDefinition(extrasDefinitionParam, context) ?? FormattingStageUtil.GetNodesSpace(0, 0, 0, false, context, myData);
+      return FormattingStageUtil.GetNodesSpace(1, 1, 1, false, context, myData);
     }
 
   }

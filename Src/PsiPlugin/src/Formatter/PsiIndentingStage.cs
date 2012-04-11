@@ -1,6 +1,9 @@
 using System;
 using System.Linq;
+using JetBrains.Annotations;
+using JetBrains.Application;
 using JetBrains.Application.Progress;
+using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi.CodeStyle;
 using JetBrains.ReSharper.Psi.Impl.CodeStyle;
 using JetBrains.ReSharper.Psi.Tree;
@@ -14,12 +17,15 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     private readonly CodeFormattingContext myContext;
     private readonly PsiIndentVisitor myIndentVisitor;
     private readonly bool myDontStickComments;
+    private PsiIndentCache myIndentCache;
 
     private PsiIndentingStage(PsiCodeFormattingSettings formattingSettings, CodeFormattingContext context, bool dontStickComments)
     {
       myFormattingSettings = formattingSettings;
       myContext = context;
       myDontStickComments = dontStickComments;
+      myIndentCache = new PsiIndentCache();
+      myIndentVisitor = CreateIndentVisitor(context, formattingSettings, myIndentCache);
     }
 
     public static void DoIndent(PsiCodeFormattingSettings formattingSettings, CodeFormattingContext context, bool dontStickComments, IProgressIndicator progress)
@@ -66,28 +72,14 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
           ? cSharpTreeNode.Accept(myIndentVisitor, context)
           : myIndentVisitor.VisitNode(parent, context);
     }
-  }
 
-  internal class PsiIndentVisitor : TreeNodeVisitor<FormattingStageContext, string>
-  {
-    public override string VisitExtrasDefinition(IExtrasDefinition extrasDefinitionParam, FormattingStageContext context)
+    [NotNull]
+    protected PsiIndentVisitor CreateIndentVisitor(CodeFormattingContext context, [NotNull] PsiCodeFormattingSettings formattingSettings, [NotNull] PsiIndentCache indentCache)
     {
-      return base.VisitExtrasDefinition(extrasDefinitionParam, context);
-    }
+      var sourceFile = context.FirstNode.GetSourceFile();
 
-    public override string VisitOptionsDefinition(IOptionsDefinition optionsDefinitionParam, FormattingStageContext context)
-    {
-      return base.VisitOptionsDefinition(optionsDefinitionParam, context);
-    }
 
-    public override string VisitRuleBody(IRuleBody ruleBodyParam, FormattingStageContext context)
-    {
-      return base.VisitRuleBody(ruleBodyParam, context);
-    }
-
-    public override string VisitRuleDeclaration(IRuleDeclaration ruleDeclarationParam, FormattingStageContext context)
-    {
-      return base.VisitRuleDeclaration(ruleDeclarationParam, context);
+      return new PsiIndentVisitor(formattingSettings, indentCache);
     }
   }
 }
