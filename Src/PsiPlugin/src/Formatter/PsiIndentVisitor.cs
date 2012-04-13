@@ -18,22 +18,22 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 
     public override string VisitExtrasDefinition(IExtrasDefinition extrasDefinitionParam, FormattingStageContext context)
     {
-      return myIndentCache.GetLineIndent(extrasDefinitionParam);
+      return myIndentCache.GetNodeIndent(extrasDefinitionParam);
     }
 
     public override string VisitOptionsDefinition(IOptionsDefinition optionsDefinitionParam, FormattingStageContext context)
     {
-      return myIndentCache.GetLineIndent(optionsDefinitionParam);
+      return myIndentCache.GetNodeIndent(optionsDefinitionParam);
     }
 
     public override string VisitRuleBody(IRuleBody ruleBodyParam, FormattingStageContext context)
     {
-      return myIndentCache.GetLineIndent(ruleBodyParam);
+      return myIndentCache.GetNodeIndent(ruleBodyParam);
     }
 
     public override string VisitRuleDeclaration(IRuleDeclaration ruleDeclarationParam, FormattingStageContext context)
     {
-      return myIndentCache.GetLineIndent(ruleDeclarationParam);
+      return myIndentCache.GetNodeIndent(ruleDeclarationParam);
     }
   }
 }
