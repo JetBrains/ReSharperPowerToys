@@ -9,6 +9,7 @@ using JetBrains.ReSharper.Psi.CodeStyle;
 using JetBrains.ReSharper.Psi.ExtensionsAPI;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 using JetBrains.ReSharper.Psi.Impl.CodeStyle;
+using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Parsing;
 using JetBrains.ReSharper.PsiPlugin.Tree;
@@ -65,7 +66,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 
     private static IEnumerable<IWhitespaceNode> GetLineFeedsTo(this ITreeNode fromNode, ITreeNode toNode)
     {
-      return  fromNode.GetWhitespacesTo(toNode).Where(wsNode => (wsNode == PsiTokenType.NEW_LINE) && (wsNode is IWhitespaceNode)).Cast<IWhitespaceNode>();
+      return  fromNode.GetWhitespacesTo(toNode).Where(wsNode => (wsNode.GetTokenType() == PsiTokenType.NEW_LINE) && (wsNode is IWhitespaceNode)).Cast<IWhitespaceNode>();
     }
 
     private static int GetLineFeedsCountTo(this ITreeNode fromNode, ITreeNode toNode)
@@ -93,6 +94,13 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     public static bool HasLineFeedsTo(this ITreeNode fromNode, ITreeNode toNode)
     {
       return fromNode.GetLineFeedsTo(toNode).Any();
+    }
+
+    public static string GetSampleText(this TokenNodeType type)
+    {
+      var text = type.TokenRepresentation;
+      Assertion.Assert(text != null, "No sample for token of type " + type);
+      return text;
     }
   }
 }

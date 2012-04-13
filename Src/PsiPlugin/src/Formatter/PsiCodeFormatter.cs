@@ -7,11 +7,15 @@ using JetBrains.DataFlow;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CodeStyle;
 using JetBrains.ReSharper.Psi.Impl.CodeStyle;
+using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Psi.Util;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.ReSharper.PsiPlugin.Parsing;
 using JetBrains.ReSharper.PsiPlugin.Tree;
+using JetBrains.ReSharper.PsiPlugin.Util;
+using JetBrains.Text;
+using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Formatter
 {
@@ -21,6 +25,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     private readonly PsiLanguage myLanguage;
     private readonly ISettingsOptimization mySettingsOptimization;
     private IEnumerable<IPsiCodeFormatterExtension> myExtensions;
+    private readonly ElementsCache<TokenTypePair, bool> myGlueingCache = new ElementsCache<TokenTypePair, bool>(IsTokensGlued);
 
     public PsiCodeFormatter(Lifetime lifetime, PsiLanguage language, ISettingsStore settingsStore, ISettingsOptimization settingsOptimization, IViewable<IPsiCodeFormatterExtension> extensions)
       : base(settingsStore)
@@ -51,12 +56,12 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       if (rightToken is IWhitespaceNode || rightToken.GetTokenType() == PsiTokenType.WHITE_SPACE)
         return null;
 
-      if (leftToken.GetTokenType() == PsiTokenType.LBRACE || leftToken.GetTokenType() == PsiTokenType.RBRACE || leftToken.GetTokenType() == PsiTokenType.RBRACE || leftToken.GetTokenType() == PsiTokenType.RBRACKET)
+      if (leftToken.GetTokenType() == PsiTokenType.LBRACE || leftToken.GetTokenType() == PsiTokenType.RBRACE || leftToken.GetTokenType() == PsiTokenType.RBRACE || leftToken.GetTokenType() == PsiTokenType.RBRACKET || leftToken.GetTokenType() == PsiTokenType.LPARENTH || leftToken.GetTokenType() == PsiTokenType.RPARENTH || leftToken.GetTokenType() == PsiTokenType.LT || leftToken.GetTokenType() == PsiTokenType.GT)
       {
         return null;
       }
 
-      if (rightToken.GetTokenType() == PsiTokenType.LBRACE || rightToken.GetTokenType() == PsiTokenType.RBRACE || rightToken.GetTokenType() == PsiTokenType.RBRACE || rightToken.GetTokenType() == PsiTokenType.RBRACKET)
+      if (rightToken.GetTokenType() == PsiTokenType.LBRACE || rightToken.GetTokenType() == PsiTokenType.RBRACE || rightToken.GetTokenType() == PsiTokenType.RBRACE || rightToken.GetTokenType() == PsiTokenType.RBRACKET || rightToken.GetTokenType() == PsiTokenType.LPARENTH || rightToken.GetTokenType() == PsiTokenType.RPARENTH || rightToken.GetTokenType() == PsiTokenType.LT || rightToken.GetTokenType() == PsiTokenType.GT)
       {
         return null;
       }
@@ -72,7 +77,16 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
         return PsiFormatterHelper.CreateNewLine();
       }
 
-      return PsiFormatterHelper.CreateSpace(" ");
+      var tokenType1 = leftToken.GetTokenType();
+      var tokenType2 = rightToken.GetTokenType();
+
+      if (myGlueingCache.Get(new TokenTypePair(tokenType1, tokenType2)))
+        return
+          tokenType1 == PsiTokenType.END_OF_LINE_COMMENT
+            ? PsiFormatterHelper.CreateNewLine()
+            : PsiFormatterHelper.CreateSpace(" ");
+
+      return null;
     }
 
     protected override PsiLanguageType LanguageType
@@ -89,13 +103,28 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     {
       var firstNode = firstElement;
       var lastNode = lastElement;
+      var commonParent = firstNode.FindCommonParent(lastNode);
+      if(firstNode.NextSibling == null)
+      {
+        var tempNode = lastNode;
+        while( tempNode.Parent != commonParent)
+        {
+          tempNode = tempNode.Parent;
+        }
+
+        while (tempNode.FirstChild != null)
+        {
+          tempNode = tempNode.FirstChild;
+        }
+        firstNode = tempNode;
+      }
       var solution = firstNode.GetSolution();
       var globalSettings = GlobalFormatSettingsHelper.GetService(solution).GetSettingsForLanguage(myLanguage);
       var contextBoundSettingsStore = GetProperContextBoundSettingsStore(overrideSettingsStore, firstNode);
       var formatterSettings = new PsiCodeFormattingSettings(contextBoundSettingsStore, mySettingsOptimization, globalSettings);
       using (pi.SafeTotal(4))
       {
-        var context = new CodeFormattingContext(this, firstNode, lastNode, NullProgressIndicator.Instance);
+        var context = new PsiCodeFormattingContext(this, firstNode, lastNode, NullProgressIndicator.Instance);
         if (profile.Profile != CodeFormatProfile.INDENT)
         {
           using (var subPi = pi.CreateSubProgress(1))
@@ -157,6 +186,66 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
         nextNode,
         CodeFormatProfile.GENERATOR,
         null);
+    }
+
+    private static bool IsTokensGlued(TokenTypePair key)
+    {
+      var lexer = new PsiLexer(new StringBuffer(key.Type1.GetSampleText() + key.Type2.GetSampleText()));
+      return lexer.LookaheadToken(1) == null;
+    }
+
+    private struct TokenTypePair
+    {
+      private readonly TokenNodeType myType1;
+      private readonly TokenNodeType myType2;
+
+      public TokenTypePair(TokenNodeType type1, TokenNodeType type2)
+      {
+        myType1 = type1;
+        myType2 = type2;
+      }
+
+      public TokenNodeType Type1
+      {
+        get { return myType1; }
+      }
+
+      public TokenNodeType Type2
+      {
+        get { return myType2; }
+      }
+
+      private bool Equals(TokenTypePair other)
+      {
+        return Equals(other.myType1, myType1) && Equals(other.myType2, myType2);
+      }
+
+      public override bool Equals(object obj)
+      {
+        if (ReferenceEquals(null, obj)) return false;
+        if (!(obj is TokenTypePair)) return false;
+        return Equals((TokenTypePair)obj);
+      }
+
+      public override int GetHashCode()
+      {
+        unchecked
+        {
+          return ((myType1 != null ? myType1.GetHashCode() : 0) * 397) ^ (myType2 != null ? myType2.GetHashCode() : 0);
+        }
+      }
+    }
+  }
+
+  public class PsiCodeFormattingContext : CodeFormattingContext
+  {
+    public PsiCodeFormattingContext(PsiCodeFormatter psiCodeFormatter, ITreeNode firstNode, ITreeNode lastNode, NullProgressIndicator instance) : base(psiCodeFormatter, firstNode, lastNode, instance)
+    {
+    }
+
+    protected override bool CanModifyNode(ITreeNode element, NodeModificationType nodeModificationType)
+    {
+      return true;
     }
   }
 }

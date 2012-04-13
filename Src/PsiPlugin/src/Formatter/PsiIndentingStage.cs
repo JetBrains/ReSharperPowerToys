@@ -60,16 +60,15 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
           && myFormattingSettings.Other.STICK_COMMENT
           && !myDontStickComments
           && !Context.IsStickless(rChild))
-        return null;*/
 
       /*if (rChild is IErrorElement)
         return parent.GetLineIndent(myIndentCache);*/
 
       // Regular processing
-      var cSharpTreeNode = context.Parent as IPsiTreeNode;
+      var psiTreeNode = context.Parent as IPsiTreeNode;
 
-      return cSharpTreeNode != null
-          ? cSharpTreeNode.Accept(myIndentVisitor, context)
+      return psiTreeNode != null
+          ? psiTreeNode.Accept(myIndentVisitor, context)
           : myIndentVisitor.VisitNode(parent, context);
     }
 

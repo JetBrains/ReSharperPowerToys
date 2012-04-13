@@ -1,8 +1,11 @@
 using System;
+using System.Text;
 using JetBrains.Annotations;
 using JetBrains.ReSharper.Psi.CodeStyle;
 using JetBrains.ReSharper.Psi.Impl.CodeStyle;
 using JetBrains.ReSharper.Psi.Tree;
+using JetBrains.ReSharper.PsiPlugin.Parsing;
+using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Formatter
 {
@@ -11,19 +14,42 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     public PsiIndentCache() : base(null)
     {}
 
-    public PsiIndentCache([CanBeNull] Func<ITreeNode, CustomIndentType, string> customLineIndenter) : base(customLineIndenter)
-    {
-
-    }
-
     protected override string CalcLineIndent(ITreeNode node)
     {
-      throw new NotImplementedException();
+      var customIndent = GetCustomIndent(node, CustomIndentType.RelativeLineCalculation);
+      if (customIndent != null)
+        return customIndent;
+
+      var indent = new StringBuilder();
+      foreach (var token in node.GetFirstTokenIn().PrevTokens())
+      {
+        var tokenType = token.GetTokenType();
+        if (tokenType == PsiTokenType.WHITE_SPACE)
+          indent.Prepend(token.GetText());
+        else if (tokenType == PsiTokenType.NEW_LINE)
+          break;
+        //else
+          //indent.Remove(0, indent.Length);
+      }
+
+      return indent.ToString();
     }
 
     protected override string CalcNodeIndent(ITreeNode node)
     {
-      throw new NotImplementedException();
+      var indent = new StringBuilder();
+      foreach (var token in node.GetFirstTokenIn().PrevTokens())
+      {
+        var tokenType = token.GetTokenType();
+        if (tokenType == PsiTokenType.WHITE_SPACE)
+          indent.Prepend(token.GetText());
+        else if (tokenType != PsiTokenType.NEW_LINE)
+          indent.Prepend(new string(' ', token.GetTextLength()));
+        else
+          break;
+      }
+
+      return indent.ToString();
     }
   }
 }
