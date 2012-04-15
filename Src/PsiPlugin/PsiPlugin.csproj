@@ -55,11 +55,11 @@
     <Reference Include="JetBrains.Platform.ReSharper.DocumentModel">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.DocumentModel.dll</HintPath>
     </Reference>
-    <Reference Include="JetBrains.Platform.ReSharper.ProjectModel, Version=7.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="JetBrains.Platform.ReSharper.ProjectModel">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.ProjectModel.dll</HintPath>
     </Reference>
-    <Reference Include="JetBrains.Platform.ReSharper.Shell, Version=7.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="JetBrains.Platform.ReSharper.Shell">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.Shell.dll</HintPath>
     </Reference>
@@ -72,7 +72,7 @@
     <Reference Include="JetBrains.Platform.ReSharper.Util">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.Util.dll</HintPath>
     </Reference>
-    <Reference Include="JetBrains.ReSharper.Daemon, Version=7.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="JetBrains.ReSharper.Daemon">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Daemon.dll</HintPath>
     </Reference>
