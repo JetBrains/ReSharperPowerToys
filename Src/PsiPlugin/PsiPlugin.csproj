@@ -18,7 +18,6 @@
     <PsiLanguageName>Psi</PsiLanguageName>
     <ProductHomeDir>$(MSBuildProjectDirectory)</ProductHomeDir>
     <TargetFrameworkProfile />
-
     <ParserGenOutputBase>$(MSBuildProjectDirectory)\src\Gen</ParserGenOutputBase>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -408,7 +407,9 @@
   <Import Project="$(ReSharperSdkTools)\parserGen\ParserGen.Targets" />
   <Import Project="$(ReSharperSdkTools)\MSBuild\JetBrains.Build.Common.Targets" />
   <Import Project="$(ReSharperSdkTools)\CsLex\CsLex.Targets" />
+
   <Target Name="BeforeBuild">
-    <Copy SourceFiles="$(ReSharperSdk)\Tools\parserGen\Unicode.lex" DestinationFolder=".\obj\" />
+    <MakeDir Directories="$(MSBuildProjectDirectory)\obj" />
+    <Copy SourceFiles="$(ReSharperSdkTools)\parserGen\Unicode.lex" DestinationFolder="$(MSBuildProjectDirectory)\obj" />
   </Target>
 </Project>
