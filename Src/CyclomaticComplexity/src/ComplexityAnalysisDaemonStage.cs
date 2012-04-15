@@ -15,6 +15,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using JetBrains.Application.Settings;
 using JetBrains.Application.src.Settings;
 using JetBrains.ReSharper.Daemon;
@@ -32,12 +33,16 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
     /// <summary>
     /// This method provides a <see cref="IDaemonStageProcess"/> instance which is assigned to highlighting a single document
     /// </summary>
-    public IDaemonStageProcess CreateProcess(IDaemonProcess process, IContextBoundSettingsStore settings, DaemonProcessKind kind)
+    public IEnumerable<IDaemonStageProcess> CreateProcess(IDaemonProcess process, IContextBoundSettingsStore settings, DaemonProcessKind kind)
     {
       if (process == null)
         throw new ArgumentNullException("process");
 
-      return new ComplexityAnalysisDaemonStageProcess(process, settings.GetValue((ComplexityAnalysisSettings s) => s.Threshold));
+      return new[]
+               {
+                 new ComplexityAnalysisDaemonStageProcess(
+                   process, settings.GetValue((ComplexityAnalysisSettings s) => s.Threshold))
+               };
     }
 
     public ErrorStripeRequest NeedsErrorStripe(IPsiSourceFile sourceFile, IContextBoundSettingsStore settings)

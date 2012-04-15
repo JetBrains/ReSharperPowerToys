@@ -37,9 +37,7 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
     public void Execute(Action<DaemonStageResult> commiter)
     {
       // Getting PSI (AST) for the file being highlighted
-      PsiManager manager = myDaemonProcess.Solution.GetPsiServices().PsiManager;
-
-      var file = manager.GetPsiFile(myDaemonProcess.SourceFile, CSharpLanguage.Instance) as ICSharpFile;
+      var file = myDaemonProcess.SourceFile.GetNonInjectedPsiFile<CSharpLanguage>() as ICSharpFile;
       if (file == null)
         return;
 
