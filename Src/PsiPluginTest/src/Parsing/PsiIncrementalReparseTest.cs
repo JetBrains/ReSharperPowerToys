@@ -1,7 +1,4 @@
-﻿/*using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.ReSharper.PsiTests.parsing;
 using JetBrains.ReSharper.TestFramework;
@@ -24,4 +21,4 @@ namespace PsiPluginTest.Parsing
       DoTestFiles("test001.psi");
     }
   }
-}*/
+}
