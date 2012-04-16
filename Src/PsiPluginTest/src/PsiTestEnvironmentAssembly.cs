@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using JetBrains.Application;
 using NUnit.Framework;
-using JetBrains.ReSharper.PsiPlugin;
 using JetBrains.Threading;
 using JetBrains.ReSharper.PsiPlugin.Parsing;
 

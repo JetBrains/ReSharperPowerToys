@@ -177,9 +177,6 @@
     <Compile Include="src\Formatter\PsiFormattingVisitor.cs" />
     <Compile Include="src\Formatter\PsiIndentingStage.cs" />
     <Compile Include="src\Formatter\PsiIndentVisitor.cs" />
-    <Compile Include="src\Gen\GeneratedDocument\CSharpFromPsiGeneratedDocumentService.cs" />
-    <Compile Include="src\Gen\GeneratedDocument\CSharpFromPsiGenerator.cs" />
-    <Compile Include="src\Gen\GeneratedDocument\CSharpInPsiCustomModificationHandler.cs" />
     <Compile Include="src\Gen\Parsing\Psi\ErrorMessages.cs" />
     <Compile Include="src\Gen\Parsing\Psi\PsiParserGenerated.cs" />
     <Compile Include="src\Gen\Parsing\Psi\TokenBitsets.cs" />

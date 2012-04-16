@@ -1,7 +1,4 @@
-﻿/*using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using JetBrains.ReSharper.IntentionsTests.Navigation;
 using NUnit.Framework;
 
@@ -54,4 +51,4 @@ namespace PsiPluginTest.Navigation
       DoTestFiles("test004.psi");
     }
   }
-}*/
+}

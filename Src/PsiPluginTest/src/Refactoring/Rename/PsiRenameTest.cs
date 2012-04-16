@@ -1,4 +1,4 @@
-﻿/*using System;
+﻿using System;
 using NUnit.Framework;
 using JetBrains.ReSharper.Refactorings;
 
@@ -35,4 +35,4 @@ namespace PsiPluginTest.Refactoring.Rename
       DoTestFiles(new[] { "test004.psi" });
     }
   }
-}*/
+}

@@ -1,10 +1,8 @@
-﻿/*using System;
-using JetBrains.ProjectModel;
+﻿using System;
 using JetBrains.ReSharper.Psi.Search;
 using JetBrains.ReSharper.TestFramework;
 using NUnit.Framework;
-using PlatformID = JetBrains.ProjectModel.PlatformID;
-using JetBrains.ReSharper.Psi.Search;
+using FindUsagesTestBase = JetBrains.ReSharper.Psi.Find.Test.FindUsagesTestBase;
 
 namespace PsiPluginTest.Find
 {
@@ -25,4 +23,4 @@ namespace PsiPluginTest.Find
 
     [Test] public void test1() {DoTestOneFile("test1.psi");}
   }
-}*/
+}

@@ -1,13 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.ExtensionsAPI;
-using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
-using JetBrains.ReSharper.Psi.Impl.Shared;
-using JetBrains.ReSharper.PsiTests;
-using JetBrains.ReSharper.PsiTests.parsing;
-using JetBrains.ReSharper.TestFramework;
+﻿using JetBrains.ReSharper.PsiTests.parsing;
 using NUnit.Framework;
 
 namespace PsiPluginTest.Parsing
