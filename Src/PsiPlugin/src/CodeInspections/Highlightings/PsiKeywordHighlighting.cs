@@ -3,11 +3,14 @@ using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.Impl;
 using JetBrains.ReSharper.Psi.Tree;
 
+[assembly: RegisterConfigurableSeverity("Keyword", null, HighlightingGroupIds.LanguageUsage, "Keyword", @"
+          Keyword", Severity.INFO, false, Internal = false)]
 
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
 {
-  [StaticSeverityHighlighting(Severity.INFO, HighlightingGroupIds.CodeInfo,
-    OverlapResolve = OverlapResolveKind.NONE, ShowToolTipInStatusBar = false)]
+  [ConfigurableSeverityHighlighting("Keyword", "PSI", OverlapResolve = OverlapResolveKind.NONE, ToolTipFormatString = "Keyword")]
+  //[StaticSeverityHighlighting(Severity.INFO, HighlightingGroupIds.CodeInfo,
+    //OverlapResolve = OverlapResolveKind.NONE, ShowToolTipInStatusBar = false)]
   internal class PsiKeywordHighlighting : ICustomAttributeIdHighlighting, IHighlightingWithRange
   {
     private readonly ITreeNode myElement;

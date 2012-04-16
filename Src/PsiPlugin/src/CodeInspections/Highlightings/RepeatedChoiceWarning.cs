@@ -3,10 +3,14 @@ using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.Impl;
 using JetBrains.ReSharper.Psi.Tree;
 
+[assembly: RegisterConfigurableSeverity("Repeated Choice", null, HighlightingGroupIds.LanguageUsage, "Repeated Choice", @"
+          Repeated Choice", Severity.WARNING, false, Internal = false)]
+
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
 {
-  [StaticSeverityHighlighting(Severity.INFO, HighlightingGroupIds.CompilerWarnings,
-    OverlapResolve = OverlapResolveKind.WARNING, ShowToolTipInStatusBar = false)]
+  [ConfigurableSeverityHighlighting("Repeated Choice", "PSI", OverlapResolve = OverlapResolveKind.NONE, ToolTipFormatString = "Repeated Choice")]
+  //[StaticSeverityHighlighting(Severity.INFO, HighlightingGroupIds.CompilerWarnings,
+    //OverlapResolve = OverlapResolveKind.WARNING, ShowToolTipInStatusBar = false)]
   class RepeatedChoiceWarning : IHighlightingWithRange, ICustomAttributeIdHighlighting
   {
     private readonly ITreeNode myElement;

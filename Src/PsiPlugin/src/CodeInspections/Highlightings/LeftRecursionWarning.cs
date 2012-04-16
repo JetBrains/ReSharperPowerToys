@@ -4,14 +4,18 @@ using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.Impl;
 using JetBrains.ReSharper.Psi.Tree;
 
+[assembly: RegisterConfigurableSeverity("LeftRecursion", null, HighlightingGroupIds.LanguageUsage, "Left Recursion", @"
+          Left Recursion", Severity.WARNING, false, Internal = false)]
+
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
 {
-  [StaticSeverityHighlighting(Severity.INFO, HighlightingGroupIds.CompilerWarnings,
-    OverlapResolve = OverlapResolveKind.WARNING, ShowToolTipInStatusBar = false)]
+    [ConfigurableSeverityHighlighting("LeftRecursion", "PSI", OverlapResolve = OverlapResolveKind.WARNING, ToolTipFormatString = "Left Recursion")]
+  //[StaticSeverityHighlighting(Severity.INFO, HighlightingGroupIds.CompilerWarnings,
+    //OverlapResolve = OverlapResolveKind.WARNING, ShowToolTipInStatusBar = false)]
   class LeftRecursionWarning : IHighlightingWithRange, ICustomAttributeIdHighlighting
   {
     private readonly ITreeNode myElement;
-    private readonly string myError = "Left recursion";
+    private readonly string myError = "Left Recursion";
     private const string AtributeId = HighlightingAttributeIds.WARNING_ATTRIBUTE;
 
     public LeftRecursionWarning(ITreeNode element)
