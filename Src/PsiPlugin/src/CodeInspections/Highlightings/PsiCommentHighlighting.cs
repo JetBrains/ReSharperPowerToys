@@ -3,11 +3,15 @@ using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.Impl;
 using JetBrains.ReSharper.Psi.Tree;
 
+[assembly: RegisterConfigurableSeverity("Comment", null, HighlightingGroupIds.LanguageUsage, "Comment", @"
+          Comment", Severity.INFO, false, Internal = false)]
+
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
 {
 
-  [StaticSeverityHighlighting(Severity.INFO, HighlightingGroupIds.CodeInfo, 
-    OverlapResolve = OverlapResolveKind.NONE, ShowToolTipInStatusBar = false)]
+  [ConfigurableSeverityHighlighting("Comment", "PSI", OverlapResolve = OverlapResolveKind.NONE, ToolTipFormatString = "Comment")]
+//[StaticSeverityHighlighting(Severity.INFO, HighlightingGroupIds.CodeInfo, 
+    //OverlapResolve = OverlapResolveKind.NONE, ShowToolTipInStatusBar = false)]
   internal class PsiCommentHighlighting : ICustomAttributeIdHighlighting, IHighlightingWithRange
   {
     private readonly ITreeNode myNode;

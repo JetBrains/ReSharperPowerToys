@@ -3,10 +3,14 @@ using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.Impl;
 using JetBrains.ReSharper.Psi.Tree;
 
+[assembly: RegisterConfigurableSeverity("Rule", null, HighlightingGroupIds.LanguageUsage, "Rule", @"
+          Rule", Severity.INFO, false, Internal = false)]
+
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
 {
-  [StaticSeverityHighlighting(Severity.INFO, HighlightingGroupIds.CodeInfo,
-    OverlapResolve = OverlapResolveKind.NONE, ShowToolTipInStatusBar = false)]
+  [ConfigurableSeverityHighlighting("Rule", "PSI", OverlapResolve = OverlapResolveKind.NONE, ToolTipFormatString = "Rule")]
+  //[StaticSeverityHighlighting(Severity.INFO, HighlightingGroupIds.CodeInfo,
+    //OverlapResolve = OverlapResolveKind.NONE, ShowToolTipInStatusBar = false)]
 
   internal class PsiRuleHighlighting : ICustomAttributeIdHighlighting, IHighlightingWithRange
   {
