@@ -1,20 +1,14 @@
-|a|(0)
+a
 	:
-	!(#|id|(1) : |identifier|(2))
-	|b|(3)[|id|(4)]
+	!(#id : identifier)
+	b[id]
   ;
 
-|b|(5)
+b
 	:
-	|c|(6)
+	|c|(0)
   ;
 
 
 ---------------------------------------------------------
-(0): ReSharper Method Identifier: Rule
-(1): ReSharper Local Variable Identifier: Variable
-(2): ReSharper Underlined Error Highlighting: Unresolved reference
-(3): ReSharper Method Identifier: Rule
-(4): ReSharper Local Variable Identifier: Variable
-(5): ReSharper Method Identifier: Rule
-(6): ReSharper Underlined Error Highlighting: Unresolved reference
+(0): ReSharper Underlined Error Highlighting: Unresolved reference
