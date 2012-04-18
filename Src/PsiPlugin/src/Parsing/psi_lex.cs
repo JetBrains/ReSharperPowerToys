@@ -86,15 +86,6 @@ private void yy_move_end ()
       '\r' == yy_buffer[yy_buffer_end-1])
     yy_buffer_end--;
   }
-private bool yy_last_was_cr=false;
-private void yy_mark_start ()
-  {
-  yy_buffer_start = yy_buffer_index;
-  }
-private void yy_mark_end ()
-  {
-  yy_buffer_end = yy_buffer_index;
-  }
 private static bool yy_isnewline (char c)
   {
     return c == '\r' || c == '\n';
@@ -10178,12 +10169,12 @@ public virtual TokenNodeType _locateToken()
   bool yy_initial = true;
   int yy_this_accept;
 
-  yy_mark_start();
+  yy_buffer_start = yy_buffer_index;
   yy_this_accept = yy_acpt[yy_state];
   if (YY_NOT_ACCEPT != yy_this_accept)
     {
     yy_last_accept_state = yy_state;
-    yy_mark_end();
+    yy_buffer_end = yy_buffer_index;
     }
 
   while (true)
@@ -10210,7 +10201,7 @@ public virtual TokenNodeType _locateToken()
       if (YY_NOT_ACCEPT != yy_this_accept)
         {
         yy_last_accept_state = yy_state;
-        yy_mark_end();
+        yy_buffer_end = yy_buffer_index;
         }
       }
     else
@@ -10682,12 +10673,12 @@ public virtual TokenNodeType _locateToken()
         yy_state = yy_state_dtrans[yy_lexical_state];
         yy_next_state = YY_NO_STATE;
         yy_last_accept_state = YY_NO_STATE;
-        yy_mark_start();
+        yy_buffer_start = yy_buffer_index;
         yy_this_accept = yy_acpt[yy_state];
         if (YY_NOT_ACCEPT != yy_this_accept)
           {
           yy_last_accept_state = yy_state;
-          yy_mark_end();
+          yy_buffer_end = yy_buffer_index;
           }
         }
       }

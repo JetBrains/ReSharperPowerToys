@@ -3,7 +3,7 @@ a
 	b{ref:b}
   ;
 
-b{def:b}{ref:b}
+b{def:b}
 	:
 	c
   ;

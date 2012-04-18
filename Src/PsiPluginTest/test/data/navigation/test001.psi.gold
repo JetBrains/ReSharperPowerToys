@@ -1,19 +1,11 @@
 -------------- offset 28 line 6 col 10 --------------------
 +++ JetBrains.ReSharper.Features.Finding.FindUsages.GotoUsagesProvider navigation provider results +++
-Occurences provided for OccurenceUtil:
-Occurence's dump:
+Immediate result: Occurence's dump:
 TO: [O] |bb| RANGE: (8,10) @ test001.psi
 Occurence's type:
 Occurence
 Occurence's kinds:
 Other
-Menu Item presentation: 
-Text: test001.psi| (3)
-Shortcut text: in <TestProject>
-Style: Enabled
-Mnemonic: 
-Tooltip: bb
-
 Occurence's navigation result. Opened file: test001.psi
 ------------------
 a
@@ -23,25 +15,51 @@ a
 
 ------------------
 
-Occurence's dump:
-TO: [O] private |bb| RANGE: (27,29) @ test001.psi
++++ JetBrains.ReSharper.Features.Finding.Usages.FindUsagesAdvancedProvider navigation provider results +++
+Immediate result: Occurence's dump:
+TO: [O] |bb| RANGE: (8,10) @ test001.psi
 Occurence's type:
 Occurence
 Occurence's kinds:
 Other
-Menu Item presentation: 
-Text: test001.psi| (6)
-Shortcut text: in <TestProject>
-Style: Enabled
-Mnemonic: 
-Tooltip: private bb
-
 Occurence's navigation result. Opened file: test001.psi
 ------------------
+a
+	:
+	|CARET|bb
   ;
 
-private |CARET|bb
+------------------
+
++++ JetBrains.ReSharper.Features.Finding.Usages.FindUsagesProvider navigation provider results +++
+Immediate result: Occurence's dump:
+TO: [O] |bb| RANGE: (8,10) @ test001.psi
+Occurence's type:
+Occurence
+Occurence's kinds:
+Other
+Occurence's navigation result. Opened file: test001.psi
+------------------
+a
 	:
-	c
+	|CARET|bb
+  ;
+
+------------------
+
++++ JetBrains.ReSharper.Features.Finding.Usages.HighlightUsagesProvider navigation provider results +++
+Immediate result: Occurence's dump:
+TO: [O] |bb| RANGE: (8,10) @ test001.psi
+Occurence's type:
+Occurence
+Occurence's kinds:
+Other
+Occurence's navigation result. Opened file: test001.psi
+------------------
+a
+	:
+	|CARET|bb
+  ;
+
 ------------------
 

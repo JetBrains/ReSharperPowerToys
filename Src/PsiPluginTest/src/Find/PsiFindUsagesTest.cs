@@ -21,6 +21,6 @@ namespace PsiPluginTest.Find
       get { return SearchPattern.FIND_USAGES | SearchPattern.FIND_IMPLEMENTORS_USAGES | SearchPattern.FIND_RELATED_ELEMENTS; }
     }
 
-    [Test] public void test1() {DoTestOneFile("test1.psi");}
+    [Test] public void test001() {DoTestOneFile("test001.psi");}
   }
 }
