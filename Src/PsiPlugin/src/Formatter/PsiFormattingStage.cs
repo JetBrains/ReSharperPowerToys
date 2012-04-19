@@ -47,12 +47,91 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 
       var stage = new PsiFormattingStage(data);
 
-      var nodePairs = data.Context.HierarchicalEnumNodes().Where(p => data.Context.CanModifyInsideNodeRange(p.First, p.Last)).ToList();
+      //var nodePairs = data.Context.HierarchicalEnumNodes().Where(p => data.Context.CanModifyInsideNodeRange(p.First, p.Last)).ToList();
+      var nodePairs = GetNodePairs(data.Context);
 
       var spaces = nodePairs.Select(
         range => new FormatResult<IEnumerable<string>>(range, stage.CalcSpaces(new PsiFmtStageContext(range))));
 
       FormatterImplHelper.ForeachResult(spaces, pi, res => stage.MakeFormat(res.Range, res.ResultValue));
+    }
+
+    private static IEnumerable<FormattingRange> GetNodePairs(CodeFormattingContext context)
+    {
+      var firstNode = context.FirstNode;
+      var lastNode = context.LastNode;
+      IList<FormattingRange> list = new List<FormattingRange>();
+      GetNodePairs(firstNode, lastNode, list);
+      return list;
+      /*foreach (var treeNode in list)
+      {
+        if(prevNode != null)
+        {
+          if (prevNode.Parent == treeNode.Parent)
+          {
+            yield return new FormattingRange(prevNode, treeNode);
+          }
+        }
+        prevNode = treeNode;
+      }*/
+    }
+
+    private static void GetNodePairs(ITreeNode firstNode, ITreeNode lastNode, IList<FormattingRange> list)
+    {
+      ITreeNode firstChild = firstNode;
+      ITreeNode lastChild = lastNode;
+      var commonParent = firstNode.FindCommonParent(lastNode);
+      while(firstChild.Parent != commonParent)
+      {
+        firstChild = firstChild.Parent;
+      }
+      while (lastChild.Parent != commonParent)
+      {
+        lastChild = lastChild.Parent;
+      }
+      var node = firstChild;
+      while(node != lastChild.NextSibling)
+      {
+        GetNodePairs(node,list);
+        node = node.NextSibling;
+      }
+    }
+
+    private static void GetNodePairs(ITreeNode node, IList<FormattingRange> list)
+    {
+      if(node.FirstChild == null)
+      {
+        if(! node.IsWhitespaceToken())
+        {
+          ITreeNode nextNode = null;
+          while(nextNode == null)
+          {
+            var sibling = node.NextSibling;
+            while(sibling != null && sibling.IsWhitespaceToken())
+            {
+              sibling = sibling.NextSibling;
+            }
+            if(sibling == null)
+            {
+              node = node.Parent;
+            } else
+            {
+              nextNode = sibling;
+            }
+          }
+          list.Add(new FormattingRange(node,nextNode));
+        }
+      } else
+      {
+        var child = node.FirstChild;
+        {
+          while(child != null)
+          {
+            GetNodePairs(child, list);
+            child = child.NextSibling;
+          }
+        }
+      }
     }
 
     private IEnumerable<string> CalcSpaces(PsiFmtStageContext context)

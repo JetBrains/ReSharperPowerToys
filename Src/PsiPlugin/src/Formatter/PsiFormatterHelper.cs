@@ -13,6 +13,7 @@ using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Parsing;
 using JetBrains.ReSharper.PsiPlugin.Tree;
+using JetBrains.Text;
 using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Formatter
@@ -55,7 +56,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 
     public static IWhitespaceNode CreateNewLine()
     {
-      var buf = FormatterImplHelper.NewLineBuffer;
+      //var buf = FormatterImplHelper.NewLineBuffer;
+      return (IWhitespaceNode)TreeElementFactory.CreateLeafElement(PsiTokenType.WHITE_SPACE, FormatterImplHelper.GetPooledWhitespace("\n"), 0, 1);
+      IBuffer buf = new StringBuffer(" ");
       return (IWhitespaceNode)TreeElementFactory.CreateLeafElement(PsiTokenType.NEW_LINE, buf, 0, buf.Length);
     }
 
