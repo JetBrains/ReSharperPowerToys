@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using JetBrains.Application;
 using JetBrains.Application.Progress;
 using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Feature.Services.CodeCleanup;
@@ -46,6 +47,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
         foreach (var file in files)
         {
           using (var indicator = progressIndicator.CreateSubProgress(1))
+          using (WriteLockCookie.Create())
           {
             var formatter = file.Language.LanguageService().CodeFormatter;
 

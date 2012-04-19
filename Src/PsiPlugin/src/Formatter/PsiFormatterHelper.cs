@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using JetBrains.Annotations;
+using JetBrains.Application;
 using JetBrains.Application.Progress;
 using JetBrains.Application.Settings;
 using JetBrains.ReSharper.Psi.CodeStyle;
@@ -29,7 +30,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     {
       if (wsTexts == null)
         return;
-      FormatterImplHelper.ReplaceSpaces(leftNode, rightNode, wsTexts.CreateWhitespaces());
+        FormatterImplHelper.ReplaceSpaces(leftNode, rightNode, wsTexts.CreateWhitespaces());
     }
 
     [NotNull]
