@@ -70,14 +70,14 @@ extras{
 	ruleBracketTypedParameters<PSI_PARAMETERS>?
 	optionsDefinition?
 	extrasDefinition<PSI_EXTRAS>?
+	COLON
 	ruleBody<PSI_BODY>
+	SEMICOLON
   ;
 
 errorhandling ruleBody
 	:
-	COLON
 	psiExpression*
-	SEMICOLON
   ;
 
 modifier

@@ -23,6 +23,19 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
         private TokenNodeType currTokenType;
         protected static readonly Hashtable keywords = new Hashtable();
         protected static readonly Hashtable ourTokenTypeToText = new Hashtable();
+
+        protected bool myMakeDivide;
+
+        private struct TokenPosition
+        {
+          public bool MakeDivide;
+          public TokenNodeType CurrTokenType;
+          public int YyBufferIndex;
+          public int YyBufferStart;
+          public int YyBufferEnd;
+          public int YyLexicalState;
+        }
+
         public void Start()
         {
             Start(0, yy_buffer.Length, YYINITIAL);
@@ -36,8 +49,27 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
 
         public object CurrentPosition
         {
-            get { return CurrentPosition; }
-            set { CurrentPosition = (PsiLexerState)value; }
+          get
+          {
+            TokenPosition tokenPosition;
+            tokenPosition.CurrTokenType = currTokenType;
+            tokenPosition.YyBufferIndex = yy_buffer_index;
+            tokenPosition.YyBufferStart = yy_buffer_start;
+            tokenPosition.YyBufferEnd = yy_buffer_end;
+            tokenPosition.YyLexicalState = yy_lexical_state;
+            tokenPosition.MakeDivide = myMakeDivide;
+            return tokenPosition;
+          }
+          set
+          {
+            var tokenPosition = (TokenPosition)value;
+            currTokenType = tokenPosition.CurrTokenType;
+            yy_buffer_index = tokenPosition.YyBufferIndex;
+            yy_buffer_start = tokenPosition.YyBufferStart;
+            yy_buffer_end = tokenPosition.YyBufferEnd;
+            yy_lexical_state = tokenPosition.YyLexicalState;
+            myMakeDivide = tokenPosition.MakeDivide;
+          }
         }
 
         public TokenNodeType TokenType
@@ -107,7 +139,21 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
         {
         if (currTokenType == null)
             currTokenType = _locateToken();
+            if (currTokenType != null && !currTokenType.IsWhitespace)
+            {
+              myMakeDivide = MAKE_DIVIDE[currTokenType];
+            }
         }
+
+        private static readonly NodeTypeSet MAKE_DIVIDE = new NodeTypeSet
+        (
+          PsiTokenType.IDENTIFIER,
+          PsiTokenType.RBRACKET,
+          PsiTokenType.RPARENTH,
+          PsiTokenType.RBRACE,
+          PsiTokenType.MINUS,
+          PsiTokenType.STRING_LITERAL
+        );
 
     }
 }

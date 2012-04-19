@@ -35,5 +35,15 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     {
       return myIndentCache.GetNodeIndent(ruleDeclarationParam);
     }
+
+    public override string VisitRuleDeclaredName(IRuleDeclaredName ruleDeclaredNameParam, FormattingStageContext context)
+    {
+      return myIndentCache.GetNodeIndent(ruleDeclaredNameParam);
+    }
+
+    public override string VisitNotChoiceExpression(INotChoiceExpression notChoiceExpressionParam, FormattingStageContext context)
+    {
+      return myIndentCache.GetNodeIndent(notChoiceExpressionParam);
+    }
   }
 }
