@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using JetBrains.ReSharper.PsiPlugin.Parsing;
 using JetBrains.ReSharper.PsiPlugin.Tree;
 
 namespace JetBrains.ReSharper.PsiPlugin.Formatter
@@ -8,6 +9,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     [NotNull] private readonly FormattingStageData myData;
 
     private readonly bool myIsGenerated;
+
+    private const int MaxLineLength = 50;
 
     public PsiFormattingVisitor(FormattingStageData data)
     {
@@ -53,7 +56,29 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 
     public override IEnumerable<string> VisitSequence(ISequence sequenceParam, PsiFmtStageContext context)
     {
-      return new string[]{" "};
+      var node = context.RightChild;
+      var child = sequenceParam.FirstChild;
+      int length = 0;
+      while(child != node)
+      {
+        if(! ( child is IWhitespaceNode))
+        {
+          if(length > MaxLineLength)
+          {
+            length = 0;
+          } 
+          length += child.GetTextLength();
+        }
+        child = child.NextSibling;
+      }
+      if (length < MaxLineLength)
+      {
+        return new string[] { " " };
+      }
+      else
+      {
+        return new string[] {"\r\n"};
+      }
     }
 
     public override IEnumerable<string> VisitExtraDefinition(IExtraDefinition extraDefinitionParam, PsiFmtStageContext context)
