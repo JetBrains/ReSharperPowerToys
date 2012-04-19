@@ -31,6 +31,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 
     public override IEnumerable<string> VisitRuleDeclaration(IRuleDeclaration ruleDeclarationParam, PsiFmtStageContext context)
     {
+      if(context.LeftChild is IModifier)
+      {
+        return new string[]{" "};
+      }
       return new string[]{"\r\n"};
     }
 
@@ -46,7 +50,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
  
     public override IEnumerable<string> VisitExtrasDefinition(IExtrasDefinition extrasDefinitionParam, PsiFmtStageContext context)
     {
-      return FormattingStageUtil.GetNodesSpace(1, 1, 1, false, context, myData);
+      return new string[] { "\r\n" };
     }
 
     public override IEnumerable<string> VisitRuleDeclaredName(IRuleDeclaredName ruleDeclaredNameParam, PsiFmtStageContext context)
@@ -56,7 +60,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 
     public override IEnumerable<string> VisitSequence(ISequence sequenceParam, PsiFmtStageContext context)
     {
-      var node = context.RightChild;
+      /*var node = context.RightChild;
       var child = sequenceParam.FirstChild;
       int length = 0;
       while(child != node)
@@ -76,9 +80,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
         return new string[] { " " };
       }
       else
-      {
+      {*/
         return new string[] {"\r\n"};
-      }
+      //}
     }
 
     public override IEnumerable<string> VisitExtraDefinition(IExtraDefinition extraDefinitionParam, PsiFmtStageContext context)
