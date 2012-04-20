@@ -92,13 +92,17 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       var node = firstChild;
       while(node != lastChild.NextSibling)
       {
-        GetNodePairs(node,list);
+        if (! node.IsWhitespaceToken())
+        {
+          GetNodePairs(node, list, commonParent);
+        }
         node = node.NextSibling;
       }
     }
 
-    private static void GetNodePairs(ITreeNode node, IList<FormattingRange> list)
+    private static void GetNodePairs(ITreeNode treeNode, IList<FormattingRange> list, ITreeNode parent)
     {
+      var node = treeNode;
       if(node.FirstChild == null)
       {
         if(! node.IsWhitespaceToken())
@@ -114,12 +118,19 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
             if(sibling == null)
             {
               node = node.Parent;
+              if(node == parent)
+              {
+                break;
+              }
             } else
             {
               nextNode = sibling;
             }
           }
-          list.Add(new FormattingRange(node,nextNode));
+          if (nextNode != null)
+          {
+            list.Add(new FormattingRange(node, nextNode));
+          }
         }
       } else
       {
@@ -127,7 +138,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
         {
           while(child != null)
           {
-            GetNodePairs(child, list);
+            if(! child.IsWhitespaceToken())
+            {
+              GetNodePairs(child, list,parent);
+            }
             child = child.NextSibling;
           }
         }
