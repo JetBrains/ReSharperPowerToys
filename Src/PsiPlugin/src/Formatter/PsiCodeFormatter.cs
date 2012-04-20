@@ -104,19 +104,35 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       var firstNode = firstElement;
       var lastNode = lastElement;
       var commonParent = firstNode.FindCommonParent(lastNode);
-      if(firstNode.NextSibling == null)
+      var firstChild = firstElement;
+      var lastChild = lastElement;
+      while(firstChild.Parent != commonParent)
       {
-        var tempNode = lastNode;
-        while( tempNode.Parent != commonParent)
-        {
-          tempNode = tempNode.Parent;
-        }
+        firstChild = firstChild.Parent;
+      }
+      while (lastChild.Parent != commonParent)
+      {
+        lastChild = lastChild.Parent;
+      }
 
-        while (tempNode.FirstChild != null)
+      while (firstNode.NextSibling == null)
+      {
+        firstNode = firstNode.Parent;
+        if(firstNode == firstChild)
         {
-          tempNode = tempNode.FirstChild;
+          break;
         }
-        firstNode = tempNode;
+      }
+      while((firstNode == firstChild) || (firstChild.IsWhitespaceToken()))
+      {
+
+        firstChild = firstChild.NextSibling;
+
+      }
+      firstNode = firstChild;
+      while(firstNode.FirstChild != null)
+      {
+        firstNode = firstNode.FirstChild;
       }
       var solution = firstNode.GetSolution();
       var globalSettings = GlobalFormatSettingsHelper.GetService(solution).GetSettingsForLanguage(myLanguage);

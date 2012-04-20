@@ -42,11 +42,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     {
       return FormattingStageUtil.GetNodesSpace(1, 1, 1, false, context, myData);
     }
-
-    public override IEnumerable<string> VisitOptionsDefinition(IOptionsDefinition optionsDefinitionParam, PsiFmtStageContext context)
-    {
-      return FormattingStageUtil.GetNodesSpace(1, 1, 1, false, context, myData);
-    }
  
     public override IEnumerable<string> VisitExtrasDefinition(IExtrasDefinition extrasDefinitionParam, PsiFmtStageContext context)
     {
@@ -88,6 +83,20 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     public override IEnumerable<string> VisitExtraDefinition(IExtraDefinition extraDefinitionParam, PsiFmtStageContext context)
     {
       return new string[] { " " };
+    }
+
+    public override IEnumerable<string> VisitOptionsDefinition(IOptionsDefinition optionsDefinitionParam, PsiFmtStageContext context)
+    {
+      return new string[] { "\r\n" };
+    }
+
+    public override IEnumerable<string> VisitPsiExpression(IPsiExpression psiExpressionParam, PsiFmtStageContext context)
+    {
+      if(context.RightChild is IChoiceTail)
+      {
+        return new string[] { "\r\n" };
+      }
+      return base.VisitPsiExpression(psiExpressionParam, context);
     }
   }
 }
