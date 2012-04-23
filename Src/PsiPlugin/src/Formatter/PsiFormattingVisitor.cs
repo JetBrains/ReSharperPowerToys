@@ -119,7 +119,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     }
 
     public override IEnumerable<string> VisitChoiceTail(IChoiceTail choiceTailParam, PsiFmtStageContext context)
-    {     
+    { 
+      if(context.LeftChild is ICommentNode)
+      {
+        return new string[] {"\r\n"};
+      }
       return new string[]{" "};
     }
   }
