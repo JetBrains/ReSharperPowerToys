@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 using JetBrains.ReSharper.Psi.Impl.CodeStyle;
 using JetBrains.ReSharper.Psi.Tree;
@@ -13,12 +14,14 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     private PsiIndentCache myIndentCache;
     private string myContIndent;
     private const string StandartIndent = "  ";
+    private IDictionary<ITreeNode, string> myCache;
 
     public PsiIndentVisitor(PsiCodeFormattingSettings formattingSettings, PsiIndentCache indentCache)
     {
       myFormattingSettings = formattingSettings;
       myIndentCache = indentCache;
       myContIndent = formattingSettings.GlobalSettings.InsertTabs ? new string('\t', 1) : new string(' ', 1 * formattingSettings.GlobalSettings.IndentSize);
+      myCache = new Dictionary<ITreeNode, string>();
     }
 
     public override string VisitExtrasDefinition(IExtrasDefinition extrasDefinitionParam, FormattingStageContext context)
@@ -80,7 +83,23 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       {
         return parentIndent;
       }
+      if(context.Parent is ParenExpression)
+      {
+        return parentIndent + StandartIndent;
+      }
       return myIndentCache.GetNodeIndent(psiExpressionParam);
+    }
+
+    public override string VisitParenExpression(IParenExpression parenExpressionParam, FormattingStageContext context)
+    {
+      string parentIndent = GetParentIndent(context.Parent);
+      if(context.RightChild is IPsiExpression)
+      {
+        return parentIndent + StandartIndent;
+      } else
+      {
+        return parentIndent;
+      }
     }
 
     public override string VisitSequence(ISequence sequenceParam, FormattingStageContext context)
@@ -91,33 +110,45 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     private string GetParentIndent(CompositeElement parent)
     {
       string result = "";
-      var node = GetPrevSibling(parent);
-      while (node != null)
+      var node = GetParent(parent);
+      if(node == null)
       {
-        if (!(node is IWhitespaceNode))
-        {
-          result = "";
-          break;
-        }
-        if (node is NewLine)
-        {
-          break;
-        }
-        result += node.GetText();
-        node = node.PrevSibling;
+        return "";
       }
-      return result;
+      if (myCache.ContainsKey(node))
+      {
+        return myCache[node];
+      }
+      else
+      {
+        var oldParent = node;
+        node = node.PrevSibling;
+        while (node != null)
+        {
+          if (!(node is IWhitespaceNode))
+          {
+            result = "";
+            break;
+          }
+          if (node is NewLine)
+          {
+            break;
+          }
+          result += node.GetText();
+          node = node.PrevSibling;
+        }
+        myCache.Add(oldParent,result);
+        return result;
+      }
     }
 
-    private ITreeNode GetPrevSibling(ITreeNode node)
+    private ITreeNode GetParent(ITreeNode node)
     {
-      while((node != null) && ((node.PrevSibling == null) || (node.Parent is IParenExpression) || (node.Parent is IChoiceTail)))
+      //while((node != null) && ((node.PrevSibling == null) || (node.Parent is IParenExpression) || (node.Parent is IChoiceTail)))
+      //while((node != null) && ((node.PrevSibling == null)))
+      while ((node != null) && ((node.PrevSibling == null) || (node.Parent is IChoiceTail)))
       {
         node = node.Parent;
-      }
-      if(node != null)
-      {
-        return node.PrevSibling;
       }
       return node;
     }
