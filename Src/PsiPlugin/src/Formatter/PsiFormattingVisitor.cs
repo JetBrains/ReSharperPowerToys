@@ -40,17 +40,12 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 
     public override IEnumerable<string> VisitRuleBody(IRuleBody ruleBodyParam, PsiFmtStageContext context)
     {
-      return FormattingStageUtil.GetNodesSpace(1, 1, 1, false, context, myData);
+      return new string[] { " " };
     }
  
     public override IEnumerable<string> VisitExtrasDefinition(IExtrasDefinition extrasDefinitionParam, PsiFmtStageContext context)
     {
       return new string[] { "\r\n" };
-    }
-
-    public override IEnumerable<string> VisitRuleDeclaredName(IRuleDeclaredName ruleDeclaredNameParam, PsiFmtStageContext context)
-    {
-      return FormattingStageUtil.GetNodesSpace(1, 1, 1, false, context, myData);
     }
 
     public override IEnumerable<string> VisitSequence(ISequence sequenceParam, PsiFmtStageContext context)
@@ -76,7 +71,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       }
       else
       {*/
-        return new string[] {"\r\n"};
+      return new string[] { "\r\n" };
       //}
     }
 
@@ -96,7 +91,16 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       {
         return new string[] { "\r\n" };
       }
-      return base.VisitPsiExpression(psiExpressionParam, context);
+      return new string[] { " " };
+    }
+
+    public override IEnumerable<string> VisitParenExpression(IParenExpression parenExpressionParam, PsiFmtStageContext context)
+    {
+      if(context.LeftChild is IParenExpression || context.RightChild is IParenExpression)
+      {
+        return new string[] { "\r\n" };       
+      }
+      return base.VisitParenExpression(parenExpressionParam, context);
     }
   }
 }

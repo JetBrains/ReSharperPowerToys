@@ -90,7 +90,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
 
           public override string TokenRepresentation
           {
-            get { return "\n"; }
+            get { return "\r\n"; }
           }
         }
 
