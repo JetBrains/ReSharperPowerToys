@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Parsing;
 using JetBrains.ReSharper.PsiPlugin.Tree;
 
@@ -35,6 +36,15 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       {
         return new string[]{" "};
       }
+      if (context.RightChild is IRoleGetterParameter)
+      {
+        return new string[] { " " };
+      }
+      if (context.RightChild is IRuleBracketTypedParameters)
+      {
+        return new string[] { " " };
+      }
+
       /*if (context.RightChild is IOptionsDefinition)
       {
         return new string[] { " " };
@@ -101,11 +111,16 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 
     public override IEnumerable<string> VisitParenExpression(IParenExpression parenExpressionParam, PsiFmtStageContext context)
     {
-      if(context.LeftChild is IParenExpression || context.RightChild is IParenExpression)
+      if ((context.LeftChild is IPsiExpression) || (context.RightChild is IPsiExpression))
       {
-        return new string[] { "\r\n" };       
+        return new string[] { "\r\n" };
       }
       return base.VisitParenExpression(parenExpressionParam, context);
+    }
+
+    public override IEnumerable<string> VisitChoiceTail(IChoiceTail choiceTailParam, PsiFmtStageContext context)
+    {     
+      return new string[]{" "};
     }
   }
 }
