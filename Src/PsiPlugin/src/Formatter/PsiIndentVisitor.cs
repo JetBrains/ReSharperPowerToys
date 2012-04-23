@@ -107,7 +107,16 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       return GetParentIndent(context.Parent);
     }
 
-    private string GetParentIndent(CompositeElement parent)
+    public override string VisitChoiceTail(IChoiceTail choiceTailParam, FormattingStageContext context)
+    {
+      if(context.LeftChild is ICommentNode)
+      {
+        return GetParentIndent(choiceTailParam) + StandartIndent;
+      }
+      return base.VisitChoiceTail(choiceTailParam, context);
+    }
+
+    private string GetParentIndent(ITreeNode parent)
     {
       string result = "";
       var node = GetParent(parent);
