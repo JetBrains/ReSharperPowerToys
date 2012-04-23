@@ -35,6 +35,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       {
         return new string[]{" "};
       }
+      /*if (context.RightChild is IOptionsDefinition)
+      {
+        return new string[] { " " };
+      }*/
+
       return new string[]{"\r\n"};
     }
 
