@@ -115,7 +115,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       {
         return new string[] { "\r\n" };
       }
-      return base.VisitParenExpression(parenExpressionParam, context);
+      return new string[] { " " };
     }
 
     public override IEnumerable<string> VisitChoiceTail(IChoiceTail choiceTailParam, PsiFmtStageContext context)
