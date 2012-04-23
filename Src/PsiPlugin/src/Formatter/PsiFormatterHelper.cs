@@ -14,6 +14,7 @@ using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Parsing;
 using JetBrains.ReSharper.PsiPlugin.Tree;
+using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
 using JetBrains.Text;
 using JetBrains.Util;
 
@@ -23,7 +24,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
   {
     public static IWhitespaceNode CreateSpace(string spaceText)
     {
-      return (IWhitespaceNode)TreeElementFactory.CreateLeafElement(PsiTokenType.WHITE_SPACE, FormatterImplHelper.GetPooledWhitespace(spaceText), 0, 1);
+      return new Whitespace(spaceText);
     }
 
     public static void ReplaceSpaces(ITreeNode leftNode, ITreeNode rightNode, IEnumerable<string> wsTexts)
@@ -42,7 +43,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       return wsTexts.Where(text => !text.IsEmpty()).Select(text =>
       {
         if (text.IsNewLine())
-          return CreateNewLine();
+          return CreateNewLine("\r\n");
         // consistency check (remove in release?)
         if (!PsiLexer.IsWhitespace(text))
           throw new ApplicationException("Inconsistent space structure");
@@ -55,10 +56,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       formatter.Format(root, default(IProgressIndicator), overrideSettingsStore);
     }
 
-    public static IWhitespaceNode CreateNewLine()
+    public static IWhitespaceNode CreateNewLine(string text)
     {
       //var buf = FormatterImplHelper.NewLineBuffer;
-      return (IWhitespaceNode)TreeElementFactory.CreateLeafElement(PsiTokenType.WHITE_SPACE, FormatterImplHelper.GetPooledWhitespace("\n"), 0, 1);
+      return new NewLine(text);
+      //return (IWhitespaceNode)TreeElementFactory.CreateLeafElement(PsiTokenType.NEW_LINE, FormatterImplHelper.GetPooledWhitespace(text), 0, text.Length);
       IBuffer buf = new StringBuffer(" ");
       return (IWhitespaceNode)TreeElementFactory.CreateLeafElement(PsiTokenType.NEW_LINE, buf, 0, buf.Length);
     }
@@ -81,7 +83,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     public static void MakeIndent(this ITreeNode indentNode, string indent)
     {
       var lastSpace = indentNode.PrevSibling as IWhitespaceNode;
-      if (lastSpace != null && !(lastSpace == PsiTokenType.NEW_LINE))
+      if (lastSpace != null && !(lastSpace.GetTokenType() == PsiTokenType.NEW_LINE))
       {
         var firstSpace = lastSpace.LeftWhitespaces().TakeWhile(ws => !(ws == PsiTokenType.NEW_LINE)).LastOrDefault() ?? lastSpace;
 

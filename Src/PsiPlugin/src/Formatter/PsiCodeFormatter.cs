@@ -51,7 +51,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
         return null;
 
       if (leftToken.GetTokenType() == PsiTokenType.END_OF_LINE_COMMENT && rightToken.GetTokenType() != PsiTokenType.NEW_LINE)
-        return PsiFormatterHelper.CreateNewLine();
+        return PsiFormatterHelper.CreateNewLine("\r\n");
 
       if (rightToken is IWhitespaceNode || rightToken.GetTokenType() == PsiTokenType.WHITE_SPACE)
         return null;
@@ -74,7 +74,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       if ((leftToken == PsiTokenType.COLON || leftToken == PsiTokenType.SEMICOLON) &&
       (!(rightToken.GetTokenType() == PsiTokenType.C_STYLE_COMMENT || rightToken.GetTokenType() == PsiTokenType.END_OF_LINE_COMMENT)))
       {
-        return PsiFormatterHelper.CreateNewLine();
+        return PsiFormatterHelper.CreateNewLine("\r\n");
       }
 
       var tokenType1 = leftToken.GetTokenType();
@@ -83,7 +83,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       if (myGlueingCache.Get(new TokenTypePair(tokenType1, tokenType2)))
         return
           tokenType1 == PsiTokenType.END_OF_LINE_COMMENT
-            ? PsiFormatterHelper.CreateNewLine()
+            ? PsiFormatterHelper.CreateNewLine("\r\n")
             : PsiFormatterHelper.CreateSpace(" ");
 
       return null;
@@ -115,19 +115,25 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
         lastChild = lastChild.Parent;
       }
 
+      bool hasPrevSibling = false;
       while (firstNode.NextSibling == null)
       {
+        if(firstNode.PrevSibling != null)
+        {
+          hasPrevSibling = true;
+        }
         firstNode = firstNode.Parent;
         if(firstNode == firstChild)
         {
           break;
         }
       }
-      while((firstNode == firstChild) || (firstChild.IsWhitespaceToken()))
-      {
+      if (hasPrevSibling){
+        while ((firstNode == firstChild) || (firstChild.IsWhitespaceToken()))
+        {
 
-        firstChild = firstChild.NextSibling;
-
+          firstChild = firstChild.NextSibling;
+        }
       }
       firstNode = firstChild;
       while(firstNode.FirstChild != null)
