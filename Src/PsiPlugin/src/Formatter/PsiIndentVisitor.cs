@@ -39,6 +39,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
         return parentIndent + StandartIndent;
       }
       return myIndentCache.GetNodeIndent(optionsDefinitionParam);
+
     }
 
     public override string VisitRuleBody(IRuleBody ruleBodyParam, FormattingStageContext context)
