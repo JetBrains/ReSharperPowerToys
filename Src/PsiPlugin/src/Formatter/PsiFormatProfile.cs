@@ -10,13 +10,5 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     }
 
     public CodeFormatProfile Profile { get; set; }
-
-    public bool DontForceBraces
-    {
-      get
-      {
-        return Profile == CodeFormatProfile.INDENT || Profile == CodeFormatProfile.SOFT;
-      }
-    }
   }
 }

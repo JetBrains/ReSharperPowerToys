@@ -1,21 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using JetBrains.Annotations;
-using JetBrains.Application;
-using JetBrains.Application.Progress;
-using JetBrains.Application.Settings;
-using JetBrains.ReSharper.Psi.CodeStyle;
 using JetBrains.ReSharper.Psi.ExtensionsAPI;
-using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 using JetBrains.ReSharper.Psi.Impl.CodeStyle;
 using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Parsing;
 using JetBrains.ReSharper.PsiPlugin.Tree;
 using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
-using JetBrains.Text;
 using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Formatter
@@ -51,23 +44,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       }).ToArray();
     }
 
-    public static void Format([NotNull] this ICodeFormatter formatter, ITreeNode root, IContextBoundSettingsStore overrideSettingsStore = null)
-    {
-      formatter.Format(root, default(IProgressIndicator), overrideSettingsStore);
-    }
-
     public static IWhitespaceNode CreateNewLine(string text)
     {
-      //var buf = FormatterImplHelper.NewLineBuffer;
       return new NewLine(text);
-      //return (IWhitespaceNode)TreeElementFactory.CreateLeafElement(PsiTokenType.NEW_LINE, FormatterImplHelper.GetPooledWhitespace(text), 0, text.Length);
-      IBuffer buf = new StringBuffer(" ");
-      return (IWhitespaceNode)TreeElementFactory.CreateLeafElement(PsiTokenType.NEW_LINE, buf, 0, buf.Length);
-    }
-
-    public static int GetLineFeedsCount(this FormattingStageContext context)
-    {
-      return context.LeftChild.GetLineFeedsCountTo(context.RightChild);
     }
 
     private static IEnumerable<IWhitespaceNode> GetLineFeedsTo(this ITreeNode fromNode, ITreeNode toNode)
@@ -75,17 +54,12 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       return  fromNode.GetWhitespacesTo(toNode).Where(wsNode => (wsNode.GetTokenType() == PsiTokenType.NEW_LINE) && (wsNode is IWhitespaceNode)).Cast<IWhitespaceNode>();
     }
 
-    private static int GetLineFeedsCountTo(this ITreeNode fromNode, ITreeNode toNode)
-    {
-      return fromNode.GetLineFeedsTo(toNode).Count();
-    }
-
     public static void MakeIndent(this ITreeNode indentNode, string indent)
     {
       var lastSpace = indentNode.PrevSibling as IWhitespaceNode;
-      if (lastSpace != null && !(lastSpace.GetTokenType() == PsiTokenType.NEW_LINE))
+      if (lastSpace != null && lastSpace.GetTokenType() != PsiTokenType.NEW_LINE)
       {
-        var firstSpace = lastSpace.LeftWhitespaces().TakeWhile(ws => !(ws == PsiTokenType.NEW_LINE)).LastOrDefault() ?? lastSpace;
+        var firstSpace = lastSpace.LeftWhitespaces().TakeWhile(ws => ws != PsiTokenType.NEW_LINE).LastOrDefault() ?? lastSpace;
 
         if (firstSpace != lastSpace || lastSpace.GetText() != indent)
           if (indent.IsEmpty())

@@ -13,7 +13,6 @@ using JetBrains.ReSharper.Psi.Util;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.ReSharper.PsiPlugin.Parsing;
 using JetBrains.ReSharper.PsiPlugin.Tree;
-using JetBrains.ReSharper.PsiPlugin.Util;
 using JetBrains.Text;
 using JetBrains.Util;
 
@@ -24,7 +23,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
   {
     private readonly PsiLanguage myLanguage;
     private readonly ISettingsOptimization mySettingsOptimization;
-    private IEnumerable<IPsiCodeFormatterExtension> myExtensions;
+    private readonly IEnumerable<IPsiCodeFormatterExtension> myExtensions;
     private readonly ElementsCache<TokenTypePair, bool> myGlueingCache = new ElementsCache<TokenTypePair, bool>(IsTokensGlued);
 
     public PsiCodeFormatter(Lifetime lifetime, PsiLanguage language, ISettingsStore settingsStore, ISettingsOptimization settingsOptimization, IViewable<IPsiCodeFormatterExtension> extensions)
@@ -99,7 +98,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       return new[] { PsiFormatterHelper.CreateSpace(indent) };
     }
 
-    public void Format(ITreeNode firstElement, ITreeNode lastElement, PsiFormatProfile profile, [CanBeNull] IProgressIndicator pi, IContextBoundSettingsStore overrideSettingsStore = null)
+    private void Format(ITreeNode firstElement, ITreeNode lastElement, PsiFormatProfile profile, [CanBeNull] IProgressIndicator pi, IContextBoundSettingsStore overrideSettingsStore = null)
     {
       var firstNode = firstElement;
       var lastNode = lastElement;
@@ -143,13 +142,13 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       var solution = firstNode.GetSolution();
       var globalSettings = GlobalFormatSettingsHelper.GetService(solution).GetSettingsForLanguage(myLanguage);
       var contextBoundSettingsStore = GetProperContextBoundSettingsStore(overrideSettingsStore, firstNode);
-      var formatterSettings = new PsiCodeFormattingSettings(contextBoundSettingsStore, mySettingsOptimization, globalSettings);
+      var formatterSettings = new PsiCodeFormattingSettings(globalSettings);
       using (pi.SafeTotal(4))
       {
         var context = new PsiCodeFormattingContext(this, firstNode, lastNode, NullProgressIndicator.Instance);
         if (profile.Profile != CodeFormatProfile.INDENT)
         {
-          using (var subPi = pi.CreateSubProgress(1))
+          using (pi.CreateSubProgress(1))
           {
             //FormatterImplHelper.DecoratingIterateNodes(context, context.FirstNode, context.LastNode, new PsiDecorationStage(formatterSettings, profile, subPi));
           }
@@ -160,7 +159,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
             {
               var data = new FormattingStageData(formatterSettings, context, profile, myExtensions.ToList());
               PsiFormattingStage.DoFormat(data, subPi.CreateSubProgress(1));
-              PsiIndentingStage.DoIndent(formatterSettings, context, false, subPi.CreateSubProgress(1));
+              PsiIndentingStage.DoIndent(formatterSettings, context, subPi.CreateSubProgress(1));
             }
           }
         }
@@ -168,7 +167,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
         {
           using (var subPi = pi.CreateSubProgress(4))
           {
-            PsiIndentingStage.DoIndent(formatterSettings, context, false, subPi);
+            PsiIndentingStage.DoIndent(formatterSettings, context, subPi);
           }
         }
       }
