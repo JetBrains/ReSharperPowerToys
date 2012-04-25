@@ -1,5 +1,5 @@
 -------------- offset 28 line 6 col 10 --------------------
-+++ JetBrains.ReSharper.Features.Finding.FindUsages.GotoUsagesProvider navigation provider results +++
++++ JetBrains.ReSharper.Features.Finding.Usages.HighlightUsagesProvider navigation provider results +++
 Immediate result: Occurence's dump:
 TO: [O] |bb| RANGE: (8,10) @ test001.psi
 Occurence's type:
@@ -31,7 +31,7 @@ a
 
 ------------------
 
-+++ JetBrains.ReSharper.Features.Finding.Usages.FindUsagesProvider navigation provider results +++
++++ JetBrains.ReSharper.Features.Finding.FindUsages.GotoUsagesProvider navigation provider results +++
 Immediate result: Occurence's dump:
 TO: [O] |bb| RANGE: (8,10) @ test001.psi
 Occurence's type:
@@ -47,7 +47,7 @@ a
 
 ------------------
 
-+++ JetBrains.ReSharper.Features.Finding.Usages.HighlightUsagesProvider navigation provider results +++
++++ JetBrains.ReSharper.Features.Finding.Usages.FindUsagesProvider navigation provider results +++
 Immediate result: Occurence's dump:
 TO: [O] |bb| RANGE: (8,10) @ test001.psi
 Occurence's type:

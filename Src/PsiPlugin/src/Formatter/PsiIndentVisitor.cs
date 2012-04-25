@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 using JetBrains.ReSharper.Psi.Impl.CodeStyle;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Parsing;
@@ -10,17 +9,13 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 {
   public class PsiIndentVisitor : TreeNodeVisitor<FormattingStageContext, string>
   {
-    private PsiCodeFormattingSettings myFormattingSettings;
-    private PsiIndentCache myIndentCache;
-    private string myContIndent;
+    private readonly PsiIndentCache myIndentCache;
     private const string StandartIndent = "  ";
-    private IDictionary<ITreeNode, string> myCache;
+    private readonly IDictionary<ITreeNode, string> myCache;
 
-    public PsiIndentVisitor(PsiCodeFormattingSettings formattingSettings, PsiIndentCache indentCache)
+    public PsiIndentVisitor(PsiIndentCache indentCache)
     {
-      myFormattingSettings = formattingSettings;
       myIndentCache = indentCache;
-      myContIndent = formattingSettings.GlobalSettings.InsertTabs ? new string('\t', 1) : new string(' ', 1 * formattingSettings.GlobalSettings.IndentSize);
       myCache = new Dictionary<ITreeNode, string>();
     }
 
@@ -96,10 +91,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       if(context.RightChild is IPsiExpression)
       {
         return parentIndent + StandartIndent;
-      } else
-      {
-        return parentIndent;
       }
+      return parentIndent;
     }
 
     public override string VisitSequence(ISequence sequenceParam, FormattingStageContext context)
@@ -128,27 +121,24 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       {
         return myCache[node];
       }
-      else
+      var oldParent = node;
+      node = node.PrevSibling;
+      while (node != null)
       {
-        var oldParent = node;
-        node = node.PrevSibling;
-        while (node != null)
+        if (!(node is IWhitespaceNode))
         {
-          if (!(node is IWhitespaceNode))
-          {
-            result = "";
-            break;
-          }
-          if (node is NewLine)
-          {
-            break;
-          }
-          result += node.GetText();
-          node = node.PrevSibling;
+          result = "";
+          break;
         }
-        myCache.Add(oldParent,result);
-        return result;
+        if (node is NewLine)
+        {
+          break;
+        }
+        result += node.GetText();
+        node = node.PrevSibling;
       }
+      myCache.Add(oldParent,result);
+      return result;
     }
 
     private ITreeNode GetParent(ITreeNode node)

@@ -47,7 +47,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 
       var stage = new PsiFormattingStage(data);
 
-      //var nodePairs = data.Context.HierarchicalEnumNodes().Where(p => data.Context.CanModifyInsideNodeRange(p.First, p.Last)).ToList();
       var nodePairs = GetNodePairs(data.Context);
 
       var spaces = nodePairs.Select(
@@ -63,17 +62,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       IList<FormattingRange> list = new List<FormattingRange>();
       GetNodePairs(firstNode, lastNode, list);
       return list;
-      /*foreach (var treeNode in list)
-      {
-        if(prevNode != null)
-        {
-          if (prevNode.Parent == treeNode.Parent)
-          {
-            yield return new FormattingRange(prevNode, treeNode);
-          }
-        }
-        prevNode = treeNode;
-      }*/
     }
 
     private static void GetNodePairs(ITreeNode firstNode, ITreeNode lastNode, IList<FormattingRange> list)

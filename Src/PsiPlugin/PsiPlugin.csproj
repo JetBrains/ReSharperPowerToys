@@ -163,7 +163,6 @@
     <Compile Include="src\Feature\Services\FindUsages\PsiReferenceSearcher.cs" />
     <Compile Include="src\Feature\Services\FindUsages\PsiReferenceSearcherFactory.cs" />
     <Compile Include="src\Formatter\FormattingStageData.cs" />
-    <Compile Include="src\Formatter\FormattingStageUtil.cs" />
     <Compile Include="src\Formatter\IPsiCodeFormatterExtension.cs" />
     <Compile Include="src\Formatter\IPsiCodeFormatterFactory.cs" />
     <Compile Include="src\Formatter\PsiCodeFormatterFactory.cs" />
@@ -366,6 +365,9 @@
     <Compile Include="src\Tree\Impl\Whitespace.cs" />
     <Compile Include="src\Tree\IPsiTreeNode.cs" />
     <Compile Include="src\Tree\PsiCompositeNodeType.cs" />
+    <Compile Include="src\TypingAssist\PsiBracketMatcher.cs" />
+    <Compile Include="src\TypingAssist\PsiTypingAssist.cs" />
+    <Compile Include="src\Util\PsiDataContextEx.cs" />
     <Compile Include="src\Util\PsiDeclaredElementElementUtil.cs" />
     <Compile Include="src\Util\PsiElementFactory.cs" />
     <Compile Include="src\Util\PsiElementFactoryImpl.cs" />
@@ -404,7 +406,6 @@
   <Import Project="$(ReSharperSdkTools)\parserGen\ParserGen.Targets" />
   <Import Project="$(ReSharperSdkTools)\MSBuild\JetBrains.Build.Common.Targets" />
   <Import Project="$(ReSharperSdkTools)\CsLex\CsLex.Targets" />
-
   <Target Name="BeforeBuild">
     <MakeDir Directories="$(MSBuildProjectDirectory)\obj" />
     <Copy SourceFiles="$(ReSharperSdkTools)\parserGen\Unicode.lex" DestinationFolder="$(MSBuildProjectDirectory)\obj" />

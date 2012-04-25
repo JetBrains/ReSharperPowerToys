@@ -1,6 +1,4 @@
-using System;
 using System.Text;
-using JetBrains.Annotations;
 using JetBrains.ReSharper.Psi.CodeStyle;
 using JetBrains.ReSharper.Psi.Impl.CodeStyle;
 using JetBrains.ReSharper.Psi.Tree;
@@ -28,8 +26,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
           indent.Prepend(token.GetText());
         else if (tokenType == PsiTokenType.NEW_LINE)
           break;
-        //else
-          //indent.Remove(0, indent.Length);
       }
 
       return indent.ToString();

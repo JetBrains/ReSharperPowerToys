@@ -16,7 +16,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
   [CodeCleanupModule]
   public class ReformatCode : ICodeCleanupModule
   {
-    private static readonly Descriptor ourDescriptor = new Descriptor();
+    private static readonly Descriptor OurDescriptor = new Descriptor();
 
     public void SetDefaultSetting(CodeCleanupProfile profile, CodeCleanup.DefaultProfileType profileType)
     {
@@ -24,7 +24,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       {
         case CodeCleanup.DefaultProfileType.FULL:
         case CodeCleanup.DefaultProfileType.REFORMAT:
-          profile.SetSetting(ourDescriptor, true);
+          profile.SetSetting(OurDescriptor, true);
           break;
         default:
           throw new ArgumentOutOfRangeException("profileType");
@@ -39,7 +39,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     public void Process(IPsiSourceFile sourceFile, IRangeMarker rangeMarkerMarker, CodeCleanupProfile profile, IProgressIndicator progressIndicator)
     {
       var solution = sourceFile.GetSolution();
-      if (!profile.GetSetting(ourDescriptor)) return;
+      if (!profile.GetSetting(OurDescriptor)) return;
 
       var files = sourceFile.GetPsiFiles<PsiLanguage>().Cast<IPsiFile>().ToArray();
       using (progressIndicator.SafeTotal("Reformat Psi", files.Length))
@@ -82,7 +82,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 
     public ICollection<CodeCleanupOptionDescriptor> Descriptors
     {
-      get { return new CodeCleanupOptionDescriptor[] { ourDescriptor }; }
+      get { return new CodeCleanupOptionDescriptor[] { OurDescriptor }; }
     }
 
     public bool IsAvailableOnSelection
