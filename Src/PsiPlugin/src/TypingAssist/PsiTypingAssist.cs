@@ -42,10 +42,72 @@ namespace JetBrains.ReSharper.PsiPlugin.TypingAssist
       typingAssistManager.AddTypingHandler(lifetime, '{', this, HandleLeftBraceTyped, IsTypingSmartLBraceHandlerAvailable);
       //typingAssistManager.AddTypingHandler(lifetime, '}', this, HandleRightBraceTyped, IsTypingHandlerAvailable);
       typingAssistManager.AddTypingHandler(lifetime, '(', this, HandleLeftBracketOrParenthTyped, IsTypingSmartParenthesisHandlerAvailable);
+      typingAssistManager.AddTypingHandler(lifetime, ')', this, HandleRightBracketTyped, IsTypingSmartParenthesisHandlerAvailable);
       typingAssistManager.AddTypingHandler(lifetime, '[', this, HandleLeftBracketOrParenthTyped, IsTypingSmartParenthesisHandlerAvailable);
       typingAssistManager.AddTypingHandler(lifetime, ';', this, HandleSemicolonTyped, IsTypingSmartParenthesisHandlerAvailable);
       typingAssistManager.AddTypingHandler(lifetime, '"', this, HandleQuoteTyped, IsTypingSmartParenthesisHandlerAvailable);
       typingAssistManager.AddActionHandler(lifetime, TextControlActions.ENTER_ACTION_ID, this, HandleEnterPressed, IsActionHandlerAvailabile);
+    }
+
+    private bool HandleRightBracketTyped(ITypingContext typingContext)
+    {
+      var textControl = typingContext.TextControl;
+      if (typingContext.EnsureWritable() != EnsureWritableResult.SUCCESS)
+        return false;
+
+      using (CommandProcessor.UsingCommand("Smart bracket"))
+      {
+        TextControlUtil.DeleteSelection(textControl);
+
+        int charPos = TextControlToLexer(textControl, textControl.Caret.Offset());
+        CachingLexer lexer = GetCachingLexer(textControl);
+        if (charPos < 0 || !lexer.FindTokenAt(charPos) || lexer.TokenStart != charPos)
+        {
+          return false;
+        }
+        
+        if (NeedSkipCloseBracket(lexer, typingContext.Char))
+        {
+          var position = charPos + 1;
+          if (position >= 0)
+            textControl.Caret.MoveTo(position, CaretVisualPlacement.DontScrollIfVisible);
+        }
+        else
+          typingContext.CallNext();
+      }
+
+      return true;
+    }
+
+    private bool NeedSkipCloseBracket(CachingLexer lexer, char charTyped)
+    {
+      // check if the next token matches the typed char
+      TokenNodeType nextToken = lexer.TokenType;
+      if ((charTyped == ')' && nextToken != PsiTokenType.RPARENTH) ||
+          (charTyped == ']' && nextToken != PsiTokenType.RBRACKET) ||
+          (charTyped == '}' && nextToken != PsiTokenType.RBRACE))
+        return false;
+
+      // find the leftmost non-closed bracket (excluding typed) of typed class so that there are no opened brackets of other type
+      var bracketMatcher = new PsiBracketMatcher();
+      TokenNodeType searchTokenType = charTyped == ')'
+                                        ? PsiTokenType.LPARENTH
+                                        : charTyped == ']' ? PsiTokenType.LBRACKET : PsiTokenType.LBRACE;
+      int? leftParenthPos = null;
+      TokenNodeType tokenType;
+      for (lexer.Advance(-1); (tokenType = lexer.TokenType) != null; lexer.Advance(-1))
+      {
+        if (tokenType == searchTokenType && bracketMatcher.IsStackEmpty())
+          leftParenthPos = lexer.CurrentPosition;
+        else if (!bracketMatcher.ProceedStack(tokenType))
+          break;
+      }
+
+      // proceed with search result
+      if (leftParenthPos == null)
+        return false;
+      lexer.CurrentPosition = leftParenthPos.Value;
+      return bracketMatcher.FindMatchingBracket(lexer);
     }
 
     private static bool NeedAutoinsertCloseBracket(CachingLexer lexer)
@@ -82,12 +144,12 @@ namespace JetBrains.ReSharper.PsiPlugin.TypingAssist
         return false;
 
       using (CommandProcessor.UsingCommand("Smart Enter"))
+      using (WriteLockCookie.Create())
       {
         if (DoHandleEnterAfterLBracePressed(textControl))
           return true;
 
         context.CallNext();
-
         DoSmartIndentOnEnter(textControl);
         return true;
       }
@@ -186,7 +248,12 @@ namespace JetBrains.ReSharper.PsiPlugin.TypingAssist
             {
               var bindedDataContext = SettingsStore.CreateNestedTransaction(lifetime, "PsiTypingAssist").BindToContextTransient(textControl.ToContextRange());
               //bindedDataContext.SetValue(bindedDataContext.Schema.GetScalarEntry(((PsiFormatOtherSettingsKey key) => key.STICK_COMMENT), false, null));
-              codeFormatter.Format(tokenNode.GetPrevToken(), tokenNode,
+              var prevToken = tokenNode.GetPrevToken();
+              /*while(prevToken != null && prevToken.IsWhitespaceToken())
+              {
+                prevToken = prevToken.GetPrevToken();
+              }*/
+              codeFormatter.Format(prevToken, tokenNode,
                 CodeFormatProfile.INDENT, NullProgressIndicator.Instance, bindedDataContext);
             });
           offset = file.GetDocumentRange(tokenNode.GetTreeStartOffset()).TextRange.StartOffset +
@@ -526,6 +593,7 @@ namespace JetBrains.ReSharper.PsiPlugin.TypingAssist
 
       var codeFormatter = GetCodeFormatter(tokenNode);
       using (PsiTransactionCookie.CreateAutoCommitCookieWithCachesUpdate(PsiServices, "Format code"))
+      using (WriteLockCookie.Create())
       {
         codeFormatter.Format(startNode, tokenNode, CodeFormatProfile.DEFAULT);
       }

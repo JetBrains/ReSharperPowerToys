@@ -159,7 +159,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
             {
               var data = new FormattingStageData(formatterSettings, context, profile, myExtensions.ToList());
               PsiFormattingStage.DoFormat(data, subPi.CreateSubProgress(1));
-              PsiIndentingStage.DoIndent(formatterSettings, context, subPi.CreateSubProgress(1));
+              PsiIndentingStage.DoIndent(formatterSettings, context, subPi.CreateSubProgress(1), false);
             }
           }
         }
@@ -167,7 +167,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
         {
           using (var subPi = pi.CreateSubProgress(4))
           {
-            PsiIndentingStage.DoIndent(formatterSettings, context, subPi);
+            PsiIndentingStage.DoIndent(formatterSettings, context, subPi, true);
           }
         }
       }
