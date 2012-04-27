@@ -249,7 +249,7 @@ namespace JetBrains.ReSharper.PsiPlugin.TypingAssist
               var bindedDataContext = SettingsStore.CreateNestedTransaction(lifetime, "PsiTypingAssist").BindToContextTransient(textControl.ToContextRange());
               //bindedDataContext.SetValue(bindedDataContext.Schema.GetScalarEntry(((PsiFormatOtherSettingsKey key) => key.STICK_COMMENT), false, null));
               var prevToken = tokenNode.GetPrevToken();
-              /*while(prevToken != null && prevToken.IsWhitespaceToken())
+              /*while(prevToken != null && prevToken.GetTokenType() == PsiTokenType.WHITE_SPACE)
               {
                 prevToken = prevToken.GetPrevToken();
               }*/
