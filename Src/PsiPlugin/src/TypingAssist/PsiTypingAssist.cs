@@ -23,6 +23,7 @@ using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Formatter;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.ReSharper.PsiPlugin.Parsing;
+using JetBrains.ReSharper.PsiPlugin.Tree;
 using JetBrains.ReSharper.PsiPlugin.Util;
 using JetBrains.Text;
 using JetBrains.TextControl;
@@ -202,6 +203,10 @@ namespace JetBrains.ReSharper.PsiPlugin.TypingAssist
       {
         mixedLexer.Advance();
       }
+      /*if(mixedLexer.TokenType == PsiTokenType.RBRACE)
+      {
+        
+      }*/
       offset = mixedLexer.TokenType == null ? offset : mixedLexer.TokenStart;
       string extraText = (mixedLexer.TokenType == PsiTokenType.NEW_LINE || mixedLexer.TokenType == null) ? "foo " : String.Empty;
 
@@ -253,8 +258,21 @@ namespace JetBrains.ReSharper.PsiPlugin.TypingAssist
               {
                 prevToken = prevToken.GetPrevToken();
               }*/
-              codeFormatter.Format(prevToken, tokenNode,
-                CodeFormatProfile.INDENT, NullProgressIndicator.Instance, bindedDataContext);
+              if (tokenNode.Parent is IParenExpression|| prevToken.Parent is IParenExpression)
+              {
+                ITreeNode node = tokenNode.Parent;
+                if(prevToken.Parent is IParenExpression)
+                {
+                  node = prevToken.Parent;
+                }
+                codeFormatter.Format(node.FirstChild, node.LastChild,
+                  CodeFormatProfile.DEFAULT, NullProgressIndicator.Instance, bindedDataContext);
+              }
+              else
+              {
+                codeFormatter.Format(prevToken, tokenNode,
+                  CodeFormatProfile.INDENT, NullProgressIndicator.Instance, bindedDataContext);
+              }
             });
           offset = file.GetDocumentRange(tokenNode.GetTreeStartOffset()).TextRange.StartOffset +
             offsetInToken;
@@ -587,13 +605,6 @@ namespace JetBrains.ReSharper.PsiPlugin.TypingAssist
       {
         startNode = node.FirstChild;
       }
-      //      if (textControl.Document.GetCoordsByOffset(startNode.GetTreeTextRange().EndOffset).Line !=
-      //          textControl.Document.GetCoordsByOffset(node.GetTreeTextRange().StartOffset).Line)
-      //      {
-      //        startNode = node;
-      //        while (startNode.FirstChild != null)
-      //          startNode = startNode.FirstChild;
-      //      }
 
       var codeFormatter = GetCodeFormatter(tokenNode);
       using (PsiTransactionCookie.CreateAutoCommitCookieWithCachesUpdate(PsiServices, "Format code"))
