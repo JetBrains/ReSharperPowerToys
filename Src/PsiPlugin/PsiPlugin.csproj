@@ -13,7 +13,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>JetBrains.ReSharper.PsiPlugin</RootNamespace>
     <AssemblyName>JetBrains.ReSharper.PsiPlugin</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <PsiLanguageName>Psi</PsiLanguageName>
     <ProductHomeDir>$(MSBuildProjectDirectory)</ProductHomeDir>
