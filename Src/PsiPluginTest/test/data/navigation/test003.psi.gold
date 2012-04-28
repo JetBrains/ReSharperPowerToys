@@ -1,5 +1,5 @@
 -------------- offset 34 line 4 col 6 --------------------
-+++ JetBrains.ReSharper.Features.Finding.GoToImplementation.GotoImplementationProvider navigation provider results +++
++++ JetBrains.ReSharper.Features.Finding.GoToDeclaration.GotoDeclarationProvider navigation provider results +++
 Immediate result: Occurence's dump:
 TO: [O] !(#|id| : identifier) RANGE: (11,13) @ test003.psi
 Occurence's type:
@@ -61,7 +61,7 @@ Occurence's navigation result. Opened file: test003.psi
 
 ------------------
 
-+++ JetBrains.ReSharper.Features.Finding.GoToDeclaration.GotoDeclarationProvider navigation provider results +++
++++ JetBrains.ReSharper.Features.Finding.GoToImplementation.GotoImplementationProvider navigation provider results +++
 Immediate result: Occurence's dump:
 TO: [O] !(#|id| : identifier) RANGE: (11,13) @ test003.psi
 Occurence's type:
