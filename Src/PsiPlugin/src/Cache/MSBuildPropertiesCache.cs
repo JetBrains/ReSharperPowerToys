@@ -49,7 +49,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
         var projectFile = project.ProjectFile;
         if (projectFile == null)
           return null;
-
+        
         var loadedProjects =
           Microsoft.Build.Evaluation.ProjectCollection.GlobalProjectCollection.GetLoadedProjects(
             projectFile.Location.FullPath).ToList();
