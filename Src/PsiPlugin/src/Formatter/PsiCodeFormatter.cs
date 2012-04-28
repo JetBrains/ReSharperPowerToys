@@ -101,9 +101,13 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     private void Format(ITreeNode firstElement, ITreeNode lastElement, PsiFormatProfile profile, [CanBeNull] IProgressIndicator pi, IContextBoundSettingsStore overrideSettingsStore = null)
     {
       var firstNode = firstElement;
+      if(firstElement == null)
+      {
+        firstNode = lastElement;
+      }
       var lastNode = lastElement;
       var commonParent = firstNode.FindCommonParent(lastNode);
-      var firstChild = firstElement;
+      var firstChild = firstNode;
       var lastChild = lastElement;
       while(firstChild.Parent != commonParent)
       {

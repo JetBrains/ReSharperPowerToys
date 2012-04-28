@@ -10,12 +10,14 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
   public class PsiIndentVisitor : TreeNodeVisitor<FormattingStageContext, string>
   {
     private readonly PsiIndentCache myIndentCache;
+    private readonly bool myInTypingAssist;
     private const string StandartIndent = "  ";
     private readonly IDictionary<ITreeNode, string> myCache;
 
-    public PsiIndentVisitor(PsiIndentCache indentCache)
+    public PsiIndentVisitor(PsiIndentCache indentCache, bool inTypingAssist)
     {
       myIndentCache = indentCache;
+      myInTypingAssist = inTypingAssist;
       myCache = new Dictionary<ITreeNode, string>();
     }
 
@@ -97,7 +99,20 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 
     public override string VisitSequence(ISequence sequenceParam, FormattingStageContext context)
     {
-      return GetParentIndent(context.Parent);
+      if (myInTypingAssist)
+      {
+        var node = GetParent(context.Parent);
+        string indent = GetIndentByOldParent(node);
+        if(node.Parent is IParenExpression)
+        {
+          return VisitParenExpression(node.Parent as IParenExpression, new FormattingStageContext(new FormattingRange(node.PrevSibling, node)));
+        }
+        return indent;
+      }
+      else
+      {
+        return GetParentIndent(context.Parent);
+      }
     }
 
     public override string VisitChoiceTail(IChoiceTail choiceTailParam, FormattingStageContext context)
@@ -138,6 +153,38 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
         node = node.PrevSibling;
       }
       myCache.Add(oldParent,result);
+      return result;
+    }
+
+    private string GetIndentByOldParent(ITreeNode parent)
+    {
+      string result = "";
+      var node = parent;
+      if (node == null)
+      {
+        return "";
+      }
+      if (myCache.ContainsKey(node))
+      {
+        return myCache[node];
+      }
+      var oldParent = node;
+      node = node.PrevSibling;
+      while (node != null)
+      {
+        if (!(node is IWhitespaceNode))
+        {
+          result = "";
+          break;
+        }
+        if (node is NewLine)
+        {
+          break;
+        }
+        result += node.GetText();
+        node = node.PrevSibling;
+      }
+      myCache.Add(oldParent, result);
       return result;
     }
 

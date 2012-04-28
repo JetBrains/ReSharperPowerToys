@@ -16,7 +16,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     {
       myInTypingAssist = inTypingAssist;
       myIndentCache = new PsiIndentCache();
-      myIndentVisitor = CreateIndentVisitor(formattingSettings, myIndentCache);
+      myIndentVisitor = CreateIndentVisitor(myIndentCache, inTypingAssist);
     }
 
     public static void DoIndent(PsiCodeFormattingSettings formattingSettings, CodeFormattingContext context, IProgressIndicator progress, bool inTypingAssist)
@@ -51,10 +51,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     }
 
     [NotNull]
-    private PsiIndentVisitor CreateIndentVisitor([NotNull] PsiCodeFormattingSettings formattingSettings, [NotNull] PsiIndentCache indentCache)
+    private PsiIndentVisitor CreateIndentVisitor([NotNull] PsiIndentCache indentCache, bool inTypingAssist)
     {
 
-      return new PsiIndentVisitor(indentCache);
+      return new PsiIndentVisitor(indentCache, inTypingAssist);
     }
   }
 }

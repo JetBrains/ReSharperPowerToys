@@ -239,6 +239,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
       {
         var parser = (IPsiParser)languageService.CreateParser(new ProjectedLexer(cachingLexer, new TextRange(currStartOffset.Offset, currStartOffset.Offset + newLength)), GetPsiModule(), GetSourceFile());
         TreeElement newElement = parser.ParseStatement();
+        if(newElement.GetTextLength() == 0)
+        {
+          return null;
+        }
         if((newElement.GetTextLength() == newLength) && (";".Equals(newElement.GetText().Substring(newElement.GetTextLength() - 1))))
         {
           var psiFile = GetContainingNode<PsiFile>();
