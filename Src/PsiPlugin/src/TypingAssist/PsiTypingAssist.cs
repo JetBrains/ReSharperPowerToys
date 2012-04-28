@@ -583,6 +583,10 @@ namespace JetBrains.ReSharper.PsiPlugin.TypingAssist
 
       // Select the correct start node for formatting
       var startNode = node.FindFormattingRangeToLeft();
+      if(startNode == null)
+      {
+        startNode = node.FirstChild;
+      }
       //      if (textControl.Document.GetCoordsByOffset(startNode.GetTreeTextRange().EndOffset).Line !=
       //          textControl.Document.GetCoordsByOffset(node.GetTreeTextRange().StartOffset).Line)
       //      {
