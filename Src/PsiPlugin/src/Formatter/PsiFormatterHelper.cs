@@ -60,6 +60,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       if (lastSpace != null && lastSpace.GetTokenType() != PsiTokenType.NEW_LINE)
       {
         var firstSpace = lastSpace.LeftWhitespaces().TakeWhile(ws => ws != PsiTokenType.NEW_LINE).LastOrDefault() ?? lastSpace;
+        while(firstSpace.GetTokenType() != PsiTokenType.NEW_LINE)
+        {
+          firstSpace = firstSpace.GetNextToken();
+        }
         firstSpace = firstSpace.GetNextToken();
         if (firstSpace != lastSpace || lastSpace.GetText() != indent)
           if (indent.IsEmpty())
