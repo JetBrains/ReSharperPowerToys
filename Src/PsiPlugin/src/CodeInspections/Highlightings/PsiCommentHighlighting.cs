@@ -8,19 +8,20 @@ using JetBrains.ReSharper.Psi.Tree;
 
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
 {
-
   [ConfigurableSeverityHighlighting("Comment", "PSI", OverlapResolve = OverlapResolveKind.NONE, ToolTipFormatString = "Comment")]
 //[StaticSeverityHighlighting(Severity.INFO, HighlightingGroupIds.CodeInfo, 
     //OverlapResolve = OverlapResolveKind.NONE, ShowToolTipInStatusBar = false)]
   internal class PsiCommentHighlighting : ICustomAttributeIdHighlighting, IHighlightingWithRange
   {
-    private readonly ITreeNode myNode;
     private const string AtributeId = HighlightingAttributeIds.JAVA_SCRIPT_XML_DOC_TAG;
+    private readonly ITreeNode myNode;
 
     public PsiCommentHighlighting(ITreeNode node)
     {
       myNode = node;
     }
+
+    #region ICustomAttributeIdHighlighting Members
 
     public bool IsValid()
     {
@@ -42,14 +43,20 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
       get { return 0; }
     }
 
+    public string AttributeId
+    {
+      get { return AtributeId; }
+    }
+
+    #endregion
+
+    #region IHighlightingWithRange Members
+
     public DocumentRange CalculateRange()
     {
       return myNode.GetDocumentRange();
     }
 
-    public string AttributeId
-    {
-      get { return AtributeId; }
-    }
+    #endregion
   }
 }

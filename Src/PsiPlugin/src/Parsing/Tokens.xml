@@ -1,24 +1,22 @@
-﻿<Tokens TokenTypeNamespace="JetBrains.ReSharper.PsiPlugin.Parsing" TokenTypeClass="PsiTokenType"
-        KeywordNodeType="KeywordTokenNodeType" KeywordTokenElement="FixedTokenElement"
-        TokenNodeType="FixedTokenNodeType" TokenTokenElement="FixedTokenElement">
-  
-  <Keyword name="ABSTRACT" representation="abstract"/>
-  <Keyword name="ERRORHANDLING" representation="errorhandling"/>
-  <Keyword name="EXTRAS" representation="extras"/>
-  <Keyword name="GET" representation="get"/>
-  <Keyword name="GETTER" representation="getter"/>
-  <Keyword name="OPTIONS" representation="options"/>
-  <Keyword name="INTERFACE" representation="interface"/>
-  <Keyword name="INTERFACES" representation="interfaces"/>
-  <Keyword name="ISCACHED" representation="isCached"/>
-  <Keyword name="PRIVATE" representation="private"/>
-  <Keyword name="PATHS" representation="paths"/>
-  <Keyword name="RETURN_TYPE" representation="returnType"/>
-  <Keyword name="ROLE_KEYWORD" representation="ROLE"/>
-  <Keyword name="CACHED" representation="cached"/>
-  <Keyword name="NULL_KEYWORD" representation="null"/>
-  <Keyword name="LIST_KEYWORD" representation="LIST"/>
-  <Keyword name="SEP_KEYWORD" representation="SEP"/>
+﻿<Tokens TokenTypeNamespace="JetBrains.ReSharper.PsiPlugin.Parsing" TokenTypeClass="PsiTokenType" KeywordNodeType="KeywordTokenNodeType" KeywordTokenElement="FixedTokenElement" TokenNodeType="FixedTokenNodeType" TokenTokenElement="FixedTokenElement">
+
+  <Keyword name="ABSTRACT" representation="abstract" />
+  <Keyword name="ERRORHANDLING" representation="errorhandling" />
+  <Keyword name="EXTRAS" representation="extras" />
+  <Keyword name="GET" representation="get" />
+  <Keyword name="GETTER" representation="getter" />
+  <Keyword name="OPTIONS" representation="options" />
+  <Keyword name="INTERFACE" representation="interface" />
+  <Keyword name="INTERFACES" representation="interfaces" />
+  <Keyword name="ISCACHED" representation="isCached" />
+  <Keyword name="PRIVATE" representation="private" />
+  <Keyword name="PATHS" representation="paths" />
+  <Keyword name="RETURN_TYPE" representation="returnType" />
+  <Keyword name="ROLE_KEYWORD" representation="ROLE" />
+  <Keyword name="CACHED" representation="cached" />
+  <Keyword name="NULL_KEYWORD" representation="null" />
+  <Keyword name="LIST_KEYWORD" representation="LIST" />
+  <Keyword name="SEP_KEYWORD" representation="SEP" />
 
   <Token name="LPARENTH" representation="(" />
   <Token name="RPARENTH" representation=")" />
@@ -34,9 +32,9 @@
   <Token name="LT" representation="&lt;" />
   <Token name="EXCL" representation="!" />
   <Token name="TILDE" representation="~" />
-  <Token name="SHARP" representation="#"/>
-  <Token name="AT" representation="@"/>
-  <Token name="BACK_QUOTE" representation="`"/>
+  <Token name="SHARP" representation="#" />
+  <Token name="AT" representation="@" />
+  <Token name="BACK_QUOTE" representation="`" />
   <Token name="QUEST" representation="?" />
   <Token name="COLON" representation=":" />
   <Token name="PLUS" representation="+" />
@@ -71,5 +69,5 @@
   <Token name="DOUBLE_COLON" representation="::" />
   <Token name="DOUBLE_QUEST" representation="??" />
   <Token name="ARROW" representation="->" />
-  
+
 </Tokens>

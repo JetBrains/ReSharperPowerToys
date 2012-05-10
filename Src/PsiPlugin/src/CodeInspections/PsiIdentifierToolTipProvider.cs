@@ -12,7 +12,9 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
   internal class PsiIdentifierTooltipProvider : IdentifierTooltipProvider<PsiLanguage>
   {
     public PsiIdentifierTooltipProvider(ISolution solution, IDeclaredElementDescriptionPresenter presenter)
-      : base(solution, presenter) { }
+      : base(solution, presenter)
+    {
+    }
 
     protected override DeclaredElementInstance GetCustomElementInstance(ITreeNode element)
     {

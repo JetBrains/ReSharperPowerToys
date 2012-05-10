@@ -11,7 +11,7 @@ using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
 {
-  [DaemonStage(StagesBefore = new[] { typeof(LanguageSpecificDaemonStage) })]
+  [DaemonStage(StagesBefore = new[] { typeof (LanguageSpecificDaemonStage) })]
   public class ErrorElementHighlighting : PsiDaemonStageBase
   {
     public ErrorElementHighlighting(CodeAnnotationsCache codeAnnotationsCache)
@@ -26,10 +26,14 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
     public override IEnumerable<IDaemonStageProcess> CreateProcess(IDaemonProcess process, IContextBoundSettingsStore settings, DaemonProcessKind processKind)
     {
       if (!IsSupported(process.SourceFile))
+      {
         return EmptyList<IDaemonStageProcess>.InstanceList;
+      }
 
-      return new List<IDaemonStageProcess>() {new KeywordHighlightingProcess(process, settings)};
+      return new List<IDaemonStageProcess> { new KeywordHighlightingProcess(process, settings) };
     }
+
+    #region Nested type: KeywordHighlightingProcess
 
     private class KeywordHighlightingProcess : PsiIncrementalDaemonStageProcessBase
     {
@@ -45,14 +49,14 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
         {
           if (element.GetTextLength() == 0)
           {
-            var parent = element.Parent;
-            while( (parent != null) && (parent.GetTextLength() == 0))
+            ITreeNode parent = element.Parent;
+            while ((parent != null) && (parent.GetTextLength() == 0))
             {
               parent = parent.Parent;
             }
-            if(parent != null)
+            if (parent != null)
             {
-              AddHighlighting(consumer,parent);
+              AddHighlighting(consumer, parent);
             }
           }
           else
@@ -67,5 +71,7 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
         consumer.AddHighlighting(new PsiErrorElementHighlighting(expression), File);
       }
     }
+
+    #endregion
   }
 }

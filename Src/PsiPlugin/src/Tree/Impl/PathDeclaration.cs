@@ -8,29 +8,19 @@ using JetBrains.ReSharper.PsiPlugin.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
 {
-  partial class PathDeclaration : IDeclaredElement
+  internal partial class PathDeclaration : IDeclaredElement
   {
-    public void SetName(string name)
-    {
-      PsiTreeUtil.ReplaceChild(PathName, PathName.FirstChild, name);
-    }
-
-    public TreeTextRange GetNameRange()
-    {
-      ITreeNode pathName = PathName;
-      int offset = pathName.GetNavigationRange().TextRange.StartOffset;
-      return new TreeTextRange(new TreeOffset(offset), pathName.GetText().Length);
-    }
+    #region IDeclaredElement Members
 
     public IList<IDeclaration> GetDeclarations()
     {
-      var list = new List<IDeclaration> {this};
+      var list = new List<IDeclaration> { this };
       return list;
     }
 
     public IList<IDeclaration> GetDeclarationsIn(IPsiSourceFile sourceFile)
     {
-      var list = new List<IDeclaration> {this};
+      var list = new List<IDeclaration> { this };
       return list;
     }
 
@@ -64,6 +54,27 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
       get { return true; }
     }
 
+    public PsiLanguageType PresentationLanguage
+    {
+      get { return PsiLanguage.Instance; }
+    }
+
+    #endregion
+
+    #region IPathDeclaration Members
+
+    public void SetName(string name)
+    {
+      PsiTreeUtil.ReplaceChild(PathName, PathName.FirstChild, name);
+    }
+
+    public TreeTextRange GetNameRange()
+    {
+      ITreeNode pathName = PathName;
+      int offset = pathName.GetNavigationRange().TextRange.StartOffset;
+      return new TreeTextRange(new TreeOffset(offset), pathName.GetText().Length);
+    }
+
     public IDeclaredElement DeclaredElement
     {
       get { return this; }
@@ -74,14 +85,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
       get { return GetDeclaredName(); }
     }
 
+    #endregion
+
     private string GetDeclaredName()
     {
       return PathName.GetText();
-    }
-
-    public PsiLanguageType PresentationLanguage
-    {
-      get { return PsiLanguage.Instance; }
     }
   }
 }

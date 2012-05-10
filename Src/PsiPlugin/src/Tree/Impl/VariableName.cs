@@ -5,10 +5,13 @@ using JetBrains.ReSharper.PsiPlugin.Resolve;
 
 namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
 {
-  partial class VariableName
+  internal partial class VariableName
   {
-    private IReference myReference;
     private bool myInitReference;
+    private IReference myReference;
+
+    #region IVariableName Members
+
     public override ReferenceCollection GetFirstClassReferences()
     {
       if (!myInitReference)
@@ -19,6 +22,13 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
       return new ReferenceCollection(myReference);
     }
 
+    public void SetName(string shortName)
+    {
+      ((PsiVariableReference)myReference).SetName(shortName);
+    }
+
+    #endregion
+
     public ResolveResultWithInfo Resolve()
     {
       if (!myInitReference)
@@ -27,11 +37,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
         myInitReference = true;
       }
       return myReference.Resolve();
-    }
-
-    public void SetName(string shortName)
-    {
-      ((PsiVariableReference)myReference).SetName(shortName);
     }
   }
 }

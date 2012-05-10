@@ -4,10 +4,13 @@ using JetBrains.ReSharper.PsiPlugin.Resolve;
 
 namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
 {
-  partial class RoleName
+  internal partial class RoleName
   {
-    private IReference myReference;
     private bool myInitReference;
+    private IReference myReference;
+
+    #region IRoleName Members
+
     public override ReferenceCollection GetFirstClassReferences()
     {
       if (!myInitReference)
@@ -17,5 +20,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
       }
       return new ReferenceCollection(myReference);
     }
+
+    #endregion
   }
 }

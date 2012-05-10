@@ -10,7 +10,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
 {
   public class PsiOptionReference : PsiReferenceBase
   {
-    public PsiOptionReference(ITreeNode node) : base(node)
+    public PsiOptionReference(ITreeNode node)
+      : base(node)
     {
     }
 
@@ -18,14 +19,16 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
     {
       var file = TreeNode.GetContainingFile() as PsiFile;
       if (file == null)
+      {
         return EmptySymbolTable.INSTANCE;
+      }
       return file.FileOptionSymbolTable;
     }
 
     public override IReference BindTo(IDeclaredElement element)
     {
       var optionName = (IOptionName)GetTreeNode();
-      if (optionName.Parent != null)
+      if (optionName.Parent != null && optionName.FirstChild != null)
       {
         if (!(element.ShortName.Equals(optionName.FirstChild.GetText())))
         {

@@ -11,16 +11,27 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
   [ConfigurableSeverityHighlighting("Repeated Choice", "PSI", OverlapResolve = OverlapResolveKind.NONE, ToolTipFormatString = "Repeated Choice")]
   //[StaticSeverityHighlighting(Severity.INFO, HighlightingGroupIds.CompilerWarnings,
     //OverlapResolve = OverlapResolveKind.WARNING, ShowToolTipInStatusBar = false)]
-  class RepeatedChoiceWarning : IHighlightingWithRange, ICustomAttributeIdHighlighting
+  internal class RepeatedChoiceWarning : IHighlightingWithRange, ICustomAttributeIdHighlighting
   {
-    private readonly ITreeNode myElement;
     private const string Error = "Repeated choice";
     private const string AtributeId = HighlightingAttributeIds.WARNING_ATTRIBUTE;
+    private readonly ITreeNode myElement;
 
     public RepeatedChoiceWarning(ITreeNode element)
     {
       myElement = element;
     }
+
+    #region ICustomAttributeIdHighlighting Members
+
+    public string AttributeId
+    {
+      get { return AtributeId; }
+    }
+
+    #endregion
+
+    #region IHighlightingWithRange Members
 
     public bool IsValid()
     {
@@ -47,9 +58,6 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
       return myElement.GetNavigationRange();
     }
 
-    public string AttributeId
-    {
-      get { return AtributeId; }
-    }
+    #endregion
   }
 }

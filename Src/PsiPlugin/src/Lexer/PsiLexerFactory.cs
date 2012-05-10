@@ -4,13 +4,17 @@ using JetBrains.Text;
 
 namespace JetBrains.ReSharper.PsiPlugin.Lexer
 {
-    class PsiLexerFactory : ILexerFactory
-    {
-      public static readonly PsiLexerFactory Instance = new PsiLexerFactory();
+  internal class PsiLexerFactory : ILexerFactory
+  {
+    public static readonly PsiLexerFactory Instance = new PsiLexerFactory();
 
-        public ILexer CreateLexer(IBuffer buffer)
-        {
-            return new PsiLexer(buffer);
-        }
+    #region ILexerFactory Members
+
+    public ILexer CreateLexer(IBuffer buffer)
+    {
+      return new PsiLexer(buffer);
     }
+
+    #endregion
+  }
 }

@@ -17,17 +17,19 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
     public override ISymbolTable GetReferenceSymbolTable(bool useReferenceName)
     {
       ITreeNode node = TreeNode;
-      while(node != null)
+      while (node != null)
       {
-        if(node is IRuleDeclaration)
+        if (node is IRuleDeclaration)
         {
           break;
         }
         node = node.Parent;
       }
-      var ruleDeclaration = ((IRuleDeclaration) node);
+      var ruleDeclaration = ((IRuleDeclaration)node);
       if (ruleDeclaration == null)
+      {
         return EmptySymbolTable.INSTANCE;
+      }
       return ruleDeclaration.VariableSymbolTable;
     }
 

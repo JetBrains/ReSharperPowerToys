@@ -8,13 +8,13 @@ using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
 
 namespace JetBrains.ReSharper.PsiPlugin.Parsing
 {
- internal class PsiParser : PsiParserGenerated, IPsiParser
+  internal class PsiParser : PsiParserGenerated, IPsiParser
   {
-    private readonly ILexer myOriginalLexer;
     private readonly SeldomInterruptChecker myCheckForInterrupt;
+    private readonly ILexer myOriginalLexer;
     protected IPsiSourceFile SourceFile;
 
-   public PsiParser(ILexer lexer)
+    public PsiParser(ILexer lexer)
     {
       myCheckForInterrupt = new SeldomInterruptChecker();
       myOriginalLexer = lexer;
@@ -26,23 +26,23 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
 
     public IFile ParseFile()
     {
-      var file = (IFile) parsePsiFile();
-      InsertMissingTokens((TreeElement) file, false);
+      var file = (IFile)parsePsiFile();
+      InsertMissingTokens((TreeElement)file, false);
       return file;
     }
 
-   public TreeElement ParseStatement()
-   {
-     return PrepareElement(base.parseRuleDeclaration(), true);
-   }
+    public TreeElement ParseStatement()
+    {
+      return PrepareElement(base.parseRuleDeclaration(), true);
+    }
 
-   private TreeElement PrepareElement(TreeElement compositeElement, bool trimMissingTokens)
-   {
-     InsertMissingTokens(compositeElement, trimMissingTokens);
-     return compositeElement;
-   }
+    #endregion
 
-   #endregion
+    private TreeElement PrepareElement(TreeElement compositeElement, bool trimMissingTokens)
+    {
+      InsertMissingTokens(compositeElement, trimMissingTokens);
+      return compositeElement;
+    }
 
     private void InsertMissingTokens(TreeElement result, bool trimMissingTokens)
     {
@@ -64,7 +64,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
 
     public TreeElement ParsePsiFile(bool isFileReal)
     {
-      var file = base.parsePsiFile();
+      TreeElement file = base.parsePsiFile();
       var psiFile = file as PsiFile;
       if (psiFile != null)
       {
@@ -74,6 +74,5 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
       }
       return psiFile;
     }
-
   }
 }

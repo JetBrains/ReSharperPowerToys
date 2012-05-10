@@ -5,19 +5,31 @@ using JetBrains.ReSharper.Psi.Tree;
 
 [assembly: RegisterConfigurableSeverity("SyntaxError", null, HighlightingGroupIds.LanguageUsage, "Syntax Error", @"
           Syntax error", Severity.ERROR, false, Internal = false)]
+
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
 {
   [ConfigurableSeverityHighlighting("SyntaxError", "PSI", OverlapResolve = OverlapResolveKind.ERROR, ToolTipFormatString = Error)]
-  class PsiErrorElementHighlighting : IHighlightingWithRange, ICustomAttributeIdHighlighting
+  internal class PsiErrorElementHighlighting : IHighlightingWithRange, ICustomAttributeIdHighlighting
   {
-    private readonly ITreeNode myElement;
     private const string Error = "Syntax error";
     private const string AtributeId = HighlightingAttributeIds.ERROR_ATTRIBUTE;
+    private readonly ITreeNode myElement;
 
     public PsiErrorElementHighlighting(ITreeNode element)
     {
       myElement = element;
     }
+
+    #region ICustomAttributeIdHighlighting Members
+
+    public string AttributeId
+    {
+      get { return AtributeId; }
+    }
+
+    #endregion
+
+    #region IHighlightingWithRange Members
 
     public bool IsValid()
     {
@@ -44,9 +56,6 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
       return myElement.GetNavigationRange();
     }
 
-    public string AttributeId
-    {
-      get { return AtributeId; }
-    }
+    #endregion
   }
 }

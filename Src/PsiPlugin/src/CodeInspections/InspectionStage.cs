@@ -12,7 +12,7 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
     IDaemonStageProcess CreateInspectionsProcess(IDaemonProcess process, IContextBoundSettingsStore settings);
   }
 
-  [DaemonStage(StagesBefore = new[] { typeof(SmartResolverStage), typeof(PsiFileIndexStage) })]
+  [DaemonStage(StagesBefore = new[] { typeof (SmartResolverStage), typeof (PsiFileIndexStage) })]
   public class InspectionsStage : PsiDaemonStageBase
   {
     private readonly ProjectFileTypeServices myServices;
@@ -34,18 +34,22 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
 
       var factory = myServices.TryGetService<IPsiInspectionsProcessFactory>(process.SourceFile.LanguageType);
       if (factory == null)
-        return null;
+        return EmptyList<IDaemonStageProcess>.InstanceList;
 
-      return new List<IDaemonStageProcess>(){factory.CreateInspectionsProcess(process, settings)};
+      return new List<IDaemonStageProcess> { factory.CreateInspectionsProcess(process, settings) };
     }
   }
 
-  [ProjectFileType(typeof(KnownProjectFileType))]
+  [ProjectFileType(typeof (KnownProjectFileType))]
   public sealed class PsiInspectionsProcessFactory : IPsiInspectionsProcessFactory
   {
+    #region IPsiInspectionsProcessFactory Members
+
     public IDaemonStageProcess CreateInspectionsProcess(IDaemonProcess process, IContextBoundSettingsStore settings)
     {
       return new InspectionsProcess(process, settings);
     }
+
+    #endregion
   }
 }

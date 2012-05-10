@@ -13,13 +13,15 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
     //OverlapResolve = OverlapResolveKind.NONE, ShowToolTipInStatusBar = false)]
   internal class PsiVariableHighlighting : ICustomAttributeIdHighlighting, IHighlightingWithRange
   {
-    private readonly ITreeNode myElement;
     private const string AtributeId = HighlightingAttributeIds.LOCAL_VARIABLE_IDENTIFIER_ATTRIBUTE;
+    private readonly ITreeNode myElement;
 
     public PsiVariableHighlighting(ITreeNode element)
     {
       myElement = element;
     }
+
+    #region ICustomAttributeIdHighlighting Members
 
     public bool IsValid()
     {
@@ -41,14 +43,20 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
       get { return 0; }
     }
 
+    public string AttributeId
+    {
+      get { return AtributeId; }
+    }
+
+    #endregion
+
+    #region IHighlightingWithRange Members
+
     public DocumentRange CalculateRange()
     {
       return myElement.GetNavigationRange();
     }
 
-    public string AttributeId
-    {
-      get { return AtributeId; }
-    }
+    #endregion
   }
 }

@@ -3,8 +3,8 @@ using JetBrains.ReSharper.Psi.Parsing;
 
 namespace JetBrains.ReSharper.PsiPlugin.Parsing
 {
-    public interface IPsiParser : IParser
-    {
-      TreeElement ParseStatement();
-    }
+  public interface IPsiParser : IParser
+  {
+    TreeElement ParseStatement();
+  }
 }

@@ -11,16 +11,17 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
   [ConfigurableSeverityHighlighting("Rule", "PSI", OverlapResolve = OverlapResolveKind.NONE, ToolTipFormatString = "Rule")]
   //[StaticSeverityHighlighting(Severity.INFO, HighlightingGroupIds.CodeInfo,
     //OverlapResolve = OverlapResolveKind.NONE, ShowToolTipInStatusBar = false)]
-
   internal class PsiRuleHighlighting : ICustomAttributeIdHighlighting, IHighlightingWithRange
   {
-    private readonly ITreeNode myElement;
     private const string Attribute = HighlightingAttributeIds.METHOD_IDENTIFIER_ATTRIBUTE;
+    private readonly ITreeNode myElement;
 
     public PsiRuleHighlighting(ITreeNode element)
     {
       myElement = element;
     }
+
+    #region ICustomAttributeIdHighlighting Members
 
     public bool IsValid()
     {
@@ -42,14 +43,20 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
       get { return 0; }
     }
 
+    public string AttributeId
+    {
+      get { return Attribute; }
+    }
+
+    #endregion
+
+    #region IHighlightingWithRange Members
+
     public DocumentRange CalculateRange()
     {
       return myElement.GetNavigationRange();
     }
 
-    public string AttributeId
-    {
-      get { return Attribute; }
-    }
+    #endregion
   }
 }

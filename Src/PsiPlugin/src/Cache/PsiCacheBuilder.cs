@@ -12,24 +12,47 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
   internal class PsiCacheBuilder : IRecursiveElementProcessor
   {
     private readonly List<IPsiSymbol> mySymbols = new List<IPsiSymbol>();
-    private readonly IPsiSourceFile mySourceFile;
-
-    private PsiCacheBuilder(IPsiSourceFile sourceFile)
+    
+    public bool InteriorShouldBeProcessed(ITreeNode element)
     {
-      mySourceFile = sourceFile;
+      return true;
     }
 
-    public void VisitOptionDefinition(IOptionDefinition optionDefinition)
+    public void ProcessBeforeInterior(ITreeNode element)
     {
-      var name = optionDefinition.OptionName.GetText();
-      var offset = optionDefinition.GetNavigationRange().TextRange.StartOffset;
-      var psiSourceFile = optionDefinition.GetSourceFile();
+      var optionDefinition = element as IOptionDefinition;
+      if (optionDefinition != null)
+      {
+        VisitOptionDefinition(optionDefinition);
+        return;
+      }
+      var ruleDeclaration = element as IRuleDeclaration;
+      if (ruleDeclaration != null)
+      {
+        VisitRuleDeclaration(ruleDeclaration);
+      }
+    }
+
+    public void ProcessAfterInterior(ITreeNode element)
+    {
+    }
+
+    public bool ProcessingIsFinished
+    {
+      get { return false; }
+    }
+
+    private void VisitOptionDefinition(IOptionDefinition optionDefinition)
+    {
+      string name = optionDefinition.OptionName.GetText();
+      int offset = optionDefinition.GetNavigationRange().TextRange.StartOffset;
+      IPsiSourceFile psiSourceFile = optionDefinition.GetSourceFile();
       string value = "";
-      var valueNode = optionDefinition.OptionStringValue;
-      if(valueNode != null)
+      IOptionStringValue valueNode = optionDefinition.OptionStringValue;
+      if (valueNode != null)
       {
         value = valueNode.GetText();
-        if("\"".Equals(value.Substring(0,1)))
+        if ("\"".Equals(value.Substring(0, 1)))
         {
           value = value.Substring(1, value.Length - 1);
         }
@@ -43,9 +66,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
 
     private void VisitRuleDeclaration(IRuleDeclaration ruleDeclaration)
     {
-      var name = ruleDeclaration.DeclaredName;
-      var offset = ruleDeclaration.GetNavigationRange().TextRange.StartOffset;
-      var psiSourceFile = ruleDeclaration.GetSourceFile();
+      string name = ruleDeclaration.DeclaredName;
+      int offset = ruleDeclaration.GetNavigationRange().TextRange.StartOffset;
+      IPsiSourceFile psiSourceFile = ruleDeclaration.GetSourceFile();
       mySymbols.Add(new PsiRuleSymbol(name, offset, psiSourceFile));
     }
 
@@ -56,18 +79,18 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
 
     public static CachePair Read(BinaryReader reader, IPsiSourceFile sourceFile)
     {
-      var ruleData = ReadRules(reader, sourceFile);
-      var optionData = ReadOptions(reader, sourceFile);
+      IList<PsiRuleSymbol> ruleData = ReadRules(reader, sourceFile);
+      IList<PsiOptionSymbol> optionData = ReadOptions(reader, sourceFile);
 
       return new CachePair(ruleData, optionData);
     }
 
     private static IList<PsiRuleSymbol> ReadRules(BinaryReader reader, IPsiSourceFile sourceFile)
     {
-      var count = reader.ReadInt32();
+      int count = reader.ReadInt32();
       var ret = new List<PsiRuleSymbol>();
 
-      for (int i = 0; i < count; i++)
+      for (int i = 0 ; i < count ; i++)
       {
         var symbol = new PsiRuleSymbol(sourceFile);
         symbol.Read(reader);
@@ -79,10 +102,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
 
     private static IList<PsiOptionSymbol> ReadOptions(BinaryReader reader, IPsiSourceFile sourceFile)
     {
-      var count = reader.ReadInt32();
+      int count = reader.ReadInt32();
       var ret = new List<PsiOptionSymbol>();
 
-      for (int i = 0; i < count; i++)
+      for (int i = 0 ; i < count ; i++)
       {
         var symbol = new PsiOptionSymbol(sourceFile);
         symbol.Read(reader);
@@ -94,18 +117,18 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
 
     public static void Write(CachePair pair, BinaryWriter writer)
     {
-      var ruleItems = pair.Rules;
+      IList<PsiRuleSymbol> ruleItems = pair.Rules;
       writer.Write(ruleItems.Count);
 
-      foreach (var ruleItem in ruleItems)
+      foreach (PsiRuleSymbol ruleItem in ruleItems)
       {
         ruleItem.Write(writer);
       }
 
-      var optionItems = pair.Options;
+      IList<PsiOptionSymbol> optionItems = pair.Options;
       writer.Write(optionItems.Count);
 
-      foreach (var optionItem in optionItems)
+      foreach (PsiOptionSymbol optionItem in optionItems)
       {
         optionItem.Write(writer);
       }
@@ -116,45 +139,18 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
     {
       var file = sourceFile.GetPsiFile<PsiLanguage>(new DocumentRange(sourceFile.Document, 0)) as IPsiFile;
       if (file == null)
+      {
         return null;
-      return Build(sourceFile, file);
+      }
+      return Build(file);
     }
 
     [CanBeNull]
-    private static ICollection<IPsiSymbol> Build(IPsiSourceFile sourceFile, IPsiFile file)
+    private static ICollection<IPsiSymbol> Build(IPsiFile file)
     {
-      var ret = new PsiCacheBuilder(sourceFile);
+      var ret = new PsiCacheBuilder();
       file.ProcessDescendants(ret);
       return ret.GetSymbols();
-    }
-
-    public bool InteriorShouldBeProcessed(ITreeNode element)
-    {
-      return true;
-    }
-
-    public void ProcessBeforeInterior(ITreeNode element)
-    {
-      var optionDefinition = element as IOptionDefinition;
-      if(optionDefinition != null)
-      {
-        VisitOptionDefinition(optionDefinition);
-        return;
-      }
-      var ruleDeclaration = element as IRuleDeclaration;
-      if(ruleDeclaration != null)
-      {
-        VisitRuleDeclaration(ruleDeclaration);
-      }
-    }
-
-    public void ProcessAfterInterior(ITreeNode element)
-    {
-    }
-
-    public bool ProcessingIsFinished
-    {
-      get { return false; }
     }
   }
 }

@@ -7,6 +7,7 @@ using JetBrains.ReSharper.Psi.Util;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.ReSharper.PsiPlugin.Util;
 using JetBrains.Util;
+using JetBrains.Util.DataStructures;
 
 namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.FindUsages
 {
@@ -19,6 +20,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.FindUsages
     {
       mySearchDomainFactory = searchDomainFactory;
     }
+
+    #region IDomainSpecificSearcherFactory Members
 
     public IEnumerable<string> GetAllPossibleWordsInFile(IDeclaredElement element)
     {
@@ -40,10 +43,14 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.FindUsages
       names.Add(element.ShortName);
 
       if (PsiDeclaredElementUtil.IsCollectionInitializerAddMethod(element))
+      {
         names.Add("new");
+      }
 
       if (PsiDeclaredElementUtil.IsForeachEnumeratorPatternMember(element))
+      {
         names.Add("foreach");
+      }
 
       if (DeclaredElementUtil.IsAsyncAwaitablePatternMember(element))
       {
@@ -56,32 +63,36 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.FindUsages
       if (method != null)
       {
         if (method.ShortName == "Cast" && method.TypeParameters.Count == 1 && IsCorrectParametersNumberForQueryPatternMethod(method, 0))
+        {
           names.Add("from");
+        }
         if (method.ShortName == "Select" && IsCorrectParametersNumberForQueryPatternMethod(method, 1))
+        {
           names.Add("from");
+        }
         if (method.ShortName == "SelectMany" && IsCorrectParametersNumberForQueryPatternMethod(method, 2))
+        {
           names.Add("from");
+        }
         if (method.ShortName == "Where" && IsCorrectParametersNumberForQueryPatternMethod(method, 1))
+        {
           names.Add("where");
+        }
         if ((method.ShortName == "Join" || method.ShortName == "GroupJoin") && IsCorrectParametersNumberForQueryPatternMethod(method, 4))
+        {
           names.Add("join");
+        }
         if ((method.ShortName == "OrderBy" || method.ShortName == "OrderByDescending" || method.ShortName == "ThenBy" || method.ShortName == "ThenByDescending") && IsCorrectParametersNumberForQueryPatternMethod(method, 1))
+        {
           names.Add("orderby");
+        }
         if (method.ShortName == "GroupBy" && (IsCorrectParametersNumberForQueryPatternMethod(method, 1) || IsCorrectParametersNumberForQueryPatternMethod(method, 2)))
+        {
           names.Add("group");
+        }
       }
 
       return names;
-    }
-
-    private static bool IsCorrectParametersNumberForQueryPatternMethod(IMethod method, int expectedParameters)
-    {
-      if (!method.IsStatic && method.Parameters.Count == expectedParameters)
-        return true;
-      if (method.IsExtensionMethod && method.Parameters.Count == expectedParameters + 1)
-        return true;
-
-      return false;
     }
 
     public bool IsCompatibleWithLanguage(PsiLanguageType languageType)
@@ -114,7 +125,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.FindUsages
 
     public IDomainSpecificSearcher CreateTextOccurenceSearcher(string subject)
     {
-     // return new PsiTextOccurenceSearcher(subject);
+      // return new PsiTextOccurenceSearcher(subject);
       return null;
     }
 
@@ -136,7 +147,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.FindUsages
     public IEnumerable<Pair<IDeclaredElement, Predicate<FindResult>>> GetRelatedDeclaredElements(IDeclaredElement element)
     {
       //todo
-      yield return new Pair<IDeclaredElement, Predicate<FindResult>>(element , JetPredicate<FindResult>.True);
+      yield return new Pair<IDeclaredElement, Predicate<FindResult>>(element, JetPredicate<FindResult>.True);
     }
 
     public JetTuple<ICollection<IDeclaredElement>, Predicate<IFindResultReference>, bool> GetDerivedFindRequest(IFindResultReference result)
@@ -157,12 +168,28 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.FindUsages
 
     public ISearchDomain GetDeclaredElementSearchDomain(IDeclaredElement declaredElement)
     {
-      var files = declaredElement.GetSourceFiles();
+      HybridCollection<IPsiSourceFile> files = declaredElement.GetSourceFiles();
       if (files.Count > 0)
       {
         return mySearchDomainFactory.CreateSearchDomain(files[0]);
       }
       return mySearchDomainFactory.CreateSearchDomain(declaredElement.GetSolution(), false);
+    }
+
+    #endregion
+
+    private static bool IsCorrectParametersNumberForQueryPatternMethod(IMethod method, int expectedParameters)
+    {
+      if (!method.IsStatic && method.Parameters.Count == expectedParameters)
+      {
+        return true;
+      }
+      if (method.IsExtensionMethod && method.Parameters.Count == expectedParameters + 1)
+      {
+        return true;
+      }
+
+      return false;
     }
   }
 }

@@ -8,9 +8,10 @@ using JetBrains.ReSharper.PsiPlugin.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Resolve
 {
-  class PsiPathReference : PsiReferenceBase
+  internal class PsiPathReference : PsiReferenceBase
   {
-    public PsiPathReference(ITreeNode node) : base(node)
+    public PsiPathReference(ITreeNode node)
+      : base(node)
     {
     }
 
@@ -18,7 +19,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
     {
       var file = TreeNode.GetContainingFile() as PsiFile;
       if (file == null)
+      {
         return EmptySymbolTable.INSTANCE;
+      }
       return file.FilePathSymbolTable;
     }
 

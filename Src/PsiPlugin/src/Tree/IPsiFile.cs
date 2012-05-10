@@ -2,7 +2,7 @@
 
 namespace JetBrains.ReSharper.PsiPlugin.Tree
 {
-    public partial interface IPsiFile : IFile
-    {
-    }
+  public partial interface IPsiFile : IFile
+  {
+  }
 }

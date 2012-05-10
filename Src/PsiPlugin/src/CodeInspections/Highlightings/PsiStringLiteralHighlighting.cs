@@ -13,13 +13,15 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
     //OverlapResolve = OverlapResolveKind.NONE, ShowToolTipInStatusBar = false)]
   internal class PsiStringLiteralHighlighting : ICustomAttributeIdHighlighting, IHighlightingWithRange
   {
-    private readonly ITreeNode myElement;
     private const string AtributeId = HighlightingAttributeIds.TYPE_INTERFACE_ATTRIBUTE;
+    private readonly ITreeNode myElement;
 
     public PsiStringLiteralHighlighting(ITreeNode element)
     {
       myElement = element;
     }
+
+    #region ICustomAttributeIdHighlighting Members
 
     public bool IsValid()
     {
@@ -29,7 +31,6 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
     public string ToolTip
     {
       get { return null; }
-
     }
 
     public string ErrorStripeToolTip
@@ -42,14 +43,20 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
       get { return 0; }
     }
 
+    public string AttributeId
+    {
+      get { return AtributeId; }
+    }
+
+    #endregion
+
+    #region IHighlightingWithRange Members
+
     public DocumentRange CalculateRange()
     {
       return myElement.GetDocumentRange();
     }
 
-    public string AttributeId
-    {
-      get { return AtributeId; }
-    }
+    #endregion
   }
 }

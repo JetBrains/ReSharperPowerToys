@@ -5,6 +5,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Grammar
 {
   public class PsiWordIndexProvider : IWordIndexLanguageProvider
   {
+    #region IWordIndexLanguageProvider Members
+
     public bool CaseSensitiveIdentifiers
     {
       get { return true; }
@@ -20,5 +22,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Grammar
       return ch.IsLetterOrDigitFast() || ch == '_' || ch == '$';
     }
 
+    #endregion
   }
 }

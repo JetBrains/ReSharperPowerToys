@@ -2,14 +2,14 @@
 
 namespace JetBrains.ReSharper.PsiPlugin.Tree
 {
-    public enum CommentType : byte
-    {
-        EndOfLineComment, // example: //
-        MultilineComment,   // example: /* */
-        DocComment          // example: ///
-    }
+  public enum CommentType : byte
+  {
+    EndOfLineComment, // example: //
+    MultilineComment, // example: /* */
+    DocComment // example: ///
+  }
 
-    public interface IPsiCommentNode : ICommentNode
-    {
-    }
+  public interface IPsiCommentNode : ICommentNode
+  {
+  }
 }

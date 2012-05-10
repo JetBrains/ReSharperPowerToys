@@ -9,14 +9,14 @@ using JetBrains.ReSharper.Psi.Tree;
 
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
 {
-    [ConfigurableSeverityHighlighting("LeftRecursion", "PSI", OverlapResolve = OverlapResolveKind.WARNING, ToolTipFormatString = "Left Recursion")]
+  [ConfigurableSeverityHighlighting("LeftRecursion", "PSI", OverlapResolve = OverlapResolveKind.WARNING, ToolTipFormatString = "Left Recursion")]
   //[StaticSeverityHighlighting(Severity.INFO, HighlightingGroupIds.CompilerWarnings,
     //OverlapResolve = OverlapResolveKind.WARNING, ShowToolTipInStatusBar = false)]
-  class LeftRecursionWarning : IHighlightingWithRange, ICustomAttributeIdHighlighting
+  internal class LeftRecursionWarning : IHighlightingWithRange, ICustomAttributeIdHighlighting
   {
+    private const string AtributeId = HighlightingAttributeIds.WARNING_ATTRIBUTE;
     private readonly ITreeNode myElement;
     private readonly string myError = "Left Recursion";
-    private const string AtributeId = HighlightingAttributeIds.WARNING_ATTRIBUTE;
 
     public LeftRecursionWarning(ITreeNode element)
     {
@@ -28,6 +28,18 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
       myElement = element;
       myError = message;
     }
+
+    #region ICustomAttributeIdHighlighting Members
+
+    public string AttributeId
+    {
+      get { return AtributeId; }
+    }
+
+    #endregion
+
+    #region IHighlightingWithRange Members
+
     public bool IsValid()
     {
       return true;
@@ -53,9 +65,6 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
       return myElement.GetNavigationRange();
     }
 
-    public string AttributeId
-    {
-      get { return AtributeId; }
-    }
+    #endregion
   }
 }

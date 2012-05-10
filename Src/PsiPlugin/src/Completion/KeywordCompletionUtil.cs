@@ -14,7 +14,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion
       //var ret = new HashSet<string>();
       IList<string> list = new List<string>();
       var token = file.FindNodeAt(referenceRange) as ITokenNode;
-      if(token == null)
+      if (token == null)
       {
         return list;
       }
@@ -22,7 +22,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion
       ITreeNode currentNode;
       ITreeNode child;
 
-      if (token.GetTokenType() == PsiTokenType.IDENTIFIER)
+      if (token.GetTokenType() == PsiTokenType.IDENTIFIER && token.Parent != null)
       {
         currentNode = token.Parent.Parent;
         child = token.Parent;
@@ -31,18 +31,18 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion
       {
         currentNode = token.Parent;
         child = token;
-      } 
+      }
 
       if (currentNode is IRuleDeclaration)
       {
         if (!IsInRuleBody(child))
         {
-          if(IsAfterName(child))
+          if (IsAfterName(child))
           {
             list.Add("extras");
-            list.Add("options");  
+            list.Add("options");
           }
-          if(IsBeforeName(child))
+          if (IsBeforeName(child))
           {
             list.Add("abstract");
             list.Add("errorhandling");
@@ -54,11 +54,12 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion
             list.Add("interfaces");
             list.Add("paths");
           }
-        } else
+        }
+        else
         {
           list.Add("null");
           list.Add("LIST");
-          list.Add("SEP");         
+          list.Add("SEP");
         }
       }
       else if (currentNode is IExtrasDefinition)
@@ -94,7 +95,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion
 
     private static bool IsBeforeName(ITreeNode child)
     {
-      var sibling = child;
+      ITreeNode sibling = child;
       while (sibling != null)
       {
         if (sibling is IRuleDeclaredName)
@@ -109,7 +110,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion
 
     private static bool IsAfterName(ITreeNode child)
     {
-      var sibling = child;
+      ITreeNode sibling = child;
       while (sibling != null)
       {
         if (sibling is IRuleDeclaredName)
@@ -127,12 +128,12 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion
       bool hasColon = false;
       bool hasSemicolon = false;
 
-      var sibling = child;
-      while(sibling != null)
+      ITreeNode sibling = child;
+      while (sibling != null)
       {
-        if(sibling is ITokenNode)
+        if (sibling is ITokenNode)
         {
-          if((sibling as ITokenNode).GetTokenType() == PsiTokenType.SEMICOLON)
+          if ((sibling as ITokenNode).GetTokenType() == PsiTokenType.SEMICOLON)
           {
             hasSemicolon = true;
           }

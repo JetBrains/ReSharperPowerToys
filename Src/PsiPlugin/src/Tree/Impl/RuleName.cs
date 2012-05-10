@@ -8,6 +8,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
   {
     private PsiRuleReference myRuleNameReference;
 
+    #region IRuleName Members
+
     public IReference RuleNameReference
     {
       get
@@ -26,5 +28,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
     {
       ((PsiRuleReference)RuleNameReference).SetName(shortName);
     }
+
+    #endregion
   }
 }

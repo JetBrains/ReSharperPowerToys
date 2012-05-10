@@ -1,4 +1,3 @@
-using System;
 using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.Impl;
@@ -6,19 +5,31 @@ using JetBrains.ReSharper.Psi.Tree;
 
 [assembly: RegisterConfigurableSeverity("Duplicate declaration", null, HighlightingGroupIds.LanguageUsage, "Duplicate declaration", @"
           Duplicate declaration", Severity.ERROR, false, Internal = false)]
+
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
 {
   [ConfigurableSeverityHighlighting("Duplicate declaration", "PSI", OverlapResolve = OverlapResolveKind.ERROR, ToolTipFormatString = Error)]
-  class DuplicatingLocalDeclarationError : IHighlightingWithRange, ICustomAttributeIdHighlighting
+  internal class DuplicatingLocalDeclarationError : IHighlightingWithRange, ICustomAttributeIdHighlighting
   {
-    private readonly ITreeNode myElement;
     private const string Error = "Duplicate declaration";
     private const string AtributeId = HighlightingAttributeIds.ERROR_ATTRIBUTE;
+    private readonly ITreeNode myElement;
 
     public DuplicatingLocalDeclarationError(ITreeNode element)
     {
       myElement = element;
     }
+
+    #region ICustomAttributeIdHighlighting Members
+
+    public string AttributeId
+    {
+      get { return AtributeId; }
+    }
+
+    #endregion
+
+    #region IHighlightingWithRange Members
 
     public bool IsValid()
     {
@@ -45,9 +56,6 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
       return myElement.GetNavigationRange();
     }
 
-    public string AttributeId
-    {
-      get { return AtributeId; }
-    }
+    #endregion
   }
 }

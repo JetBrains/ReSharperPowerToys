@@ -5,18 +5,21 @@ using JetBrains.ReSharper.Psi.Tree;
 
 [assembly: RegisterConfigurableSeverity("UnresolvedReference", null, HighlightingGroupIds.LanguageUsage, "Unresolved reference", @"
           Unresolved reference", Severity.ERROR, false, Internal = false)]
+
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
 {
   [ConfigurableSeverityHighlighting("UnresolvedReference", "PSI", OverlapResolve = OverlapResolveKind.ERROR, ToolTipFormatString = Error)]
-  class PsiUnresolvedReferenceHighlighting : IHighlightingWithRange
+  internal class PsiUnresolvedReferenceHighlighting : IHighlightingWithRange
   {
-    private readonly ITreeNode myElement;
     private const string Error = "Unresolved reference";
+    private readonly ITreeNode myElement;
 
     public PsiUnresolvedReferenceHighlighting(ITreeNode element)
     {
       myElement = element;
     }
+
+    #region IHighlightingWithRange Members
 
     public bool IsValid()
     {
@@ -42,5 +45,7 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
     {
       return myElement.GetNavigationRange();
     }
+
+    #endregion
   }
 }

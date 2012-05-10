@@ -6,8 +6,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
 {
   internal partial class OptionName
   {
-    private IReference myReference;
     private bool myInitReference;
+    private IReference myReference;
+
+    #region IOptionName Members
 
     public override ReferenceCollection GetFirstClassReferences()
     {
@@ -18,5 +20,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
       }
       return new ReferenceCollection(myReference);
     }
+
+    #endregion
   }
 }

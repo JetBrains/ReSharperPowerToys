@@ -16,13 +16,6 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
 
     private readonly IContextBoundSettingsStore mySettingsStore;
 
-    private IPsiServices PsiServices { get; set; }
-
-    public IDaemonProcess DaemonProcess
-    {
-      get { return myDaemonProcess; }
-    }
-
     protected PsiDaemonStageProcessBase(IDaemonProcess process, IContextBoundSettingsStore settingsStore)
     {
       myDaemonProcess = process;
@@ -31,24 +24,28 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
       myFile = PsiDaemonStageBase.GetPsiFile(myDaemonProcess.SourceFile);
     }
 
+    private IPsiServices PsiServices { get; set; }
 
-    protected void HighlightInFile(Action<IPsiFile, IHighlightingConsumer> fileHighlighter, Action<DaemonStageResult> commiter)
-    {
-      var consumer = new DefaultHighlightingConsumer(this, mySettingsStore);
-      fileHighlighter(File, consumer);
-      commiter(new DaemonStageResult(consumer.Highlightings));
-    }
 
     public IPsiFile File
     {
       get { return myFile; }
     }
 
+    #region IDaemonStageProcess Members
+
+    public IDaemonProcess DaemonProcess
+    {
+      get { return myDaemonProcess; }
+    }
+
     public abstract void Execute(Action<DaemonStageResult> commiter);
 
-    #region IRecursiveElementProcessor Members
+    #endregion
 
-    virtual public bool InteriorShouldBeProcessed(ITreeNode element, IHighlightingConsumer context)
+    #region IRecursiveElementProcessor<IHighlightingConsumer> Members
+
+    public virtual bool InteriorShouldBeProcessed(ITreeNode element, IHighlightingConsumer context)
     {
       return true;
     }
@@ -56,22 +53,26 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
     public bool IsProcessingFinished(IHighlightingConsumer context)
     {
       if (myDaemonProcess.InterruptFlag)
+      {
         throw new ProcessCancelledException();
+      }
       return false;
     }
 
-    virtual public void ProcessBeforeInterior(ITreeNode element, IHighlightingConsumer consumer)
+    public virtual void ProcessBeforeInterior(ITreeNode element, IHighlightingConsumer consumer)
     {
     }
 
-    virtual public void ProcessAfterInterior(ITreeNode element, IHighlightingConsumer consumer)
+    public virtual void ProcessAfterInterior(ITreeNode element, IHighlightingConsumer consumer)
     {
       var psiElement = element as IPsiTreeNode;
       if (psiElement != null)
       {
         var tokenNode = psiElement as ITokenNode;
         if (tokenNode == null || !tokenNode.GetTokenType().IsWhitespace)
+        {
           psiElement.Accept(this, consumer);
+        }
       }
       else
       {
@@ -80,5 +81,12 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
     }
 
     #endregion
+
+    protected void HighlightInFile(Action<IPsiFile, IHighlightingConsumer> fileHighlighter, Action<DaemonStageResult> commiter)
+    {
+      var consumer = new DefaultHighlightingConsumer(this, mySettingsStore);
+      fileHighlighter(File, consumer);
+      commiter(new DaemonStageResult(consumer.Highlightings));
+    }
   }
 }

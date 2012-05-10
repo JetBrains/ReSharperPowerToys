@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Feature.Services.CodeCompletion;
 using JetBrains.ReSharper.Feature.Services.CodeCompletion.Infrastructure;
 using JetBrains.ReSharper.Feature.Services.Lookup;
@@ -12,7 +13,7 @@ using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Completion
 {
-  [Language(typeof(PsiLanguage))]
+  [Language(typeof (PsiLanguage))]
   public class PsiCompletionItemsProviderKeywords : ItemsProviderOfSpecificContext<PsiCodeCompletionContext>
   {
     protected override void AddItemsGroups(PsiCodeCompletionContext context, GroupedItemsCollector collector, IntellisenseManager intellisenseManager)
@@ -23,7 +24,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion
 
     protected override bool IsAvailable(PsiCodeCompletionContext context)
     {
-      var type = context.BasicContext.CodeCompletionType;
+      CodeCompletionType type = context.BasicContext.CodeCompletionType;
       return type == CodeCompletionType.AutomaticCompletion || type == CodeCompletionType.BasicCompletion;
     }
 
@@ -41,8 +42,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion
     {
       var psiFile = context.BasicContext.File as IPsiFile;
       if (psiFile == null)
+      {
         return false;
-      foreach (var textLookupItem in KeywordCompletionUtil.GetAplicableKeywords(psiFile, context.BasicContext.SelectedTreeRange).Select(CreateKeyworkLookupItem))
+      }
+      foreach (TextLookupItemBase textLookupItem in KeywordCompletionUtil.GetAplicableKeywords(psiFile, context.BasicContext.SelectedTreeRange).Select(CreateKeyworkLookupItem))
       {
         textLookupItem.InitializeRanges(context.Ranges, context.BasicContext);
         collector.AddAtDefaultPlace(textLookupItem);
@@ -54,7 +57,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion
     {
       var file = context.BasicContext.File as IPsiFile;
 
-      var selectionRange = context.BasicContext.SelectedRange;
+      DocumentRange selectionRange = context.BasicContext.SelectedRange;
 
       if (file != null)
       {
@@ -62,7 +65,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion
 
         if (token != null)
         {
-          var tokenRange = token.GetNavigationRange();
+          DocumentRange tokenRange = token.GetNavigationRange();
 
           var insertRange = new TextRange(tokenRange.TextRange.StartOffset, selectionRange.TextRange.EndOffset);
           var replaceRange = new TextRange(tokenRange.TextRange.StartOffset, Math.Max(tokenRange.TextRange.EndOffset, selectionRange.TextRange.EndOffset));

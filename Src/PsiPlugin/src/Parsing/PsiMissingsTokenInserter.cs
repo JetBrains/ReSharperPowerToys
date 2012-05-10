@@ -14,7 +14,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
   internal sealed class PsiMissingTokensInserter : MissingTokenInserterBase
   {
     private readonly ILexer myLexer;
-    private readonly DataIntern<string> myWhitespaceIntern = new DataIntern<string>();
+    private new readonly DataIntern<string> myWhitespaceIntern = new DataIntern<string>();
 
     private PsiMissingTokensInserter(ILexer lexer, ITokenOffsetProvider offsetProvider, SeldomInterruptChecker interruptChecker)
       : base(offsetProvider, interruptChecker)
@@ -41,7 +41,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
         // proceed with inserting tokens
         while (myLexer.TokenType != null && myLexer.TokenStart < leafOffset)
         {
-          var token = CreateMissingToken();
+          LeafElementBase token = CreateMissingToken();
 
           parent.AddChildBefore(token, anchor);
 
@@ -58,7 +58,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
       else
       {
         while (myLexer.TokenType != null && myLexer.TokenStart < leafEndOffset)
+        {
           myLexer.Advance();
+        }
       }
     }
 
@@ -69,24 +71,13 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
       {
         string text = myLexer.GetCurrTokenText();
         if (tokenType == PsiTokenType.WHITE_SPACE)
+        {
           return new Whitespace(myWhitespaceIntern.Intern(text));
+        }
         return new NewLine(text);
       }
 
       return TreeElementFactory.CreateLeafElement(myLexer);
-    }
-
-    private sealed class EofToken : BindedToBufferLeafElement
-    {
-      public EofToken(IBuffer buffer)
-        : base(PsiTokenType.EOF, buffer, new TreeOffset(buffer.Length), new TreeOffset(buffer.Length))
-      {
-      }
-
-      public override PsiLanguageType Language
-      {
-        get { return PsiLanguage.Instance; }
-      }
     }
 
     public static void Run(TreeElement node, ILexer lexer, ITokenOffsetProvider offsetProvider, bool trimTokens, SeldomInterruptChecker interruptChecker)
@@ -95,7 +86,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
 
       var root = node as CompositeElement;
       if (root == null)
+      {
         return;
+      }
 
       var inserter = new PsiMissingTokensInserter(lexer, offsetProvider, interruptChecker);
       lexer.Start();
@@ -116,17 +109,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
       }
     }
 
+    #region Nested type: DummyContainer
+
     private sealed class DummyContainer : CompositeElement, IDisposable
     {
-      private sealed class DummyNodeType : CompositeNodeType
-      {
-        public static readonly NodeType Instance = new DummyNodeType();
-
-        private DummyNodeType() : base("DummyContainer") { }
-        //public override PsiLanguageType LanguageType { get { return UnknownLanguage.Instance; } }
-        public override CompositeElement Create() { throw new InvalidOperationException(); }
-      }
-
       public DummyContainer(TreeElement element)
       {
         AppendNewChild(element);
@@ -139,13 +125,56 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
 
       public override PsiLanguageType Language
       {
-        get { return PsiLanguage.Instance; ; }
+        get { return PsiLanguage.Instance; }
       }
+
+      #region IDisposable Members
 
       public void Dispose()
       {
         DeleteChildRange(firstChild, firstChild);
       }
+
+      #endregion
+
+      #region Nested type: DummyNodeType
+
+      private sealed class DummyNodeType : CompositeNodeType
+      {
+        public static readonly NodeType Instance = new DummyNodeType();
+
+        private DummyNodeType()
+          : base("DummyContainer")
+        {
+        }
+
+        //public override PsiLanguageType LanguageType { get { return UnknownLanguage.Instance; } }
+        public override CompositeElement Create()
+        {
+          throw new InvalidOperationException();
+        }
+      }
+
+      #endregion
     }
+
+    #endregion
+
+    #region Nested type: EofToken
+
+    private sealed class EofToken : BindedToBufferLeafElement
+    {
+      public EofToken(IBuffer buffer)
+        : base(PsiTokenType.EOF, buffer, new TreeOffset(buffer.Length), new TreeOffset(buffer.Length))
+      {
+      }
+
+      public override PsiLanguageType Language
+      {
+        get { return PsiLanguage.Instance; }
+      }
+    }
+
+    #endregion
   }
 }

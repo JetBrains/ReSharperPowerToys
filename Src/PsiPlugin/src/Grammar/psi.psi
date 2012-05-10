@@ -142,14 +142,21 @@ optionStringValue
   ;
 
 private optionColonDefinition
-	:
-	COLON 
-	(PLUS ruleName
-	| 
-	LPARENTH
-	STRING_LITERAL ruleName
-	(SEMICOLON STRING_LITERAL ruleName)*
-	RPARENTH)
+  :
+    COLON
+    (
+      PLUS
+      ruleName
+      | LPARENTH
+      STRING_LITERAL
+      ruleName
+      (
+        SEMICOLON
+        STRING_LITERAL
+        ruleName
+      )*
+      RPARENTH
+    )
   ;
 
 

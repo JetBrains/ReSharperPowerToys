@@ -19,19 +19,20 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion
     }
   }
 
-  [SettingsKey(typeof(AutopopupEnabledSettingsKey), "Psi")]
+  [SettingsKey(typeof (AutopopupEnabledSettingsKey), "Psi")]
   public class PsiAutopopupEnabledSettingsKey
   {
-    [SettingsEntry(AutopopupType.HardAutopopup, "On letters and digits")]
-    public AutopopupType OnIdent;
     [SettingsEntry(AutopopupType.HardAutopopup, "After dot")]
     public AutopopupType AfterDot;
+
+    [SettingsEntry(AutopopupType.HardAutopopup, "On letters and digits")]
+    public AutopopupType OnIdent;
   }
 
-  [SettingsKey(typeof ( IntellisenseEnabledSettingsKey ), "Override VS IntelliSense for Psi")]
+  [SettingsKey(typeof (IntellisenseEnabledSettingsKey), "Override VS IntelliSense for Psi")]
   public class IntellisenseEnabledSettingPsi
   {
-    [SettingsEntry(false, "Psi (.psi files and embedded Psi)")] 
+    [SettingsEntry(false, "Psi (.psi files and embedded Psi)")]
     public bool IntellisenseEnabled;
   }
 }

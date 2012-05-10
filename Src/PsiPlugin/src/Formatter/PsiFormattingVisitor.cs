@@ -1,33 +1,39 @@
 using System.Collections.Generic;
+using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Tree;
 
 namespace JetBrains.ReSharper.PsiPlugin.Formatter
 {
-  public class PsiFormattingVisitor: TreeNodeVisitor<PsiFmtStageContext, IEnumerable<string>>{
+  public class PsiFormattingVisitor : TreeNodeVisitor<PsiFmtStageContext, IEnumerable<string>>
+  {
     private readonly bool myIsGenerated;
 
     public PsiFormattingVisitor(FormattingStageData data)
     {
-      var node = data.Context.FirstNode;
-      var projectFile = node.GetSourceFile();
+      ITreeNode node = data.Context.FirstNode;
+      IPsiSourceFile projectFile = node.GetSourceFile();
       if (projectFile != null)
+      {
         myIsGenerated = !Equals(projectFile.PrimaryPsiLanguage, node.Language);
+      }
     }
 
     public override IEnumerable<string> VisitPsiFile(IPsiFile psiFile, PsiFmtStageContext context)
     {
       if (!myIsGenerated)
+      {
         return base.VisitPsiFile(psiFile, context);
+      }
 
       return base.VisitPsiFile(psiFile, context);
     }
 
     public override IEnumerable<string> VisitRuleDeclaration(IRuleDeclaration ruleDeclarationParam, PsiFmtStageContext context)
     {
-      if(context.LeftChild is IModifier)
+      if (context.LeftChild is IModifier)
       {
-        return new[]{" "};
+        return new[] { " " };
       }
       if (context.RightChild is IRoleGetterParameter)
       {
@@ -38,14 +44,14 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
         return new[] { " " };
       }
 
-      return new[]{"\r\n"};
+      return new[] { "\r\n" };
     }
 
     public override IEnumerable<string> VisitRuleBody(IRuleBody ruleBodyParam, PsiFmtStageContext context)
     {
       return new[] { " " };
     }
- 
+
     public override IEnumerable<string> VisitExtrasDefinition(IExtrasDefinition extrasDefinitionParam, PsiFmtStageContext context)
     {
       return new[] { "\r\n" };
@@ -90,7 +96,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 
     public override IEnumerable<string> VisitPsiExpression(IPsiExpression psiExpressionParam, PsiFmtStageContext context)
     {
-      if(context.RightChild is IChoiceTail)
+      if (context.RightChild is IChoiceTail)
       {
         return new[] { "\r\n" };
       }
@@ -107,12 +113,12 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     }
 
     public override IEnumerable<string> VisitChoiceTail(IChoiceTail choiceTailParam, PsiFmtStageContext context)
-    { 
-      if(context.LeftChild is ICommentNode)
+    {
+      if (context.LeftChild is ICommentNode)
       {
-        return new[] {"\r\n"};
+        return new[] { "\r\n" };
       }
-      return new[]{" "};
+      return new[] { " " };
     }
   }
 }

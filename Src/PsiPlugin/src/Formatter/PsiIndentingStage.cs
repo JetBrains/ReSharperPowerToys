@@ -1,7 +1,10 @@
+using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using JetBrains.Application.Progress;
+using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 using JetBrains.ReSharper.Psi.Impl.CodeStyle;
+using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Tree;
 
 namespace JetBrains.ReSharper.PsiPlugin.Formatter
@@ -9,11 +12,14 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
   public class PsiIndentingStage
   {
     private readonly bool myInTypingAssist;
-    private readonly PsiIndentVisitor myIndentVisitor;
     private readonly PsiIndentCache myIndentCache;
+    private readonly PsiIndentVisitor myIndentVisitor;
+    [UsedImplicitly]
+    private PsiCodeFormattingSettings myFormattingSettings;
 
     private PsiIndentingStage(PsiCodeFormattingSettings formattingSettings, bool inTypingAssist)
     {
+      myFormattingSettings = formattingSettings;
       myInTypingAssist = inTypingAssist;
       myIndentCache = new PsiIndentCache();
       myIndentVisitor = CreateIndentVisitor(myIndentCache, inTypingAssist);
@@ -22,8 +28,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     public static void DoIndent(PsiCodeFormattingSettings formattingSettings, CodeFormattingContext context, IProgressIndicator progress, bool inTypingAssist)
     {
       var stage = new PsiIndentingStage(formattingSettings, inTypingAssist);
-      var nodePairs = context.SequentialEnumNodes().Where(p => context.CanModifyInsideNodeRange(p.First, p.Last)).ToList();
-      var indents = nodePairs.
+      List<FormattingRange> nodePairs = context.SequentialEnumNodes().Where(p => context.CanModifyInsideNodeRange(p.First, p.Last)).ToList();
+      IEnumerable<FormatResult<string>> indents = nodePairs.
         Select(range => new FormatResult<string>(range, stage.CalcIndent(new FormattingStageContext(range)))).
         Where(res => res.ResultValue != null);
 
@@ -35,25 +41,25 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 
     private string CalcIndent(FormattingStageContext context)
     {
+      CompositeElement parent = context.Parent;
 
-        var parent = context.Parent;
-
-        var rChild = context.RightChild;
-        if ((!context.LeftChild.HasLineFeedsTo(rChild))&&(!myInTypingAssist))
+      ITreeNode rChild = context.RightChild;
+      if ((!context.LeftChild.HasLineFeedsTo(rChild)) && (!myInTypingAssist))
+      {
         //if ((!context.LeftChild.HasLineFeedsTo(rChild)))
-          return null;
+        return null;
+      }
 
-        var psiTreeNode = context.Parent as IPsiTreeNode;
+      var psiTreeNode = context.Parent as IPsiTreeNode;
 
-        return psiTreeNode != null
-          ? psiTreeNode.Accept(myIndentVisitor, context)
-          : myIndentVisitor.VisitNode(parent, context); 
+      return psiTreeNode != null
+        ? psiTreeNode.Accept(myIndentVisitor, context)
+        : myIndentVisitor.VisitNode(parent, context);
     }
 
     [NotNull]
     private PsiIndentVisitor CreateIndentVisitor([NotNull] PsiIndentCache indentCache, bool inTypingAssist)
     {
-
       return new PsiIndentVisitor(indentCache, inTypingAssist);
     }
   }

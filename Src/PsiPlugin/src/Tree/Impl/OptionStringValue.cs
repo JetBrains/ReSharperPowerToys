@@ -7,8 +7,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
 {
   internal partial class OptionStringValue
   {
-    private IReference myReference;
     private bool myInitReference;
+    private IReference myReference;
+
+    #region IOptionStringValue Members
 
     public override ReferenceCollection GetFirstClassReferences()
     {
@@ -19,11 +21,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
         {
           if (!myInitReference)
           {
-            myReference = new PsiFileReference<OptionStringValue, PsiTokenBase>(this, null, (PsiTokenBase) FirstChild,
-                                                                                new TreeTextRange(
-                                                                                  new TreeOffset(1),
-                                                                                  new TreeOffset(
-                                                                                    GetTextLength() - 1)));
+            myReference = new PsiFileReference<OptionStringValue, PsiTokenBase>(this, null, (PsiTokenBase)FirstChild,
+              new TreeTextRange(
+                new TreeOffset(1),
+                new TreeOffset(
+                  GetTextLength() - 1)));
             myInitReference = true;
           }
           return new ReferenceCollection(myReference);
@@ -31,5 +33,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
       }
       return ReferenceCollection.Empty;
     }
+
+    #endregion
   }
 }

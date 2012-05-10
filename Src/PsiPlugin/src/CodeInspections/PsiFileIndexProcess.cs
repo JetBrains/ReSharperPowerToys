@@ -7,7 +7,6 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
 {
   public class PsiFileIndexProcess : PsiDaemonStageProcessBase
   {
-
     public PsiFileIndexProcess(IDaemonProcess process, IContextBoundSettingsStore settingsStore)
       : base(process, settingsStore)
     {
