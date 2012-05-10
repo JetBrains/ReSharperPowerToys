@@ -2,7 +2,7 @@
 
 namespace JetBrains.ReSharper.PsiPlugin.Tree
 {
-    public interface IWhitespaceNode : ITokenNode
-    {
-    }  
+  public interface IWhitespaceNode : ITokenNode
+  {
+  }
 }

@@ -1,15 +1,16 @@
 ﻿using JetBrains.ReSharper.Feature.Services.CodeCompletion.Impl;
 using JetBrains.ReSharper.Feature.Services.CodeCompletion.Infrastructure;
 using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
+using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Completion
 {
   [IntellisensePart]
   internal class PsiCodeCompletionContextProvider : CodeCompletionContextProviderBase
   {
-
     public override bool IsApplicable(CodeCompletionContext context)
     {
       var psiFile = context.File as PsiFile;
@@ -20,18 +21,24 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion
     {
       var unterminatedContext = new PsiReparsedCompletionContext(context.File, context.SelectedTreeRange, "aa");
       unterminatedContext.Init();
-      var referenceToComplete = unterminatedContext.Reference;
-      var elementToComplete = unterminatedContext.TreeNode;
+      IReference referenceToComplete = unterminatedContext.Reference;
+      ITreeNode elementToComplete = unterminatedContext.TreeNode;
       if (elementToComplete == null)
+      {
         return null;
-      var referenceRange = referenceToComplete != null ? referenceToComplete.GetTreeTextRange() : GetElementRange(elementToComplete);
-      var referenceDocumentRange = unterminatedContext.ToDocumentRange(referenceRange);
+      }
+      TreeTextRange referenceRange = referenceToComplete != null ? referenceToComplete.GetTreeTextRange() : GetElementRange(elementToComplete);
+      TextRange referenceDocumentRange = unterminatedContext.ToDocumentRange(referenceRange);
       if (!referenceDocumentRange.IsValid)
+      {
         return null;
+      }
 
       if (!referenceDocumentRange.Contains(context.CaretDocumentRange.TextRange))
+      {
         return null;
-      var ranges = GetTextLookupRanges(context, referenceDocumentRange);
+      }
+      TextLookupRanges ranges = GetTextLookupRanges(context, referenceDocumentRange);
       return new PsiCodeCompletionContext(context, ranges, unterminatedContext);
     }
 
@@ -42,7 +49,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion
       if (tokenNode != null)
       {
         if (tokenNode.GetTokenType().IsIdentifier || tokenNode.GetTokenType().IsKeyword)
+        {
           return tokenNode.GetTreeTextRange();
+        }
       }
 
       return new TreeTextRange(element.GetTreeTextRange().EndOffset);

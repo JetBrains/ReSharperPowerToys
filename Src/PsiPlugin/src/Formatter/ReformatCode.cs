@@ -5,11 +5,13 @@ using System.Linq;
 using JetBrains.Application;
 using JetBrains.Application.Progress;
 using JetBrains.DocumentModel;
+using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.CodeCleanup;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CodeStyle;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.ReSharper.PsiPlugin.Tree;
+using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Formatter
 {
@@ -17,6 +19,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
   public class ReformatCode : ICodeCleanupModule
   {
     private static readonly Descriptor OurDescriptor = new Descriptor();
+
+    #region ICodeCleanupModule Members
 
     public void SetDefaultSetting(CodeCleanupProfile profile, CodeCleanup.DefaultProfileType profileType)
     {
@@ -38,38 +42,48 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 
     public void Process(IPsiSourceFile sourceFile, IRangeMarker rangeMarkerMarker, CodeCleanupProfile profile, IProgressIndicator progressIndicator)
     {
-      var solution = sourceFile.GetSolution();
-      if (!profile.GetSetting(OurDescriptor)) return;
+      ISolution solution = sourceFile.GetSolution();
+      if (!profile.GetSetting(OurDescriptor))
+      {
+        return;
+      }
 
-      var files = sourceFile.GetPsiFiles<PsiLanguage>().Cast<IPsiFile>().ToArray();
+      IPsiFile[] files = sourceFile.GetPsiFiles<PsiLanguage>().Cast<IPsiFile>().ToArray();
       using (progressIndicator.SafeTotal("Reformat Psi", files.Length))
       {
-        foreach (var file in files)
+        foreach (IPsiFile file in files)
         {
-          using (var indicator = progressIndicator.CreateSubProgress(1))
-          using (WriteLockCookie.Create())
+          using (IProgressIndicator pi = progressIndicator.CreateSubProgress(1))
           {
-            var formatter = file.Language.LanguageService().CodeFormatter;
+            using (WriteLockCookie.Create())
+            {
+              var languageService = file.Language.LanguageService();
+              Assertion.Assert(languageService != null, "languageService != null");
+              var formatter = languageService.CodeFormatter;
+              Assertion.Assert(formatter != null, "formatter != null");
 
-            PsiManager.GetInstance(sourceFile.GetSolution()).DoTransaction(
-              delegate
-              {
-                if (rangeMarkerMarker != null && rangeMarkerMarker.IsValid)
-                  formatter.Format(
-                    solution,
-                    rangeMarkerMarker.DocumentRange,
-                    CodeFormatProfile.DEFAULT,
-                    true,
-                    false,
-                    indicator);
-                else
+              PsiManager.GetInstance(sourceFile.GetSolution()).DoTransaction(
+                delegate
                 {
-                  formatter.FormatFile(
-                    file,
-                    CodeFormatProfile.DEFAULT,
-                    indicator);
-                }
-              }, "Code cleanup");
+                  if (rangeMarkerMarker != null && rangeMarkerMarker.IsValid)
+                  {
+                    formatter.Format(
+                      solution,
+                      rangeMarkerMarker.DocumentRange,
+                      CodeFormatProfile.DEFAULT,
+                      true,
+                      false,
+                      pi);
+                  }
+                  else
+                  {
+                    formatter.FormatFile(
+                      file,
+                      CodeFormatProfile.DEFAULT,
+                      pi);
+                  }
+                }, "Code cleanup");
+            }
           }
         }
       }
@@ -90,6 +104,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       get { return true; }
     }
 
+    #endregion
+
+    #region Nested type: Descriptor
+
     [DisplayName("Reformat code")]
     [DefaultValue(false)]
     [Category("Psi")]
@@ -100,5 +118,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       {
       }
     }
+
+    #endregion
   }
 }

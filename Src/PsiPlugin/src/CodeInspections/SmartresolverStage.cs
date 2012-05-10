@@ -7,7 +7,7 @@ using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
 {
-  [DaemonStage(StagesBefore = new[] { typeof(GlobalFileStructureCollectorStage) }, StagesAfter = new[] { typeof(IdentifierHighlightingStage) })]
+  [DaemonStage(StagesBefore = new[] { typeof (GlobalFileStructureCollectorStage) }, StagesAfter = new[] { typeof (IdentifierHighlightingStage) })]
   public class SmartResolverStage : PsiDaemonStageBase
   {
     public override ErrorStripeRequest NeedsErrorStripe(IPsiSourceFile sourceFile, IContextBoundSettingsStore settings)
@@ -18,8 +18,10 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
     public override IEnumerable<IDaemonStageProcess> CreateProcess(IDaemonProcess process, IContextBoundSettingsStore settings, DaemonProcessKind processKind)
     {
       if (!IsSupported(process.SourceFile))
+      {
         return EmptyList<IDaemonStageProcess>.InstanceList;
-      return new List<IDaemonStageProcess>(){new SmartResolverProcess(process)};
+      }
+      return new List<IDaemonStageProcess> { new SmartResolverProcess(process) };
     }
   }
 }

@@ -5,12 +5,16 @@ using JetBrains.ReSharper.PsiPlugin.Grammar;
 
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
 {
-  [Language(typeof(PsiLanguage))]
+  [Language(typeof (PsiLanguage))]
   internal class PsiVisualElementFactory : IVisualElementFactory
   {
+    #region IVisualElementFactory Members
+
     public IColorReference GetColorReference(ITreeNode element)
     {
       return null;
     }
+
+    #endregion
   }
 }

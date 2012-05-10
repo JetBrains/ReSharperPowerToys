@@ -3,7 +3,7 @@ using JetBrains.ReSharper.Psi.Parsing;
 
 namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
 {
-  class PsiGenericToken: PsiTokenBase
+  internal class PsiGenericToken : PsiTokenBase
   {
     private readonly TokenNodeType myNodeType;
     private readonly string myText;

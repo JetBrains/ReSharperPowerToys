@@ -5,10 +5,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
 {
   public class PsiOptionSymbol : IPsiSymbol
   {
-
+    private readonly IPsiSourceFile myPsiSourceFile;
     private string myName;
     private int myOffset;
-    private readonly IPsiSourceFile myPsiSourceFile;
     private string myValue;
 
     public PsiOptionSymbol(IPsiSourceFile psiSourceFile)
@@ -24,16 +23,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
       myPsiSourceFile = psiSourceFile;
     }
 
-    public int Offset
-    {
-      get { return myOffset; }
-    }
-
-    public IPsiSourceFile SourceFile
-    {
-      get {return myPsiSourceFile; }
-    }
-
     public string Name
     {
       get { return myName; }
@@ -43,6 +32,20 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
     {
       get { return myValue; }
     }
+
+    #region IPsiSymbol Members
+
+    public int Offset
+    {
+      get { return myOffset; }
+    }
+
+    public IPsiSourceFile SourceFile
+    {
+      get { return myPsiSourceFile; }
+    }
+
+    #endregion
 
     public void Write(BinaryWriter writer)
     {
@@ -57,6 +60,5 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
       myOffset = reader.ReadInt32();
       myValue = reader.ReadString();
     }
-
   }
 }

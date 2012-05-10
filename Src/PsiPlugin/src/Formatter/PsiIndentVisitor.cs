@@ -9,10 +9,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 {
   public class PsiIndentVisitor : TreeNodeVisitor<FormattingStageContext, string>
   {
-    private readonly PsiIndentCache myIndentCache;
-    private readonly bool myInTypingAssist;
     private const string StandartIndent = "  ";
     private readonly IDictionary<ITreeNode, string> myCache;
+    private readonly bool myInTypingAssist;
+    private readonly PsiIndentCache myIndentCache;
 
     public PsiIndentVisitor(PsiIndentCache indentCache, bool inTypingAssist)
     {
@@ -24,7 +24,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     public override string VisitExtrasDefinition(IExtrasDefinition extrasDefinitionParam, FormattingStageContext context)
     {
       string parentIndent = GetParentIndent(context.Parent);
-      if(context.RightChild is IExtraDefinition)
+      if (context.RightChild is IExtraDefinition)
       {
         return parentIndent + StandartIndent;
       }
@@ -34,12 +34,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     public override string VisitOptionsDefinition(IOptionsDefinition optionsDefinitionParam, FormattingStageContext context)
     {
       string parentIndent = GetParentIndent(context.Parent);
-      if(context.RightChild is IOptionDefinition)
+      if (context.RightChild is IOptionDefinition)
       {
         return parentIndent + StandartIndent;
       }
       return myIndentCache.GetNodeIndent(optionsDefinitionParam);
-
     }
 
     public override string VisitRuleBody(IRuleBody ruleBodyParam, FormattingStageContext context)
@@ -51,7 +50,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     public override string VisitRuleDeclaration(IRuleDeclaration ruleDeclarationParam, FormattingStageContext context)
     {
       string parentIndent = GetParentIndent(context.Parent);
-      if(context.RightChild is IRuleBody)
+      if (context.RightChild is IRuleBody)
       {
         return parentIndent + StandartIndent + StandartIndent;
       }
@@ -80,7 +79,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       {
         return parentIndent;
       }
-      if(context.Parent is ParenExpression)
+      if (context.Parent is ParenExpression)
       {
         return parentIndent + StandartIndent;
       }
@@ -90,7 +89,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     public override string VisitParenExpression(IParenExpression parenExpressionParam, FormattingStageContext context)
     {
       string parentIndent = GetParentIndent(context.Parent);
-      if(context.RightChild is IPsiExpression)
+      if (context.RightChild is IPsiExpression)
       {
         return parentIndent + StandartIndent;
       }
@@ -101,9 +100,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     {
       if (myInTypingAssist)
       {
-        var node = GetParent(context.Parent);
+        ITreeNode node = GetParent(context.Parent);
         string indent = GetIndentByOldParent(node);
-        if(node.Parent is IParenExpression)
+        if (node.Parent is IParenExpression)
         {
           return VisitParenExpression(node.Parent as IParenExpression, new FormattingStageContext(new FormattingRange(node.PrevSibling, node)));
         }
@@ -117,7 +116,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 
     public override string VisitChoiceTail(IChoiceTail choiceTailParam, FormattingStageContext context)
     {
-      if(context.LeftChild is ICommentNode)
+      if (context.LeftChild is ICommentNode)
       {
         return GetParentIndent(choiceTailParam) + StandartIndent;
       }
@@ -127,8 +126,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     private string GetParentIndent(ITreeNode parent)
     {
       string result = "";
-      var node = GetParent(parent);
-      if(node == null)
+      ITreeNode node = GetParent(parent);
+      if (node == null)
       {
         return "";
       }
@@ -136,7 +135,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       {
         return myCache[node];
       }
-      var oldParent = node;
+      ITreeNode oldParent = node;
       node = node.PrevSibling;
       while (node != null)
       {
@@ -152,14 +151,14 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
         result += node.GetText();
         node = node.PrevSibling;
       }
-      myCache.Add(oldParent,result);
+      myCache.Add(oldParent, result);
       return result;
     }
 
     private string GetIndentByOldParent(ITreeNode parent)
     {
       string result = "";
-      var node = parent;
+      ITreeNode node = parent;
       if (node == null)
       {
         return "";
@@ -168,7 +167,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       {
         return myCache[node];
       }
-      var oldParent = node;
+      ITreeNode oldParent = node;
       node = node.PrevSibling;
       while (node != null)
       {

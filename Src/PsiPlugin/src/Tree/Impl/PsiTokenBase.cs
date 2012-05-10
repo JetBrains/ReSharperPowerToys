@@ -11,6 +11,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
 {
   public abstract class PsiTokenBase : LeafElementBase, IPsiTreeNode, ITokenNode
   {
+    #region IPsiTreeNode Members
+
     public virtual void Accept(TreeNodeVisitor visitor)
     {
       visitor.VisitNode(this);
@@ -24,16 +26,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
     public virtual TResult Accept<TContext, TResult>(TreeNodeVisitor<TContext, TResult> visitor, TContext context)
     {
       return visitor.VisitNode(this, context);
-    }
-
-    public TokenNodeType GetTokenType()
-    {
-      return (TokenNodeType)NodeType;
-    }
-
-    public override String ToString()
-    {
-      return base.ToString() + "(type:" + NodeType + ", text:" + GetText() + ")";
     }
 
     public override StringBuilder GetText(StringBuilder to)
@@ -50,6 +42,22 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
     public override PsiLanguageType Language
     {
       get { return PsiLanguage.Instance; }
+    }
+
+    #endregion
+
+    #region ITokenNode Members
+
+    public TokenNodeType GetTokenType()
+    {
+      return (TokenNodeType)NodeType;
+    }
+
+    #endregion
+
+    public override String ToString()
+    {
+      return base.ToString() + "(type:" + NodeType + ", text:" + GetText() + ")";
     }
   }
 }

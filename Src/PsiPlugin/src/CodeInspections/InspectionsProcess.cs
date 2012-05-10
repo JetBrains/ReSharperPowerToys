@@ -39,7 +39,7 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
       string name = ruleDeclaredName.GetText();
       if (myDeclarations.ContainsKey(name))
       {
-        var list = myDeclarations.GetValue(name);
+        List<IDeclaration> list = myDeclarations.GetValue(name);
         if (list.Count > 1)
         {
           consumer.AddHighlighting(new DuplicatingLocalDeclarationError(ruleDeclaredName), File);
@@ -51,7 +51,7 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
     public override void VisitRuleDeclaration(IRuleDeclaration ruleDeclaration, IHighlightingConsumer consumer)
     {
       IRuleBody body = ruleDeclaration.Body;
-      var child = PsiTreeUtil.GetFirstChild<IRuleName>(body);
+      ITreeNode child = PsiTreeUtil.GetFirstChild<IRuleName>(body);
       var ruleName = child as IRuleName;
       if (ruleName != null)
       {
@@ -65,7 +65,7 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
 
     public override void VisitPsiExpression(IPsiExpression psiExpression, IHighlightingConsumer consumer)
     {
-      var child = psiExpression.FirstChild;
+      ITreeNode child = psiExpression.FirstChild;
       IList<ISequence> list = new List<ISequence>();
       while (child != null)
       {
@@ -82,16 +82,16 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
 
       if (list.Count > 1)
       {
-        var sequences = list.ToArray();
+        ISequence[] sequences = list.ToArray();
         var isRepeated = new bool[sequences.Count()];
-        for (int i = 0; i < sequences.Count() - 1; ++i)
+        for (int i = 0 ; i < sequences.Count() - 1 ; ++i)
         {
           if (!isRepeated[i])
           {
-            var sequence1 = sequences[i];
-            for (int j = i + 1; j < sequences.Count(); ++j)
+            ISequence sequence1 = sequences[i];
+            for (int j = i + 1 ; j < sequences.Count() ; ++j)
             {
-              var sequence2 = sequences[j];
+              ISequence sequence2 = sequences[j];
               if (PsiTreeUtil.EqualsElements(sequence1, sequence2))
               {
                 if (!isRepeated[i])
@@ -111,7 +111,7 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
 
     private void VisitFile(IPsiFile element)
     {
-      var child = element.FirstChild;
+      ITreeNode child = element.FirstChild;
       while (child != null)
       {
         if (child is IRuleDeclaration)
@@ -121,12 +121,12 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
             string name = declaration.DeclaredName;
             if (myDeclarations.ContainsKey(name))
             {
-              var list = myDeclarations.GetValue(name);
+              List<IDeclaration> list = myDeclarations.GetValue(name);
               list.Add(declaration);
             }
             else
             {
-              var list = new List<IDeclaration> {declaration};
+              var list = new List<IDeclaration> { declaration };
               myDeclarations.Add(name, list);
             }
           }
@@ -146,12 +146,12 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
             string name = declaration.DeclaredName;
             if (myDeclarations.ContainsKey(name))
             {
-              var list = myDeclarations.GetValue(name);
+              List<IDeclaration> list = myDeclarations.GetValue(name);
               list.Add(declaration);
             }
             else
             {
-              var list = new List<IDeclaration> {declaration};
+              var list = new List<IDeclaration> { declaration };
               myDeclarations.Add(name, list);
             }
           }

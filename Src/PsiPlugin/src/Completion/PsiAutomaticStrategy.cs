@@ -21,30 +21,31 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion
       mySettingsScalarEntry = settingsStore.Schema.GetScalarEntry((PsiAutopopupEnabledSettingsKey key) => key.OnIdent);
     }
 
+    #region IAutomaticCodeCompletionStrategy Members
+
     public AutopopupType IsEnabledInSettings(IContextBoundSettingsStore settingsStore, ITextControl textControl)
     {
-      return (AutopopupType) settingsStore.GetValue(mySettingsScalarEntry, null);
+      return (AutopopupType)settingsStore.GetValue(mySettingsScalarEntry, null);
     }
 
     public bool AcceptTyping(char c, ITextControl textControl, IContextBoundSettingsStore boundSettingsStore)
     {
       if (!IsIdentStart(c))
+      {
         return false;
+      }
 
       if (!myPsiIntellisenseManager.GetAutoppopupEnabled(boundSettingsStore))
+      {
         return false;
+      }
       return true;
       //return textControl.Caret.Offset() == 1 || this.MatchText(textControl, 1, text => !IsIdentStart(text[0]));
     }
 
-    private static bool IsIdentStart(char c)
-    {
-      return char.IsLetter(c);
-    }
-
     public bool ProcessSubsequentTyping(char c, ITextControl textControl)
     {
-      return (IsIdentStart(c) || char.IsDigit(c)|| c == '_');
+      return (IsIdentStart(c) || char.IsDigit(c) || c == '_');
     }
 
     public bool AcceptsFile(IFile file, ITextControl textControl)
@@ -54,19 +55,19 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion
 
     public CodeCompletionType CodeCompletionType
     {
-      get 
-      {
-        return CodeCompletionType.AutomaticCompletion;
-      }
+      get { return CodeCompletionType.AutomaticCompletion; }
     }
 
     public PsiLanguageType Language
     {
-      get
-      {
-        return PsiLanguage.Instance;
-      }
+      get { return PsiLanguage.Instance; }
     }
 
+    #endregion
+
+    private static bool IsIdentStart(char c)
+    {
+      return char.IsLetter(c);
+    }
   }
 }

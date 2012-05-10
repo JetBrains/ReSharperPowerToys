@@ -12,7 +12,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
   {
     public override bool IsApplicable(IDeclaredElement declaredElement)
     {
-      if(declaredElement.PresentationLanguage.Is<PsiLanguage>())
+      if (declaredElement.PresentationLanguage.Is<PsiLanguage>())
       {
         return true;
       }
@@ -41,10 +41,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
           yield return new PsiDerivedElementRename(element, ruleDeclaration.InterfacePrefix + NameToCamelCase(newName),
             doNotAddBindingConflicts);
         }
-        foreach(IDeclaredElement element in ruleDeclaration.DerivedVisitorMethods)
+        foreach (IDeclaredElement element in ruleDeclaration.DerivedVisitorMethods)
         {
           yield return new PsiDerivedElementRename(element, ruleDeclaration.VisitorMethodPrefix + NameToCamelCase(newName) + ruleDeclaration.VisitorMethodSuffix,
-            doNotAddBindingConflicts);           
+            doNotAddBindingConflicts);
         }
       }
     }
@@ -69,6 +69,5 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
       s = firstLetter + s.Substring(1, s.Length - 1);
       return s;
     }
-
   }
 }

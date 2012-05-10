@@ -8,6 +8,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Util
 {
   public abstract class PsiElementFactory
   {
+    protected ISolution Solution { get; set; }
+
     public static PsiElementFactory GetInstance([NotNull] IPsiModule module)
     {
       return new PsiElementFactoryImpl(module);
@@ -20,7 +22,5 @@ namespace JetBrains.ReSharper.PsiPlugin.Util
     }
 
     public abstract IRuleName CreateIdentifierExpression(string name);
-
-    protected ISolution Solution { get; set; }
   }
 }

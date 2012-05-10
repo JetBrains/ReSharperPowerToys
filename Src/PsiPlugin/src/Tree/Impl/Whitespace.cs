@@ -4,64 +4,58 @@ using JetBrains.ReSharper.PsiPlugin.Parsing;
 
 namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
 {
-    internal abstract class WhitespaceBase : PsiTokenBase, IWhitespaceNode
+  internal abstract class WhitespaceBase : PsiTokenBase, IWhitespaceNode
+  {
+    private readonly string myText;
+
+    protected WhitespaceBase(string text)
     {
-        private readonly string myText;
-
-        protected WhitespaceBase(string text)
-        {
-            myText = text;
-        }
-
-        public override int GetTextLength()
-        {
-            return myText.Length;
-        }
-
-        public override string GetText()
-        {
-            return myText;
-        }
-
-        public override String ToString()
-        {
-            return base.ToString() + " spaces:" + "\"" + GetText() + "\"";
-        }
+      myText = text;
     }
 
-    internal class Whitespace : WhitespaceBase
+    #region IWhitespaceNode Members
+
+    public override int GetTextLength()
     {
-        public Whitespace(string text)
-            : base(text)
-        {
-        }
-
-        public override NodeType NodeType
-        {
-            get { return PsiTokenType.WHITE_SPACE; }
-        }
-
-        public virtual bool IsNewLine
-        {
-            get { return false; }
-        }
+      return myText.Length;
     }
 
-    internal class NewLine : WhitespaceBase
+    public override string GetText()
     {
-        public NewLine(string text)
-            : base(text)
-        {
-        }
+      return myText;
+    }
 
-        public override NodeType NodeType
-        {
-            get { return PsiTokenType.NEW_LINE; }
-        }
+    #endregion
 
-        public virtual bool IsNewLine
-        {
-            get { return true; }
-        }
-    }  
+    public override String ToString()
+    {
+      return base.ToString() + " spaces:" + "\"" + GetText() + "\"";
+    }
+  }
+
+  internal sealed class Whitespace : WhitespaceBase
+  {
+    public Whitespace(string text)
+      : base(text)
+    {
+    }
+
+    public override NodeType NodeType
+    {
+      get { return PsiTokenType.WHITE_SPACE; }
+    }
+  }
+
+  internal class NewLine : WhitespaceBase
+  {
+    public NewLine(string text)
+      : base(text)
+    {
+    }
+
+    public override NodeType NodeType
+    {
+      get { return PsiTokenType.NEW_LINE; }
+    }
+  }
 }

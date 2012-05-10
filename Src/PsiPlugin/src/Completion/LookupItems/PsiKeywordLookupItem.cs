@@ -5,7 +5,7 @@ using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Completion.LookupItems
 {
-  sealed class PsiKeywordLookupItem: TextLookupItemBase, IKeywordLookupItem
+  internal sealed class PsiKeywordLookupItem : TextLookupItemBase, IKeywordLookupItem
   {
     public PsiKeywordLookupItem(string text, string suffix)
     {
@@ -16,16 +16,16 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion.LookupItems
       Text = text;
     }
 
-    protected override RichText GetDisplayName()
-    {
-      var ret = base.GetDisplayName();
-      LookupUtil.AddEmphasize(ret, new TextRange(0, ret.Length));
-      return ret;
-    }
-
     public override Image Image
     {
       get { return null; }
+    }
+
+    protected override RichText GetDisplayName()
+    {
+      RichText ret = base.GetDisplayName();
+      LookupUtil.AddEmphasize(ret, new TextRange(0, ret.Length));
+      return ret;
     }
   }
 }

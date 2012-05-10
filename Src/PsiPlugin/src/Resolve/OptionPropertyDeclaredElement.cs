@@ -8,7 +8,7 @@ using JetBrains.Util.DataStructures;
 
 namespace JetBrains.ReSharper.PsiPlugin.Resolve
 {
-  class OptionPropertyDeclaredElement : IDeclaredElement
+  internal class OptionPropertyDeclaredElement : IDeclaredElement
   {
     private readonly IPsiSourceFile myFile;
     private readonly string myName;
@@ -21,6 +21,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
       myServices = services;
     }
 
+    #region IDeclaredElement Members
+
     public IPsiServices GetPsiServices()
     {
       return myServices;
@@ -28,7 +30,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
 
     public IList<IDeclaration> GetDeclarations()
     {
-      return EmptyList<IDeclaration>.InstanceList ;
+      return EmptyList<IDeclaration>.InstanceList;
     }
 
     public IList<IDeclaration> GetDeclarationsIn(IPsiSourceFile sourceFile)
@@ -63,7 +65,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
 
     public HybridCollection<IPsiSourceFile> GetSourceFiles()
     {
-      return new HybridCollection<IPsiSourceFile> {myFile};
+      return new HybridCollection<IPsiSourceFile> { myFile };
     }
 
     public bool HasDeclarationsIn(IPsiSourceFile sourceFile)
@@ -85,5 +87,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
     {
       get { return PsiLanguage.Instance; }
     }
+
+    #endregion
   }
 }

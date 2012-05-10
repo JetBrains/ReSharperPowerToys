@@ -12,7 +12,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
     where TOwner : ITreeNode
     where TToken : class, ITreeNode
   {
-    public PsiFileReference(TOwner owner, IQualifier qualifier, TToken token, TreeTextRange rangeWithin) : base(owner, qualifier, token, rangeWithin)
+    public PsiFileReference(TOwner owner, IQualifier qualifier, TToken token, TreeTextRange rangeWithin)
+      : base(owner, qualifier, token, rangeWithin)
     {
     }
 

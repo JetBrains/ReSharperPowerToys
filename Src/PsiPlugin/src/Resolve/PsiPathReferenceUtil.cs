@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using JetBrains.ProjectModel;
@@ -23,7 +24,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
     {
       var project = pathReference.GetTreeNode().GetPsiModule().ContainingProjectModule as IProject;
       if (project != null)
+      {
         return WebFilesUtil.GetProjectPath(project);
+      }
 
       return FileSystemPath.Empty;
     }
@@ -31,10 +34,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
 
     private static FileSystemPath GetBasePathBeforeMapping(IQualifiableReference pathReference)
     {
-      var qualifier = pathReference.GetQualifier();
+      IQualifier qualifier = pathReference.GetQualifier();
       if (qualifier == null)
       {
-        var file = pathReference.GetTreeNode().GetSourceFile().ToProjectFile();
+        IProjectFile file = pathReference.GetTreeNode().GetSourceFile().ToProjectFile();
         Assertion.AssertNotNull(file, "file == null");
         return file.Location.Directory;
       }
@@ -42,17 +45,21 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
       var reference = qualifier as IReference;
       if (reference != null)
       {
-        var resolveResultWithInfo = (reference).Resolve();
+        ResolveResultWithInfo resolveResultWithInfo = (reference).Resolve();
         var pathDeclaredElement = resolveResultWithInfo.DeclaredElement as IPathDeclaredElement;
         if (pathDeclaredElement == null)
+        {
           return FileSystemPath.Empty;
+        }
 
         return pathDeclaredElement.Path;
       }
 
       var pathQualifier = qualifier as IPathQualifier;
       if (pathQualifier != null)
+      {
         return pathQualifier.Path;
+      }
 
       return FileSystemPath.Empty;
     }
@@ -63,7 +70,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
         pathReference.GetTreeNode().GetSolution().GetComponent<MSBuildPropertiesCache>();
 
       string productHomeDir = propertiesSearcher.GetProjectPropertyByName(pathReference.GetTreeNode().GetProject(),
-                                                                    "ProductHomeDir");
+        "ProductHomeDir");
       var basePath = new FileSystemPath(productHomeDir);
       if (basePath.IsEmpty)
       {
@@ -71,17 +78,19 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
       }
 
       FolderQualifierInfo folderQualifierInfo = null;
-      var psiServices = pathReference.GetTreeNode().GetPsiServices();
+      IPsiServices psiServices = pathReference.GetTreeNode().GetPsiServices();
       var baseProjectFolder = psiServices.Solution.FindProjectItemsByLocation(basePath).FirstOrDefault() as IProjectFolder;
       if (baseProjectFolder != null)
+      {
         folderQualifierInfo = new FolderQualifierInfo(baseProjectFolder);
+      }
 
-      var websiteRoot = GetRootPath(pathReference);
-      var qualifier = pathReference.GetQualifier();
+      FileSystemPath websiteRoot = GetRootPath(pathReference);
+      IQualifier qualifier = pathReference.GetQualifier();
       if (useReferenceName)
       {
         PathDeclaredElement target = null;
-        var name = pathReference.GetName();
+        string name = pathReference.GetName();
         switch (name)
         {
           case PathDeclaredElement.CURRENT_DIR_NAME:
@@ -92,38 +101,46 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
             break;
           case PathDeclaredElement.ROOT_NAME:
             if (qualifier != null)
+            {
               goto default;
+            }
             target = new PathDeclaredElement(PathDeclaredElement.ROOT_NAME, psiServices, websiteRoot);
             break;
           default:
             try
             {
               string parserGenOutputBase =
-               propertiesSearcher.GetProjectPropertyByName(pathReference.GetTreeNode().GetProject(), "ParserGenOutputBase");
-              var path = basePath.Combine(parserGenOutputBase + "\\" + name);
-              target = new PathDeclaredElement(name,psiServices, path);
+                propertiesSearcher.GetProjectPropertyByName(pathReference.GetTreeNode().GetProject(), "ParserGenOutputBase");
+              FileSystemPath path = basePath.Combine(parserGenOutputBase + "\\" + name);
+              target = new PathDeclaredElement(name, psiServices, path);
             }
-            catch (InvalidPathException) { }
-            catch (ArgumentException) { }
+            catch (InvalidPathException)
+            {
+            }
+            catch (ArgumentException)
+            {
+            }
             break;
         }
         var table = new SymbolTable(psiServices, folderQualifierInfo != null ? new SymbolTableDependencySet(folderQualifierInfo) : null);
         if (target != null)
+        {
           table.AddSymbol(target, EmptySubstitution.INSTANCE, 1);
+        }
         return table;
       }
 
-      var rootPath = (qualifier == null) ? websiteRoot : FileSystemPath.Empty;
-      var symbolTableByPath = PathReferenceUtil.GetSymbolTableByPath(basePath, psiServices, basePath.Directory, rootPath, true);
-      var basePathBeforeMapping = GetBasePathBeforeMapping(pathReference);
+      FileSystemPath rootPath = (qualifier == null) ? websiteRoot : FileSystemPath.Empty;
+      ISymbolTable symbolTableByPath = PathReferenceUtil.GetSymbolTableByPath(basePath, psiServices, basePath.Directory, rootPath, true);
+      FileSystemPath basePathBeforeMapping = GetBasePathBeforeMapping(pathReference);
       if (!basePathBeforeMapping.IsNullOrEmpty())
       {
-        var pathMapping = WebPathMappingManager.GetPathMapping(pathReference);
-        var mappedPaths = pathMapping.GetAllPathPartsIn(basePathBeforeMapping).ToList();
+        IWebProjectPathMapping pathMapping = WebPathMappingManager.GetPathMapping(pathReference);
+        List<FileSystemPath> mappedPaths = pathMapping.GetAllPathPartsIn(basePathBeforeMapping).ToList();
         if (mappedPaths.Any())
         {
           var mappedPathsTable = new SymbolTable(psiServices, folderQualifierInfo != null ? new SymbolTableDependencySet(folderQualifierInfo) : null);
-          foreach (var mappedPath in mappedPaths)
+          foreach (FileSystemPath mappedPath in mappedPaths)
           {
             var declaredElement = new PathDeclaredElement(psiServices, mappedPath);
             mappedPathsTable.AddSymbol(declaredElement, EmptySubstitution.INSTANCE, 1);
@@ -133,12 +150,16 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
       }
 
       if (!includeHttpHandlers)
+      {
         return symbolTableByPath;
+      }
 
       var httpHandlersTable = new SymbolTable(psiServices);
 
       return httpHandlersTable.Merge(symbolTableByPath);
     }
+
+    #region Nested type: SymbolTableDependencySet
 
     private class SymbolTableDependencySet : ISymbolTableDependencySet
     {
@@ -149,10 +170,16 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
         myQualifierInfo = qualifierInfo;
       }
 
+      #region ISymbolTableDependencySet Members
+
       public void AddDependenciesTo(IDependencyStore store, string accessName)
       {
         myQualifierInfo.AddDependencies(store, accessName);
       }
+
+      #endregion
     }
+
+    #endregion
   }
 }

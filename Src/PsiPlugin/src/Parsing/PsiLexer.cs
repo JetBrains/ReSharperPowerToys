@@ -16,10 +16,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
     private static readonly Dictionary<TokenNodeType, string> OurKeywordTextMap = new Dictionary<TokenNodeType, string>();
 
 
-
     static PsiLexer()
     {
-
       OurKeywordTextMap[PsiTokenType.ABSTRACT] = "abstract";
       OurKeywordTextMap[PsiTokenType.ERRORHANDLING] = "errorhandling";
       OurKeywordTextMap[PsiTokenType.EXTRAS] = "extras";
@@ -88,14 +86,16 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
       OurTokenTextMap[PsiTokenType.ARROW] = "->";
       OurTokenTextMap[PsiTokenType.LAMBDA_ARROW] = "=>";
 
-      for (int i = 0; i < OurHash.Length; i++)
-        OurHash[i] = PsiTokenType.IDENTIFIER;
-      for (IDictionaryEnumerator ide = keywords.GetEnumerator(); ide.MoveNext();)
+      for (int i = 0 ; i < OurHash.Length ; i++)
       {
-        ushort hash = CalcHash((string) ide.Entry.Key);
+        OurHash[i] = PsiTokenType.IDENTIFIER;
+      }
+      for (IDictionaryEnumerator ide = keywords.GetEnumerator() ; ide.MoveNext() ;)
+      {
+        ushort hash = CalcHash((string)ide.Entry.Key);
         Assertion.Assert(OurHash[hash] == PsiTokenType.IDENTIFIER,
-                         "The condition (ourHash[hash] == PsiTokenType.IDENTIFIER) is false.");
-        OurHash[hash] = (TokenNodeType) ide.Entry.Value;
+          "The condition (ourHash[hash] == PsiTokenType.IDENTIFIER) is false.");
+        OurHash[hash] = (TokenNodeType)ide.Entry.Value;
       }
     }
 
@@ -111,7 +111,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
 
     private static ushort IncHash(ushort hash, char c)
     {
-      return (ushort) (((hash << 1)) + Convert.ToUInt16(c));
+      return (ushort)(((hash << 1)) + Convert.ToUInt16(c));
     }
 
     public static string GetTokenText(TokenNodeType token)
@@ -119,8 +119,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Parsing
       if (OurTokenTextMap.ContainsKey(token))
       {
         return OurTokenTextMap.GetValue(token);
-      } 
-      if(OurKeywordTextMap.ContainsKey(token))
+      }
+      if (OurKeywordTextMap.ContainsKey(token))
       {
         return OurKeywordTextMap.GetValue(token);
       }

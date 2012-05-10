@@ -17,8 +17,10 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
     public override IEnumerable<IDaemonStageProcess> CreateProcess(IDaemonProcess process, IContextBoundSettingsStore settings, DaemonProcessKind processKind)
     {
       if (!IsSupported(process.SourceFile))
+      {
         return EmptyList<IDaemonStageProcess>.InstanceList;
-      return new List<IDaemonStageProcess>(){new PsiFileIndexProcess(process, settings)};
+      }
+      return new List<IDaemonStageProcess> { new PsiFileIndexProcess(process, settings) };
     }
   }
 }

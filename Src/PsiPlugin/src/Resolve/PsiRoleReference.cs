@@ -8,9 +8,10 @@ using JetBrains.ReSharper.PsiPlugin.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Resolve
 {
-  class PsiRoleReference : PsiReferenceBase
+  internal class PsiRoleReference : PsiReferenceBase
   {
-    public PsiRoleReference(ITreeNode node) : base(node)
+    public PsiRoleReference(ITreeNode node)
+      : base(node)
     {
     }
 
@@ -18,7 +19,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
     {
       var file = TreeNode.GetContainingFile() as PsiFile;
       if (file == null)
+      {
         return EmptySymbolTable.INSTANCE;
+      }
       return file.FileRoleSymbolTable;
     }
 
@@ -27,7 +30,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
       var optionName = (IRoleName)GetTreeNode();
       if (optionName.Parent != null)
       {
-        if(((RoleDeclaredElement)element).ChangeName)
+        if (((RoleDeclaredElement)element).ChangeName)
         {
           PsiTreeUtil.ReplaceChild(optionName, optionName.FirstChild, ((RoleDeclaredElement)element).NewName);
         }

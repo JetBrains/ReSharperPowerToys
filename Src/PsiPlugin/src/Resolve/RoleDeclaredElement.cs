@@ -8,11 +8,11 @@ using JetBrains.Util.DataStructures;
 
 namespace JetBrains.ReSharper.PsiPlugin.Resolve
 {
-  class RoleDeclaredElement : IDeclaredElement
+  internal class RoleDeclaredElement : IDeclaredElement
   {
     private readonly IFile myFile;
-    private string myName;
     private readonly IPsiServices myServices;
+    private string myName;
     private string myNewName;
 
     public RoleDeclaredElement(IFile file, string name, IPsiServices services)
@@ -22,6 +22,25 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
       myNewName = name;
       myServices = services;
     }
+
+    public IFile File
+    {
+      get { return myFile; }
+    }
+
+    public bool ChangeName { get; set; }
+
+    public string NewName
+    {
+      get { return myNewName; }
+      set
+      {
+        ChangeName = true;
+        myNewName = value;
+      }
+    }
+
+    #region IDeclaredElement Members
 
     public IPsiServices GetPsiServices()
     {
@@ -65,7 +84,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
 
     public HybridCollection<IPsiSourceFile> GetSourceFiles()
     {
-      return new HybridCollection<IPsiSourceFile> {myFile.GetSourceFile()};
+      return new HybridCollection<IPsiSourceFile> { myFile.GetSourceFile() };
     }
 
     public bool HasDeclarationsIn(IPsiSourceFile sourceFile)
@@ -88,24 +107,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
       get { return PsiLanguage.Instance; }
     }
 
+    #endregion
+
     public void SetName(string name)
     {
       myName = name;
-    }
-
-    public IFile File
-    {
-      get { return myFile; }
-    }
-
-    public bool ChangeName { get; set; }
-
-    public string NewName
-    {
-      get { return myNewName; }
-      set { ChangeName = true;
-            myNewName = value;
-      }
     }
   }
 }

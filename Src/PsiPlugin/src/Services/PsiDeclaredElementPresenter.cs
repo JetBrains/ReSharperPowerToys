@@ -1,20 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.PsiPlugin.Tree;
 
 namespace JetBrains.ReSharper.PsiPlugin.Services
 {
-  class PsiDeclaredElementPresenter : IDeclaredElementPresenter
+  internal class PsiDeclaredElementPresenter : IDeclaredElementPresenter
   {
+    #region IDeclaredElementPresenter Members
+
     public string Format(DeclaredElementPresenterStyle style, IDeclaredElement element, ISubstitution substitution, out DeclaredElementPresenterMarking marking)
     {
       marking = new DeclaredElementPresenterMarking();
       var ruleDeclaration = element as IRuleDeclaration;
-      if(ruleDeclaration != null)
+      if (ruleDeclaration != null)
       {
         return ruleDeclaration.RuleName.GetText();
       }
@@ -30,5 +29,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Services
     {
       throw new NotImplementedException();
     }
+
+    #endregion
   }
 }

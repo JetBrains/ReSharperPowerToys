@@ -9,6 +9,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       Profile = profile;
     }
 
-    public CodeFormatProfile Profile { get; set; }
+    public CodeFormatProfile Profile { get; private set; }
   }
 }

@@ -1,14 +1,15 @@
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.DocumentModel;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Resolve;
+using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Cache;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
 using JetBrains.ReSharper.Refactorings.Rename;
 using JetBrains.Util;
-using System.Linq;
 
 namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
 {
@@ -17,40 +18,37 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
   {
     public IDeclaredElement GetPrimaryDeclaredElement(IDeclaredElement declaredElement, IReference reference)
     {
-      if (declaredElement is IMethod)
-      {
-        return GetPrimaryDeclaredElementForMethod(declaredElement);
-      }
+      var method = declaredElement as IMethod;
+      if (method != null)
+        return GetPrimaryDeclaredElementForMethod(method);
 
-      if(declaredElement is IClass)
-      {
-        return PrimaryDeclaredElementForClass(declaredElement);
-      }
+      var @class = declaredElement as IClass;
+      if (@class != null)
+        return PrimaryDeclaredElementForClass(@class);
 
-      if (declaredElement is IInterface)
-      {
-        return PrimaryDeclaredElementForInterface(declaredElement);
-      }
+      var @interface = declaredElement as IInterface;
+      if (@interface != null)
+        return PrimaryDeclaredElementForInterface(@interface);
+
       return declaredElement;
     }
 
-    private static IDeclaredElement PrimaryDeclaredElementForInterface(IDeclaredElement declaredElement)
+    private static IDeclaredElement PrimaryDeclaredElementForInterface(IInterface @interface)
     {
-      var interfaceElement = declaredElement as IInterface;
-      string interfaceName = interfaceElement.ShortName;
-      var cache = declaredElement.GetPsiServices().Solution.GetComponent<PsiCache>();
-      var prefixes = cache.GetOptionSymbols("\"interfaceNamePrefix\"");
+      string interfaceName = @interface.ShortName;
+      var cache = @interface.GetPsiServices().Solution.GetComponent<PsiCache>();
+      IEnumerable<PsiOptionSymbol> prefixes = cache.GetOptionSymbols("\"interfaceNamePrefix\"");
       IList<IPsiSymbol> symbols = new List<IPsiSymbol>();
-      foreach (var prefix in prefixes)
+      foreach (PsiOptionSymbol prefix in prefixes)
       {
-        var prefixValue = prefix.Value;
-        if((prefixValue.Length < interfaceName.Length)&&(prefixValue.Equals(interfaceName.Substring(0,prefixValue.Length))))
+        string prefixValue = prefix.Value;
+        if ((prefixValue.Length < interfaceName.Length) && (prefixValue.Equals(interfaceName.Substring(0, prefixValue.Length))))
         {
-          var shortInterfaceName = PsiRenamesFactory.NameFromCamelCase(interfaceName.Substring(prefixValue.Length, interfaceName.Length - prefixValue.Length));
-          var allSymbols = cache.GetSymbols(PsiRenamesFactory.NameFromCamelCase(shortInterfaceName)).ToList();
-          foreach (var symbol in allSymbols)
+          string shortInterfaceName = PsiRenamesFactory.NameFromCamelCase(interfaceName.Substring(prefixValue.Length, interfaceName.Length - prefixValue.Length));
+          List<IPsiSymbol> allSymbols = cache.GetSymbols(PsiRenamesFactory.NameFromCamelCase(shortInterfaceName)).ToList();
+          foreach (IPsiSymbol symbol in allSymbols)
           {
-            if(symbol.SourceFile == prefix.SourceFile)
+            if (symbol.SourceFile == prefix.SourceFile)
             {
               symbols.Add(symbol);
             }
@@ -58,78 +56,74 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
         }
       }
 
-      if(symbols.Count == 0)
+      if (symbols.Count == 0)
       {
-        return declaredElement;
+        return @interface;
       }
 
-
+      // TODO: move symbol binding logic to the cache, remove copy-paste.
       IPsiSymbol returnSymbol = symbols.ToArray()[0];
-      var element =
-        returnSymbol.SourceFile.GetPsiFile<PsiLanguage>(new DocumentRange(returnSymbol.SourceFile.Document, 0)).FindNodeAt(new TreeTextRange(new TreeOffset(returnSymbol.Offset), 1));
+      ITreeNode element = returnSymbol.SourceFile.GetPsiFile<PsiLanguage>(new DocumentRange(returnSymbol.SourceFile.Document, 0)).FindNodeAt(new TreeTextRange(new TreeOffset(returnSymbol.Offset), 1));
       while (element != null)
       {
-        if (element is IDeclaredElement)
-        {
-          return (IDeclaredElement) element;
-        }
+        var ret = element as IDeclaredElement;
+        if (ret != null)
+          return ret;
+
         element = element.Parent;
       }
-      return declaredElement;
-
+      return @interface;
     }
 
-    private static IDeclaredElement PrimaryDeclaredElementForClass(IDeclaredElement declaredElement)
+    private static IDeclaredElement PrimaryDeclaredElementForClass(IClass @class)
     {
-      var classElement = declaredElement as IClass;
-      string className = classElement.ShortName;
-      var cache = declaredElement.GetPsiServices().Solution.GetComponent<PsiCache>();
-      var symbols = cache.GetSymbols(PsiRenamesFactory.NameFromCamelCase(className)).ToList();
+      string className = @class.ShortName;
+      var cache = @class.GetPsiServices().Solution.GetComponent<PsiCache>();
+      List<IPsiSymbol> symbols = cache.GetSymbols(PsiRenamesFactory.NameFromCamelCase(className)).ToList();
       if (symbols.Count > 0)
       {
         IPsiSymbol symbol = symbols.ToArray()[0];
-        var element =
+        ITreeNode element =
           symbol.SourceFile.GetPsiFile<PsiLanguage>(new DocumentRange(symbol.SourceFile.Document, 0)).FindNodeAt(new TreeTextRange(new TreeOffset(symbol.Offset), 1));
         while (element != null)
         {
           if (element is IDeclaredElement)
           {
             {
-              return (IDeclaredElement) element;
+              return (IDeclaredElement)element;
             }
           }
           element = element.Parent;
         }
         {
-          return declaredElement;
+          return @class;
         }
       }
-      return declaredElement;
+      return @class;
     }
 
-    private IDeclaredElement GetPrimaryDeclaredElementForMethod(IDeclaredElement declaredElement)
+    private IDeclaredElement GetPrimaryDeclaredElementForMethod(IMethod declaredElement)
     {
-      var method = declaredElement as IMethod;
-      string methodName = method.ShortName;
+      string methodName = declaredElement.ShortName;
       if ("parse".Equals(methodName.Substring(0, "parse".Length)))
       {
         string ruleName = methodName.Substring("parse".Length, methodName.Length - "parse".Length);
         var cache = declaredElement.GetPsiServices().Solution.GetComponent<PsiCache>();
-        var symbols = cache.GetSymbols(PsiRenamesFactory.NameFromCamelCase(ruleName)).ToList();
+        List<IPsiSymbol> symbols = cache.GetSymbols(PsiRenamesFactory.NameFromCamelCase(ruleName)).ToList();
         if (symbols.Count > 0)
         {
           IPsiSymbol symbol = symbols.ToArray()[0];
-          var element = symbol.SourceFile.GetPsiFile<PsiLanguage>(new DocumentRange(symbol.SourceFile.Document, 0)).FindNodeAt(new TreeTextRange(new TreeOffset(symbol.Offset), 1));
-          var parserPackageName = cache.GetOptionSymbols("parserPackage").ToList();
-          var parserClassName = cache.GetOptionSymbols("parserClassName").ToList();
+          ITreeNode element = symbol.SourceFile.GetPsiFile<PsiLanguage>(new DocumentRange(symbol.SourceFile.Document, 0)).FindNodeAt(new TreeTextRange(new TreeOffset(symbol.Offset), 1));
+          List<PsiOptionSymbol> parserPackageName = cache.GetOptionSymbols("parserPackage").ToList();
+          List<PsiOptionSymbol> parserClassName = cache.GetOptionSymbols("parserClassName").ToList();
           IList<IDeclaredElement> classes = new List<IDeclaredElement>();
-          foreach (var packageName in parserPackageName)
+          foreach (PsiOptionSymbol packageName in parserPackageName)
           {
-            foreach (var className in parserClassName)
+            foreach (PsiOptionSymbol className in parserClassName)
             {
               if (packageName.SourceFile == className.SourceFile)
               {
-                var sourceFile = packageName.SourceFile;
+                IPsiSourceFile sourceFile = packageName.SourceFile;
                 classes.AddRange(
                   sourceFile.PsiModule.GetPsiServices().CacheManager.GetDeclarationsCache(sourceFile.PsiModule, false, true).
                     GetTypeElementsByCLRName(packageName.Value + "." + className.Value));
@@ -137,7 +131,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
             }
           }
 
-          var parentClass = method.GetContainingType() as IClass;
+          var parentClass = declaredElement.GetContainingType() as IClass;
           if (parentClass != null)
           {
             if (classes.Contains(parentClass))
@@ -147,7 +141,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
                 if (element is IDeclaredElement)
                 {
                   {
-                    return (IDeclaredElement) element;
+                    return (IDeclaredElement)element;
                   }
                 }
                 element = element.Parent;
@@ -161,7 +155,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
       }
       else
       {
-        return PrimaryDeclaredElementForVisitorMethod(declaredElement, method);
+        return PrimaryDeclaredElementForVisitorMethod(declaredElement, declaredElement);
       }
       return declaredElement;
     }
@@ -169,7 +163,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
     private IDeclaredElement PrimaryDeclaredElementForVisitorMethod(IDeclaredElement declaredElement, IMethod method)
     {
       var cache = declaredElement.GetPsiServices().Solution.GetComponent<PsiCache>();
-      var classesWithInfo = GetVisitorClasses(cache);
+      Dictionary<ITypeElement, IList<PsiOptionSymbol>> classesWithInfo = GetVisitorClasses(cache);
       if (classesWithInfo.Count > 0)
       {
         var parentClass = method.GetContainingType() as IClass;
@@ -177,11 +171,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
         {
           if (classesWithInfo.ContainsKey(parentClass))
           {
-            var list = classesWithInfo[parentClass];
-            var visitorName = list[0];
-            var methodSuffix = list[1];
-            var methodPrefix = list[2];
-            var sourceFile = visitorName.SourceFile;
+            IList<PsiOptionSymbol> list = classesWithInfo[parentClass];
+            PsiOptionSymbol visitorName = list[0];
+            PsiOptionSymbol methodSuffix = list[1];
+            PsiOptionSymbol methodPrefix = list[2];
+            IPsiSourceFile sourceFile = visitorName.SourceFile;
             string name = method.ShortName;
             if (name.Length > methodPrefix.Value.Length + methodSuffix.Value.Length)
             {
@@ -193,8 +187,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
               {
                 name = name.Substring(0, name.Length - methodSuffix.Value.Length);
               }
-              var elements = cache.GetSymbols(NameFromCamelCase(name));
-              foreach (var psiSymbol in elements)
+              IEnumerable<IPsiSymbol> elements = cache.GetSymbols(NameFromCamelCase(name));
+              foreach (IPsiSymbol psiSymbol in elements)
               {
                 if (psiSymbol.SourceFile == sourceFile)
                 {
@@ -204,7 +198,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
                     IList<ISymbolInfo> infos = psiFile.FileRuleSymbolTable.GetSymbolInfos(name);
                     foreach (ISymbolInfo info in infos)
                     {
-                      var element = info.GetDeclaredElement();
+                      IDeclaredElement element = info.GetDeclaredElement();
                       if (element is RuleDeclaration)
                       {
                         var ruleDeclaration = element as RuleDeclaration;
@@ -233,45 +227,45 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
 
     private static Dictionary<ITypeElement, IList<PsiOptionSymbol>> GetVisitorClasses(PsiCache cache)
     {
-      var visitorClassName = cache.GetOptionSymbols("visitorClassName").ToList();
-      var visitorMetodSuffix = cache.GetOptionSymbols("visitorMethodSuffix").ToList();
-      var visitorMetodPrefix = cache.GetOptionSymbols("\"visitMethodPrefix\"").ToList();
-      var interfacesPackageName = cache.GetOptionSymbols("psiInterfacePackageName").ToList();
+      List<PsiOptionSymbol> visitorClassName = cache.GetOptionSymbols("visitorClassName").ToList();
+      List<PsiOptionSymbol> visitorMetodSuffix = cache.GetOptionSymbols("visitorMethodSuffix").ToList();
+      List<PsiOptionSymbol> visitorMetodPrefix = cache.GetOptionSymbols("\"visitMethodPrefix\"").ToList();
+      List<PsiOptionSymbol> interfacesPackageName = cache.GetOptionSymbols("psiInterfacePackageName").ToList();
       var classes = new Dictionary<ITypeElement, IList<PsiOptionSymbol>>();
-      foreach (var visitorName in visitorClassName)
+      foreach (PsiOptionSymbol visitorName in visitorClassName)
       {
-        foreach (var methodSuffix in visitorMetodSuffix)
+        foreach (PsiOptionSymbol methodSuffix in visitorMetodSuffix)
         {
-          foreach (var methodPrefix in visitorMetodPrefix)
+          foreach (PsiOptionSymbol methodPrefix in visitorMetodPrefix)
           {
-            foreach (var packageName in interfacesPackageName)
+            foreach (PsiOptionSymbol packageName in interfacesPackageName)
             {
               if ((visitorName.SourceFile == methodSuffix.SourceFile) && (methodPrefix.SourceFile == packageName.SourceFile) && (packageName.SourceFile == methodSuffix.SourceFile))
               {
-                var sourceFile = visitorName.SourceFile;
+                IPsiSourceFile sourceFile = visitorName.SourceFile;
                 ICollection<ITypeElement> visitorClasses = new List<ITypeElement>();
-                var visitorNotGenericClasses = sourceFile.GetPsiServices().CacheManager.GetDeclarationsCache(sourceFile.PsiModule, false, true).GetTypeElementsByCLRName(packageName.Value + "." + visitorName.Value);
-                foreach (var typeElement in visitorNotGenericClasses)
+                ICollection<ITypeElement> visitorNotGenericClasses = sourceFile.GetPsiServices().CacheManager.GetDeclarationsCache(sourceFile.PsiModule, false, true).GetTypeElementsByCLRName(packageName.Value + "." + visitorName.Value);
+                foreach (ITypeElement typeElement in visitorNotGenericClasses)
                 {
                   visitorClasses.Add(typeElement);
                 }
-                var visitorGenericClasses =
+                ICollection<ITypeElement> visitorGenericClasses =
                   sourceFile.GetPsiServices().CacheManager.GetDeclarationsCache(sourceFile.PsiModule, false, true).GetTypeElementsByCLRName(
                     packageName.Value + "." + visitorName.Value + "`1");
-                foreach (var visitorGenericClass in visitorGenericClasses)
+                foreach (ITypeElement visitorGenericClass in visitorGenericClasses)
                 {
                   visitorClasses.Add(visitorGenericClass);
                 }
                 visitorGenericClasses =
                   sourceFile.GetPsiServices().CacheManager.GetDeclarationsCache(sourceFile.PsiModule, false, true).GetTypeElementsByCLRName(
                     packageName.Value + "." + visitorName.Value + "`2");
-                foreach (var visitorGenericClass in visitorGenericClasses)
+                foreach (ITypeElement visitorGenericClass in visitorGenericClasses)
                 {
                   visitorClasses.Add(visitorGenericClass);
                 }
-                foreach (var typeElement in visitorClasses)
+                foreach (ITypeElement typeElement in visitorClasses)
                 {
-                  classes.Add(typeElement, new List<PsiOptionSymbol> {visitorName, methodSuffix, methodPrefix, packageName});
+                  classes.Add(typeElement, new List<PsiOptionSymbol> { visitorName, methodSuffix, methodPrefix, packageName });
                 }
               }
             }

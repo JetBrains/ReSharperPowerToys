@@ -13,7 +13,7 @@ using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
 {
-  [DaemonStage(StagesBefore = new[] { typeof(LanguageSpecificDaemonStage) })]
+  [DaemonStage(StagesBefore = new[] { typeof (LanguageSpecificDaemonStage) })]
   public class KeywordHighlightingStage : PsiDaemonStageBase
   {
     public override ErrorStripeRequest NeedsErrorStripe(IPsiSourceFile sourceFile, IContextBoundSettingsStore settings)
@@ -24,10 +24,14 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
     public override IEnumerable<IDaemonStageProcess> CreateProcess(IDaemonProcess process, IContextBoundSettingsStore settings, DaemonProcessKind processKind)
     {
       if (!IsSupported(process.SourceFile))
+      {
         return EmptyList<IDaemonStageProcess>.InstanceList;
+      }
 
-      return new List<IDaemonStageProcess>(){new KeywordHighlightingProcess(process, settings)};
+      return new List<IDaemonStageProcess> { new KeywordHighlightingProcess(process, settings) };
     }
+
+    #region Nested type: KeywordHighlightingProcess
 
     private class KeywordHighlightingProcess : PsiIncrementalDaemonStageProcessBase
     {
@@ -42,18 +46,20 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
         if (PsiLexer.IsKeyword(s))
         {
           AddHighlighting(consumer, node);
-        } else
+        }
+        else
         {
           var token = node as PsiGenericToken;
-          if(token != null)
+          if (token != null)
           {
-            if(token.GetTokenType().IsStringLiteral)
+            if (token.GetTokenType().IsStringLiteral)
             {
-              AddHighlighting(consumer, new PsiStringLiteralHighlighting(node));  
-            } else if (token.GetTokenType().IsComment)
+              AddHighlighting(consumer, new PsiStringLiteralHighlighting(node));
+            }
+            else if (token.GetTokenType().IsComment)
             {
-              AddHighlighting(consumer, new PsiCommentHighlighting(node));   
-            } 
+              AddHighlighting(consumer, new PsiCommentHighlighting(node));
+            }
           }
         }
       }
@@ -68,5 +74,7 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
         consumer.AddHighlighting(highlighting, File);
       }
     }
+
+    #endregion
   }
 }

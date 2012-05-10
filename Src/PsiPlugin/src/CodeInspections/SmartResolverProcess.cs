@@ -12,6 +12,8 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
       myDaemonProcess = daemonProcess;
     }
 
+    #region IDaemonStageProcess Members
+
     public IDaemonProcess DaemonProcess
     {
       get { return myDaemonProcess; }
@@ -20,5 +22,7 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
     public void Execute(Action<DaemonStageResult> commiter)
     {
     }
+
+    #endregion
   }
 }

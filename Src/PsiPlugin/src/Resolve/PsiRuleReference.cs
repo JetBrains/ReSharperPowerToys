@@ -11,7 +11,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
 {
   public class PsiRuleReference : PsiReferenceBase
   {
-    public PsiRuleReference(ITreeNode node) : base(node)
+    public PsiRuleReference(ITreeNode node)
+      : base(node)
     {
     }
 
@@ -28,14 +29,16 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
         }
       }
       return new ResolveResultWithInfo(ResolveResultFactory.CreateResolveResultFinaly(elements),
-                                                  ResolveErrorType.OK);
+        ResolveErrorType.OK);
     }
 
     public override ISymbolTable GetReferenceSymbolTable(bool useReferenceName)
     {
       var file = TreeNode.GetContainingFile() as PsiFile;
       if (file == null)
+      {
         return EmptySymbolTable.INSTANCE;
+      }
       return file.FileRuleSymbolTable;
     }
 

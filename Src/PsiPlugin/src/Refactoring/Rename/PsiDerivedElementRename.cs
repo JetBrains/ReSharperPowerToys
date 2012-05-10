@@ -19,17 +19,29 @@ using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
 {
-  class PsiDerivedElementRename : AtomicRenameBase
+  internal class PsiDerivedElementRename : AtomicRenameBase
   {
-    private readonly IDeclaredElementPointer<IDeclaredElement> myOriginalElementPointer;
-    private readonly string myNewName;
+    private readonly List<IDeclaration> myDeclarations = new List<IDeclaration>();
     private readonly bool myDoNotShowBindingConflicts;
+    private readonly string myNewName;
+
+    private readonly List<IReference> myNewReferences = new List<IReference>();
+    private readonly IDeclaredElementPointer<IDeclaredElement> myOriginalElementPointer;
+
+    [CanBeNull]
+    private readonly List<IDeclaredElementPointer<IDeclaredElement>> mySecondaryElements;
 
     private IDeclaredElementPointer<IDeclaredElement> myNewElementPointer;
-    private readonly List<IReference> myNewReferences = new List<IReference>();
-    private readonly List<IDeclaration> myDeclarations = new List<IDeclaration>();
-    [CanBeNull] private readonly List<IDeclaredElementPointer<IDeclaredElement>> mySecondaryElements;
 
+    public PsiDerivedElementRename(IDeclaredElement declaredElement, [NotNull] string newName, bool doNotShowBindingConflicts)
+    {
+      myOriginalElementPointer = declaredElement.CreateElementPointer();
+      myNewName = newName;
+      myDoNotShowBindingConflicts = doNotShowBindingConflicts;
+      mySecondaryElements = new List<IDeclaredElementPointer<IDeclaredElement>>();
+      mySecondaryElements = RenameRefactoringService.Instance.GetRenameService(PsiLanguage.Instance).GetSecondaryElements(declaredElement).Select(x => x.CreateElementPointer()).ToList();
+      BuildDeclarations();
+    }
 
 
     public override IDeclaredElement NewDeclaredElement
@@ -53,19 +65,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
       get
       {
         if (mySecondaryElements == null)
+        {
           return EmptyList<IDeclaredElement>.InstanceList;
+        }
         return mySecondaryElements.SelectNotNull(x => x.FindDeclaredElement()).ToList();
       }
-    }
-
-    public PsiDerivedElementRename(IDeclaredElement declaredElement, [NotNull] string newName, bool doNotShowBindingConflicts)
-    {
-      myOriginalElementPointer = declaredElement.CreateElementPointer();
-      myNewName = newName;
-      myDoNotShowBindingConflicts = doNotShowBindingConflicts;
-      mySecondaryElements = new List<IDeclaredElementPointer<IDeclaredElement>>();
-      mySecondaryElements = RenameRefactoringService.Instance.GetRenameService(PsiLanguage.Instance).GetSecondaryElements(declaredElement).Select(x => x.CreateElementPointer()).ToList();
-      BuildDeclarations();
     }
 
     public override void Rename(RenameRefactoring executer, IProgressIndicator pi, bool hasConflictsWithDeclarations, IRefactoringDriver driver)
@@ -74,16 +78,19 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
 
       //Logger.Assert(myDeclarations.Count > 0, "myDeclarations.Count > 0");
 
-      var declaredElement = myOriginalElementPointer.FindDeclaredElement();
-      if (declaredElement == null) return;
+      IDeclaredElement declaredElement = myOriginalElementPointer.FindDeclaredElement();
+      if (declaredElement == null)
+      {
+        return;
+      }
 
-      var psiServices = declaredElement.GetPsiServices();
+      IPsiServices psiServices = declaredElement.GetPsiServices();
 
-      var primaryReferences = executer.Workflow.GetElementReferences(PrimaryDeclaredElement);
-      var secondaryElementWithReferences = SecondaryDeclaredElements.Select(x => Pair.Of(x, executer.Workflow.GetElementReferences(x))).ToList();
+      IList<IReference> primaryReferences = executer.Workflow.GetElementReferences(PrimaryDeclaredElement);
+      List<Pair<IDeclaredElement, IList<IReference>>> secondaryElementWithReferences = SecondaryDeclaredElements.Select(x => Pair.Of(x, executer.Workflow.GetElementReferences(x))).ToList();
       pi.Start(myDeclarations.Count + primaryReferences.Count);
 
-      foreach (var declaration in myDeclarations)
+      foreach (IDeclaration declaration in myDeclarations)
       {
         InterruptableActivityCookie.CheckAndThrow(pi);
         declaration.SetName(myNewName);
@@ -96,40 +103,45 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
       if (myDeclarations.Count > 0)
       {
         newDeclaredElement = myDeclarations[0].DeclaredElement;
-      } 
+      }
 
       Assertion.Assert(newDeclaredElement != null, "The condition (newDeclaredElement != null) is false.");
       if (newDeclaredElement != null)
       {
         myNewElementPointer = newDeclaredElement.CreateElementPointer();
         Assertion.Assert(newDeclaredElement.IsValid(), "myNewDeclaredElement.IsValid()");
-      } else
+      }
+      else
       {
         return;
       }
 
       myNewReferences.Clear();
-      var references = LanguageUtil.SortReferences(primaryReferences.Where(x => x.IsValid()));
+      OneToSetMap<PsiLanguageType, IReference> references = LanguageUtil.SortReferences(primaryReferences.Where(x => x.IsValid()));
       IList<IReference> referencesToRename = new List<IReference>();
       foreach (var pair in references)
       {
-        var sortedReferences = LanguageUtil.GetSortedReferences(pair.Value);
-        foreach (var reference in sortedReferences)
+        List<IReference> sortedReferences = LanguageUtil.GetSortedReferences(pair.Value);
+        foreach (IReference reference in sortedReferences)
         {
-          var oldReferenceForConflict = reference;
+          IReference oldReferenceForConflict = reference;
           InterruptableActivityCookie.CheckAndThrow(pi);
           if (reference.IsValid()) // reference may invalidate during additional reference processing
           {
-            var rename = executer.Workflow.LanguageSpecific[reference.GetTreeNode().Language];
-            var reference1 = rename.TransformProjectedInitializer(reference);
-            var subst = GetSubst(newDeclaredElement, executer);
+            RenameHelperBase rename = executer.Workflow.LanguageSpecific[reference.GetTreeNode().Language];
+            IReference reference1 = rename.TransformProjectedInitializer(reference);
+            DeclaredElementInstance subst = GetSubst(newDeclaredElement, executer);
             IReference newReference;
             if (subst != null)
             {
               if (subst.Substitution.Domain.IsEmpty())
+              {
                 newReference = reference1.BindTo(subst.Element);
+              }
               else
+              {
                 newReference = reference1.BindTo(subst.Element, subst.Substitution);
+              }
             }
             else
             {
@@ -137,7 +149,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
             }
             if (!(newReference is IImplicitReference))
             {
-              var element = newReference.Resolve().DeclaredElement;
+              IDeclaredElement element = newReference.Resolve().DeclaredElement;
               if (!hasConflictsWithDeclarations && !myDoNotShowBindingConflicts && (element == null || !element.Equals(newDeclaredElement)) && !rename.IsAlias(newDeclaredElement))
               {
                 driver.AddLateConflict(() => new Conflict(newReference.GetTreeNode().GetSolution(), "Usage {0} can not be updated correctly.", ConflictSeverity.Error, oldReferenceForConflict), "not bound");
@@ -154,9 +166,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
 
       foreach (var pair in secondaryElementWithReferences)
       {
-        var element = pair.First;
-        var secondaryReferences = pair.Second;
-        foreach (var reference in secondaryReferences)
+        IDeclaredElement element = pair.First;
+        IList<IReference> secondaryReferences = pair.Second;
+        foreach (IReference reference in secondaryReferences)
         {
           InterruptableActivityCookie.CheckAndThrow(pi);
           if (reference.IsValid())
@@ -176,13 +188,15 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
     {
       myDeclarations.Clear();
 
-      var element = myOriginalElementPointer.FindDeclaredElement();
+      IDeclaredElement element = myOriginalElementPointer.FindDeclaredElement();
       if (element == null)
+      {
         return;
+      }
 
-      var declarations = new MultyPsiDeclarations(element).AllDeclarations;
+      IList<IDeclaration> declarations = new MultyPsiDeclarations(element).AllDeclarations;
 
-      foreach (var declaration in declarations)
+      foreach (IDeclaration declaration in declarations)
       {
         myDeclarations.Add(declaration);
       }

@@ -11,21 +11,89 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
 {
   internal partial class PsiFile
   {
-    private ISymbolTable myRuleSymbolTable;
+    private readonly Dictionary<string, IDeclaredElement> myDeclarations = new Dictionary<string, IDeclaredElement>();
+    private string myInterfacePrefix = "";
     private ISymbolTable myOptionSymbolTable;
-    private ISymbolTable myRoleSymbolTable;
-    private ISymbolTable myPathSymbolTable;
-    private string myTokenTypeClassFqName = "";
     private string myParserClassName = "";
     private string myParserPackageName = "";
-    private string myTreeInterfacesPackageName = "";
+    private ISymbolTable myPathSymbolTable;
+    private ISymbolTable myRoleSymbolTable;
+    private ISymbolTable myRuleSymbolTable;
+    private string myTokenTypeClassFqName = "";
     private string myTreeClassesPackageName = "";
+    private string myTreeInterfacesPackageName = "";
     private string myVisitorClassName = "";
-    private string myInterfacePrefix = "";
     private string myVisitorMethodPrefix = "";
     private string myVisitorMethodSuffix = "";
 
-    private readonly Dictionary<string, IDeclaredElement> Declarations = new Dictionary<string, IDeclaredElement>();
+    public ISymbolTable FileRuleSymbolTable
+    {
+      get
+      {
+        if (myRuleSymbolTable != null)
+        {
+          return myRuleSymbolTable;
+        }
+        lock (this)
+        {
+          return myRuleSymbolTable ?? (myRuleSymbolTable = CreateRulesSymbolTable());
+        }
+      }
+    }
+
+    public ISymbolTable FileOptionSymbolTable
+    {
+      get
+      {
+        if (myOptionSymbolTable != null)
+        {
+          return myOptionSymbolTable;
+        }
+        lock (this)
+        {
+          return myOptionSymbolTable ?? (myOptionSymbolTable = CreateOptionSymbolTable(true));
+        }
+      }
+    }
+
+    public ISymbolTable FileRoleSymbolTable
+    {
+      get
+      {
+        if (myRoleSymbolTable != null)
+        {
+          return myRoleSymbolTable;
+        }
+        lock (this)
+        {
+          return myRoleSymbolTable ?? (myRoleSymbolTable = CreateRoleSymbolTable());
+        }
+      }
+    }
+
+    public ISymbolTable FilePathSymbolTable
+    {
+      get
+      {
+        if (myPathSymbolTable != null)
+        {
+          return myPathSymbolTable;
+        }
+        lock (this)
+        {
+          return myPathSymbolTable ?? (myPathSymbolTable = CreatePathSymbolTable());
+        }
+      }
+    }
+
+    #region IPsiFile Members
+
+    public override PsiLanguageType Language
+    {
+      get { return PsiLanguage.Instance; }
+    }
+
+    #endregion
 
     protected override void ClearCachedData()
     {
@@ -35,7 +103,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
       myOptionSymbolTable = null;
       myRoleSymbolTable = null;
       myPathSymbolTable = null;
-      Declarations.Clear();
+      myDeclarations.Clear();
     }
 
     public void ClearTables()
@@ -44,7 +112,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
       myOptionSymbolTable = null;
       myRoleSymbolTable = null;
       myPathSymbolTable = null;
-      Declarations.Clear();
+      myDeclarations.Clear();
     }
 
     private void CollectDeclarations()
@@ -56,12 +124,12 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
         if (declaration != null)
         {
           string s = declaration.DeclaredName;
-          Declarations[s] = declaration.DeclaredElement;
+          myDeclarations[s] = declaration.DeclaredElement;
         }
         child = child.NextSibling;
       }
       child = Interfaces;
-      if(child != null)
+      if (child != null)
       {
         child = child.FirstChild;
         while (child != null)
@@ -70,9 +138,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
           if (declaration != null)
           {
             string s = declaration.DeclaredName;
-            Declarations[s] = declaration.DeclaredElement;
+            myDeclarations[s] = declaration.DeclaredElement;
           }
-          child = child.NextSibling;         
+          child = child.NextSibling;
         }
       }
     }
@@ -82,7 +150,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
       CollectDeclarations();
       if (GetSourceFile() != null)
       {
-        var elements = Declarations.Values;
+        Dictionary<string, IDeclaredElement>.ValueCollection elements = myDeclarations.Values;
         myRuleSymbolTable = ResolveUtil.CreateSymbolTable(elements, 0);
       }
       else
@@ -94,7 +162,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
       if (optionsDefinition != null)
       {
         ITreeNode child = optionsDefinition.FirstChild;
-        ITreeNode tokenTypeClassFQNameNode = null;
+        ITreeNode tokenTypeClassFQNNode = null;
         ITreeNode parserClassNameNode = null;
         ITreeNode parserPackageNode = null;
         ITreeNode treeInterfacesPackageNode = null;
@@ -114,7 +182,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
             {
               if ("\"tokenTypeClassFQName\"".Equals(token.GetText()))
               {
-                tokenTypeClassFQNameNode = optionDefinition.OptionStringValue;
+                tokenTypeClassFQNNode = optionDefinition.OptionStringValue;
               }
               if ("\"visitMethodPrefix\"".Equals(token.GetText()))
               {
@@ -152,9 +220,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
           }
           child = child.NextSibling;
         }
-        if (tokenTypeClassFQNameNode != null)
+        if (tokenTypeClassFQNNode != null)
         {
-          AddTokensToSymbolTable(tokenTypeClassFQNameNode);
+          AddTokensToSymbolTable(tokenTypeClassFQNNode);
         }
 
         if ((parserPackageNode != null) && (parserClassNameNode != null))
@@ -248,17 +316,17 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
 
     private void CollectDerivedElements()
     {
-      var classes =
+      ICollection<ITypeElement> classes =
         GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(
           myParserPackageName + "." + myParserClassName);
-      var visitorClasses = CollectVisitorClasses();
-      var elements = Declarations.Values;
+      ICollection<ITypeElement> visitorClasses = CollectVisitorClasses();
+      Dictionary<string, IDeclaredElement>.ValueCollection elements = myDeclarations.Values;
       foreach (IDeclaredElement declaredElement in elements)
       {
         IEnumerator<ITypeElement> enumerator = classes.GetEnumerator();
         if (enumerator.MoveNext())
         {
-          ((RuleDeclaration) declaredElement).CollectDerivedDeclaredElements((IClass) enumerator.Current, visitorClasses, myTreeInterfacesPackageName, myTreeClassesPackageName, myInterfacePrefix, myVisitorMethodPrefix, myVisitorMethodSuffix);
+          ((RuleDeclaration)declaredElement).CollectDerivedDeclaredElements((IClass)enumerator.Current, visitorClasses, myTreeInterfacesPackageName, myTreeClassesPackageName, myInterfacePrefix, myVisitorMethodPrefix, myVisitorMethodSuffix);
         }
       }
     }
@@ -266,22 +334,22 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
     private ICollection<ITypeElement> CollectVisitorClasses()
     {
       ICollection<ITypeElement> visitorClasses = new List<ITypeElement>();
-      foreach (var typeElement in GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(
+      foreach (ITypeElement typeElement in GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(
         myTreeInterfacesPackageName + "." + myVisitorClassName))
       {
         visitorClasses.Add(typeElement);
       }
-      var visitorGenericClasses =
+      ICollection<ITypeElement> visitorGenericClasses =
         GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(
           myTreeInterfacesPackageName + "." + myVisitorClassName + "`1");
-      foreach (var visitorGenericClass in visitorGenericClasses)
+      foreach (ITypeElement visitorGenericClass in visitorGenericClasses)
       {
         visitorClasses.Add(visitorGenericClass);
       }
       visitorGenericClasses =
         GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(
           myTreeInterfacesPackageName + "." + myVisitorClassName + "`2");
-      foreach (var visitorGenericClass in visitorGenericClasses)
+      foreach (ITypeElement visitorGenericClass in visitorGenericClasses)
       {
         visitorClasses.Add(visitorGenericClass);
       }
@@ -292,7 +360,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
     {
       myTokenTypeClassFqName = tokenTypeClassFQNameNode.GetText();
       myTokenTypeClassFqName = myTokenTypeClassFqName.Substring(1, myTokenTypeClassFqName.Length - 2);
-      var classes =
+      ICollection<ITypeElement> classes =
         GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(
           myTokenTypeClassFqName);
       IEnumerator<ITypeElement> enumerator = classes.GetEnumerator();
@@ -323,8 +391,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
         IList<IDeclaredElement> optionDeclaredElements = new List<IDeclaredElement>();
         foreach (string name in OptionDeclaredElements.FileOptionNames)
         {
-          IDeclaredElement element = new OptionPropertyDeclaredElement(this.GetSourceFile(), name,
-                                                                       this.GetSourceFile().GetPsiServices());
+          IDeclaredElement element = new OptionPropertyDeclaredElement(GetSourceFile(), name,
+            GetSourceFile().GetPsiServices());
           optionDeclaredElements.Add(element);
         }
 
@@ -336,8 +404,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
         optionDeclaredElements = new List<IDeclaredElement>();
         foreach (string name in OptionDeclaredElements.RuleOptionNames)
         {
-          IDeclaredElement element = new OptionPropertyDeclaredElement(this.GetSourceFile(), name,
-                                                                       this.GetSourceFile().GetPsiServices());
+          IDeclaredElement element = new OptionPropertyDeclaredElement(GetSourceFile(), name,
+            GetSourceFile().GetPsiServices());
           optionDeclaredElements.Add(element);
         }
 
@@ -425,63 +493,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
       myPathSymbolTable = myPathSymbolTable.Merge(FileRuleSymbolTable);
 
       return myPathSymbolTable;
-    }
-
-    public ISymbolTable FileRuleSymbolTable
-    {
-      get
-      {
-        if (myRuleSymbolTable != null)
-          return myRuleSymbolTable;
-        lock (this)
-        {
-          return myRuleSymbolTable ?? (myRuleSymbolTable = CreateRulesSymbolTable());
-        }
-      }
-    }
-
-    public ISymbolTable FileOptionSymbolTable
-    {
-      get
-      {
-        if (myOptionSymbolTable != null)
-          return myOptionSymbolTable;
-        lock (this)
-        {
-          return myOptionSymbolTable ?? (myOptionSymbolTable = CreateOptionSymbolTable(true));
-        }
-      }
-    }
-
-    public ISymbolTable FileRoleSymbolTable
-    {
-      get
-      {
-        if (myRoleSymbolTable != null)
-          return myRoleSymbolTable;
-        lock (this)
-        {
-          return myRoleSymbolTable ?? (myRoleSymbolTable = CreateRoleSymbolTable());
-        }
-      }
-    }
-
-    public ISymbolTable FilePathSymbolTable
-    {
-      get
-      {
-        if (myPathSymbolTable != null)
-          return myPathSymbolTable;
-        lock (this)
-        {
-          return myPathSymbolTable ?? (myPathSymbolTable = CreatePathSymbolTable());
-        }
-      }
-    }
-
-    public override PsiLanguageType Language
-    {
-      get { return PsiLanguage.Instance; }
     }
   }
 }

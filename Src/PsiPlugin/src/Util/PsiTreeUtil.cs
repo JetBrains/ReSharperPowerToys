@@ -11,13 +11,13 @@ namespace JetBrains.ReSharper.PsiPlugin.Util
 {
   internal static class PsiTreeUtil
   {
-    public static ITreeNode GetFirstChild<T>(ITreeNode element) where T:ITreeNode
+    public static ITreeNode GetFirstChild<T>(ITreeNode element) where T : ITreeNode
     {
-      if( element == null)
+      if (element == null)
       {
         return null;
       }
-      var child = element.FirstChild;
+      ITreeNode child = element.FirstChild;
       while (child != null)
       {
         if (child is T)
@@ -25,7 +25,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Util
           return child;
         }
 
-        var result = GetFirstChild<T>(child);
+        ITreeNode result = GetFirstChild<T>(child);
 
         if (result != null)
         {
@@ -40,7 +40,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Util
     public static void ReplaceChild(ITreeNode parent, ITreeNode nameNode, string name)
     {
       if (name.IsEmpty())
+      {
         throw new ArgumentException("name shouldn't be empty", "name");
+      }
 
       using (WriteLockCookie.Create(parent.IsPhysical()))
       {
@@ -61,11 +63,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Util
       ITreeNode child = parent.FirstChild;
       while (child != null)
       {
-        if(child is T)
+        if (child is T)
         {
           collection.Add((T)child);
         }
-        GetAllChildren(child,collection);
+        GetAllChildren(child, collection);
         child = child.NextSibling;
       }
     }
@@ -80,18 +82,18 @@ namespace JetBrains.ReSharper.PsiPlugin.Util
     private static string GetTextWhithoutWhitespaces(ITreeNode treeNode)
     {
       string s = "";
-      if(treeNode.FirstChild == null)
+      if (treeNode.FirstChild == null)
       {
-        if(! (treeNode is Whitespace))
+        if (! (treeNode is Whitespace))
         {
           s = s + treeNode.GetText();
         }
         return s;
       }
-      var child = treeNode.FirstChild;
-      while ( child != null)
+      ITreeNode child = treeNode.FirstChild;
+      while (child != null)
       {
-        if ( !(child is Whitespace))
+        if (!(child is Whitespace))
         {
           s = s + GetTextWhithoutWhitespaces(child);
         }

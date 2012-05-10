@@ -6,8 +6,10 @@ using JetBrains.ReSharper.PsiPlugin.Completion.LookupItems;
 
 namespace JetBrains.ReSharper.PsiPlugin.Completion
 {
-  class KeywordsBetterFilter : ILookupItemsPreference
+  internal class KeywordsBetterFilter : ILookupItemsPreference
   {
+    #region ILookupItemsPreference Members
+
     public int Order
     {
       get { return 10; }
@@ -17,5 +19,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion
     {
       return items.Where(x => x is PsiKeywordLookupItem || x is TemplateLookupItem);
     }
+
+    #endregion
   }
 }
