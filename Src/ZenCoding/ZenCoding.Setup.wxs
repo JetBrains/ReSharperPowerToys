@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+
+    <?define BinariesDiskId=1?>
+
+    <DirectoryRef Id="APPLICATIONFOLDER" FileSource="$(var.DynPowerToysBinariesDir)">
+      <Component Id="C.Plugin.ZenCoding" Guid="{1C4E5CF2-46C1-4779-B3A6-29774BAE8C82}" Location="local" DiskId="$(var.BinariesDiskId)" KeyPath="yes" >
+        <File Id="F.Plugin.IronPython.Dll" Name="IronPython.dll" Checksum="yes" Vital="yes" KeyPath="no" ReadOnly="yes" />
+        <File Id="F.Plugin.IronPython.Modules.Dll" Name="IronPython.Modules.dll" Checksum="yes" Vital="yes" KeyPath="no" ReadOnly="yes" />
+        <File Id="F.Plugin.Microsoft.Dynamic.Dll" Name="Microsoft.Dynamic.dll" Checksum="yes" Vital="yes" KeyPath="no" ReadOnly="yes" />
+        <File Id="F.Plugin.Microsoft.Scripting.Core.Dll" Name="Microsoft.Scripting.Core.dll" Checksum="yes" Vital="yes" KeyPath="no" ReadOnly="yes" />
+        <File Id="F.Plugin.Microsoft.Scripting.Debugging.Dll" Name="Microsoft.Scripting.Debugging.dll" Checksum="yes" Vital="yes" KeyPath="no" ReadOnly="yes" />
+        <File Id="F.Plugin.Microsoft.Scripting.Dll" Name="Microsoft.Scripting.dll" Checksum="yes" Vital="yes" KeyPath="no" ReadOnly="yes" />
+        <File Id="F.Plugin.Microsoft.Scripting.ExtensionAttribute.Dll" Name="Microsoft.Scripting.ExtensionAttribute.dll" Checksum="yes" Vital="yes" KeyPath="no" ReadOnly="yes" />
+      </Component>
+      <Directory Id="D.Plugin.ZenCoding.Sys" Name="sys" FileSource="$(var.DynPowerToysBinariesDir)\sys">
+        <Component Id="C.Plugin.ZenCoding.Sys" Guid="{D6EEEAEA-7CED-449A-898C-41B8140B9E41}" Location="local" DiskId="$(var.BinariesDiskId)" KeyPath="yes">
+          <File Id="F.Plugin.ZenCoding.Sys.Copy.Py" Name="copy.py" Checksum="yes" Vital="yes" KeyPath="no" ReadOnly="yes" />
+          <File Id="F.Plugin.ZenCoding.Sys.Types.Py" Name="types.py" Checksum="yes" Vital="yes" KeyPath="no" ReadOnly="yes" />
+        </Component>
+      </Directory>
+      <Directory Id="D.Plugin.ZenCoding.Zencoding" Name="zencoding" FileSource="$(var.DynPowerToysBinariesDir)\zencoding">
+        <Component Id="C.Plugin.ZenCoding.Zencoding" Guid="{4CE85E96-78A7-4EEE-B8BC-A6105CF26DD6}" Location="local" DiskId="$(var.BinariesDiskId)" KeyPath="yes">
+          <File Id="F.Plugin.ZenCoding.Zencoding.__init__.Py" Name="__init__.py" Checksum="yes" Vital="yes" KeyPath="no" ReadOnly="yes" />
+          <File Id="F.Plugin.ZenCoding.Zencoding.Html_matcher.Py" Name="html_matcher.py" Checksum="yes" Vital="yes" KeyPath="no" ReadOnly="yes" />
+          <File Id="F.Plugin.ZenCoding.Zencoding.Htmlparser.Py" Name="htmlparser.py" Checksum="yes" Vital="yes" KeyPath="no" ReadOnly="yes" />
+          <File Id="F.Plugin.ZenCoding.Zencoding.My_zen_settings.Py" Name="my_zen_settings.py" Checksum="yes" Vital="yes" KeyPath="no" ReadOnly="yes" />
+          <File Id="F.Plugin.ZenCoding.Zencoding.Stparser.Py" Name="stparser.py" Checksum="yes" Vital="yes" KeyPath="no" ReadOnly="yes" />
+          <File Id="F.Plugin.ZenCoding.Zencoding.Zen_core.Py" Name="zen_core.py" Checksum="yes" Vital="yes" KeyPath="no" ReadOnly="yes" />
+          <File Id="F.Plugin.ZenCoding.Zencoding.Zen_settings.Py" Name="zen_settings.py" Checksum="yes" Vital="yes" KeyPath="no" ReadOnly="yes" />
+        </Component>
+      </Directory>
+    </DirectoryRef>
+
+    <ComponentGroup Id="C.PowerToySetup.AdditionalComponents">
+      <ComponentRef Id="C.Plugin.ZenCoding" />
+      <ComponentRef Id="C.Plugin.ZenCoding.Sys" />
+      <ComponentRef Id="C.Plugin.ZenCoding.Zencoding" />
+    </ComponentGroup>
+
+  </Fragment>
+</Wix>

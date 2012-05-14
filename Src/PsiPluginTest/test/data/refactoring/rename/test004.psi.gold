@@ -1,0 +1,5 @@
+a
+	:
+	!(#zzz : identifier)
+	bb[zzz]
+  ;

@@ -1,0 +1,21 @@
+Language: PsiLanguageType:PSI
+IPsiFile
+  IRuleDeclaration
+    IRuleDeclaredName
+      Identifier(type:IDENTIFIER, text:a)
+    NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+    Whitespace(type:WHITE_SPACE, text:	) spaces:"	"
+    PsiTokenType+ColonTokenElement(type:COLON, text::)
+    NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+    Whitespace(type:WHITE_SPACE, text:	) spaces:"	"
+    IRuleBody
+      IPsiExpression
+        ISequence
+          INotChoiceExpression
+            ISimpleExpression
+              IRuleName
+                Identifier(type:IDENTIFIER, text:b)
+    NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+    Whitespace(type:WHITE_SPACE, text:  ) spaces:"  "
+    PsiTokenType+SemicolonTokenElement(type:SEMICOLON, text:;)
+
