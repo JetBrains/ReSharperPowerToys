@@ -328,6 +328,7 @@
     <Compile Include="src\Resolve\PsiResolveUtil.cs" />
     <Compile Include="src\Resolve\PsiRoleReference.cs" />
     <Compile Include="src\Resolve\PsiRuleReference.cs" />
+    <Compile Include="src\Resolve\PsiSearcherFactory.cs" />
     <Compile Include="src\Resolve\PsiVariableReference.cs" />
     <Compile Include="src\Resolve\RoleDeclaredElement.cs" />
     <Compile Include="src\Services\PsiDeclaredElementPresenter.cs" />

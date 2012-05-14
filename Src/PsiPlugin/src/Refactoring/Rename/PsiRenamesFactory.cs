@@ -26,7 +26,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
       {
         var ruleDeclaration = declaredElement as RuleDeclaration;
         ruleDeclaration.UpdateDerivedDeclaredElements();
-        foreach (IDeclaredElement element in ruleDeclaration.DerivedDeclaredElements)
+        foreach (IDeclaredElement element in ruleDeclaration.DerivedParserMethods)
         {
           yield return new PsiDerivedElementRename(element, "parse" + NameToCamelCase(newName),
             doNotAddBindingConflicts);

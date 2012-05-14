@@ -83,7 +83,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.FindUsages
 
     private bool CanContainReferencesTo(IPsiSourceFile sourceFile, IDeclaredElement element)
     {
-      IWordIndex wordIndex = element.GetPsiServices().CacheManager.WordIndex;
+     /*IWordIndex wordIndex = element.GetPsiServices().CacheManager.WordIndex;
 
       var field = element as IField;
       if (field != null && field.IsEnumMember)
@@ -104,8 +104,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.FindUsages
 
       var typeMember = element as ITypeMember;
       if (typeMember != null && typeMember.IsStatic && !typeMember.IsExtensionMethod() && !(typeMember is IOperator)
-        /* && sourceFile.PrimaryPsiLanguage.Is<PsiLanguage>() or && !typeMember.GetSourceFiles().Contains(sourceFile)*/)
-      {
+        /* && sourceFile.PrimaryPsiLanguage.Is<PsiLanguage>() or && !typeMember.GetSourceFiles().Contains(sourceFile)*///)
+      /*{
         ITypeElement containingType = typeMember.GetContainingType();
         if (containingType == null)
         {
@@ -130,7 +130,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.FindUsages
         }
 
         return FinderUtil.GetInheritorsClosure(containingType).First.Any(name => wordIndex.CanContainWord(sourceFile, name));
-      }
+      }*/
 
       return true;
     }

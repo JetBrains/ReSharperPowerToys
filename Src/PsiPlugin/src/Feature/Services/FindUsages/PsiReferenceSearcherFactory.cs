@@ -5,6 +5,7 @@ using JetBrains.ReSharper.Psi.ExtensionsAPI;
 using JetBrains.ReSharper.Psi.Search;
 using JetBrains.ReSharper.Psi.Util;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
+using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
 using JetBrains.ReSharper.PsiPlugin.Util;
 using JetBrains.Util;
 using JetBrains.Util.DataStructures;
@@ -169,9 +170,12 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.FindUsages
     public ISearchDomain GetDeclaredElementSearchDomain(IDeclaredElement declaredElement)
     {
       HybridCollection<IPsiSourceFile> files = declaredElement.GetSourceFiles();
-      if (files.Count > 0)
+      if (!(declaredElement is RuleDeclaration))
       {
-        return mySearchDomainFactory.CreateSearchDomain(files[0]);
+        if (files.Count > 0)
+        {
+          return mySearchDomainFactory.CreateSearchDomain(files[0]);
+        }
       }
       return mySearchDomainFactory.CreateSearchDomain(declaredElement.GetSolution(), false);
     }
