@@ -17,9 +17,11 @@
 using System;
 using JetBrains.Application.Progress;
 using JetBrains.ProjectModel;
+using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Feature.Services.Bulbs;
 using JetBrains.ReSharper.Feature.Services.Html.Bulbs;
 using JetBrains.ReSharper.Intentions;
+using JetBrains.ReSharper.Intentions.Bulbs;
 using JetBrains.ReSharper.Psi.Html.Parsing;
 using JetBrains.ReSharper.Psi.Html.Tree;
 using JetBrains.TextControl;
@@ -37,6 +39,11 @@ namespace XmlAndHtml
     public SpecifyIdHtmlContextAction(IWebContextActionDataProvider<IHtmlFile> provider)
     {
       myProvider = provider;
+    }
+
+    public void CreateBulbItems(BulbMenu menu, Severity severity)
+    {
+      menu.ArrangeContextAction(this);
     }
 
     public bool IsAvailable(IUserDataHolder cache)
