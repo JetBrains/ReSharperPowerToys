@@ -22,7 +22,7 @@ using JetBrains.Application.Settings;
 using JetBrains.DataFlow;
 using JetBrains.IDE.TreeBrowser;
 using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Features.Browsing.TypeHierarchy;
+using JetBrains.ReSharper.Features.Browsing.Hierarchies.Actions;
 using JetBrains.ReSharper.Features.Common.TreePsiBrowser;
 using JetBrains.UI.Controls;
 using JetBrains.UI.Extensions;
