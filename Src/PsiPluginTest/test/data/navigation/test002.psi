@@ -1,0 +1,10 @@
+a
+	:
+	b{on}b
+  ;
+
+private bb
+	:
+	c
+  ;
+
