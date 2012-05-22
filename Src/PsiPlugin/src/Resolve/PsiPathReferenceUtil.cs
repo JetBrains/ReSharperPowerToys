@@ -10,7 +10,7 @@ using JetBrains.ReSharper.Psi.Impl;
 using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Psi.Util;
-using JetBrains.ReSharper.Psi.Web.PathMapping;
+using JetBrains.ReSharper.Psi.Web.Paths;
 using JetBrains.ReSharper.Psi.Web.References;
 using JetBrains.ReSharper.Psi.Web.Util;
 using JetBrains.ReSharper.PsiPlugin.Cache;
