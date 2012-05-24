@@ -41,7 +41,7 @@ namespace XmlAndHtml
       myProvider = provider;
     }
 
-    public void CreateBulbItems(BulbMenu menu, Severity severity)
+    public void CreateBulbItems(BulbMenu menu)
     {
       menu.ArrangeContextAction(this);
     }
