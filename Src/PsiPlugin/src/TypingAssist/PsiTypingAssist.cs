@@ -32,8 +32,8 @@ namespace JetBrains.ReSharper.PsiPlugin.TypingAssist
   public class PsiTypingAssist : TypingAssistLanguageBase<PsiLanguage, PsiCodeFormatter>, ITypingHandler
   {
     public PsiTypingAssist(Lifetime lifetime, ISolution solution, ISettingsStore settingsStore, CachingLexerService cachingLexerService, ICommandProcessor commandProcessor,
-      ITypingAssistManager typingAssistManager)
-      : base(solution, settingsStore, cachingLexerService, commandProcessor)
+      ITypingAssistManager typingAssistManager, IPsiServices psiServices)
+      : base(solution, settingsStore, cachingLexerService, commandProcessor, psiServices)
     {
       typingAssistManager.AddTypingHandler(lifetime, '{', this, HandleLeftBraceTyped, IsTypingSmartLBraceHandlerAvailable);
       //typingAssistManager.AddTypingHandler(lifetime, '}', this, HandleRightBraceTyped, IsTypingHandlerAvailable);

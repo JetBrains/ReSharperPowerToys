@@ -402,8 +402,8 @@
   <ItemGroup>
     <Folder Include="src\Psi\" />
   </ItemGroup>
-  <Import Project="$(ReSharperSdkTargets)\Plugin.NoReferences.Targets" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(ReSharperSdkTargets)\Plugin.NoReferences.Targets" />
   <Import Project="$(ReSharperSdkTools)\parserGen\ParserGen.Targets" />
   <Import Project="$(ReSharperSdkTools)\MSBuild\JetBrains.Build.Common.Targets" />
   <Import Project="$(ReSharperSdkTools)\CsLex\CsLex.Targets" />
