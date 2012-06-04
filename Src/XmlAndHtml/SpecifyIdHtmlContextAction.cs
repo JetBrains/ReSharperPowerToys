@@ -22,6 +22,8 @@ using JetBrains.ReSharper.Feature.Services.Bulbs;
 using JetBrains.ReSharper.Feature.Services.Html.Bulbs;
 using JetBrains.ReSharper.Intentions;
 using JetBrains.ReSharper.Intentions.Bulbs;
+using JetBrains.ReSharper.Intentions.Extensibility;
+using JetBrains.ReSharper.Intentions.Extensibility.Menu;
 using JetBrains.ReSharper.Psi.Html.Parsing;
 using JetBrains.ReSharper.Psi.Html.Tree;
 using JetBrains.TextControl;
