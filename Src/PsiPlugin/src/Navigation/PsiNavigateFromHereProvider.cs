@@ -12,11 +12,11 @@ using JetBrains.ReSharper.Features.Finding.NavigateFromHere;
 namespace JetBrains.ReSharper.PsiPlugin.Navigation
 {
   [ContextNavigationProvider]
-  class PsiNavigeFromHereProvider : INavigateFromHereProvider
+  public class PsiNavigateFromHereProvider : INavigateFromHereProvider
   {
     private IFeaturePartsContainer myManager;
 
-    public PsiNavigeFromHereProvider(IFeaturePartsContainer manager)
+    public PsiNavigateFromHereProvider(IFeaturePartsContainer manager)
     {
       myManager = manager;
     }
@@ -36,13 +36,13 @@ namespace JetBrains.ReSharper.PsiPlugin.Navigation
 
     public virtual Action GetSearchesExecution(IDataContext dataContext, INavigationExecutionHost host)
     {
-      var searches = ContextNavigationLanguageUtil.GetAvailableContextSearches<IDeclarationContextSearch>(dataContext, myManager);
+      var searches = ContextNavigationLanguageUtil.GetAvailableContextSearches<GeneratedContextSearch>(dataContext, myManager);
       if (Enumerable.Any(searches))
         return () => Execute(dataContext, searches, host);
       return null;
     }
 
-    private void Execute(IDataContext dataContext, ICollection<IDeclarationContextSearch> searches, INavigationExecutionHost host)
+    private void Execute(IDataContext dataContext, ICollection<GeneratedContextSearch> searches, INavigationExecutionHost host)
     {
       throw new NotImplementedException();
     }

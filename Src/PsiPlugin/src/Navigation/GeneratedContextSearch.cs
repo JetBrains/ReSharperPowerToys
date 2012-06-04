@@ -18,7 +18,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Navigation
 
     public bool IsApplicable(IDataContext dataContext)
     {
-      throw new NotImplementedException();
+      var psiProperty = dataContext.GetData(ReSharper.Psi.Services.DataConstants.DECLARED_ELEMENT);
+      if (psiProperty != null)
+        return true;
+      return false;
     }
   }
 }
