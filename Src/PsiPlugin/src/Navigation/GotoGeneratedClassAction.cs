@@ -8,7 +8,7 @@ using JetBrains.ReSharper.Features.Finding.NavigateFromHere;
 
 namespace JetBrains.ReSharper.PsiPlugin.Navigation
 {
-  [ActionHandler(new string[] { "GotoGeneratedClass"})]
+  [ActionHandler(new string[] { "GotoGeneratedClass" })]
   public class GotogeneratedClassAction : ContextNavigationActionBase<PsiNavigateFromHereProvider>
   {
   }

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<actions>
+  <action id="GotoGeneratedClass" text="Go to generated class"/>
+
+  <insert group-id="ReSharper.Navigate" position="last">
+    <separator />
+    <action-ref id="GotoGeneratedClass" />
+  </insert>
+
+  <insert group-id="VS#Code Window" position="last">
+    <separator />
+    <action-ref id="GotoGeneratedClass" />
+  </insert>
+  
+</actions>
