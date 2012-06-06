@@ -5,6 +5,9 @@ using JetBrains.Application.DataContext;
 using JetBrains.ReSharper.Feature.Services;
 using JetBrains.ReSharper.Feature.Services.ContextNavigation;
 using JetBrains.ReSharper.Feature.Services.ContextNavigation.ContextSearches;
+using JetBrains.ReSharper.Feature.Services.Occurences;
+using JetBrains.ReSharper.Feature.Services.Search;
+using JetBrains.ReSharper.Features.Common.Occurences;
 using JetBrains.ReSharper.Features.Common.Occurences.ExecutionHosting;
 using JetBrains.ReSharper.Features.Finding.ExecutionHosting;
 using JetBrains.ReSharper.Features.Finding.NavigateFromHere;
@@ -12,13 +15,13 @@ using JetBrains.ReSharper.Features.Finding.NavigateFromHere;
 namespace JetBrains.ReSharper.PsiPlugin.Navigation
 {
   [ContextNavigationProvider]
-  public class PsiNavigateFromHereProvider : INavigateFromHereProvider
+  public class PsiNavigateFromHereProvider : RequestContextSearchProvider<GeneratedContextSearch, GotoGeneratedDescriptor, GeneratedSearchRequest>, INavigateFromHereProvider
   {
-    private IFeaturePartsContainer myManager;
+    //private IFeaturePartsContainer myManager;
 
-    public PsiNavigateFromHereProvider(IFeaturePartsContainer manager)
+
+    public PsiNavigateFromHereProvider(IFeaturePartsContainer manager) : base(manager)
     {
-      myManager = manager;
     }
 
     public IEnumerable<ContextNavigation> CreateWorkflow(IDataContext dataContext)
@@ -27,24 +30,16 @@ namespace JetBrains.ReSharper.PsiPlugin.Navigation
       if (execution != null)
       {
         yield return new ContextNavigation(
-          "Go to generated",
+          "Go to generated class",
           null,
           NavigationActionGroup.Blessed,
           execution);
       }
     }
 
-    public virtual Action GetSearchesExecution(IDataContext dataContext, INavigationExecutionHost host)
+    protected override GotoGeneratedDescriptor CreateSearchDescriptor(GeneratedSearchRequest searchRequest, ICollection<IOccurence> occurences)
     {
-      var searches = ContextNavigationLanguageUtil.GetAvailableContextSearches<GeneratedContextSearch>(dataContext, myManager);
-      if (Enumerable.Any(searches))
-        return () => Execute(dataContext, searches, host);
-      return null;
-    }
-
-    private void Execute(IDataContext dataContext, ICollection<GeneratedContextSearch> searches, INavigationExecutionHost host)
-    {
-      throw new NotImplementedException();
+      return new GotoGeneratedDescriptor(searchRequest, occurences);
     }
   }
 }
