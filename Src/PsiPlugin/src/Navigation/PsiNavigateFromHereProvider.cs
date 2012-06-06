@@ -17,8 +17,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Navigation
   [ContextNavigationProvider]
   public class PsiNavigateFromHereProvider : RequestContextSearchProvider<GeneratedContextSearch, GotoGeneratedDescriptor, GeneratedSearchRequest>, INavigateFromHereProvider
   {
-    //private IFeaturePartsContainer myManager;
-
 
     public PsiNavigateFromHereProvider(IFeaturePartsContainer manager) : base(manager)
     {
@@ -35,6 +33,30 @@ namespace JetBrains.ReSharper.PsiPlugin.Navigation
           NavigationActionGroup.Blessed,
           execution);
       }
+    }
+
+    protected override void ShowResults(IDataContext context, INavigationExecutionHost host, string title, ICollection<IOccurence> occurences, Func<GotoGeneratedDescriptor> descriptorBuilder, IComparer<IOccurence> customSearchRequestComparer)
+    {
+      var occurencesList = occurences.ToList();
+      occurencesList.Sort((occurence, occurence1) =>
+      {
+        var result = customSearchRequestComparer.Compare(occurence, occurence1);
+        if (result != 0)
+          return result;
+        return OccurenceUtil.CompareOccurences(occurence, occurence1, OccurencePresentationOptions.DefaultOptions);
+      });
+
+      host.ShowResultsPopupMenu(context, occurencesList, descriptorBuilder, ProvideFeatureSpecificPresentationOptions(), true, title);
+    }
+
+    protected override OccurencePresentationOptions? ProvideFeatureSpecificPresentationOptions()
+    {
+      return new OccurencePresentationOptions
+      {
+        IconDisplayStyle = IconDisplayStyle.File,
+        TextDisplayStyle = TextDisplayStyle.ContainingFile,
+        LocationStyle = GlobalLocationStyle.File
+      };
     }
 
     protected override GotoGeneratedDescriptor CreateSearchDescriptor(GeneratedSearchRequest searchRequest, ICollection<IOccurence> occurences)
