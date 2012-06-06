@@ -318,7 +318,9 @@
     <Compile Include="src\Lexer\PsiLexerFactory.cs" />
     <Compile Include="src\Lexer\FilteringPsiLexer.cs" />
     <Compile Include="src\Navigation\GeneratedContextSearch.cs" />
+    <Compile Include="src\Navigation\GeneratedSearchRequest.cs" />
     <Compile Include="src\Navigation\GotoGeneratedClassAction.cs" />
+    <Compile Include="src\Navigation\GotoGeneratedDescriptor.cs" />
     <Compile Include="src\Navigation\PsiNavigateFromHereProvider.cs" />
     <Compile Include="src\Parsing\IPsiParser.cs" />
     <Compile Include="src\Parsing\ParserMessages.cs" />
@@ -396,6 +398,7 @@
     <CsLex Include="src\Parsing\psi.lex" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="resources\actions.xml" />
     <EmbeddedResource Include="resources\symbols\psiRule.png" />
     <EmbeddedResource Include="resources\symbols\vs\psiRule.png" />
     <EmbeddedResource Include="resources\symbols\psiFile.png" />
@@ -405,7 +408,6 @@
     <EmbeddedResource Include="resources\symbols\vs\psiRole.png" />
     <EmbeddedResource Include="resources\symbols\psiVariable.png" />
     <EmbeddedResource Include="resources\symbols\vs\psiVariable.png" />
-    <EmbeddedResource Include="resources\actions.xml" />
     <Content Include="resources\symbols\psiPath.png" />
     <EmbeddedResource Include="resources\symbols\vs\psiPath.png" />
     <Content Include="src\Parsing\Tokens.xml">

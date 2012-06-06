@@ -11,5 +11,4 @@
     <separator />
     <action-ref id="GotoGeneratedClass" />
   </insert>
-  
 </actions>
