@@ -405,6 +405,7 @@
     <EmbeddedResource Include="resources\symbols\vs\psiRole.png" />
     <EmbeddedResource Include="resources\symbols\psiVariable.png" />
     <EmbeddedResource Include="resources\symbols\vs\psiVariable.png" />
+    <EmbeddedResource Include="resources\actions.xml" />
     <Content Include="resources\symbols\psiPath.png" />
     <EmbeddedResource Include="resources\symbols\vs\psiPath.png" />
     <Content Include="src\Parsing\Tokens.xml">
