@@ -111,17 +111,19 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Resources.dll</HintPath>
     </Reference>
-    <Reference Include="JetBrains.ReSharper.VS">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.VS.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Build" />
     <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.XML" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="resources\PsiPluginSymbolIcons\ThemedIcons.PsiPluginSymbol.Generated.cs" />
     <Compile Include="src\Cache\IPsiSymbol.cs" />
     <Compile Include="src\Cache\MSBuildPropertiesCache.cs" />
     <Compile Include="src\Cache\PsiCacheBuilder.cs" />
@@ -381,17 +383,17 @@
     <CsLex Include="src\Parsing\psi.lex" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="resources\symbols\psiRule.png" />
-    <EmbeddedResource Include="resources\symbols\vs\psiRule.png" />
-    <EmbeddedResource Include="resources\symbols\psiFile.png" />
-    <EmbeddedResource Include="resources\symbols\psiOption.png" />
-    <EmbeddedResource Include="resources\symbols\vs\psiOption.png" />
-    <EmbeddedResource Include="resources\symbols\psiRole.png" />
-    <EmbeddedResource Include="resources\symbols\vs\psiRole.png" />
-    <EmbeddedResource Include="resources\symbols\psiVariable.png" />
-    <EmbeddedResource Include="resources\symbols\vs\psiVariable.png" />
-    <Content Include="resources\symbols\psiPath.png" />
-    <EmbeddedResource Include="resources\symbols\vs\psiPath.png" />
+    <ThemedIconPng Include="resources\PsiPluginSymbolIcons\psiRule[SymbolsIdea].png" />
+    <ThemedIconPng Include="resources\PsiPluginSymbolIcons\psiRule.png" />
+    <ThemedIconPng Include="resources\PsiPluginSymbolIcons\psiFile[SymbolsIdea].png" />
+    <ThemedIconPng Include="resources\PsiPluginSymbolIcons\psiOption[SymbolsIdea].png" />
+    <ThemedIconPng Include="resources\PsiPluginSymbolIcons\psiOption.png" />
+    <ThemedIconPng Include="resources\PsiPluginSymbolIcons\psiRole[SymbolsIdea].png" />
+    <ThemedIconPng Include="resources\PsiPluginSymbolIcons\psiRole.png" />
+    <ThemedIconPng Include="resources\PsiPluginSymbolIcons\psiVariable[SymbolsIdea].png" />
+    <ThemedIconPng Include="resources\PsiPluginSymbolIcons\psiVariable.png" />
+    <ThemedIconPng Include="resources\PsiPluginSymbolIcons\psiPath[SymbolsIdea].png" />
+    <ThemedIconPng Include="resources\PsiPluginSymbolIcons\psiPath.png" />
     <Content Include="src\Parsing\Tokens.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -411,4 +413,5 @@
     <MakeDir Directories="$(MSBuildProjectDirectory)\obj" />
     <Copy SourceFiles="$(ReSharperSdkTools)\parserGen\Unicode.lex" DestinationFolder="$(MSBuildProjectDirectory)\obj" />
   </Target>
+  <Import Project="$(ReSharperSdkTools)\MSBuild\JetBrains.Build.Platform.ThemedIconsConverter.Targets" />
 </Project>

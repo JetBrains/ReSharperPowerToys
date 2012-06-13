@@ -23,7 +23,7 @@ using JetBrains.UI.Options;
 
 namespace JetBrains.ReSharper.PowerToys.OptionsPage
 {
-  [OptionsPage(PID, "Sample Page", "JetBrains.ReSharper.PowerToys.OptionsPage.samplePage.gif", ParentId = ToolsPage.PID)]
+  [OptionsPage(PID, "Sample Page", typeof(OptionsPageThemedIcons.SamplePage), ParentId = ToolsPage.PID)]
   public partial class SampleOptionPage : IOptionsPage
   {
     private const string PID = "SamplePageId";

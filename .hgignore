@@ -26,6 +26,8 @@ syntax: glob
 *.scc
 *.sdf # not safe in case of SQLCE
 *.ReSharper
+*.Generated.*
+
 [Bb]in*/
 [Db]ebug*/
 [Oo]bj*/
