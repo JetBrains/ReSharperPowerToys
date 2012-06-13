@@ -42,4 +42,3 @@ using JetBrains.UI;
 [assembly: PluginDescription("ZenCoding")]
 
 [assembly: ActionsXml("JetBrains.ReSharper.PowerToys.ZenCoding.resources.actions.xml")]
-[assembly: ImagesBase("JetBrains.ReSharper.PowerToys.ZenCoding.resources")]

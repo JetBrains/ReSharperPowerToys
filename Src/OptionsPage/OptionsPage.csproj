@@ -52,6 +52,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OptionsPageThemedIcons\ThemedIcons.OptionsPage.Generated.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -61,7 +62,7 @@
     <Compile Include="SampleOptionPage.xaml.cs">
       <DependentUpon>SampleOptionPage.xaml</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="samplePage.gif" />
+    <ThemedIconPng Include="OptionsPageThemedIcons\samplePage.gif" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="SampleOptionPage.xaml">
@@ -74,4 +75,5 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(ReSharperSdkTargets)\Plugin.Targets" />
+  <Import Project="$(ReSharperSdkTools)\MSBuild\JetBrains.Build.Platform.ThemedIconsConverter.Targets" />
 </Project>

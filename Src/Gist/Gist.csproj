@@ -56,6 +56,7 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GistIcons\ThemedIcons.Gist.Generated.cs" />
     <Compile Include="src\GistOptionsPage.cs" />
     <Compile Include="src\GitHubService.cs" />
     <Compile Include="src\GitHubSettings.cs" />
@@ -70,11 +71,12 @@
     <EmbeddedResource Include="resources\actions.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="resources\gist.png" />
+    <ThemedIconPng Include="GistIcons\gist.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ReadMe.txt" />
   </ItemGroup>
   <Import Project="$(ReSharperSdkTargets)\Plugin.Targets" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(ReSharperSdkTools)\MSBuild\JetBrains.Build.Platform.ThemedIconsConverter.Targets" />
 </Project>

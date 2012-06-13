@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using JetBrains.ReSharper.Feature.Services.Lookup;
+using JetBrains.UI.Icons;
 using JetBrains.UI.RichText;
 using JetBrains.Util;
 
@@ -16,7 +17,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion.LookupItems
       Text = text;
     }
 
-    public override Image Image
+    public override IconId Image
     {
       get { return null; }
     }
