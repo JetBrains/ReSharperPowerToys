@@ -36,10 +36,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="JetBrains.Platform.ReSharper.ComponentModel">
-      <HintPath>..\..\..\ReSharper\Main\bin\JetBrains.Platform.ReSharper.ComponentModel.dll</HintPath>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.ComponentModel.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Feature.Services.Navigation">
-      <HintPath>..\..\..\ReSharper\Main\bin\JetBrains.ReSharper.Feature.Services.Navigation.dll</HintPath>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Navigation.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
