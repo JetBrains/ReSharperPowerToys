@@ -19,3 +19,33 @@ IPsiFile
     Whitespace(type:WHITE_SPACE, text:  ) spaces:"  "
     PsiTokenType+SemicolonTokenElement(type:SEMICOLON, text:;)
 
+Language: PsiLanguageType:CSHARP
+ICSharpFile
+  IUsingList
+  Class(qualifiedName:A)
+    CSharpTokenType+ClassKeywordTokenElement(type:CLASS_KEYWORD, text:class)
+    Whitespace(type:WHITE_SPACE, text: ) spaces:" "
+    Identifier(type:IDENTIFIER, text:A)
+    IClassBody
+      CSharpTokenType+LbraceTokenElement(type:LBRACE, text:{)
+      NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+      Whitespace(type:WHITE_SPACE, text: ) spaces:" "
+      MethodDeclaration(qualifiedName:A.foo())
+        IPredefinedTypeUsage
+          IPredefinedTypeReference
+            CSharpTokenType+VoidKeywordTokenElement(type:VOID_KEYWORD, text:void)
+        Whitespace(type:WHITE_SPACE, text: ) spaces:" "
+        Identifier(type:IDENTIFIER, text:foo)
+        CSharpTokenType+LparenthTokenElement(type:LPARENTH, text:()
+        IFormalParameterList
+        CSharpTokenType+RparenthTokenElement(type:RPARENTH, text:))
+        ChameleonBlock
+          CSharpTokenType+LbraceTokenElement(type:LBRACE, text:{)
+          NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+          CSharpTokenType+RbraceTokenElement(type:RBRACE, text:})
+      NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+      Whitespace(type:WHITE_SPACE, text: ) spaces:" "
+      CSharpTokenType+RbraceTokenElement(type:RBRACE, text:})
+  NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+
+// 

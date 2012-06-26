@@ -19,7 +19,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Navigation
   public class GeneratedContextSearch :  ContextSearchBase<GeneratedSearchRequest>
   {
 
-    public bool IsAvailable(IDataContext dataContext)
+    public override bool IsAvailable(IDataContext dataContext)
     {
       var textControl = dataContext.GetData(TextControl.DataContext.DataConstants.TEXT_CONTROL);
       ISolution solution = dataContext.GetData(ProjectModel.DataContext.DataConstants.SOLUTION);
