@@ -1,32 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?> 
 <actions>
   <action id="GotoGeneratedClass" text="Go to generated class"/>
-
-  <insert group-id="ReSharper.Navigate" position="last">
-    <action-ref id="GotoGeneratedClass" />
-  </insert>
-
-  <insert group-id="VS#Code Window" position="last">
-    <action-ref id="GotoGeneratedClass" />
-  </insert>
-
   <action id="GotoGeneratedInterface" text="Go to generated interface"/>
-
-  <insert group-id="ReSharper.Navigate" position="last">
-    <action-ref id="GotoGeneratedInterface" />
-  </insert>
-
-  <insert group-id="VS#Code Window" position="last">
-    <action-ref id="GotoGeneratedInterface" />
-  </insert>
-
   <action id="GotoGeneratedMethod" text="Go to generated method"/>
 
   <insert group-id="ReSharper.Navigate" position="last">
+    <action-ref id="GotoGeneratedClass" />
+  </insert>
+
+  <insert group-id="ReSharper.Navigate" position="last">
+    <action-ref id="GotoGeneratedInterface" />
+  </insert>
+
+  <insert group-id="ReSharper.Navigate" position="last">
     <action-ref id="GotoGeneratedMethod" />
   </insert>
 
   <insert group-id="VS#Code Window" position="last">
-    <action-ref id="GotoGeneratedMethod" />
+    <action-group id="PsiPlugin" text="PSI plugin" shared="true">
+      <action-ref id="GotoGeneratedClass" />
+      <action-ref id="GotoGeneratedInterface" />
+      <action-ref id="GotoGeneratedMethod" />
+    </action-group>
   </insert>
 </actions>
