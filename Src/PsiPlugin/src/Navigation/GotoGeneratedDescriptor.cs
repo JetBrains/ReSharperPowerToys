@@ -12,10 +12,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Navigation
 {
   public class GotoGeneratedDescriptor : SearchDescriptor
   {
-    public GotoGeneratedDescriptor(SearchRequest request) : base(request)
-    {
-    }
-
     public GotoGeneratedDescriptor(SearchRequest request, ICollection<IOccurence> results) : base(request, results)
     {
     }
