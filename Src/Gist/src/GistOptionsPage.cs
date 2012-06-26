@@ -34,7 +34,7 @@ using JetBrains.Util.Special;
 
 namespace JetBrains.ReSharper.PowerToys.Gist
 {
-  [OptionsPage(Pid, "Gist Settings", "gist", ParentId = EnvironmentPage.Pid, Sequence = 100)]
+  [OptionsPage(Pid, "Gist Settings", typeof(GistThemedIcons.Gist), ParentId = EnvironmentPage.Pid, Sequence = 100)]
   public class GistOptionsPage : AOptionsPage
   {
     public const string Pid = "GistSettings";

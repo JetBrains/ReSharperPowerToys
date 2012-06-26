@@ -2,7 +2,7 @@
 
 namespace JetBrains.ReSharper.PsiPlugin.Tree
 {
-  partial interface IVariableDeclaration : IDeclaration
+  public partial interface IVariableDeclaration : IDeclaration
   {
   }
 }

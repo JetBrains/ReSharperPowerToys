@@ -27,7 +27,7 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
   /// <summary>
   /// Implements an options page that holds a set of setting editors stacked in lines from top to bottom.
   /// </summary>
-  [OptionsPage(PID, "Complexity Analysis", "JetBrains.ReSharper.PowerToys.CyclomaticComplexity.resources.ComplexityOptionPage.png", ParentId = CodeInspectionPage.PID)]
+  [OptionsPage(PID, "Complexity Analysis", typeof(CyclomaticComplexityThemedIcons.ComplexityOptionPage), ParentId = CodeInspectionPage.PID)]
   public class ComplexityAnalysisOptionPage : AStackPanelOptionsPage
   {
     private readonly Lifetime myLifetime;

@@ -27,6 +27,7 @@ using JetBrains.ProjectModel;
 using JetBrains.TextControl;
 using JetBrains.Threading;
 using JetBrains.UI;
+using JetBrains.UI.Icons;
 using JetBrains.UI.PopupWindowManager;
 using JetBrains.Util;
 using DataConstants = JetBrains.UI.DataConstants;
@@ -84,7 +85,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
         ctxToUse = solution.GetComponent<MainWindowPopupWindowContext>().Create(lifetime);
       }
 
-      var form = new ZenCodingWrapForm(lifetime);
+      var form = new ZenCodingWrapForm(lifetime, solution.GetComponent<IThemedIconManager>());
 
       // Popup support
       var window = solution.GetComponent<PopupWindowManager>().CreatePopupWindow(

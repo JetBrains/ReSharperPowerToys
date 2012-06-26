@@ -1,9 +1,8 @@
-﻿using System;
-using System.Drawing;
-using JetBrains.ReSharper.Psi;
+﻿using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
+using JetBrains.ReSharper.PsiPlugin.Resources;
 using JetBrains.ReSharper.PsiPlugin.Services;
-using JetBrains.UI;
+using JetBrains.UI.Icons;
 
 namespace JetBrains.ReSharper.PsiPlugin.Resolve
 {
@@ -11,19 +10,19 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
   {
     private static readonly PsiLanguageType Language = PsiLanguage.Instance;
 
-    public static readonly PsiDeclaredElementType Rule = new PsiDeclaredElementType("Rule", "psiRule.png");
-    public static readonly PsiDeclaredElementType Role = new PsiDeclaredElementType("Role", "psiRole.png");
-    public static readonly PsiDeclaredElementType Option = new PsiDeclaredElementType("Option", "psiOption.png");
-    public static readonly PsiDeclaredElementType Variable = new PsiDeclaredElementType("Variable", "psiVariable.png");
-    public static readonly PsiDeclaredElementType Path = new PsiDeclaredElementType("Path", "psiPath.png");
+    public static readonly PsiDeclaredElementType Rule = new PsiDeclaredElementType("Rule", PsiPluginSymbolThemedIcons.PsiRule.Id);
+    public static readonly PsiDeclaredElementType Role = new PsiDeclaredElementType("Role", PsiPluginSymbolThemedIcons.PsiRole.Id);
+    public static readonly PsiDeclaredElementType Option = new PsiDeclaredElementType("Option", PsiPluginSymbolThemedIcons.PsiOption.Id);
+    public static readonly PsiDeclaredElementType Variable = new PsiDeclaredElementType("Variable", PsiPluginSymbolThemedIcons.PsiVariable.Id);
+    public static readonly PsiDeclaredElementType Path = new PsiDeclaredElementType("Path", PsiPluginSymbolThemedIcons.PsiPath.Id);
     private readonly IDeclaredElementPresenter myElementPresenter;
-    private readonly string myImageName;
+    private readonly IconId myIconId;
 
-    private PsiDeclaredElementType(string name, String imageName)
+    private PsiDeclaredElementType(string name, IconId iconId)
       : base(name)
     {
       myElementPresenter = new PsiDeclaredElementPresenter();
-      myImageName = imageName;
+      myIconId = iconId;
     }
 
     public override string PresentableName
@@ -36,20 +35,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
       get { return myElementPresenter; }
     }
 
-    protected override Image GetImage(bool useVsIcons)
+    protected override IconId GetImage()
     {
-      if (myImageName == null)
-      {
-        return null;
-      }
-
-      string prefix = string.Empty;
-      if (useVsIcons)
-      {
-        prefix = "vs.";
-      }
-
-      return ImageLoader.GetImage("symbols." + prefix + myImageName, typeof (PsiDeclaredElementType).Assembly);
+      return myIconId;
     }
 
     public override bool IsPresentable(PsiLanguageType language)
