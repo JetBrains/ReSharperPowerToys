@@ -1,10 +1,10 @@
-﻿using System.Drawing;
-using JetBrains.ProjectModel;
+﻿using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.ReSharper.PsiPlugin.Lexer;
+using JetBrains.ReSharper.PsiPlugin.Resources;
 using JetBrains.Text;
-using JetBrains.UI;
+using JetBrains.UI.Icons;
 
 namespace JetBrains.ReSharper.PsiPlugin.Grammar
 {
@@ -21,9 +21,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Grammar
       get { return PsiLanguage.Instance; }
     }
 
-    public override Image Icon
+    public override IconId Icon
     {
-      get { return ImageLoader.GetImage("symbols.psiFile.png", typeof (PsiProjectFileLanguageService).Assembly); }
+      get { return PsiPluginSymbolThemedIcons.PsiFile.Id; }
     }
 
     public override ILexerFactory GetMixedLexerFactory(ISolution solution, IBuffer buffer, IPsiSourceFile sourceFile = null)

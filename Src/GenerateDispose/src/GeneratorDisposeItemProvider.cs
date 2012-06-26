@@ -15,13 +15,13 @@
  */
 
 using System.Collections.Generic;
-using System.Drawing;
 using JetBrains.ActionManagement;
 using JetBrains.Application.DataContext;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Generate;
 using JetBrains.ReSharper.Feature.Services.Generate.Actions;
 using JetBrains.ReSharper.Psi;
+using JetBrains.UI.Icons;
 
 namespace JetBrains.ReSharper.PowerToys.GenerateDispose
 {
@@ -45,15 +45,15 @@ namespace JetBrains.ReSharper.PowerToys.GenerateDispose
     public IEnumerable<IGenerateActionWorkflow> CreateWorkflow(IDataContext dataContext)
     {
       var solution = dataContext.GetData(ProjectModel.DataContext.DataConstants.SOLUTION);
-      var iconManager = solution.GetComponent<PsiIconManager>();
-      var icon = iconManager.GetImage(CLRDeclaredElementType.METHOD);
+      var psiIconManager = solution.GetComponent<PsiIconManager>();
+      var icon = psiIconManager.GetImage(CLRDeclaredElementType.METHOD);
       yield return new GenerateDisposeActionWorkflow(icon);
     }
   }
 
   public class GenerateDisposeActionWorkflow : StandardGenerateActionWorkflow
   {
-    public GenerateDisposeActionWorkflow(Image icon)
+    public GenerateDisposeActionWorkflow(IconId icon)
       : base("Dispose", icon, "Dispose", GenerateActionGroup.CLR_LANGUAGE, "Generate dispose", 
         "Generate a Dispose() implementation which disposes selected fields.", "Generate.Dispose")
     {
