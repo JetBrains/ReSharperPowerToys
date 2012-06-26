@@ -67,6 +67,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\Microsoft.Scripting.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Scripting.ExtensionAttribute">
+      <HintPath>lib\Microsoft.Scripting.ExtensionAttribute.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -109,6 +112,8 @@
     <Compile Include="Options\Model\FileAssociation.cs" />
     <Compile Include="Options\Model\Settings.cs" />
     <Compile Include="ZenCodingActionBase.cs" />
+    <Compile Include="ZenCodingCommonThemedIcons\ThemedIcons.ZenCodingCommon.Generated.cs" />
+    <Compile Include="ZenCodingThemedIcons\ThemedIcons.ZenCoding.Generated.cs" />
     <Compile Include="ZenCodingWrapAction.cs" />
     <Compile Include="ZenCodingAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -127,6 +132,7 @@
     </None>
     <Content Include="ReadMe.txt" />
     <EmbeddedResource Include="resources\PredefinedZenCodingSettings.xml" />
+    <ThemedIconPng Include="ZenCodingThemedIcons\zencoding[Gray].png" />
     <Content Include="zencoding\zen_core.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -146,7 +152,7 @@
       <DependentUpon>EditFileAssociationControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="resources\zencoding.png" />
+    <ThemedIconPng Include="ZenCodingThemedIcons\zencoding[Color].png" />
     <EmbeddedResource Include="Options\ZenCodingOptionsPage.resx">
       <DependentUpon>ZenCodingOptionsPage.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -173,6 +179,14 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <ThemedIconsXamlV3 Include="ZenCodingCommonThemedIcons\ZenCodingComonIcons.xaml">
+      <ThemeColumns>Gray;Bordeaux;Color</ThemeColumns>
+      <RemoveBackgroundElement>True</RemoveBackgroundElement>
+      <SubType>Designer</SubType>
+    </ThemedIconsXamlV3>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(ReSharperSdkTargets)\Plugin.Targets" />
+  <Import Project="$(ReSharperSdkTools)\MSBuild\JetBrains.Build.Platform.ThemedIconsConverter.Targets" />
 </Project>

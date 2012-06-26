@@ -21,16 +21,19 @@ using JetBrains.DataFlow;
 using JetBrains.UI;
 using JetBrains.UI.CommonControls;
 using JetBrains.UI.Controls;
+using JetBrains.UI.Icons;
 using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PowerToys.ZenCoding
 {
   public class ZenCodingWrapForm : Form, IConstrainableControl
   {
+    private readonly IThemedIconManager myIconManager;
     private readonly LifetimeDefinition myLifetimeDefinition;
 
-    public ZenCodingWrapForm(Lifetime lifetime)
+    public ZenCodingWrapForm(Lifetime lifetime, IThemedIconManager iconManager)
     {
+      myIconManager = iconManager;
       myLifetimeDefinition = Lifetimes.Define(lifetime, "ZenCodingWrapForm");
       InitControls();
     }
@@ -55,7 +58,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
         TextBox = new TextBox { Dock = DockStyle.Fill };
         Controls.Add(TextBox);
         DialogResult = DialogResult.Cancel;
-        myLifetimeDefinition.Lifetime.AddDispose(new EditboxGlyph(TextBox, ImageLoader.GetImage("zencoding")));
+        myLifetimeDefinition.Lifetime.AddDispose(new EditboxGlyph(TextBox, ZenCodingThemedIcons.Zencoding.Id, myIconManager));
 
         // Note: we're not setting the owner to the main window because the menu must be over whatever top level window has spawned it; a menu is topmost so this is not a problem.      
       }

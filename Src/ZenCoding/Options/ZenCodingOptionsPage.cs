@@ -24,31 +24,34 @@ using JetBrains.ReSharper.Features.Common.Options;
 using JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model;
 using JetBrains.Threading;
 using JetBrains.TreeModels;
-using JetBrains.UI;
 using JetBrains.UI.CrossFramework;
+using JetBrains.UI.Icons;
 using JetBrains.UI.Options;
 using System.Linq;
 using JetBrains.Application.Settings;
+using JetBrains.UI.Resources;
 
 namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
 {
-  [OptionsPage(ID, "Zen Coding", "zencoding", ParentId = ToolsPage.PID)]
+  [OptionsPage(ID, "Zen Coding", typeof(ZenCodingThemedIcons.Zencoding), ParentId = ToolsPage.PID)]
   public partial class ZenCodingOptionsPage : UserControl, IOptionsPage
   {
     private const string ID = "ZenCoding-E439BB70-6F99-4C64-BA42-5D3DAEAC70E1";
     private readonly Lifetime myLifetime;
     private readonly OptionsSettingsSmartContext mySettings;
     private readonly IThreading myThreading;
+    private readonly IThemedIconManager myIconManager;
     private readonly SortedDictionary<int, FileAssociation> myFileAssociations;
 
     private readonly FileAssociationsTreeView myView;
     private readonly Expression<Func<ZenCodingSettings, IIndexedEntry<int, FileAssociation>>> myLambdaExpression;
 
-    public ZenCodingOptionsPage(Lifetime lifetime, OptionsSettingsSmartContext settings, IThreading threading)
+    public ZenCodingOptionsPage(Lifetime lifetime, OptionsSettingsSmartContext settings, IThreading threading, IThemedIconManager iconManager)
     {
       myLifetime = lifetime;
       mySettings = settings;
       myThreading = threading;
+      myIconManager = iconManager;
       myLambdaExpression = s => s.FileAssociations;
 
       InitializeComponent();
@@ -69,13 +72,11 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
       myView.DoubleClick += EditFileAssociation;
       myRules.Controls.Add(myView);
 
-      var assembly = GetType().Assembly;
-
-      _buttons.Items.Add("Create", ImageLoader.GetImage("Create", assembly), CreateFileAssociation);
-      _buttons.Items.Add("Edit", ImageLoader.GetImage("Edit", assembly), EditFileAssociation);
-      _buttons.Items.Add("Remove", ImageLoader.GetImage("Remove", assembly), RemoveFileAssociation);
-      _buttons.Items.Add("Up", ImageLoader.GetImage("Up", assembly), MoveUp);
-      _buttons.Items.Add("Down", ImageLoader.GetImage("Down", assembly), MoveDown);
+      _buttons.Items.Add("Create", myIconManager.Icons[ZenCodingCommonThemedIcons.Add.Id].CurrentGdipBitmap, CreateFileAssociation);
+      _buttons.Items.Add("Edit", myIconManager.Icons[CommonThemedIcons.Edit.Id].CurrentGdipBitmap, EditFileAssociation);
+      _buttons.Items.Add("Remove", myIconManager.Icons[CommonThemedIcons.Remove.Id].CurrentGdipBitmap, RemoveFileAssociation);
+      _buttons.Items.Add("Up", myIconManager.Icons[CommonThemedIcons.Up.Id].CurrentGdipBitmap, MoveUp);
+      _buttons.Items.Add("Down", myIconManager.Icons[CommonThemedIcons.Down.Id].CurrentGdipBitmap, MoveDown);
     }
 
     public EitherControl Control
