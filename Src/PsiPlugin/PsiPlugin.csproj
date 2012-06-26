@@ -52,7 +52,7 @@
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.DocumentModel.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.IDE">
-      <HintPath>..\..\..\ReSharper\Main\bin\JetBrains.Platform.ReSharper.IDE.dll</HintPath>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.IDE.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.ProjectModel">
       <SpecificVersion>False</SpecificVersion>
@@ -89,10 +89,10 @@
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Navigation.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Features.Common">
-      <HintPath>..\..\..\ReSharper\Main\bin\JetBrains.ReSharper.Features.Common.dll</HintPath>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Features.Common.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Features.Finding">
-      <HintPath>..\..\..\ReSharper\Main\bin\JetBrains.ReSharper.Features.Finding.dll</HintPath>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Features.Finding.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Intentions">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Intentions.dll</HintPath>
