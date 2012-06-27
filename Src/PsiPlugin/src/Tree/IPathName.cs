@@ -4,6 +4,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree
 {
   partial interface IPathName
   {
+    IReference RuleNameReference { get; }
     void SetReference(IReference reference);
   }
 }

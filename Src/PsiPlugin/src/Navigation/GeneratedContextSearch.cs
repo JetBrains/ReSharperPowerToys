@@ -34,6 +34,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Navigation
         var reference = (token.Parent as IRuleName).RuleNameReference;
         var declaredElement = reference.Resolve().DeclaredElement;
         ruleDeclaration = declaredElement as RuleDeclaration;
+      } else if (token.Parent is IPathName)
+      {
+        var reference = (token.Parent as IPathName).RuleNameReference;
+        var declaredElement = reference.Resolve().DeclaredElement;
+        ruleDeclaration = declaredElement as RuleDeclaration;        
       }
       if (ruleDeclaration != null && HasDerivedElements(ruleDeclaration))
       {
@@ -49,7 +54,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Navigation
       ISolution solution = dataContext.GetData(ProjectModel.DataContext.DataConstants.SOLUTION);
 
       var token = TextControlToPsi.GetSourceTokenAtCaret(solution, textControl);
-      if ((token.Parent is IRuleName) || (token.Parent is IRuleDeclaredName))
+      if ((token.Parent is IRuleName) || (token.Parent is IRuleDeclaredName) || (token.Parent is PathName) )
         return true;
       return false;
     }
