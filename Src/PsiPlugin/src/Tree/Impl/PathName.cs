@@ -22,6 +22,15 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
       return new ReferenceCollection(myReference);
     }
 
+    public IReference RuleNameReference
+    {
+      get
+      {
+        lock (this)
+          return myReference ?? (myReference = new PsiPathReference(this));
+      }
+    }
+
     public void SetReference(IReference reference)
     {
       myReference = reference;
