@@ -40,9 +40,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Navigation
         var declaredElement = reference.Resolve().DeclaredElement;
         ruleDeclaration = declaredElement as RuleDeclaration;        
       }
-      if (ruleDeclaration != null && HasDerivedElements(ruleDeclaration))
+      if (ruleDeclaration != null)
       {
-        return true;
+        ruleDeclaration.GetContainingNode<PsiFile>().CollectDerivedElements();
+        return HasDerivedElements(ruleDeclaration);
       }
 
       return false;
