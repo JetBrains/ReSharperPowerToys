@@ -331,6 +331,19 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
       }
     }
 
+    public void CollectDerivedElements(RuleDeclaration ruleDeclaration)
+    {
+      ICollection<ITypeElement> classes =
+        GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(
+          myParserPackageName + "." + myParserClassName);
+      ICollection<ITypeElement> visitorClasses = CollectVisitorClasses();
+      IEnumerator<ITypeElement> enumerator = classes.GetEnumerator();
+      if (enumerator.MoveNext())
+      {
+        ruleDeclaration.CollectDerivedDeclaredElements((IClass)enumerator.Current, visitorClasses, myTreeInterfacesPackageName, myTreeClassesPackageName, myInterfacePrefix, myVisitorMethodPrefix, myVisitorMethodSuffix);
+      }
+    }
+
     private ICollection<ITypeElement> CollectVisitorClasses()
     {
       ICollection<ITypeElement> visitorClasses = new List<ITypeElement>();
