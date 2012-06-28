@@ -39,7 +39,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
       myPsiConfiguration = psiConfiguration;
       myPersistentIdIndex = persistentIdIndex;
       myShellLocks = shellLocks;
-      lifetime.AddBracket(() => cacheManager.RegisterCache(this), () => cacheManager.UnregisterCache(this));
+      //using (ReadLockCookie.Create())
+      //{
+        lifetime.AddBracket(() => cacheManager.RegisterCache(this), () => cacheManager.UnregisterCache(this));
+      //}
     }
 
     public object Load(IProgressIndicator progress, bool enablePersistence)

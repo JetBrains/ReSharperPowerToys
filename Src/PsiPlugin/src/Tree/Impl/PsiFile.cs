@@ -314,7 +314,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
       CollectDerivedElements();
     }
 
-    private void CollectDerivedElements()
+    public void CollectDerivedElements()
     {
       ICollection<ITypeElement> classes =
         GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(
