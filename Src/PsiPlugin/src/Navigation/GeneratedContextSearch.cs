@@ -42,7 +42,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Navigation
       }
       if (ruleDeclaration != null)
       {
-        ruleDeclaration.GetContainingNode<PsiFile>().CollectDerivedElements();
+        var psiFile = ruleDeclaration.GetContainingNode<PsiFile>();
+        if (psiFile != null) psiFile.CollectDerivedElements(ruleDeclaration);
         return HasDerivedElements(ruleDeclaration);
       }
 
