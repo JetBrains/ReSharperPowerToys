@@ -117,15 +117,9 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
       {
         var cls = typeElement as IClass;
 
-        // check for static class (it should be Abstract and Sealed)
-        if (cls != null && cls.IsAbstract && cls.IsSealed)
-        {
-          var fields = cls.Fields;
-          foreach (var field in fields)
-          {
-            AddStaticClassOption(endOffset, startOffset, optionValueText, field);
+        if(cls != null){
+            AddStaticClassOption(endOffset, startOffset, optionValueText);
             return;
-          }
         }
       }
       AddClassOption(endOffset, startOffset, optionValueText);
@@ -139,12 +133,12 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
       myGeneratedMethodBody.Append(new GenerationResults(CSharpLanguage.Instance, optionValueText + " a;\n", map));
     }
 
-    private void AddStaticClassOption(int endOffset, int startOffset, string optionValueText, IField field)
+    private void AddStaticClassOption(int endOffset, int startOffset, string optionValueText)
     {
       var staticMap = GeneratedRangeMapFactory.CreateGeneratedRangeMap(myFile);
-      staticMap.Add(new TreeTextRange<Generated>(new TreeOffset(), new TreeOffset(optionValueText.Length)),
+      staticMap.Add(new TreeTextRange<Generated>(new TreeOffset(14), new TreeOffset(optionValueText.Length + 14)),
         new TreeTextRange<Original>(new TreeOffset(startOffset), new TreeOffset(endOffset)));
-      myGeneratedMethodBody.Append(new GenerationResults(CSharpLanguage.Instance, optionValueText + "." + field.ShortName + " a;\n", staticMap));
+      myGeneratedFile.Append(new GenerationResults(CSharpLanguage.Instance,"using __alias=" + optionValueText + "\n", staticMap));
     }
 
     private void AddMethodOption(int endOffset, string optionValueText, int startOffset)

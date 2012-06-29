@@ -34,6 +34,7 @@ options {
   generateWorkingPsi;
 }
 
+
 errorhandling psiFile options {
 	stubBase="PsiFileElement";
 }
@@ -97,7 +98,6 @@ ruleName
 	:
 	IDENTIFIER
   ;
-
 
 errorhandling roleGetterParameter
 	:
