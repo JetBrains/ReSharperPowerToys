@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment Id="G.ChoosePerUserFolder">
+		<!-- Name of the innermost application folder; used by the stock WiX template, we're using it just for legacy. -->
+		<Property Id="ApplicationFolderName" Value="Plugins" />
+
+		<!-- Mount the WiX Wizard Dialogs. -->
+		<UIRef Id="WixUI_Advanced" />
+
+		<!-- This includes the whole fragment with property declarations. -->
+		<PropertyRef Id="RESHARPERVERSION2"/>
+
+		<!-- Locate the R# installdir. -->
+		<Property Id="RESHARPERINSTALLDIR" Secure="yes">
+			<RegistrySearch Id="AS.ReSharperBinariesDir" Root="HKLM" Key="Software\JetBrains\ReSharper\v[RESHARPERVERSION2]\vs[VSVERSION][VSROOTSUFFIX]" Name="InstallDir" Type="directory" />
+		</Property>
+		
+		<!-- Locate the directory in which Visual Studio stores its projects. -->
+		<Property Id="VISUALSTUDIOPROJECTSDIR" Secure="yes">
+			<RegistrySearch Id="AS.VisualStudioProjectsDir" Root="HKCU" Key="Software\Microsoft\VisualStudio\[VSVERSION][VSROOTSUFFIX]" Name="VisualStudioProjectsLocation" Type="directory" />
+		</Property>
+
+		<!---->
+		<!---->
+		<!---->
+		<!---->
+		<!-- Installation folder for the PowerToys Home. -->
+
+		<!-- Compose the per-machine and per-user values. -->
+		<CustomAction Id="CA.SetDirectory.PowerToysHome.PerMachineValue" Property="P.PowerToysHome.PerMachineValue" Value="[ProgramFilesFolder]JetBrains\ReSharper\v[RESHARPERVERSION2]\vs[VSVERSION][VSROOTSUFFIX]\PowerToys" Execute="immediate" />
+		<CustomAction Id="CA.SetDirectory.PowerToysHome.PerUserValue.Default" Property="P.PowerToysHome.PerUserValue" Value="[AppDataFolder]Apps\JetBrains\ReSharper\v[RESHARPERVERSION2]\vs[VSVERSION][VSROOTSUFFIX]\PowerToys" Execute="immediate" />
+		<CustomAction Id="CA.SetDirectory.PowerToysHome.PerUserValue.Registry" Property="P.PowerToysHome.PerUserValue" Value="[VISUALSTUDIOPROJECTSDIR]\ReSharper\PowerToys\v[RESHARPERVERSION2]" Execute="immediate" />
+		<!-- Assign either value, based on the ALLUSERS choice. -->
+		<CustomAction Id="CA.SetDirectory.PowerToysHome.UsePerMachine" Property="POWERTOYSHOME" Value="[P.PowerToysHome.PerMachineValue]" Execute="immediate" />
+		<CustomAction Id="CA.SetDirectory.PowerToysHome.UsePerUser" Property="POWERTOYSHOME" Value="[P.PowerToysHome.PerUserValue]" Execute="immediate" />
+		<!-- Schedulle the assignment: calculate always, then use one of the values. See “WixUI_Advanced.wxs” for the origin. -->
+		<InstallExecuteSequence>
+			<Custom Action="CA.SetDirectory.PowerToysHome.PerMachineValue" Before="CostFinalize" />
+			<Custom Action="CA.SetDirectory.PowerToysHome.PerUserValue.Default" Before="CostFinalize">Not VISUALSTUDIOPROJECTSDIR</Custom>
+			<Custom Action="CA.SetDirectory.PowerToysHome.PerUserValue.Registry" After="CA.SetDirectory.PowerToysHome.PerUserValue.Default">VISUALSTUDIOPROJECTSDIR</Custom>
+			<Custom Action="CA.SetDirectory.PowerToysHome.UsePerMachine" After="CA.SetDirectory.PowerToysHome.PerMachineValue">NOT Installed AND ACTION="INSTALL" AND POWERTOYSHOME="" AND (ALLUSERS=1 OR (ALLUSERS=2 AND Privileged))</Custom>
+			<Custom Action="CA.SetDirectory.PowerToysHome.UsePerUser" After="CA.SetDirectory.PowerToysHome.PerUserValue.Registry">NOT Installed AND ACTION="INSTALL" AND POWERTOYSHOME="" AND (ALLUSERS="" OR (ALLUSERS=2 AND (NOT Privileged)))</Custom>
+		</InstallExecuteSequence>
+		<InstallUISequence>
+			<Custom Action="CA.SetDirectory.PowerToysHome.PerMachineValue" Before="CostFinalize" />
+			<Custom Action="CA.SetDirectory.PowerToysHome.PerUserValue.Default" Before="CostFinalize">Not VISUALSTUDIOPROJECTSDIR</Custom>
+			<Custom Action="CA.SetDirectory.PowerToysHome.PerUserValue.Registry" After="CA.SetDirectory.PowerToysHome.PerUserValue.Default">VISUALSTUDIOPROJECTSDIR</Custom>
+			<Custom Action="CA.SetDirectory.PowerToysHome.UsePerMachine" After="CA.SetDirectory.PowerToysHome.PerMachineValue">NOT Installed AND ACTION="INSTALL" AND POWERTOYSHOME="" AND (ALLUSERS=1 OR (ALLUSERS=2 AND Privileged))</Custom>
+			<Custom Action="CA.SetDirectory.PowerToysHome.UsePerUser" After="CA.SetDirectory.PowerToysHome.PerUserValue.Registry">NOT Installed AND ACTION="INSTALL" AND POWERTOYSHOME="" AND (ALLUSERS="" OR (ALLUSERS=2 AND (NOT Privileged)))</Custom>
+		</InstallUISequence>
+		<!-- When user clicks Next on the ALLUSERS selection page, the per user/machine value should be explicitly picked. -->
+		<UI>
+			<Publish Dialog="InstallScopeDlg" Control="Next" Property="POWERTOYSHOME" Value="[P.PowerToysHome.PerUserValue]" Order="3">WixAppFolder = "WixPerUserFolder"</Publish>
+			<Publish Dialog="InstallScopeDlg" Control="Next" Property="POWERTOYSHOME" Value="[P.PowerToysHome.PerMachineValue]" Order="4">WixAppFolder = "WixPerMachineFolder"</Publish>
+		</UI>
+
+
+		<!---->
+		<!---->
+		<!---->
+		<!---->
+		<!-- Installation folder for the PowerToys Binaries under the R# plugins location. -->
+
+		<!-- Compose the per-machine and per-user values. -->
+		<CustomAction Id="CA.SetDirectory.ReSharperPluginsDir.PerMachineValue.Default" Property="P.ReSharperPluginsDir.PerMachineValue" Value="[ProgramFilesFolder]JetBrains\ReSharper\v[RESHARPERVERSION2]\vs[VSVERSION][VSROOTSUFFIX]\Bin\Plugins" Execute="immediate" />
+		<CustomAction Id="CA.SetDirectory.ReSharperPluginsDir.PerMachineValue.Registry" Property="P.ReSharperPluginsDir.PerMachineValue" Value="[RESHARPERINSTALLDIR]\Plugins" Execute="immediate" />
+		<CustomAction Id="CA.SetDirectory.ReSharperPluginsDir.PerUserValue" Property="P.ReSharperPluginsDir.PerUserValue" Value="[AppDataFolder]JetBrains\ReSharper\v[RESHARPERVERSION2]\vs[VSVERSION][VSROOTSUFFIX]\Plugins" Execute="immediate" />
+		<!-- Assign either value, based on the ALLUSERS choice. -->
+		<CustomAction Id="CA.SetDirectory.ReSharperPluginsDir.UsePerMachine" Property="RESHARPERPLUGINS" Value="[P.ReSharperPluginsDir.PerMachineValue]" Execute="immediate" />
+		<CustomAction Id="CA.SetDirectory.ReSharperPluginsDir.UsePerUser" Property="RESHARPERPLUGINS" Value="[P.ReSharperPluginsDir.PerUserValue]" Execute="immediate" />
+		<!-- Schedulle the assignment: calculate always, then use one of the values. See “WixUI_Advanced.wxs” for the origin. -->
+		<InstallExecuteSequence>
+			<Custom Action="CA.SetDirectory.ReSharperPluginsDir.PerMachineValue.Default" Before="CostFinalize">Not RESHARPERINSTALLDIR</Custom>
+			<Custom Action="CA.SetDirectory.ReSharperPluginsDir.PerMachineValue.Registry" After="CA.SetDirectory.ReSharperPluginsDir.PerMachineValue.Default">RESHARPERINSTALLDIR</Custom>
+			<Custom Action="CA.SetDirectory.ReSharperPluginsDir.PerUserValue" Before="CostFinalize" />
+			<Custom Action="CA.SetDirectory.ReSharperPluginsDir.UsePerMachine" After="CA.SetDirectory.ReSharperPluginsDir.PerMachineValue.Registry">NOT Installed AND ACTION="INSTALL" AND RESHARPERPLUGINS="" AND (ALLUSERS=1 OR (ALLUSERS=2 AND Privileged))</Custom>
+			<Custom Action="CA.SetDirectory.ReSharperPluginsDir.UsePerUser" After="CA.SetDirectory.ReSharperPluginsDir.PerUserValue">NOT Installed AND ACTION="INSTALL" AND RESHARPERPLUGINS="" AND (ALLUSERS="" OR (ALLUSERS=2 AND (NOT Privileged)))</Custom>
+		</InstallExecuteSequence>
+		<InstallUISequence>
+			<Custom Action="CA.SetDirectory.ReSharperPluginsDir.PerMachineValue.Default" Before="CostFinalize">Not RESHARPERINSTALLDIR</Custom>
+			<Custom Action="CA.SetDirectory.ReSharperPluginsDir.PerMachineValue.Registry" After="CA.SetDirectory.ReSharperPluginsDir.PerMachineValue.Default">RESHARPERINSTALLDIR</Custom>
+			<Custom Action="CA.SetDirectory.ReSharperPluginsDir.PerUserValue" Before="CostFinalize" />
+			<Custom Action="CA.SetDirectory.ReSharperPluginsDir.UsePerMachine" After="CA.SetDirectory.ReSharperPluginsDir.PerMachineValue.Registry">NOT Installed AND ACTION="INSTALL" AND RESHARPERPLUGINS="" AND (ALLUSERS=1 OR (ALLUSERS=2 AND Privileged))</Custom>
+			<Custom Action="CA.SetDirectory.ReSharperPluginsDir.UsePerUser" After="CA.SetDirectory.ReSharperPluginsDir.PerUserValue">NOT Installed AND ACTION="INSTALL" AND RESHARPERPLUGINS="" AND (ALLUSERS="" OR (ALLUSERS=2 AND (NOT Privileged)))</Custom>
+		</InstallUISequence>
+		<!-- When user clicks Next on the ALLUSERS selection page, the per user/machine value should be explicitly picked. -->
+		<UI>
+			<Publish Dialog="InstallScopeDlg" Control="Next" Property="RESHARPERPLUGINS" Value="[P.ReSharperPluginsDir.PerUserValue]" Order="3">WixAppFolder = "WixPerUserFolder"</Publish>
+			<Publish Dialog="InstallScopeDlg" Control="Next" Property="RESHARPERPLUGINS" Value="[P.ReSharperPluginsDir.PerMachineValue]" Order="4">WixAppFolder = "WixPerMachineFolder"</Publish>
+		</UI>
+
+		<!-- Tell WiX UI which directory property should be customizable. -->
+		<CustomAction Id="CA.SetWixUiInstallDir" Property="WIXUI_INSTALLDIR" Value="POWERTOYSHOME" Execute="immediate" />
+		<InstallUISequence>
+			<Custom Action="CA.SetWixUiInstallDir" Before="CostInitialize"/>
+		</InstallUISequence>
+
+		<!-- Control the initial radiobutton selection on the “per user / per machine” page, depending on the ALLUSERS property. Also, define the required WixAppFolder property. -->
+		<Property Id="WixAppFolder" Value="WixPerMachineFolder" />
+		<CustomAction Id="CA.WixAppFolder.PerMachine" Property="WixAppFolder" Value="WixPerMachineFolder" Execute="immediate" />
+		<CustomAction Id="CA.WixAppFolder.PerUser" Property="WixAppFolder" Value="WixPerUserFolder" Execute="immediate" />
+		<InstallUISequence>
+			<Custom Action="CA.WixAppFolder.PerMachine" Before="CostInitialize">(ALLUSERS=1) OR (ALLUSERS=2)</Custom>
+			<Custom Action="CA.WixAppFolder.PerUser" Before="CostInitialize">NOT ((ALLUSERS=1) OR (ALLUSERS=2))</Custom>
+		</InstallUISequence>
+
+		<!-- Ensure that the InstallDir picker page is displayed in both per-machine and per-user scenarios. -->
+		<!-- Also, restore the per-user scenario overwritten above. -->
+		<UI>
+			<Publish Dialog="InstallScopeDlg" Control="Next" Event="NewDialog" Value="InstallDirDlg" Order="5">1</Publish>
+		</UI>
+
+	</Fragment>
+</Wix>

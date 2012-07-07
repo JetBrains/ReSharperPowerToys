@@ -1,0 +1,46 @@
+-------------- offset 12 line 3 col 6 --------------------
++++ JetBrains.ReSharper.Features.Finding.FindUsages.GotoUsagesProvider navigation provider results +++
+Occurences provided for OccurenceUtil:
+Occurence's dump:
+TO: [O] !(#|id| : identifier) RANGE: (11,13) @ test004.psi
+Occurence's type:
+Occurence
+Occurence's kinds:
+Other
+Menu Item presentation: 
+Text: test004.psi| (3)
+Shortcut text: in <TestProject>
+Style: Enabled
+Mnemonic: 
+Tooltip: !(#id : identifier)
+
+Occurence's navigation result. Opened file: test004.psi
+------------------
+a
+	:
+	!(#i|CARET|d : identifier)
+	bb[id]
+  ;
+------------------
+
+Occurence's dump:
+TO: [O] bb[|id|] RANGE: (33,35) @ test004.psi
+Occurence's type:
+Occurence
+Occurence's kinds:
+Other
+Menu Item presentation: 
+Text: test004.psi| (4)
+Shortcut text: in <TestProject>
+Style: Enabled
+Mnemonic: 
+Tooltip: bb[id]
+
+Occurence's navigation result. Opened file: test004.psi
+------------------
+	:
+	!(#id : identifier)
+	bb[|CARET|id]
+  ;
+------------------
+
