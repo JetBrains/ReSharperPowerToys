@@ -13,7 +13,7 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
     //OverlapResolve = OverlapResolveKind.WARNING, ShowToolTipInStatusBar = false)]
   internal class RepeatedChoiceWarning : IHighlightingWithRange, ICustomAttributeIdHighlighting
   {
-    private const string Error = "Repeated choice";
+    private const string Error = "Repeated Choice";
     private const string AtributeId = HighlightingAttributeIds.WARNING_ATTRIBUTE;
     private readonly ITreeNode myElement;
 

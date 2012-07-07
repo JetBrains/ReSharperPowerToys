@@ -51,9 +51,6 @@
     <Reference Include="JetBrains.Platform.ReSharper.DocumentModel">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.DocumentModel.dll</HintPath>
     </Reference>
-    <Reference Include="JetBrains.Platform.ReSharper.IDE">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.IDE.dll</HintPath>
-    </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.ProjectModel">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.ProjectModel.dll</HintPath>
@@ -87,12 +84,6 @@
     </Reference>
     <Reference Include="JetBrains.ReSharper.Feature.Services.Navigation">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Navigation.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Features.Common">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Features.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Features.Finding">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Features.Finding.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Intentions">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Intentions.dll</HintPath>
@@ -184,9 +175,6 @@
     <Compile Include="src\Formatter\PsiFormattingVisitor.cs" />
     <Compile Include="src\Formatter\PsiIndentingStage.cs" />
     <Compile Include="src\Formatter\PsiIndentVisitor.cs" />
-    <Compile Include="src\GeneratedDocument\CSharpFromPsiGeneratedDocumentService.cs" />
-    <Compile Include="src\GeneratedDocument\CSharpFromPsiGenerator.cs" />
-    <Compile Include="src\GeneratedDocument\CSharpInPsiCustomModificationHandler.cs" />
     <Compile Include="src\Gen\Parsing\Psi\ErrorMessages.cs" />
     <Compile Include="src\Gen\Parsing\Psi\PsiParserGenerated.cs" />
     <Compile Include="src\Gen\Parsing\Psi\TokenBitsets.cs" />
@@ -316,22 +304,6 @@
     <Compile Include="src\CodeInspections\InspectionStage.cs" />
     <Compile Include="src\Lexer\PsiLexerFactory.cs" />
     <Compile Include="src\Lexer\FilteringPsiLexer.cs" />
-    <Compile Include="src\Navigation\GeneratedClass\GeneratedClassContextSearch.cs" />
-    <Compile Include="src\Navigation\GeneratedClass\GeneratedClassSearchRequest.cs" />
-    <Compile Include="src\Navigation\GeneratedClass\GotoGeneratedClassAction.cs" />
-    <Compile Include="src\Navigation\GeneratedContextSearch.cs" />
-    <Compile Include="src\Navigation\GeneratedInterface\GeneratedInterfaceContextSearch.cs" />
-    <Compile Include="src\Navigation\GeneratedInterface\GotoGeneratedInterfaceAction.cs" />
-    <Compile Include="src\Navigation\GeneratedInterface\GeneratedInterfaceSearchRequest.cs" />
-    <Compile Include="src\Navigation\GeneratedInterface\PsiNavigateGeneratedInterfaceProvider.cs" />
-    <Compile Include="src\Navigation\GeneratedMethod\GeneratedMethodContextSearch.cs" />
-    <Compile Include="src\Navigation\GeneratedMethod\GeneratedMethodSearchRequest.cs" />
-    <Compile Include="src\Navigation\GeneratedMethod\PsiNavigateGeneratedMethodProvider.cs" />
-    <Compile Include="src\Navigation\GotoGeneratedDescriptor.cs" />
-    <Compile Include="src\Navigation\GeneratedSearchRequest.cs" />
-    <Compile Include="src\Navigation\GeneratedMethod\GotoGeneratedMethodAction.cs" />
-    <Compile Include="src\Navigation\GeneratedClass\PsiNavigateGeneratedClassProvider.cs" />
-    <Compile Include="src\Navigation\PsiNavigateFromHereProvider.cs" />
     <Compile Include="src\Parsing\IPsiParser.cs" />
     <Compile Include="src\Parsing\ParserMessages.cs" />
     <Compile Include="src\Parsing\PsiLexer.cs" />
@@ -419,7 +391,6 @@
     <ThemedIconPng Include="resources\PsiPluginSymbolIcons\psiVariable.png" />
     <ThemedIconPng Include="resources\PsiPluginSymbolIcons\psiPath[SymbolsIdea].png" />
     <ThemedIconPng Include="resources\PsiPluginSymbolIcons\psiPath.png" />
-    <EmbeddedResource Include="resources\actions.xml" />
     <Content Include="src\Parsing\Tokens.xml">
       <SubType>Designer</SubType>
     </Content>
