@@ -29,6 +29,7 @@ using JetBrains.UI.Controls;
 using JetBrains.UI.Extensions;
 using JetBrains.UI.Icons;
 using JetBrains.UI.RichText;
+using JetBrains.UI.Theming;
 using JetBrains.UI.ToolWindowManagement;
 using JetBrains.Util;
 
@@ -41,9 +42,10 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
     private readonly IShellLocks myLocks;
     private readonly ISettingsStore mySettingsStore;
     private readonly IActionBarManager myActionBarManager;
-    private readonly IThemeManager myThemeManager;
+    private readonly ITheming myTheming;
     private readonly IThemedIconManager myThemedIconManager;
     private readonly ToolWindowClass myToolWindowClass;
+    private IColorThemeManager myColorThemeManager;
 
     public TypeInterfaceToolWindowRegistrar(Lifetime lifetime,
                                     ToolWindowManager toolWindowManager,
@@ -53,15 +55,16 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
                                     IActionBarManager actionBarManager,
                                     IShortcutManager shortcutManager,
                                     TypeInterfaceToolWindowDescriptor toolWindowDescriptor,
-                                    IThemeManager themeManager,
-                                    IThemedIconManager themedIconManager)
+                                    ITheming theming,
+                                    IThemedIconManager themedIconManager, IColorThemeManager colorThemeManager)
     {
       myLifetime = lifetime;
       myLocks = locks;
       mySettingsStore = settingsStore;
       myActionBarManager = actionBarManager;
-      myThemeManager = themeManager;
+      myTheming = theming;
       myThemedIconManager = themedIconManager;
+      myColorThemeManager = colorThemeManager;
 
       myToolWindowClass = toolWindowManager.Classes[toolWindowDescriptor];
       myToolWindowClass.RegisterEmptyContent(
@@ -83,7 +86,7 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
       ToolWindowInstance instance = myToolWindowClass.RegisterInstance(
         myLifetime,
         StringUtil.MakeTitle(browserDescriptor.Title.Value), browserDescriptor.Image,
-        (lt, twi) => TreeModelBrowserPanelPsiWPF.SelectTreeImplementation(browserDescriptor, lt, myActionBarManager, myLocks, mySettingsStore, myThemeManager, myThemedIconManager));
+        (lt, twi) => TreeModelBrowserPanelPsiWPF.SelectTreeImplementation(browserDescriptor, lt, myActionBarManager, myLocks, mySettingsStore, myColorThemeManager, myThemedIconManager));
       instance.Lifetime.AddAction(() => browserDescriptor.LifetimeDefinition.Terminate());
       instance.EnsureControlCreated().Show();
     }

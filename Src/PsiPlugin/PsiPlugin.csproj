@@ -38,9 +38,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="JetBrains.Annotations">
-      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Annotations.dll</HintPath>
-    </Reference>
     <Reference Include="JetBrains.Platform.CommonServices">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.CommonServices.dll</HintPath>
     </Reference>

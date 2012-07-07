@@ -72,11 +72,11 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
       myView.DoubleClick += EditFileAssociation;
       myRules.Controls.Add(myView);
 
-      _buttons.Items.Add("Create", myIconManager.Icons[ZenCodingCommonThemedIcons.Add.Id].CurrentGdipBitmap, CreateFileAssociation);
-      _buttons.Items.Add("Edit", myIconManager.Icons[CommonThemedIcons.Edit.Id].CurrentGdipBitmap, EditFileAssociation);
-      _buttons.Items.Add("Remove", myIconManager.Icons[CommonThemedIcons.Remove.Id].CurrentGdipBitmap, RemoveFileAssociation);
-      _buttons.Items.Add("Up", myIconManager.Icons[CommonThemedIcons.Up.Id].CurrentGdipBitmap, MoveUp);
-      _buttons.Items.Add("Down", myIconManager.Icons[CommonThemedIcons.Down.Id].CurrentGdipBitmap, MoveDown);
+      _buttons.Items.Add("Create", myIconManager.Icons[ZenCodingCommonThemedIcons.Add.Id].CurrentGdipBitmap96, CreateFileAssociation);
+      _buttons.Items.Add("Edit", myIconManager.Icons[CommonThemedIcons.Edit.Id].CurrentGdipBitmap96, EditFileAssociation);
+      _buttons.Items.Add("Remove", myIconManager.Icons[CommonThemedIcons.Remove.Id].CurrentGdipBitmap96, RemoveFileAssociation);
+      _buttons.Items.Add("Up", myIconManager.Icons[CommonThemedIcons.Up.Id].CurrentGdipBitmap96, MoveUp);
+      _buttons.Items.Add("Down", myIconManager.Icons[CommonThemedIcons.Down.Id].CurrentGdipBitmap96, MoveDown);
     }
 
     public EitherControl Control
