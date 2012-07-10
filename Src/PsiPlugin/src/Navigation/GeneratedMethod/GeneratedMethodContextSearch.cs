@@ -11,7 +11,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Navigation.GeneratedMethod
   [FeaturePart]
   public class GeneratedMethodContextSearch : GeneratedContextSearch<GeneratedMethodSearchRequest>
   {
-    protected override GeneratedMethodSearchRequest CreateSearchRequest(IDataContext dataContext, IDeclaredElement declaredElement)
+    protected override GeneratedMethodSearchRequest CreateSearchRequest(IDataContext dataContext, IDeclaredElement declaredElement, IDeclaredElement initialTarget)
     {
       return new GeneratedMethodSearchRequest(declaredElement);
     }

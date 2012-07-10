@@ -11,7 +11,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Navigation.GeneratedInterface
   [FeaturePart]
   public class GeneratedInterfaceContextSearch : GeneratedContextSearch<GeneratedInterfaceSearchRequest>
   {
-    protected override GeneratedInterfaceSearchRequest CreateSearchRequest(IDataContext dataContext, IDeclaredElement declaredElement)
+    protected override GeneratedInterfaceSearchRequest CreateSearchRequest(IDataContext dataContext, IDeclaredElement declaredElement, IDeclaredElement initialTarget)
     {
       return new GeneratedInterfaceSearchRequest(declaredElement);
     }

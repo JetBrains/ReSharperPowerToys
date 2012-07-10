@@ -19,7 +19,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Navigation.GeneratedClass
   [FeaturePart]
   public class GeneratedClassContextSearch :  GeneratedContextSearch<GeneratedClassSearchRequest>
   {
-    protected override GeneratedClassSearchRequest CreateSearchRequest(IDataContext dataContext, IDeclaredElement declaredElement)
+    protected override GeneratedClassSearchRequest CreateSearchRequest(IDataContext dataContext, IDeclaredElement declaredElement, IDeclaredElement initialTarget)
     {
       return new GeneratedClassSearchRequest(declaredElement);
     }
