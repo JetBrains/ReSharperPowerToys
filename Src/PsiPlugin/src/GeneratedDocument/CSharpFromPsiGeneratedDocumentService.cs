@@ -23,9 +23,9 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
     {
     }
 
-    public ICollection<PsiLanguageType> GetSecondaryPsiLanguageTypes()
+    public ICollection<PsiLanguageType> GetSecondaryPsiLanguageTypes(IProject project)
     {
-      return new List<PsiLanguageType> {CSharpLanguage.Instance};
+      return new List<PsiLanguageType> { CSharpLanguage.Instance };
     }
 
     public bool CanHandle(ProjectFileType projectFileType)
@@ -42,7 +42,7 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
       PsiLanguageType language = psiFile != null ? psiFile.Language : PsiLanguage.Instance;
       return new SecondaryDocumentGenerationResult(
           sourceFile,
-          results.Text,
+          results.Text.ToString(),
           CSharpLanguage.Instance,
           new RangeTranslatorWithGeneratedRangeMap(results.GeneratedRangeMap),
           LexerFactoryWithPreprocessor(language)
