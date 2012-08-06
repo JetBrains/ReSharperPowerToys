@@ -11,22 +11,26 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 {
   public class PsiIndentingStage
   {
-    private readonly bool myInTypingAssist;
-    private readonly PsiIndentCache myIndentCache;
-    private readonly PsiIndentVisitor myIndentVisitor;
+    private bool myInTypingAssist;
+    private PsiIndentCache myIndentCache;
+    private static PsiIndentVisitor myIndentVisitor;
     [UsedImplicitly]
     private PsiCodeFormattingSettings myFormattingSettings;
 
-    private PsiIndentingStage(PsiCodeFormattingSettings formattingSettings, bool inTypingAssist)
+    private PsiIndentingStage(PsiCodeFormattingSettings formattingSettings, bool inTypingAssist = false)
     {
       myFormattingSettings = formattingSettings;
       myInTypingAssist = inTypingAssist;
-      myIndentCache = new PsiIndentCache();
-      myIndentVisitor = CreateIndentVisitor(myIndentCache, inTypingAssist);
     }
 
     public static void DoIndent(PsiCodeFormattingSettings formattingSettings, CodeFormattingContext context, IProgressIndicator progress, bool inTypingAssist)
     {
+      PsiIndentCache indentCache = new PsiIndentCache(
+        context.CodeFormatter,
+        null,
+        formattingSettings.CommonSettings.ALIGNMENT_TAB_FILL_STYLE,
+        formattingSettings.GlobalSettings); ;
+      myIndentVisitor = CreateIndentVisitor(indentCache, inTypingAssist);
       var stage = new PsiIndentingStage(formattingSettings, inTypingAssist);
       List<FormattingRange> nodePairs = context.SequentialEnumNodes().Where(p => context.CanModifyInsideNodeRange(p.First, p.Last)).ToList();
       IEnumerable<FormatResult<string>> indents = nodePairs.
@@ -58,7 +62,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     }
 
     [NotNull]
-    private PsiIndentVisitor CreateIndentVisitor([NotNull] PsiIndentCache indentCache, bool inTypingAssist)
+    private static PsiIndentVisitor CreateIndentVisitor([NotNull] PsiIndentCache indentCache, bool inTypingAssist)
     {
       return new PsiIndentVisitor(indentCache, inTypingAssist);
     }

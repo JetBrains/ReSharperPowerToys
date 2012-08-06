@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using JetBrains.ReSharper.Psi.CodeStyle;
 using JetBrains.ReSharper.Psi.Impl.CodeStyle;
@@ -8,10 +9,10 @@ using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Formatter
 {
-  public class PsiIndentCache : CustomizableIndentCacheBase
+  public class PsiIndentCache : IndentCache<ITreeNode>
   {
-    public PsiIndentCache()
-      : base(null)
+    /*public PsiIndentCache()
+      : base()
     {
     }
 
@@ -61,6 +62,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       }
 
       return indent.ToString();
+    }*/
+
+    public PsiIndentCache(ICodeFormatterImpl codeFormatter, Func<ITreeNode, CustomIndentType, string> customLineIndenter, AlignmentTabFillStyle tabFillStyle, GlobalFormatSettings formatSettings) : base(codeFormatter, customLineIndenter, tabFillStyle, formatSettings)
+    {
     }
   }
 }
