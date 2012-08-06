@@ -25,12 +25,14 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     private readonly IEnumerable<IPsiCodeFormatterExtension> myExtensions;
     private readonly ElementsCache<TokenTypePair, bool> myGlueingCache = new ElementsCache<TokenTypePair, bool>(IsTokensGlued);
     private readonly PsiLanguage myLanguage;
+    private ISettingsOptimization mySettingsOptimization;
 
-    public PsiCodeFormatter(Lifetime lifetime, PsiLanguage language, ISettingsStore settingsStore, IViewable<IPsiCodeFormatterExtension> extensions)
+    public PsiCodeFormatter(Lifetime lifetime, PsiLanguage language, ISettingsStore settingsStore, IViewable<IPsiCodeFormatterExtension> extensions, ISettingsOptimization settingsOptimization)
       : base(settingsStore)
     {
       myLanguage = language;
       myExtensions = extensions.ToLiveEnumerable(lifetime);
+      mySettingsOptimization = settingsOptimization;
     }
 
     protected override PsiLanguageType LanguageType
@@ -105,8 +107,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       return new ITreeNode[] { PsiFormatterHelper.CreateSpace(indent) };
     }
 
-    private void Format(ITreeNode firstElement, ITreeNode lastElement, PsiFormatProfile profile, [CanBeNull] IProgressIndicator pi)
+    public override ITreeRange Format(ITreeNode firstElement, ITreeNode lastElement, CodeFormatProfile profile, [CanBeNull] IProgressIndicator pi, IContextBoundSettingsStore overrideSettingsStore = null)
     {
+      var psiProfile = new PsiFormatProfile(profile);
       ITreeNode firstNode = firstElement;
       if (firstElement == null)
       {
@@ -151,23 +154,24 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
         firstNode = firstNode.FirstChild;
       }
       ISolution solution = firstNode.GetSolution();
-      GlobalFormatSettings globalSettings = GlobalFormatSettingsHelper.GetService(solution).GetSettingsForLanguage(myLanguage);
-      var formatterSettings = new PsiCodeFormattingSettings(globalSettings);
+      var contextBoundSettingsStore = GetProperContextBoundSettingsStore(overrideSettingsStore, firstNode);
+      GlobalFormatSettings globalSettings = GlobalFormatSettingsHelper.GetService(solution).GetSettingsForLanguage(myLanguage, PsiProjectFileType.Instance, true);
+      var formatterSettings = new PsiCodeFormattingSettings(globalSettings, contextBoundSettingsStore.GetKey<CommonFormatterSettingsKey>(mySettingsOptimization));
       using (pi.SafeTotal(4))
       {
         var context = new PsiCodeFormattingContext(this, firstNode, lastNode, NullProgressIndicator.Instance);
-        if (profile.Profile != CodeFormatProfile.INDENT)
+        if (psiProfile.Profile != CodeFormatProfile.INDENT)
         {
           using (pi.CreateSubProgress(1))
           {
-            //FormatterImplHelper.DecoratingIterateNodes(context, context.FirstNode, context.LastNode, new PsiDecorationStage(formatterSettings, profile, subPi));
+            //FormatterImplHelper.DecoratingIterateNodes(context, context.FirstNode, context.LastNode, new PsiDecorationStage(formatterSettings, psiProfile, subPi));
           }
 
           using (IProgressIndicator subPi = pi.CreateSubProgress(1))
           {
             using (subPi.SafeTotal(2))
             {
-              var data = new FormattingStageData(formatterSettings, context, profile, myExtensions.ToList());
+              var data = new FormattingStageData(formatterSettings, context, psiProfile, myExtensions.ToList());
               PsiFormattingStage.DoFormat(data, subPi.CreateSubProgress(1));
               PsiIndentingStage.DoIndent(formatterSettings, context, subPi.CreateSubProgress(1), false);
             }
@@ -181,15 +185,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
           }
         }
       }
-    }
-
-    public override ITreeRange Format(ITreeNode firstElement, ITreeNode lastElement, CodeFormatProfile profile, IProgressIndicator progressIndicator, IContextBoundSettingsStore overrideSettingsStore = null)
-    {
-      Format(
-        firstElement,
-        lastElement,
-        new PsiFormatProfile(profile),
-        progressIndicator);
       return new TreeRange(firstElement, lastElement);
     }
 
@@ -280,7 +275,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
   public class PsiCodeFormattingContext : CodeFormattingContext
   {
     public PsiCodeFormattingContext(PsiCodeFormatter psiCodeFormatter, ITreeNode firstNode, ITreeNode lastNode, NullProgressIndicator instance)
-      : base(psiCodeFormatter, firstNode, lastNode, instance)
+      : base(psiCodeFormatter, firstNode, lastNode)
     {
     }
 

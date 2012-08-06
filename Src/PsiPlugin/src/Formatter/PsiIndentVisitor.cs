@@ -4,6 +4,7 @@ using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Parsing;
 using JetBrains.ReSharper.PsiPlugin.Tree;
 using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
+using IWhitespaceNode = JetBrains.ReSharper.PsiPlugin.Tree.IWhitespaceNode;
 
 namespace JetBrains.ReSharper.PsiPlugin.Formatter
 {
