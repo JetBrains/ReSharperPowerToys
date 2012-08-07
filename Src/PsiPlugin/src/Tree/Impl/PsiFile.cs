@@ -507,5 +507,16 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
 
       return myPathSymbolTable;
     }
+
+    public IEnumerable<IDeclaredElement> GetDeclaredElements(string name)
+    {
+      var list = new LinkedList<IDeclaredElement>();
+      if(myDeclarations.ContainsKey(name))
+      {
+        var declaredElement = myDeclarations.GetValue(name); 
+        list.AddFirst(declaredElement);
+      }
+      return list;
+    } 
   }
 }

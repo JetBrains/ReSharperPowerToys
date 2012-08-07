@@ -46,6 +46,7 @@
     <Compile Include="src\Navigation\PsiAllNavigationProvidersTest.cs" />
     <Compile Include="src\Parsing\PsiIncrementalReparseTest.cs" />
     <Compile Include="src\Parsing\PsiParserTest.cs" />
+    <Compile Include="src\GotoMember\PsiGotoFileMemberTest.cs" />
     <Compile Include="src\Refactoring\Rename\PsiRenameTest.cs" />
     <Compile Include="src\PsiTestEnvironmentAssembly.cs" />
   </ItemGroup>

@@ -339,6 +339,12 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
       return myNameToSymbolsOptionMap[name];
     }
 
+    public IEnumerable<IPsiSymbol> GetSymbolsDeclaredInFile(IPsiSourceFile sourceFile)
+    {
+      var symbols = myProjectFileToSymbolsRuleMap.GetValuesCollection(sourceFile);
+      return symbols;
+    }
+
     #region Nested type: PsiPersistentCache
 
     private class PsiPersistentCache<T> : SimplePersistentCache<T>
