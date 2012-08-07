@@ -111,8 +111,10 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
         return;
       }
       
+      /*var indentSize = GlobalFormatSettingsHelper.GetService(solution)
+        .GetSettingsForLanguage(PsiProjectFileTypeCoordinator.Instance.GetPrimaryPsiLanguageType(projectFile), projectFile.LanguageType, false ).IndentSize;*/
       var indentSize = GlobalFormatSettingsHelper.GetService(solution)
-        .GetSettingsForLanguage(PsiProjectFileTypeCoordinator.Instance.GetPrimaryPsiLanguageType(projectFile), projectFile.LanguageType, false ).IndentSize;
+        .GetSettingsForLanguage(PsiProjectFileTypeCoordinator.Instance.GetPrimaryPsiLanguageType(projectFile)).IndentSize;
       expanded = GetEngine(solution).PadString(expanded, (int)textControl.Document.GetCoordsByOffset(abbrRange.StartOffset).Column / indentSize);
       textControl.Document.ReplaceText(abbrRange, expanded);
       if (insertPoint != -1)

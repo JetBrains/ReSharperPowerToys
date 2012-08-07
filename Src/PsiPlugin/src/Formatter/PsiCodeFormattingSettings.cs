@@ -4,13 +4,13 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 {
   public class PsiCodeFormattingSettings
   {
-    public PsiCodeFormattingSettings(GlobalFormatSettings globalSettings, CommonFormatterSettingsKey commonSettings)
+    public PsiCodeFormattingSettings(GlobalFormatSettings globalSettings)
     {
       GlobalSettings = globalSettings;
-      CommonSettings = commonSettings;
+      //CommonSettings = commonSettings;
     }
 
-    public readonly CommonFormatterSettingsKey CommonSettings;
+    //public readonly CommonFormatterSettingsKey CommonSettings;
     public readonly GlobalFormatSettings GlobalSettings;
   }
 }

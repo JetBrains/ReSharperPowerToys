@@ -155,8 +155,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       }
       ISolution solution = firstNode.GetSolution();
       var contextBoundSettingsStore = GetProperContextBoundSettingsStore(overrideSettingsStore, firstNode);
-      GlobalFormatSettings globalSettings = GlobalFormatSettingsHelper.GetService(solution).GetSettingsForLanguage(myLanguage, PsiProjectFileType.Instance, true);
-      var formatterSettings = new PsiCodeFormattingSettings(globalSettings, contextBoundSettingsStore.GetKey<CommonFormatterSettingsKey>(mySettingsOptimization));
+      GlobalFormatSettings globalSettings = GlobalFormatSettingsHelper.GetService(solution).GetSettingsForLanguage(myLanguage);
+      //var formatterSettings = new PsiCodeFormattingSettings(globalSettings, contextBoundSettingsStore.GetKey<CommonFormatterSettingsKey>(mySettingsOptimization));
+      var formatterSettings = new PsiCodeFormattingSettings(globalSettings);
       using (pi.SafeTotal(4))
       {
         var context = new PsiCodeFormattingContext(this, firstNode, lastNode, NullProgressIndicator.Instance);
@@ -275,7 +276,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
   public class PsiCodeFormattingContext : CodeFormattingContext
   {
     public PsiCodeFormattingContext(PsiCodeFormatter psiCodeFormatter, ITreeNode firstNode, ITreeNode lastNode, NullProgressIndicator instance)
-      : base(psiCodeFormatter, firstNode, lastNode)
+      : base(psiCodeFormatter, firstNode, lastNode, instance)
     {
     }
 

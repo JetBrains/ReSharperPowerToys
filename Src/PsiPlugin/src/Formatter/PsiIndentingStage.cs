@@ -25,11 +25,12 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 
     public static void DoIndent(PsiCodeFormattingSettings formattingSettings, CodeFormattingContext context, IProgressIndicator progress, bool inTypingAssist)
     {
-      PsiIndentCache indentCache = new PsiIndentCache(
+      /*PsiIndentCache indentCache = new PsiIndentCache(
         context.CodeFormatter,
         null,
         formattingSettings.CommonSettings.ALIGNMENT_TAB_FILL_STYLE,
-        formattingSettings.GlobalSettings); ;
+        formattingSettings.GlobalSettings); */
+      PsiIndentCache indentCache = new PsiIndentCache();
       myIndentVisitor = CreateIndentVisitor(indentCache, inTypingAssist);
       var stage = new PsiIndentingStage(formattingSettings, inTypingAssist);
       List<FormattingRange> nodePairs = context.SequentialEnumNodes().Where(p => context.CanModifyInsideNodeRange(p.First, p.Last)).ToList();
