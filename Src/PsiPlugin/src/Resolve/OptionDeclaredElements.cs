@@ -39,7 +39,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
                                                              "publicChildRolePrefix",
                                                              "publicChildRoleClass",
                                                              "generateWorkingPsi",
-                                                             "parserMessagesClass"
+                                                             "parserMessagesClass",
                                                            };
 
     public static readonly IList<string> NamespacesOptions = new List<string>
@@ -79,7 +79,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
                                                             "tokenElementClassFQName",
                                                             "objectClassFQName",
                                                             "parserMessagesClass",
-                                                            "tokenBitsetThreshold"
+                                                            "tokenBitsetThreshold",
+                                                            "elementTypeBaseClass"
                                                           };
 
     public static readonly IList<string> MethodsOptions = new List<string>
