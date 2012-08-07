@@ -18,5 +18,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
     ///   Owner PSI source file
     /// </summary>
     IPsiSourceFile SourceFile { get; }
+
+    string Name { get;}
   }
 }

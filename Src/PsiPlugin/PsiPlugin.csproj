@@ -168,8 +168,11 @@
     <Compile Include="src\CodeInspections\PsiIdentifierToolTipProvider.cs" />
     <Compile Include="src\CodeInspections\PsiIncrementalDaemonStageProcessBase.cs" />
     <Compile Include="src\CodeInspections\SmartResolverStage.cs" />
+    <Compile Include="src\Feature\Finding\FindResultPsiSymbol.cs" />
+    <Compile Include="src\Feature\Finding\GotoMember\PsiGotoFileMemberProvider.cs" />
     <Compile Include="src\Feature\Services\FindUsages\PsiReferenceSearcher.cs" />
     <Compile Include="src\Feature\Services\FindUsages\PsiReferenceSearcherFactory.cs" />
+    <Compile Include="src\Feature\Services\Occurrences\PsiSymbolOccurrenceProvider.cs" />
     <Compile Include="src\Formatter\FormattingStageData.cs" />
     <Compile Include="src\Formatter\IPsiCodeFormatterExtension.cs" />
     <Compile Include="src\Formatter\IPsiCodeFormatterFactory.cs" />
