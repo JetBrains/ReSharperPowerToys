@@ -377,6 +377,14 @@ extras{
   ;
 
 roleName
-	:
-	IDENTIFIER
+  :
+    IDENTIFIER
   ;
+
+interfaces{
+
+interface a
+  :
+    warningAction
+  ;
+}
