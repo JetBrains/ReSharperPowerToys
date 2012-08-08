@@ -133,5 +133,15 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
                                                              "parsingContext",
                                                              "expectedSymbol"
                                                            };
+
+    public static readonly IList<string> UnnecessaryOptionNames = new List<string>
+                                                           {
+                                                             "tokenClassName",
+                                                             "visitorSuperClassName",
+                                                             "leafElementClassFQName",
+                                                             "unexpectedTokenClassFQName",
+                                                             "syntaxErrorClassFQName",
+                                                             "createTokenElementMethodFQName"
+                                                           };
   }
 }
