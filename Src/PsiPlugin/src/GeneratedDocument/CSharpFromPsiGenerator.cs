@@ -17,12 +17,17 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
     private GenerationResults myGeneratedMethodBody;
     private GenerationResults myGeneratedFile;
 
+    private string myPackage;
+    private IList<OptionInfo> myClassesWithShortNamespace = new List<OptionInfo>(); 
+    private IList<OptionInfo> myShortNamespaces = new List<OptionInfo>(); 
+
     public CSharpFromPsiGenerator(IPsiFile file)
     {
       myFile = file;
       myClassesToNamespaces.Add("parserClassName", "parserPackage");
       myClassesToNamespaces.Add("psiStubsBaseClass", "psiStubsPackageName");
       myClassesToNamespaces.Add("visitorClassName", "psiInterfacePackageName");
+      myPackage = null;
     }
 
     public GenerationResults Generate()
@@ -31,6 +36,19 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
       myGeneratedFile = new GenerationResults(CSharpLanguage.Instance, "", GeneratedRangeMapFactory.CreateGeneratedRangeMap(myFile));
 
       AddOptions(myFile);
+
+      if (myPackage != null)
+      {
+        foreach (var info in myClassesWithShortNamespace)
+        {
+          AddClassesOption(info.Definition, info.EndOffset, info.StartOffset, myPackage + "." + info.Text, myPackage.Length + 1);
+        }
+
+        foreach (var info in myShortNamespaces)
+        {
+          AddNamespaceOption(info.EndOffset, info.StartOffset, myPackage + "." + info.Text, myPackage.Length + 1);
+        }
+      }
 
       myGeneratedFile.Append(new GenerationResults(CSharpLanguage.Instance, "class A{\n void foo(){\n", GeneratedRangeMapFactory.CreateGeneratedRangeMap(myFile)));
       myGeneratedFile.Append(myGeneratedMethodBody);
@@ -82,15 +100,35 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
         {
           if (OptionDeclaredElements.NamespacesOptions.Contains(optionName))
           {
-            AddNamespaceOption(endOffset, optionValueText, startOffset);
+            if (OptionDeclaredElements.ShortNamespacesOptions.Contains(optionName))
+            {
+              myShortNamespaces.Add(new OptionInfo(optionValueText, startOffset, endOffset, optionDefinition));
+            }
+            else
+            {
+              AddNamespaceOption(endOffset, startOffset, optionValueText);
+              if (optionName == OptionDeclaredElements.ParserPackageNamespaceOption)
+              {
+                myPackage = optionValueText;
+                int dotIndex = myPackage.LastIndexOf('.');
+                myPackage = myPackage.Substring(0, dotIndex);
+              }
+            }
           }
           else if (OptionDeclaredElements.ClassesOptions.Contains(optionName))
           {
-            AddClassesOption(optionDefinition, endOffset, startOffset, optionValueText);
+            if (OptionDeclaredElements.ClassesOptionsWithShortNamespace.Contains(optionName))
+            {
+              myClassesWithShortNamespace.Add(new OptionInfo(optionValueText, startOffset, endOffset, optionDefinition));
+            }
+            else
+            {
+              AddClassesOption(optionDefinition, endOffset, startOffset, optionValueText);
+            }
           }
           else if (OptionDeclaredElements.MethodsOptions.Contains(optionName))
           {
-            AddMethodOption(endOffset, optionValueText, startOffset);
+            AddMethodOption(endOffset, startOffset, optionValueText);
           }
         }
       }
@@ -110,7 +148,7 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
       return optionName;
     }
 
-    private void AddClassesOption(IOptionDefinition optionDefinition, int endOffset, int startOffset, string optionValueText)
+    private void AddClassesOption(IOptionDefinition optionDefinition, int endOffset, int startOffset, string optionValueText, int startInGenerated = 0)
     {
       var classes = optionDefinition.GetPsiServices().CacheManager.GetDeclarationsCache(optionDefinition.GetPsiModule(), false, true).GetTypeElementsByCLRName(optionValueText);
       foreach (var typeElement in classes)
@@ -118,30 +156,30 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
         var cls = typeElement as IClass;
 
         if(cls != null){
-            AddStaticClassOption(endOffset, startOffset, optionValueText);
+            AddStaticClassOption(endOffset, startOffset, optionValueText, startInGenerated);
             return;
         }
       }
-      AddClassOption(endOffset, startOffset, optionValueText);
+      AddClassOption(endOffset, startOffset, optionValueText, startInGenerated);
     }
 
-    private void AddClassOption(int endOffset, int startOffset, string optionValueText)
+    private void AddClassOption(int endOffset, int startOffset, string optionValueText, int startInGenerated)
     {
       var map = GeneratedRangeMapFactory.CreateGeneratedRangeMap(myFile);
-      map.Add(new TreeTextRange<Generated>(new TreeOffset(), new TreeOffset(optionValueText.Length)),
+      map.Add(new TreeTextRange<Generated>(new TreeOffset(startInGenerated), new TreeOffset(optionValueText.Length)),
         new TreeTextRange<Original>(new TreeOffset(startOffset), new TreeOffset(endOffset)));
       myGeneratedMethodBody.Append(new GenerationResults(CSharpLanguage.Instance, optionValueText + " a;\n", map));
     }
 
-    private void AddStaticClassOption(int endOffset, int startOffset, string optionValueText)
+    private void AddStaticClassOption(int endOffset, int startOffset, string optionValueText, int startInGenerated)
     {
       var staticMap = GeneratedRangeMapFactory.CreateGeneratedRangeMap(myFile);
-      staticMap.Add(new TreeTextRange<Generated>(new TreeOffset(14), new TreeOffset(optionValueText.Length + 14)),
+      staticMap.Add(new TreeTextRange<Generated>(new TreeOffset(14 + startInGenerated), new TreeOffset(optionValueText.Length + 14)),
         new TreeTextRange<Original>(new TreeOffset(startOffset), new TreeOffset(endOffset)));
       myGeneratedFile.Append(new GenerationResults(CSharpLanguage.Instance,"using __alias=" + optionValueText + "\n", staticMap));
     }
 
-    private void AddMethodOption(int endOffset, string optionValueText, int startOffset)
+    private void AddMethodOption(int endOffset, int startOffset, string optionValueText)
     {
       var map = GeneratedRangeMapFactory.CreateGeneratedRangeMap(myFile);
       map.Add(new TreeTextRange<Generated>(new TreeOffset(8), new TreeOffset(optionValueText.Length + 8)),
@@ -149,12 +187,48 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
       myGeneratedMethodBody.Append(new GenerationResults(CSharpLanguage.Instance, "var a = " + optionValueText + ";\n", map));
     }
 
-    private void AddNamespaceOption(int endOffset, string optionValueText, int startOffset)
+    private void AddNamespaceOption(int endOffset, int startOffset, string optionValueText, int startInGenerated = 0)
     {
       var map = GeneratedRangeMapFactory.CreateGeneratedRangeMap(myFile);
-      map.Add(new TreeTextRange<Generated>(new TreeOffset(6), new TreeOffset(6 + optionValueText.Length)),
+      map.Add(new TreeTextRange<Generated>(new TreeOffset(6 + startInGenerated), new TreeOffset(6 + optionValueText.Length)),
         new TreeTextRange<Original>(new TreeOffset(startOffset), new TreeOffset(endOffset)));
       myGeneratedFile.Append(new GenerationResults(CSharpLanguage.Instance, "using " + optionValueText + ";\n", map));
+    }
+
+    private class OptionInfo
+    {
+      private string myText;
+      private int myStartOffset;
+      private int myEndoffset;
+      private IOptionDefinition myOptionDefinition;
+
+      public OptionInfo(string text, int startOffset, int endOffset, IOptionDefinition optionDefinition)
+      {
+        myText = text;
+        myStartOffset = startOffset;
+        myEndoffset = endOffset;
+        myOptionDefinition = optionDefinition;
+      }
+
+      public IOptionDefinition Definition
+      {
+        get { return myOptionDefinition; }
+      }
+
+      public string Text
+      {
+        get { return myText; }
+      }
+
+      public int StartOffset
+      {
+        get { return myStartOffset; }
+      }
+
+      public int EndOffset
+      {
+        get { return myEndoffset; }
+      }
     }
   }
 }
