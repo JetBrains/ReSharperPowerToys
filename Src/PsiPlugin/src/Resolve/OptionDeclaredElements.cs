@@ -4,10 +4,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
 {
   public static class OptionDeclaredElements
   {
+    public const string ParserPackageNamespaceOption = "parserPackage";
+
     public static readonly IList<string> FileOptionNames = new List<string>
                                                            {
                                                              "parserClassName",
-                                                             "parserPackage",
                                                              "psiInterfacePackageName",
                                                              "tokenTypePackageName",
                                                              "psiStubsPackageName",
@@ -40,6 +41,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
                                                              "publicChildRoleClass",
                                                              "generateWorkingPsi",
                                                              "parserMessagesClass",
+                                                             ParserPackageNamespaceOption
                                                            };
 
     public static readonly IList<string> NamespacesOptions = new List<string>
@@ -51,6 +53,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
                                                                "parserGenRuntimePackageName",
                                                                "customImplPackage",
                                                                "customInterfacePackage"
+                                                             };
+
+    public static readonly IList<string> ShortNamespacesOptions = new List<string>
+                                                             {
+                                                               "parserGenRuntimePackageName"
                                                              };
 
     public static readonly IList<string> ClassesOptions = new List<string>
@@ -81,6 +88,12 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
                                                             "parserMessagesClass",
                                                             "tokenBitsetThreshold",
                                                             "elementTypeBaseClass"
+                                                          };
+
+    public static readonly IList<string> ClassesOptionsWithShortNamespace = new List<string>
+                                                          {
+                                                            "unexpectedTokenClassFQName",
+                                                            "syntaxErrorClassFQName",
                                                           };
 
     public static readonly IList<string> MethodsOptions = new List<string>
