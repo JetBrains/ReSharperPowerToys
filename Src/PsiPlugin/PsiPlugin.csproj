@@ -364,6 +364,7 @@
     <Compile Include="src\Resolve\PsiSearcherFactory.cs" />
     <Compile Include="src\Resolve\PsiVariableReference.cs" />
     <Compile Include="src\Resolve\RoleDeclaredElement.cs" />
+    <Compile Include="src\Resolve\UnresolvedRuleInterfacesDeclaredElement.cs" />
     <Compile Include="src\Services\PsiDeclaredElementPresenter.cs" />
     <Compile Include="src\Tree\Impl\ChildRole.cs" />
     <Compile Include="src\Tree\Impl\Comment.cs" />

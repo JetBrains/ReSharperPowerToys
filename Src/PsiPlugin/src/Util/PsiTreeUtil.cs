@@ -37,6 +37,19 @@ namespace JetBrains.ReSharper.PsiPlugin.Util
       return null;
     }
 
+    public static bool HasParent<T>(ITreeNode element) where T : ITreeNode
+    {
+      while(element != null)
+      {
+        if(element is T)
+        {
+          return true;
+        }
+        element = element.Parent;
+      }
+      return false;
+    }
+
     public static void ReplaceChild(ITreeNode parent, ITreeNode nameNode, string name)
     {
       if (name.IsEmpty())

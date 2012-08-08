@@ -28,6 +28,14 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
           elements.Add(element);
         }
       }
+      if(elements.Count == 0)
+      {
+        var ruleName = myOwner as RuleName;
+        if( PsiTreeUtil.HasParent<InterfacesDefinition>(myOwner) && (ruleName != null))
+        {
+          elements = new List<DeclaredElementInstance>(){new DeclaredElementInstance(new UnresolvedRuleInterfacesDeclaredElement(ruleName.GetSourceFile(), GetName(), myOwner.GetPsiServices()))};
+        }
+      }
       return new ResolveResultWithInfo(ResolveResultFactory.CreateResolveResultFinaly(elements),
         ResolveErrorType.OK);
     }
