@@ -61,7 +61,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Finding.GotoMember
 
     protected virtual bool IsSourceFileAvailable(IPsiSourceFile sourceFile)
     {
-      return true;
+      //return true;
+      return sourceFile.IsValid();
     }
 
     public virtual bool IsApplicable(INavigationScope scope, GotoContext gotoContext)
@@ -96,15 +97,12 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Finding.GotoMember
             LocationStyle = GlobalLocationStyle.None
           });
       }
-      else
-      {
-        return new DeclaredElementOccurence(clrFileMemberData.Element,
-          new OccurencePresentationOptions
+      return new DeclaredElementOccurence(clrFileMemberData.Element,
+        new OccurencePresentationOptions
           {
             ContainerStyle = !(clrFileMemberData.Element is ITypeElement) ? clrFileMemberData.ContainerDisplayStyle : ContainerDisplayStyle.NoContainer,
             LocationStyle = GlobalLocationStyle.RelatedFile
           });
-      }
     }
 
     private IEnumerable<ClrFileMemberData> GetPrimaryMembers(FileMemberNavigationScope fileMemberScope)
@@ -120,10 +118,13 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Finding.GotoMember
       var primaryMembers = new LinkedList<ClrFileMemberData>();
       foreach(var symbol in psiSymbols)
       {
-        var declaredElements = psiFile.GetDeclaredElements(symbol.Name);
-        foreach (var declaredElement in declaredElements)
+        if (psiFile != null)
         {
-          primaryMembers.AddFirst(new ClrFileMemberData(declaredElement, false, ContainerDisplayStyle.NoContainer));
+          var declaredElements = psiFile.GetDeclaredElements(symbol.Name);
+          foreach (var declaredElement in declaredElements)
+          {
+            primaryMembers.AddFirst(new ClrFileMemberData(declaredElement, false, ContainerDisplayStyle.NoContainer));
+          }
         }
       }
 
@@ -153,23 +154,23 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Finding.GotoMember
         {
           IPsiSourceFile file = sourceFile;
           sourceFileMembers = TypeMemberNavigationUtil.GetFilteredTypeMembers(sourceFileTypeElement,
-            (member, typeElement) => IsValidMemberOfSourceFile(file, member, typeElement), null)
+            (member, typeElement) => IsValidMemberOfSourceFile(file, member), null)
           .Cast<IDeclaredElement>().ToList();
         }
 
-        var elementsAndMembers = sourceFileMembers.Concat(sourceFileTypeElements.Cast<IDeclaredElement>());
+        var elementsAndMembers = sourceFileMembers.Concat(sourceFileTypeElements);
         secondaryMembersData.AddRange(elementsAndMembers.Select(element => new ClrFileMemberData(element, true, containerDisplayStyle)));
       }
 
       return secondaryMembersData;
     }
 
-    private bool IsIndexer(IDeclaredElement declaredElement)
+    private bool IsIndexer()
     {
       return false;
     }
 
-    private bool IsValidMemberOfSourceFile(IPsiSourceFile sourceFile, IDeclaredElement typeMember, ITypeElement contatiningTypeElement)
+    private bool IsValidMemberOfSourceFile(IPsiSourceFile sourceFile, IDeclaredElement typeMember)
     {
       if (typeMember is ICompiledElement)
         return true;
@@ -202,7 +203,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Finding.GotoMember
         return quickSearchTexts;
       }
 
-      if (IsIndexer(declaredElement))
+      if (IsIndexer())
         return new[] { JetTuple.Of("this", false) };
 
       if ((declaredElement as IMethod).IsOverridesObjectFinalize())

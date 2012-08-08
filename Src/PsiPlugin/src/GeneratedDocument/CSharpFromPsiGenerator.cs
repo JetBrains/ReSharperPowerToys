@@ -18,8 +18,8 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
     private GenerationResults myGeneratedFile;
 
     private string myPackage;
-    private IList<OptionInfo> myClassesWithShortNamespace = new List<OptionInfo>(); 
-    private IList<OptionInfo> myShortNamespaces = new List<OptionInfo>(); 
+    private readonly IList<OptionInfo> myClassesWithShortNamespace = new List<OptionInfo>(); 
+    private readonly IList<OptionInfo> myShortNamespaces = new List<OptionInfo>(); 
 
     public CSharpFromPsiGenerator(IPsiFile file)
     {
@@ -50,7 +50,7 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
         }
       }
 
-      myGeneratedFile.Append(new GenerationResults(CSharpLanguage.Instance, "class A{\n void foo(){\n", GeneratedRangeMapFactory.CreateGeneratedRangeMap(myFile)));
+      myGeneratedFile.Append(new GenerationResults(CSharpLanguage.Instance, "class ZZZ_Generated_Class{\n void foo(){\n", GeneratedRangeMapFactory.CreateGeneratedRangeMap(myFile)));
       myGeneratedFile.Append(myGeneratedMethodBody);
       myGeneratedFile.Append(new GenerationResults(CSharpLanguage.Instance, "}\n }\n", GeneratedRangeMapFactory.CreateGeneratedRangeMap(myFile)));
 
@@ -217,10 +217,10 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
 
     private class OptionInfo
     {
-      private string myText;
-      private int myStartOffset;
-      private int myEndoffset;
-      private IOptionDefinition myOptionDefinition;
+      private readonly string myText;
+      private readonly int myStartOffset;
+      private readonly int myEndoffset;
+      private readonly IOptionDefinition myOptionDefinition;
 
       public OptionInfo(string text, int startOffset, int endOffset, IOptionDefinition optionDefinition)
       {
