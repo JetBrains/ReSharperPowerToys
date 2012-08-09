@@ -193,6 +193,11 @@
     <Compile Include="src\GeneratedDocument\CSharpFromPsiGeneratedDocumentService.cs" />
     <Compile Include="src\GeneratedDocument\CSharpFromPsiGenerator.cs" />
     <Compile Include="src\GeneratedDocument\CSharpInPsiCustomModificationHandler.cs" />
+    <Compile Include="src\CodeInspections\PsiFileStructureExplorer.cs" />
+    <Compile Include="src\CodeInspections\KeywordHighlightingStage.cs" />
+    <Compile Include="src\CodeInspections\PsiDaemonStageBase.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="src\Formatter\PsiCodeFormatter.cs" />
     <Compile Include="src\Gen\Parsing\Psi\ErrorMessages.cs" />
     <Compile Include="src\Gen\Parsing\Psi\PsiParserGenerated.cs" />
     <Compile Include="src\Gen\Parsing\Psi\TokenBitsets.cs" />
@@ -308,11 +313,6 @@
     <Compile Include="src\Gen\Psi\Psi\Tree\VariableDeclarationNavigator.cs" />
     <Compile Include="src\Gen\Psi\Psi\Tree\VariableNameNavigator.cs" />
     <Compile Include="src\Gen\Psi\Test\Psi\PsiGeneratedTest.cs" />
-    <Compile Include="src\CodeInspections\PsiFileStructureExplorer.cs" />
-    <Compile Include="src\CodeInspections\KeywordHighlightingStage.cs" />
-    <Compile Include="src\CodeInspections\PsiDaemonStageBase.cs" />
-    <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="src\Formatter\PsiCodeFormatter.cs" />
     <Compile Include="src\Grammar\PsiLanguageService.cs" />
     <Compile Include="src\Grammar\PsiProjectFileLanguageService.cs" />
     <Compile Include="src\Grammar\PsiLanguage.cs" />
@@ -432,6 +432,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Include="src\Gen\Psi.timestamp" />
     <None Include="src\Parsing\psi_lex.depends" />
   </ItemGroup>
   <ItemGroup>

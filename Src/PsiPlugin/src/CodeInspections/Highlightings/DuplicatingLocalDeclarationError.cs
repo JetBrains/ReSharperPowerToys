@@ -4,11 +4,11 @@ using JetBrains.ReSharper.Daemon.Impl;
 using JetBrains.ReSharper.Psi.Tree;
 
 [assembly: RegisterConfigurableSeverity("Duplicate declaration", null, HighlightingGroupIds.LanguageUsage, "Duplicate declaration", @"
-          Duplicate declaration", Severity.ERROR, false, Internal = false)]
+          Duplicate declaration", Severity.WARNING, false, Internal = false)]
 
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
 {
-  [ConfigurableSeverityHighlighting("Duplicate declaration", "PSI", OverlapResolve = OverlapResolveKind.ERROR, ToolTipFormatString = Error)]
+  [ConfigurableSeverityHighlighting("Duplicate declaration", "PSI", OverlapResolve = OverlapResolveKind.WARNING, ToolTipFormatString = "Duplicate declaration")]
   internal class DuplicatingLocalDeclarationError : IHighlightingWithRange, ICustomAttributeIdHighlighting
   {
     private const string Error = "Duplicate declaration";

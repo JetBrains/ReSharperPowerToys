@@ -16,7 +16,7 @@ options {
   separateHierarchies;
   "treeElementClassFQName"="JetBrains.ReSharper.Psi.ExtensionsAPI.Tree.TreeElement";
   "compositeElementClassFQName"="PsiCompositeElement";
-  "psiElementVisitorClassFQName"="JetBrains.ReSharper.PsiPlugin.Tree.TreeNodeVisitor";
+  "psiElementVisitorClassFQName"="JetBrains.ReSharper.PsiPlugin.Tree.ElementVisitor";
   "tokenTypeClassFQName"="JetBrains.ReSharper.PsiPlugin.Parsing.PsiTokenType";
   "visitMethodPrefix"="Visit";
   "lexerClassName"="JetBrains.ReSharper.Psi.Parsing.ILexer";
@@ -268,17 +268,38 @@ private ruleBracketParameters
   ;
 
 private ruleAngleParameters
-	:
-	LT
-	(AT
-	ROLE_KEYWORD
-	COMMA
-	AT
-	GETTER
-	|
-	roleName (EQ STRING_LITERAL)?
-	(COMMA ((IDENTIFIER | CACHED)(EQ STRING_LITERAL)?| ISCACHED))*)
-	GT
+  :
+    LT
+    (
+      AT
+      ROLE_KEYWORD
+      COMMA
+      AT
+      GETTER
+      | ROLE_KEYWORD
+      COMMA
+      GETTER
+      | roleName
+      (
+        EQ
+        STRING_LITERAL
+      )?
+      (
+        COMMA
+        (
+          (
+            IDENTIFIER
+            | CACHED
+          )
+          (
+            EQ
+            STRING_LITERAL
+          )?
+          | ISCACHED
+        )
+      )*
+    )
+    GT
   ;
 
 private ruleBraceParameters
@@ -380,11 +401,3 @@ roleName
   :
     IDENTIFIER
   ;
-
-interfaces{
-
-interface a
-  :
-    warningAction
-  ;
-}
