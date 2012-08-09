@@ -11,7 +11,7 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
 {
   internal class CSharpFromPsiGenerator
   {
-    private readonly IPsiFile myFile;
+    private IPsiFile myFile;
     private readonly IDictionary<string, string> myClassesToNamespaces = new Dictionary<string, string>();
 
     private GenerationResults myGeneratedMethodBody;
@@ -21,17 +21,17 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
     private readonly IList<OptionInfo> myClassesWithShortNamespace = new List<OptionInfo>(); 
     private readonly IList<OptionInfo> myShortNamespaces = new List<OptionInfo>(); 
 
-    public CSharpFromPsiGenerator(IPsiFile file)
+    public CSharpFromPsiGenerator()
     {
-      myFile = file;
       myClassesToNamespaces.Add("parserClassName", "parserPackage");
       myClassesToNamespaces.Add("psiStubsBaseClass", "psiStubsPackageName");
       myClassesToNamespaces.Add("visitorClassName", "psiInterfacePackageName");
       myPackage = null;
     }
 
-    public GenerationResults Generate()
+    public GenerationResults Generate(IPsiFile file)
     {
+      myFile = file;
       myGeneratedMethodBody = new GenerationResults(CSharpLanguage.Instance, "", GeneratedRangeMapFactory.CreateGeneratedRangeMap(myFile));
       myGeneratedFile = new GenerationResults(CSharpLanguage.Instance, "", GeneratedRangeMapFactory.CreateGeneratedRangeMap(myFile));
 
@@ -66,7 +66,7 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
 
     private void AddOptions(ITreeNode treeNode)
     {
-      if (treeNode is IOptionsDefinition || treeNode is IInterfacesDefinition || treeNode is IRuleDeclaration || treeNode is IPsiFile)
+      if (treeNode is IOptionsDefinition || treeNode is IPsiFile)
       {
         var child = treeNode.FirstChild;
         while (child != null)

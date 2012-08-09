@@ -9,6 +9,7 @@ using JetBrains.ReSharper.Psi.Impl.PsiManagerImpl;
 using JetBrains.ReSharper.Psi.Impl.Shared;
 using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.ReSharper.Psi.Tree;
+using JetBrains.ReSharper.Psi.Web.Generation;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.ReSharper.PsiPlugin.Tree;
 using JetBrains.Text;
@@ -19,8 +20,11 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
   [GeneratedDocumentService(typeof(PsiProjectFileType))]
   class CSharpFromPsiGeneratedDocumentService : IGeneratedDocumentService
   {
+    //private CSharpFromPsiGenerator myGenerator;
+
     public CSharpFromPsiGeneratedDocumentService(PsiProjectFileType psiProjectFileType)
     {
+      //myGenerator = new CSharpFromPsiGenerator();
     }
 
     public ICollection<PsiLanguageType> GetSecondaryPsiLanguageTypes(IProject project)
@@ -35,18 +39,26 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
 
     public ISecondaryDocumentGenerationResult Generate(PrimaryFileModificationInfo modificationInfo)
     {
-      var psiFile = modificationInfo.NewPsiFile as IPsiFile;
-      var gen = new CSharpFromPsiGenerator(psiFile);
       var sourceFile = modificationInfo.SourceFile;
-      var results = gen.Generate();
+      var psiFile = modificationInfo.NewPsiFile as IPsiFile;
       PsiLanguageType language = psiFile != null ? psiFile.Language : PsiLanguage.Instance;
+      GenerationResults result;
+      /*if (modificationInfo.NewElement is IRuleDeclaration)
+      {
+        result = myGenerator.Generate(psiFile, false);
+      }
+      else
+      {*/
+      var gen = new CSharpFromPsiGenerator();
+      result = gen.Generate(psiFile);
+      //}
       return new SecondaryDocumentGenerationResult(
-          sourceFile,
-          results.Text.ToString(),
-          CSharpLanguage.Instance,
-          new RangeTranslatorWithGeneratedRangeMap(results.GeneratedRangeMap),
-          LexerFactoryWithPreprocessor(language)
-          );
+        sourceFile,
+        result.Text.ToString(),
+        CSharpLanguage.Instance,
+        new RangeTranslatorWithGeneratedRangeMap(result.GeneratedRangeMap),
+        LexerFactoryWithPreprocessor(language)
+        );
     }
 
     public ICollection<IPreCommitResult> ExecuteSecondaryDocumentCommitWork(PrimaryFileModificationInfo primaryFileModificationInfo, CachedPsiFile cachedPsiFile, TreeTextRange oldTreeRange, string newText)
