@@ -46,7 +46,14 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
 
         foreach (var info in myShortNamespaces)
         {
-          AddNamespaceOption(info.EndOffset, info.StartOffset, myPackage + "." + info.Text, myPackage.Length + 1);
+          string name = info.Text;
+          if((name.Length >= myPackage.Length) && (name.Substring(0,myPackage.Length).Equals(myPackage)))
+          {
+            AddNamespaceOption(info.EndOffset, info.StartOffset, info.Text);
+          } else
+          {
+            AddNamespaceOption(info.EndOffset, info.StartOffset, myPackage + "." + info.Text, myPackage.Length + 1);
+          }
         }
       }
 

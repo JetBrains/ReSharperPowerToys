@@ -141,7 +141,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
                                                              "leafElementClassFQName",
                                                              "unexpectedTokenClassFQName",
                                                              "syntaxErrorClassFQName",
-                                                             "createTokenElementMethodFQName"
+                                                             "createTokenElementMethodFQName",
+                                                             "psiElementVisitorClassFQName"
                                                            };
   }
 }
