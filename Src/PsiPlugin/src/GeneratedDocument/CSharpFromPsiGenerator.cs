@@ -64,21 +64,37 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
       return myGeneratedFile;
     }
 
-    private void AddOptions(ITreeNode treeNode)
+    private void AddOptions(IPsiFile psiFile)
     {
-      if (treeNode is IOptionsDefinition || treeNode is IPsiFile)
+      var child = psiFile.FirstChild;
+
+      while (child != null)
       {
-        var child = treeNode.FirstChild;
-        while (child != null)
+        var optionsDefinition = child as IOptionsDefinition;
+        if (optionsDefinition != null)
         {
-          AddOptions(child);
-          child = child.NextSibling;
+          AddOptions(optionsDefinition);
         }
+        if (! child.IsWhitespaceToken())
+        {
+          return;
+        }
+        child = child.NextSibling;
       }
-      var optionDefinition = treeNode as IOptionDefinition;
-      if (optionDefinition != null)
+    }
+
+    private void AddOptions(IOptionsDefinition optionsDefinition)
+    {
+      var child = optionsDefinition.FirstChild;
+
+      while (child != null)
       {
-        AddOption(optionDefinition);
+        var optionDefinition = child as IOptionDefinition;
+        if (optionDefinition != null)
+        {
+          AddOption(optionDefinition);
+        }
+        child = child.NextSibling;
       }
     }
 

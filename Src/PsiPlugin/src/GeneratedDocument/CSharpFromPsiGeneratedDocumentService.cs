@@ -20,6 +20,8 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
   [GeneratedDocumentService(typeof(PsiProjectFileType))]
   class CSharpFromPsiGeneratedDocumentService : IGeneratedDocumentService
   {
+
+    //private IFile myFile;
     //private CSharpFromPsiGenerator myGenerator;
 
     public CSharpFromPsiGeneratedDocumentService(PsiProjectFileType psiProjectFileType)
@@ -41,6 +43,11 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
     {
       var sourceFile = modificationInfo.SourceFile;
       var psiFile = modificationInfo.NewPsiFile as IPsiFile;
+
+      /*if(myFile != psiFile)
+      {
+        myFile = psiFile;
+      }*/
       PsiLanguageType language = psiFile != null ? psiFile.Language : PsiLanguage.Instance;
       GenerationResults result;
       /*if (modificationInfo.NewElement is IRuleDeclaration)
