@@ -16,7 +16,7 @@ options {
   separateHierarchies;
   "treeElementClassFQName"="JetBrains.ReSharper.Psi.ExtensionsAPI.Tree.TreeElement";
   "compositeElementClassFQName"="PsiCompositeElement";
-  "psiElementVisitorClassFQName"="JetBrains.ReSharper.PsiPlugin.Tree.ElementVisitor";
+  "psiElementVisitorClassFQName"="JetBrains.ReSharper.PsiPlugin.Tree.TreeNodeVisitor";
   "tokenTypeClassFQName"="JetBrains.ReSharper.PsiPlugin.Parsing.PsiTokenType";
   "visitMethodPrefix"="Visit";
   "lexerClassName"="JetBrains.ReSharper.Psi.Parsing.ILexer";
