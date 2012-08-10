@@ -74,6 +74,7 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
         if (optionsDefinition != null)
         {
           AddOptions(optionsDefinition);
+          return;
         }
         if (! child.IsWhitespaceToken())
         {
