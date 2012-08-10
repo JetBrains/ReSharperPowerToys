@@ -14,15 +14,16 @@ using JetBrains.ReSharper.Features.Finding.NavigateFromHere;
 
 namespace JetBrains.ReSharper.PsiPlugin.Navigation
 {
-  public abstract class PsiNavigateFromHereProvider<TContextSearch, TSearchRequest> : RequestContextSearchProvider<TContextSearch, GotoGeneratedDescriptor, TSearchRequest>
+  public abstract class PsiNavigateFromHereProvider<TContextSearch, TDescriptor, TSearchRequest> : RequestContextSearchProvider<TContextSearch, TDescriptor, TSearchRequest>
     where TContextSearch : class, IRequestContextSearch<TSearchRequest>
+    where TDescriptor : OccurenceBrowserDescriptor
     where TSearchRequest : SearchRequest
   {
     protected PsiNavigateFromHereProvider(IFeaturePartsContainer manager) : base(manager)
     {
     }
 
-    protected override void ShowResults(IDataContext context, INavigationExecutionHost host, string title, ICollection<IOccurence> occurences, Func<GotoGeneratedDescriptor> descriptorBuilder, IComparer<IOccurence> customSearchRequestComparer)
+    protected override void ShowResults(IDataContext context, INavigationExecutionHost host, string title, ICollection<IOccurence> occurences, Func<TDescriptor> descriptorBuilder, IComparer<IOccurence> customSearchRequestComparer)
     {
       var occurencesList = occurences.ToList();
       occurencesList.Sort((occurence, occurence1) =>
@@ -44,11 +45,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Navigation
         TextDisplayStyle = TextDisplayStyle.ContainingFile,
         LocationStyle = GlobalLocationStyle.File
       };
-    }
-
-    protected override GotoGeneratedDescriptor CreateSearchDescriptor(TSearchRequest classSearchRequest, ICollection<IOccurence> occurences)
-    {
-      return new GotoGeneratedDescriptor(classSearchRequest, occurences);
     }
   }
 }
