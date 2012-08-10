@@ -36,6 +36,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
           elements = new List<DeclaredElementInstance>(){new DeclaredElementInstance(new UnresolvedRuleInterfacesDeclaredElement(ruleName.GetSourceFile(), GetName(), myOwner.GetPsiServices()))};
         }
       }
+
       return new ResolveResultWithInfo(ResolveResultFactory.CreateResolveResultFinaly(elements),
         ResolveErrorType.OK);
     }

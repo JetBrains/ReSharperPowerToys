@@ -311,7 +311,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
         myInterfacePrefix = "_";
       }
 
-      CollectDerivedElements();
+      //CollectDerivedElements();
     }
 
     public void CollectDerivedElements()
@@ -330,6 +330,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
         }
       }
     }
+
 
     public void CollectDerivedElements(RuleDeclaration ruleDeclaration)
     {

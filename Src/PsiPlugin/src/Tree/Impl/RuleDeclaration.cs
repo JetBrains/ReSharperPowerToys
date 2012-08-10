@@ -33,22 +33,50 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
 
     public IEnumerable<IDeclaredElement> DerivedParserMethods
     {
-      get { return myDerivedParserMethods; }
+      get
+      {
+        if(myDerivedParserMethods.Count == 0)
+        {
+          CollectDerivedDeclaredElements();
+        }
+        return myDerivedParserMethods;
+      }
     }
 
     public IEnumerable<IDeclaredElement> DerivedClasses
     {
-      get { return myDerivedClasses; }
+      get
+      {
+        if(myDerivedClasses.Count == 0)
+        {
+          CollectDerivedDeclaredElements();
+        }
+        return myDerivedClasses;
+      }
     }
 
     public IEnumerable<IDeclaredElement> DerivedInterfaces
     {
-      get { return myDerivedInterfaces; }
+      get
+      {
+        if(myDerivedInterfaces.Count == 0)
+        {
+          CollectDerivedDeclaredElements();
+        }
+        return myDerivedInterfaces;
+      }
     }
 
     public IEnumerable<IDeclaredElement> DerivedVisitorMethods
     {
-      get { return myDerivedVisitorMethods; }
+      get
+      {
+        if(myDerivedVisitorMethods.Count == 0)
+        {
+          CollectDerivedDeclaredElements();
+        }
+        return myDerivedVisitorMethods;
+      }
     }
 
     public string VisitorMethodPrefix
@@ -207,6 +235,15 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
       return RuleName.GetText();
     }
 
+    public void CollectDerivedDeclaredElements()
+    {
+      var psiFile = GetContainingNode<PsiFile>();
+      if(psiFile != null)
+      {
+        psiFile.CollectDerivedElements(this);
+      }
+    }
+
     public void CollectDerivedDeclaredElements(IClass parserClass, ICollection<ITypeElement> visitorClasses, string treeInterfacesPackageName, string treeClassesPackageName, string interfacePrefix, string visitorMethodPrefix, string visitorMethodSuffix)
     {
       myParserClass = parserClass;
@@ -306,6 +343,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
 
     public IEnumerable<Pair<IDeclaredElement, Predicate<FindResult>>> GetRelatedDeclaredElements()
     {
+      UpdateDerivedDeclaredElements();
       foreach (var element in DerivedClasses)
       {
         yield return new Pair<IDeclaredElement, Predicate<FindResult>>(element, JetPredicate<FindResult>.True);
