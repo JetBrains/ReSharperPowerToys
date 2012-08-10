@@ -10,18 +10,27 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
   {
     public IDeclaredElement GetPrimaryDeclaredElement(IDeclaredElement declaredElement, IReference reference)
     {
+      IDeclaredElement derivedElement = null;
+
       var method = declaredElement as IMethod;
       if (method != null)
-        return DerivedDeclaredElementUtil.GetPrimaryDeclaredElementForMethod(method);
+      {
+        derivedElement = DerivedDeclaredElementUtil.GetPrimaryDeclaredElementForMethod(method);
+      }
+
 
       var @class = declaredElement as IClass;
       if (@class != null)
-        return DerivedDeclaredElementUtil.GetPrimaryDeclaredElementForClass(@class);
+        derivedElement = DerivedDeclaredElementUtil.GetPrimaryDeclaredElementForClass(@class);
 
       var @interface = declaredElement as IInterface;
       if (@interface != null)
-        return DerivedDeclaredElementUtil.GetPrimaryDeclaredElementForInterface(@interface);
+        derivedElement = DerivedDeclaredElementUtil.GetPrimaryDeclaredElementForInterface(@interface);
 
+      if(derivedElement != null)
+      {
+        return derivedElement;
+      }
       return declaredElement;
     }
   }

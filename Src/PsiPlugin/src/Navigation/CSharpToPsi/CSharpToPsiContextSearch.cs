@@ -91,6 +91,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Navigation.CSharpToPsi
 
     public override bool IsApplicable(IDataContext dataContext)
     {
+      //return IsAvailable(dataContext);
+
       var textControl = dataContext.GetData(TextControl.DataContext.DataConstants.TEXT_CONTROL);
       ISolution solution = dataContext.GetData(ProjectModel.DataContext.DataConstants.SOLUTION);
 

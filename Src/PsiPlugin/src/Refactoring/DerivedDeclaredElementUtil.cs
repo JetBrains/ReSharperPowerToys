@@ -40,7 +40,7 @@ namespace JetBrains.ReSharper.PsiPlugin.src.Refactoring
 
       if (symbols.Count == 0)
       {
-        return @interface;
+        return null;
       }
 
       // TODO: move symbol binding logic to the cache, remove copy-paste.
@@ -54,7 +54,7 @@ namespace JetBrains.ReSharper.PsiPlugin.src.Refactoring
 
         element = element.Parent;
       }
-      return @interface;
+      return null;
     }
 
     public static IDeclaredElement GetPrimaryDeclaredElementForClass(IClass @class)
@@ -78,10 +78,10 @@ namespace JetBrains.ReSharper.PsiPlugin.src.Refactoring
           element = element.Parent;
         }
         {
-          return @class;
+          return null;
         }
       }
-      return @class;
+      return null;
     }
 
     public static IDeclaredElement GetPrimaryDeclaredElementForMethod(IMethod declaredElement)
@@ -131,7 +131,7 @@ namespace JetBrains.ReSharper.PsiPlugin.src.Refactoring
             }
           }
           {
-            return declaredElement;
+            return null;
           }
         }
       }
@@ -139,7 +139,7 @@ namespace JetBrains.ReSharper.PsiPlugin.src.Refactoring
       {
         return GetPrimaryDeclaredElementForVisitorMethod(declaredElement, declaredElement);
       }
-      return declaredElement;
+      return null;
     }
 
     private static IDeclaredElement GetPrimaryDeclaredElementForVisitorMethod(IDeclaredElement declaredElement, IMethod method)
@@ -196,14 +196,14 @@ namespace JetBrains.ReSharper.PsiPlugin.src.Refactoring
             else
             {
               {
-                return declaredElement;
+                return null;
               }
             }
           }
         }
       }
       {
-        return declaredElement;
+        return null;
       }
     }
 
