@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using JetBrains.Application.DataContext;
 using JetBrains.ReSharper.Feature.Services;
 using JetBrains.ReSharper.Feature.Services.ContextNavigation;
+using JetBrains.ReSharper.Feature.Services.Search;
 using JetBrains.ReSharper.Features.Finding.ExecutionHosting;
 
 namespace JetBrains.ReSharper.PsiPlugin.Navigation.GeneratedInterface
 {
   [ContextNavigationProvider]
-  public class PsiNavigateGeneratedInterfaceProvider : PsiNavigateFromHereProvider<GeneratedInterfaceContextSearch, GeneratedInterfaceSearchRequest>, INavigateFromHereProvider
+  public class PsiNavigateGeneratedInterfaceProvider : PsiNavigateFromHereProvider<GeneratedInterfaceContextSearch, GotoGeneratedDescriptor , GeneratedInterfaceSearchRequest>, INavigateFromHereProvider
   {
 
     public PsiNavigateGeneratedInterfaceProvider(IFeaturePartsContainer manager) : base(manager)
@@ -28,6 +26,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Navigation.GeneratedInterface
           NavigationActionGroup.Blessed,
           execution);
       }
+    }
+
+    protected override GotoGeneratedDescriptor CreateSearchDescriptor(GeneratedInterfaceSearchRequest searchRequest, ICollection<IOccurence> occurences)
+    {
+      return new GotoGeneratedDescriptor(searchRequest, occurences);
     }
   }
 }

@@ -4,4 +4,6 @@
   <action id="GotoGeneratedInterface" text="Go to generated interface"/>
   <action id="GotoGeneratedMethod" text="Go to generated method"/>
 
+  <action id="GotoPsiRule" text="Go PSI rule"/>
+
 </actions>
