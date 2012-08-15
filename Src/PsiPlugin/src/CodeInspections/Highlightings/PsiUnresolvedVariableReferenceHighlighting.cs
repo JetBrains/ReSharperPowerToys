@@ -1,22 +1,28 @@
-using JetBrains.DocumentModel;
+﻿using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.Impl;
+using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Tree;
+using JetBrains.ReSharper.PsiPlugin.Tree;
+using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
 
 [assembly: RegisterConfigurableSeverity("UnresolvedReference", null, HighlightingGroupIds.LanguageUsage, "Unresolved reference", @"
           Unresolved reference", Severity.ERROR, false, Internal = false)]
-
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
 {
-  [ConfigurableSeverityHighlighting("UnresolvedReference", "PSI", OverlapResolve = OverlapResolveKind.ERROR, ToolTipFormatString = Error)]
-  internal class PsiUnresolvedReferenceHighlighting : IHighlightingWithRange
+   [ConfigurableSeverityHighlighting("UnresolvedReference", "PSI", OverlapResolve = OverlapResolveKind.ERROR, ToolTipFormatString = Error)]
+  class PsiUnresolvedVariableReferenceHighlighting : IHighlightingWithRange
   {
     private const string Error = "Unresolved reference";
     private readonly ITreeNode myElement;
+    private IReference myReference;
 
-    public PsiUnresolvedReferenceHighlighting(ITreeNode element)
+    public PsiUnresolvedVariableReferenceHighlighting(IVariableName element)
     {
       myElement = element;
+
+      myReference = (element as VariableName).Reference;
+
     }
 
     #region IHighlightingWithRange Members
@@ -47,5 +53,10 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings
     }
 
     #endregion
+
+    public IReference Reference
+    {
+      get { return myReference; }
+    }
   }
 }

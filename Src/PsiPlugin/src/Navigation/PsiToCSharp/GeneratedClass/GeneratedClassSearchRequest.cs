@@ -1,18 +1,10 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using JetBrains.Application.Progress;
-using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Feature.Services.Search;
-using JetBrains.ReSharper.Feature.Services.Search.SearchRequests;
-using JetBrains.ReSharper.Feature.Services.Util;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
 using JetBrains.Util;
 
-namespace JetBrains.ReSharper.PsiPlugin.Navigation.GeneratedClass
+namespace JetBrains.ReSharper.PsiPlugin.Navigation.PsiToCSharp.GeneratedClass
 {
   public class GeneratedClassSearchRequest : GeneratedSearchRequest
   {

@@ -11,9 +11,9 @@ using JetBrains.ReSharper.PsiPlugin.Refactoring.Rename;
 using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
 using JetBrains.Util;
 
-namespace JetBrains.ReSharper.PsiPlugin.src.Refactoring
+namespace JetBrains.ReSharper.PsiPlugin.Refactoring
 {
-  public class DerivedDeclaredElementUtil
+  public static class DerivedDeclaredElementUtil
   {
     public static IDeclaredElement GetPrimaryDeclaredElementForInterface(IInterface @interface)
     {

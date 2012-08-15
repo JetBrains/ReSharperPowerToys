@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
 using JetBrains.Util;
 
-namespace JetBrains.ReSharper.PsiPlugin.Navigation.GeneratedInterface
+namespace JetBrains.ReSharper.PsiPlugin.Navigation.PsiToCSharp.GeneratedInterface
 {
   public class GeneratedInterfaceSearchRequest : GeneratedSearchRequest
   {

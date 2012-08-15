@@ -1,10 +1,10 @@
-﻿using JetBrains.ReSharper.Psi.Resolve;
+﻿using JetBrains.ReSharper.PsiPlugin.Resolve;
 
 namespace JetBrains.ReSharper.PsiPlugin.Tree
 {
   public partial interface IRuleName
   {
-    IReference RuleNameReference { get; }
+    PsiRuleReference RuleNameReference { get; }
     void SetName(string shortName);
   }
 }

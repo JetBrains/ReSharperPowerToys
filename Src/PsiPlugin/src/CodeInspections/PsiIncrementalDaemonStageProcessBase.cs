@@ -35,12 +35,12 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
       using (IMultiCoreFibers fibers = DaemonProcess.CreateFibers())
       {
         // highlgiht global space
-        if (DaemonProcess.FullRehighlightingRequired)
+        //if (DaemonProcess.FullRehighlightingRequired)
         fibers.EnqueueJob(globalHighlighter);
       }
 
       // remove all old highlightings
-      if (DaemonProcess.FullRehighlightingRequired)
+      //if (DaemonProcess.FullRehighlightingRequired)
       commiter(new DaemonStageResult(EmptyArray<HighlightingInfo>.Instance));
     }
 

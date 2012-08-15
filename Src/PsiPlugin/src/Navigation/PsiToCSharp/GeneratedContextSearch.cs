@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using JetBrains.Application.DataContext;
+﻿using JetBrains.Application.DataContext;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.ContextNavigation.ContextSearches.BaseSearches;
 using JetBrains.ReSharper.Feature.Services.Search.SearchRequests;
-using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Services;
-using JetBrains.ReSharper.PsiPlugin.Navigation.GeneratedClass;
 using JetBrains.ReSharper.PsiPlugin.Tree;
 using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
 
-namespace JetBrains.ReSharper.PsiPlugin.Navigation
+namespace JetBrains.ReSharper.PsiPlugin.Navigation.PsiToCSharp
 {
   public abstract class GeneratedContextSearch<TSearchRequest> : ContextSearchBase<TSearchRequest>
     where TSearchRequest : SearchRequest

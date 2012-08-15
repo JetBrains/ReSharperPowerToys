@@ -106,15 +106,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
       }
 
       Assertion.Assert(newDeclaredElement != null, "The condition (newDeclaredElement != null) is false.");
-      if (newDeclaredElement != null)
-      {
-        myNewElementPointer = newDeclaredElement.CreateElementPointer();
-        Assertion.Assert(newDeclaredElement.IsValid(), "myNewDeclaredElement.IsValid()");
-      }
-      else
-      {
-        return;
-      }
+
+      myNewElementPointer = newDeclaredElement.CreateElementPointer();
+      Assertion.Assert(newDeclaredElement.IsValid(), "myNewDeclaredElement.IsValid()");
+
 
       myNewReferences.Clear();
       OneToSetMap<PsiLanguageType, IReference> references = LanguageUtil.SortReferences(primaryReferences.Where(x => x.IsValid()));

@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using JetBrains.ReSharper.Feature.Services.Search;
 using JetBrains.ReSharper.Feature.Services.Search.SearchRequests;
 using JetBrains.ReSharper.Features.Common.Occurences;
 using JetBrains.ReSharper.Features.Finding.Search;
 using JetBrains.Util;
 
-namespace JetBrains.ReSharper.PsiPlugin.Navigation
+namespace JetBrains.ReSharper.PsiPlugin.Navigation.PsiToCSharp
 {
   public class GotoGeneratedDescriptor : SearchDescriptor
   {

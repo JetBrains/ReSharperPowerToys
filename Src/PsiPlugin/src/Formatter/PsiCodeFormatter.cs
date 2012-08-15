@@ -111,47 +111,57 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     {
       var psiProfile = new PsiFormatProfile(profile);
       ITreeNode firstNode = firstElement;
-      if (firstElement == null)
-      {
-        firstNode = lastElement;
-      }
       ITreeNode lastNode = lastElement;
-      ITreeNode commonParent = firstNode.FindCommonParent(lastNode);
-      ITreeNode firstChild = firstNode;
-      ITreeNode lastChild = lastElement;
-      while (firstChild.Parent != commonParent)
+      if (firstElement != lastElement)
       {
-        firstChild = firstChild.Parent;
-      }
-      while (lastChild.Parent != commonParent)
-      {
-        lastChild = lastChild.Parent;
-      }
+        if (firstElement == null)
+        {
+          firstNode = lastElement;
+        }
+        ITreeNode commonParent = firstNode.FindCommonParent(lastNode);
+        ITreeNode firstChild = firstNode;
+        ITreeNode lastChild = lastElement;
+        while (firstChild.Parent != commonParent)
+        {
+          firstChild = firstChild.Parent;
+        }
+        while (lastChild.Parent != commonParent)
+        {
+          lastChild = lastChild.Parent;
+        }
 
-      bool hasPrevSibling = false;
-      while (firstNode.NextSibling == null)
-      {
-        if (firstNode.PrevSibling != null)
+        bool hasPrevSibling = false;
+        while (firstNode.NextSibling == null)
         {
-          hasPrevSibling = true;
+          if (firstNode.PrevSibling != null)
+          {
+            hasPrevSibling = true;
+          }
+          firstNode = firstNode.Parent;
+          if (firstNode == firstChild)
+          {
+            break;
+          }
         }
-        firstNode = firstNode.Parent;
-        if (firstNode == firstChild)
+        if (hasPrevSibling)
         {
-          break;
+          while ((firstNode == firstChild) || (firstChild.IsWhitespaceToken()))
+          {
+            firstChild = firstChild.NextSibling;
+          }
         }
-      }
-      if (hasPrevSibling)
-      {
-        while ((firstNode == firstChild) || (firstChild.IsWhitespaceToken()))
+        firstNode = firstChild;
+        while (firstNode.FirstChild != null)
         {
-          firstChild = firstChild.NextSibling;
+          firstNode = firstNode.FirstChild;
         }
-      }
-      firstNode = firstChild;
-      while (firstNode.FirstChild != null)
+      } else
       {
-        firstNode = firstNode.FirstChild;
+        if (firstElement.FirstChild != null)
+        {
+          firstNode = firstElement.FirstChild;
+          lastNode = firstElement.LastChild;
+        }
       }
       ISolution solution = firstNode.GetSolution();
       var contextBoundSettingsStore = GetProperContextBoundSettingsStore(overrideSettingsStore, firstNode);

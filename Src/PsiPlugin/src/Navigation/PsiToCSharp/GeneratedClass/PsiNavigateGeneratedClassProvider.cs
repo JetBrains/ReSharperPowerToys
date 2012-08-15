@@ -5,7 +5,7 @@ using JetBrains.ReSharper.Feature.Services.ContextNavigation;
 using JetBrains.ReSharper.Feature.Services.Search;
 using JetBrains.ReSharper.Features.Finding.ExecutionHosting;
 
-namespace JetBrains.ReSharper.PsiPlugin.Navigation.GeneratedClass
+namespace JetBrains.ReSharper.PsiPlugin.Navigation.PsiToCSharp.GeneratedClass
 {
   [ContextNavigationProvider]
   public class PsiNavigateGeneratedClassProvider : PsiNavigateFromHereProvider<GeneratedClassContextSearch, GotoGeneratedDescriptor, GeneratedClassSearchRequest>, INavigateFromHereProvider

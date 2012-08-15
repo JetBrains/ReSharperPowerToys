@@ -37,7 +37,7 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
       }
       else
       {
-        AddHighLighting(colorConstantRange, ruleName, consumer, new PsiUnresolvedReferenceHighlighting(ruleName));
+        AddHighLighting(colorConstantRange, ruleName, consumer, new PsiUnresolvedRuleReferenceHighlighting(ruleName));
       }
 
       base.VisitRuleName(ruleName, consumer);
@@ -62,7 +62,7 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
         }
         else
         {
-          AddHighLighting(colorConstantRange, element, consumer, new PsiUnresolvedReferenceHighlighting(element));
+          AddHighLighting(colorConstantRange, element, consumer, new PsiUnresolvedVariableReferenceHighlighting(variableName));
           return;
         }
       }
@@ -76,7 +76,7 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
         }
         else
         {
-          AddHighLighting(colorConstantRange, element, consumer, new PsiUnresolvedReferenceHighlighting(element));
+          AddHighLighting(colorConstantRange, element, consumer, new PsiUnresolvedPathReferenceHighlighting(pathName));
         }
       }
     }

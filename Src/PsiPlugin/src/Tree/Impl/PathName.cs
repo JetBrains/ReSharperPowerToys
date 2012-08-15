@@ -48,5 +48,17 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
       }
       return myReference.Resolve();
     }
+
+    public IReference Reference{
+      get
+      {
+        if (!myInitReference)
+        {
+          myReference = new PsiPathReference(this);
+          myInitReference = true;
+        }
+        return myReference;
+      }
+    }
   }
 }
