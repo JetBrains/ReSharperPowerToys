@@ -328,6 +328,8 @@
     <Compile Include="src\Intentions\CreateFromUsage\CreatePsiRuleItem.cs" />
     <Compile Include="src\Intentions\CreateFromUsage\CreatePsiRuleTarget.cs" />
     <Compile Include="src\Intentions\CreateFromUsage\ICreatePsiRuleIntention.cs" />
+    <Compile Include="src\Intentions\CreateFromUsage\PsiIntentionResult.cs" />
+    <Compile Include="src\Intentions\CreateFromUsage\PsiIntentionResultBehavior.cs" />
     <Compile Include="src\Intentions\CreateFromUsage\PsiRuleBuilder.cs" />
     <Compile Include="src\Intentions\PsiIntentionsUtil.cs" />
     <Compile Include="src\Intentions\PsiRuleInserter.cs" />

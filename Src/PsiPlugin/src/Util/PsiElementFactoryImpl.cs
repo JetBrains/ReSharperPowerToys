@@ -41,7 +41,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Util
 
     public override IRuleDeclaration CreateRuleDeclaration(string name)
     {
-      var node = CreateParser(name + "\n" + ":" + name + "\n" + ";").ParsePsiFile(false) as IPsiFile;
+      var node = CreateParser(name + "\n" + ":" + "\n" + ";").ParsePsiFile(false) as IPsiFile;
       if (node == null)
       {
         throw new ElementFactoryException(string.Format("Cannot create expression '{0}'"));
