@@ -1,14 +1,10 @@
-using System;
 using JetBrains.Application.DataContext;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.ContextNavigation.ContextSearches.BaseSearches;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.Services;
-using JetBrains.ReSharper.PsiPlugin.Tree;
-using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
-using JetBrains.ReSharper.PsiPlugin.src.Refactoring;
-using JetBrains.Util.Collections;
+using JetBrains.ReSharper.PsiPlugin.Refactoring;
 
 namespace JetBrains.ReSharper.PsiPlugin.Navigation.CSharpToPsi
 {

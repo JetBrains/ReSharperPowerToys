@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using JetBrains.Application.DataContext;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
 
-namespace JetBrains.ReSharper.PsiPlugin.Navigation.GeneratedInterface
+namespace JetBrains.ReSharper.PsiPlugin.Navigation.PsiToCSharp.GeneratedInterface
 {
   [FeaturePart]
   public class GeneratedInterfaceContextSearch : GeneratedContextSearch<GeneratedInterfaceSearchRequest>

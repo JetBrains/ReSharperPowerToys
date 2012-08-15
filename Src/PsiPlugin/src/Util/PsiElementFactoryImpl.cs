@@ -10,7 +10,7 @@ using JetBrains.Text;
 
 namespace JetBrains.ReSharper.PsiPlugin.Util
 {
-  internal class PsiElementFactoryImpl : PsiElementFactory
+  public class PsiElementFactoryImpl : PsiElementFactory
   {
     private readonly PsiLanguageService myLanguageService;
     private readonly IPsiModule myModule;
@@ -37,6 +37,22 @@ namespace JetBrains.ReSharper.PsiPlugin.Util
     {
       var expression = (IRuleName)CreateExpression("$0", name);
       return expression;
+    }
+
+    public override IRuleDeclaration CreateRuleDeclaration(string name)
+    {
+      var node = CreateParser(name + "\n" + ":" + name + "\n" + ";").ParsePsiFile(false) as IPsiFile;
+      if (node == null)
+      {
+        throw new ElementFactoryException(string.Format("Cannot create expression '{0}'"));
+      }
+      SandBox.CreateSandBoxFor(node, myModule);
+      var ruleDeclaration = node.FirstChild as IRuleDeclaration;
+      if (ruleDeclaration != null)
+      {
+        return ruleDeclaration;
+      }
+      throw new ElementFactoryException(string.Format("Cannot create expression '{0}'" + name));
     }
 
     private ITreeNode CreateExpression(string format, string name)

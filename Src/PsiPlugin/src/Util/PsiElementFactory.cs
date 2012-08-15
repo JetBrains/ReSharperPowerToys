@@ -17,10 +17,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Util
 
     public static PsiElementFactory GetInstance([NotNull] ITreeNode context)
     {
-      //return new PsiElementFactoryImpl(context.GetPsiModule(), context.Language, true);
       return new PsiElementFactoryImpl(context.GetPsiModule());
     }
 
     public abstract IRuleName CreateIdentifierExpression(string name);
+
+    public abstract IRuleDeclaration CreateRuleDeclaration(string name);
   }
 }

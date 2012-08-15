@@ -36,7 +36,6 @@ namespace JetBrains.ReSharper.PsiPlugin.TypingAssist
       : base(solution, settingsStore, cachingLexerService, commandProcessor, psiServices)
     {
       typingAssistManager.AddTypingHandler(lifetime, '{', this, HandleLeftBraceTyped, IsTypingSmartLBraceHandlerAvailable);
-      //typingAssistManager.AddTypingHandler(lifetime, '}', this, HandleRightBraceTyped, IsTypingHandlerAvailable);
       typingAssistManager.AddTypingHandler(lifetime, '(', this, HandleLeftBracketOrParenthTyped, IsTypingSmartParenthesisHandlerAvailable);
       typingAssistManager.AddTypingHandler(lifetime, ')', this, HandleRightBracketTyped, IsTypingSmartParenthesisHandlerAvailable);
       typingAssistManager.AddTypingHandler(lifetime, '[', this, HandleLeftBracketOrParenthTyped, IsTypingSmartParenthesisHandlerAvailable);

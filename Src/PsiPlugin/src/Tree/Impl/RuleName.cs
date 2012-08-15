@@ -1,5 +1,4 @@
-﻿using JetBrains.ReSharper.Psi.Resolve;
-using JetBrains.ReSharper.Psi.Tree;
+﻿using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Resolve;
 
 namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
@@ -10,7 +9,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
 
     #region IRuleName Members
 
-    public IReference RuleNameReference
+    public PsiRuleReference RuleNameReference
     {
       get
       {
@@ -26,7 +25,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
 
     public void SetName(string shortName)
     {
-      ((PsiRuleReference)RuleNameReference).SetName(shortName);
+      RuleNameReference.SetName(shortName);
     }
 
     #endregion

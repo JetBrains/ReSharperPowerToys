@@ -33,7 +33,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
         var ruleName = myOwner as RuleName;
         if( PsiTreeUtil.HasParent<InterfacesDefinition>(myOwner) && (ruleName != null))
         {
-          elements = new List<DeclaredElementInstance>(){new DeclaredElementInstance(new UnresolvedRuleInterfacesDeclaredElement(ruleName.GetSourceFile(), GetName(), myOwner.GetPsiServices()))};
+          elements = new List<DeclaredElementInstance>{new DeclaredElementInstance(new UnresolvedRuleInterfacesDeclaredElement(ruleName.GetSourceFile(), GetName(), myOwner.GetPsiServices()))};
         }
       }
 

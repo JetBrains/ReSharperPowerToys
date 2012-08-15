@@ -7,7 +7,7 @@ using JetBrains.ReSharper.Feature.Services.Search;
 using JetBrains.ReSharper.Feature.Services.Search.SearchRequests;
 using JetBrains.ReSharper.Feature.Services.Util;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.PsiPlugin.src.Refactoring;
+using JetBrains.ReSharper.PsiPlugin.Refactoring;
 using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Navigation.CSharpToPsi

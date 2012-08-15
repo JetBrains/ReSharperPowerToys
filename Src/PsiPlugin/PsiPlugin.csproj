@@ -144,7 +144,9 @@
     <Compile Include="src\CodeInspections\Highlightings\PsiKeywordHighlighting.cs" />
     <Compile Include="src\CodeInspections\Highlightings\PsiRuleHighlighting.cs" />
     <Compile Include="src\CodeInspections\Highlightings\PsiStringLiteralHighlighting.cs" />
-    <Compile Include="src\CodeInspections\Highlightings\PsiUnresolvedReferenceHighlighting.cs" />
+    <Compile Include="src\CodeInspections\Highlightings\PsiUnresolvedPathReferenceHighlighting.cs" />
+    <Compile Include="src\CodeInspections\Highlightings\PsiUnresolvedRuleReferenceHighlighting.cs" />
+    <Compile Include="src\CodeInspections\Highlightings\PsiUnresolvedVariableReferenceHighlighting.cs" />
     <Compile Include="src\CodeInspections\Highlightings\PsiVariableHighlighting.cs" />
     <Compile Include="src\CodeInspections\Highlightings\RepeatedChoiceWarning.cs" />
     <Compile Include="src\CodeInspections\PsiFileStructure.cs" />
@@ -320,6 +322,15 @@
     <Compile Include="src\Grammar\PsiWordIndexProvider.cs" />
     <Compile Include="src\CodeInspections\InspectionsProcess.cs" />
     <Compile Include="src\CodeInspections\InspectionStage.cs" />
+    <Compile Include="src\Intentions\CreateFromUsage\CreatePsiRuleContext.cs" />
+    <Compile Include="src\Intentions\CreateFromUsage\CreatePsiRuleFromUsage.cs" />
+    <Compile Include="src\Intentions\CreateFromUsage\CreatePsiRuleIntention.cs" />
+    <Compile Include="src\Intentions\CreateFromUsage\CreatePsiRuleItem.cs" />
+    <Compile Include="src\Intentions\CreateFromUsage\CreatePsiRuleTarget.cs" />
+    <Compile Include="src\Intentions\CreateFromUsage\ICreatePsiRuleIntention.cs" />
+    <Compile Include="src\Intentions\CreateFromUsage\PsiRuleBuilder.cs" />
+    <Compile Include="src\Intentions\PsiIntentionsUtil.cs" />
+    <Compile Include="src\Intentions\PsiRuleInserter.cs" />
     <Compile Include="src\Lexer\PsiLexerFactory.cs" />
     <Compile Include="src\Lexer\FilteringPsiLexer.cs" />
     <Compile Include="src\Navigation\CSharpToPsi\CSharpToPsiContextSearch.cs" />

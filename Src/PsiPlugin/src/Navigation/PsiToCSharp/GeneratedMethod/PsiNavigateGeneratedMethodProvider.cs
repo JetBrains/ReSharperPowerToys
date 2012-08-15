@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using JetBrains.Application.DataContext;
 using JetBrains.ReSharper.Feature.Services;
 using JetBrains.ReSharper.Feature.Services.ContextNavigation;
 using JetBrains.ReSharper.Feature.Services.Search;
 using JetBrains.ReSharper.Features.Finding.ExecutionHosting;
 
-namespace JetBrains.ReSharper.PsiPlugin.Navigation.GeneratedMethod
+namespace JetBrains.ReSharper.PsiPlugin.Navigation.PsiToCSharp.GeneratedMethod
 {
   [ContextNavigationProvider]
   public class PsiNavigateGeneratedMethodProvider : PsiNavigateFromHereProvider<GeneratedMethodContextSearch, GotoGeneratedDescriptor, GeneratedMethodSearchRequest>, INavigateFromHereProvider

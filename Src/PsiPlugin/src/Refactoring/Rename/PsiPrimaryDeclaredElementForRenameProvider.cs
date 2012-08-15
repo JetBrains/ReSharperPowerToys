@@ -1,6 +1,5 @@
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Resolve;
-using JetBrains.ReSharper.PsiPlugin.src.Refactoring;
 using JetBrains.ReSharper.Refactorings.Rename;
 
 namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
