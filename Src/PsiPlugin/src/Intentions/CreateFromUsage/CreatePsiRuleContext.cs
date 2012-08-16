@@ -2,8 +2,10 @@ using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Feature.Services.Intentions.CreateDeclaration;
 using JetBrains.ReSharper.Feature.Services.Intentions.DataProviders;
 using JetBrains.ReSharper.Psi.Tree;
+using JetBrains.ReSharper.PsiPlugin.Parsing;
 using JetBrains.ReSharper.PsiPlugin.Resolve;
 using JetBrains.ReSharper.PsiPlugin.Tree;
+using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
 
 namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
 {
@@ -12,6 +14,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
     private readonly CreatePsiRuleTarget myTarget;
     private readonly IDocument myDocument;
     private readonly ITreeNode myAnchor;
+    private readonly IRuleName myRuleName;
     private readonly int myOffset;
 
     public CreatePsiRuleContext(CreatePsiRuleTarget target)
@@ -20,6 +23,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
       myAnchor = target.Anchor;
       myOffset = myAnchor.GetNavigationRange().TextRange.EndOffset;
       myDocument = myAnchor.GetSourceFile().Document;
+      myRuleName = myTarget.Reference.GetTreeNode() as IRuleName;
     }
 
     public ICreationTarget Target
@@ -40,6 +44,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
     public ITreeNode Anchor
     {
       get { return myAnchor; }
+    }
+
+    public IRuleName RuleName
+    {
+      get { return myRuleName; }
     }
 
     public int Offset

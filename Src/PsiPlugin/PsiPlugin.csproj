@@ -240,7 +240,10 @@
     <Compile Include="src\Gen\Psi\Psi\Tree\Impl\Quantifier.cs" />
     <Compile Include="src\Gen\Psi\Psi\Tree\Impl\RoleGetterParameter.cs" />
     <Compile Include="src\Gen\Psi\Psi\Tree\Impl\RoleName.cs" />
+    <Compile Include="src\Gen\Psi\Psi\Tree\Impl\RuleAngleParameters.cs" />
     <Compile Include="src\Gen\Psi\Psi\Tree\Impl\RuleBody.cs" />
+    <Compile Include="src\Gen\Psi\Psi\Tree\Impl\RuleBraceParameters.cs" />
+    <Compile Include="src\Gen\Psi\Psi\Tree\Impl\RuleBracketParameters.cs" />
     <Compile Include="src\Gen\Psi\Psi\Tree\Impl\RuleBracketTypedParameters.cs" />
     <Compile Include="src\Gen\Psi\Psi\Tree\Impl\RuleDeclaration.cs" />
     <Compile Include="src\Gen\Psi\Psi\Tree\Impl\RuleDeclaredName.cs" />
@@ -270,7 +273,10 @@
     <Compile Include="src\Gen\Psi\Psi\Tree\IQuantifier.cs" />
     <Compile Include="src\Gen\Psi\Psi\Tree\IRoleGetterParameter.cs" />
     <Compile Include="src\Gen\Psi\Psi\Tree\IRoleName.cs" />
+    <Compile Include="src\Gen\Psi\Psi\Tree\IRuleAngleParameters.cs" />
     <Compile Include="src\Gen\Psi\Psi\Tree\IRuleBody.cs" />
+    <Compile Include="src\Gen\Psi\Psi\Tree\IRuleBraceParameters.cs" />
+    <Compile Include="src\Gen\Psi\Psi\Tree\IRuleBracketParameters.cs" />
     <Compile Include="src\Gen\Psi\Psi\Tree\IRuleBracketTypedParameters.cs" />
     <Compile Include="src\Gen\Psi\Psi\Tree\IRuleDeclaration.cs" />
     <Compile Include="src\Gen\Psi\Psi\Tree\IRuleDeclaredName.cs" />
@@ -300,7 +306,10 @@
     <Compile Include="src\Gen\Psi\Psi\Tree\QuantifierNavigator.cs" />
     <Compile Include="src\Gen\Psi\Psi\Tree\RoleGetterParameterNavigator.cs" />
     <Compile Include="src\Gen\Psi\Psi\Tree\RoleNameNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Psi\Tree\RuleAngleParametersNavigator.cs" />
     <Compile Include="src\Gen\Psi\Psi\Tree\RuleBodyNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Psi\Tree\RuleBraceParametersNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Psi\Tree\RuleBracketParametersNavigator.cs" />
     <Compile Include="src\Gen\Psi\Psi\Tree\RuleBracketTypedParametersNavigator.cs" />
     <Compile Include="src\Gen\Psi\Psi\Tree\RuleDeclarationNavigator.cs" />
     <Compile Include="src\Gen\Psi\Psi\Tree\RuleDeclaredNameNavigator.cs" />
