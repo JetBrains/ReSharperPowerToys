@@ -1,8 +1,10 @@
-﻿using JetBrains.Annotations;
+﻿using System.Collections.Generic;
+using JetBrains.Annotations;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Tree;
+using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Util
 {
@@ -22,6 +24,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Util
 
     public abstract IRuleName CreateIdentifierExpression(string name);
 
-    public abstract IRuleDeclaration CreateRuleDeclaration(string name);
+    public abstract IRuleDeclaration CreateRuleDeclaration(string name, bool hasBraceParameters = false);
+
+    public abstract IRuleDeclaration CreateRuleDeclaration(string name, bool hasBraceParameters, IList<Pair<string, string>> variableParameters);
   }
 }

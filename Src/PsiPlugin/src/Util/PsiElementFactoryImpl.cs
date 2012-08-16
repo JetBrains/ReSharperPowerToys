@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System.Collections.Generic;
+using JetBrains.Annotations;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
@@ -7,6 +8,7 @@ using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.ReSharper.PsiPlugin.Parsing;
 using JetBrains.ReSharper.PsiPlugin.Tree;
 using JetBrains.Text;
+using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Util
 {
@@ -39,9 +41,48 @@ namespace JetBrains.ReSharper.PsiPlugin.Util
       return expression;
     }
 
-    public override IRuleDeclaration CreateRuleDeclaration(string name)
+    public override IRuleDeclaration CreateRuleDeclaration(string name, bool hasBraceParameters = false)
     {
-      var node = CreateParser(name + "\n" + ":" + "\n" + ";").ParsePsiFile(false) as IPsiFile;
+      string braceParameters = "";
+      if(hasBraceParameters)
+      {
+        braceParameters = " {ROLE, getter} ";
+      }
+      var node = CreateParser(name + braceParameters + "\n" + ":" + "\n" + ";").ParsePsiFile(false) as IPsiFile;
+      if (node == null)
+      {
+        throw new ElementFactoryException(string.Format("Cannot create expression '{0}'"));
+      }
+      SandBox.CreateSandBoxFor(node, myModule);
+      var ruleDeclaration = node.FirstChild as IRuleDeclaration;
+      if (ruleDeclaration != null)
+      {
+        return ruleDeclaration;
+      }
+      throw new ElementFactoryException(string.Format("Cannot create expression '{0}'" + name));
+    }
+
+    public override IRuleDeclaration CreateRuleDeclaration(string name, bool hasBraceParameters, IList<Pair<string, string>> variableParameters)
+    {
+      if(variableParameters.Count == 0)
+      {
+        return CreateRuleDeclaration(name, hasBraceParameters);
+      }
+
+      string braceParameters = "";
+      if (hasBraceParameters)
+      {
+        braceParameters = " {ROLE, getter} ";
+      }
+
+      string variableParametersString = " [";
+      foreach (var variableParameter in variableParameters)
+      {
+        variableParametersString = variableParametersString + variableParameter.Second + " " + variableParameter.First + ",";
+      }
+      variableParametersString = variableParametersString.Substring(0, variableParametersString.Length - 1) + "]";
+
+      var node = CreateParser(name + braceParameters + variableParametersString + "\n" + ":" + "\n" + ";").ParsePsiFile(false) as IPsiFile;
       if (node == null)
       {
         throw new ElementFactoryException(string.Format("Cannot create expression '{0}'"));

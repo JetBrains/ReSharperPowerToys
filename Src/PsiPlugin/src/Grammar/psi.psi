@@ -259,7 +259,7 @@ errorhandling ruleBracketTypedParameters
 	RBRACKET
   ;
 
-private ruleBracketParameters
+ruleBracketParameters
 	:
 	LBRACKET
 	(NULL_KEYWORD | variableName)
@@ -267,7 +267,7 @@ private ruleBracketParameters
 	RBRACKET
   ;
 
-private ruleAngleParameters
+ruleAngleParameters
   :
     LT
     (
@@ -302,7 +302,7 @@ private ruleAngleParameters
     GT
   ;
 
-private ruleBraceParameters
+ruleBraceParameters
 	:
 	LBRACE
 	(AT
@@ -312,7 +312,21 @@ private ruleBraceParameters
 	GETTER
 	|
 	roleName (EQ STRING_LITERAL)?
-	(COMMA ((IDENTIFIER | CACHED)(EQ STRING_LITERAL)?| ISCACHED))*)
+	
+	(
+	  COMMA
+	  (
+	    (
+	      IDENTIFIER
+	      | CACHED
+	    )
+	    (
+	      EQ
+	      STRING_LITERAL
+	    )?
+	    | ISCACHED
+	  )
+	)*)
 	RBRACE
   ;
 
