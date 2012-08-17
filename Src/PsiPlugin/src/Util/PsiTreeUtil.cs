@@ -60,7 +60,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Util
       using (WriteLockCookie.Create(parent.IsPhysical()))
       {
         IRuleName ruleName = PsiElementFactory.GetInstance(parent.GetPsiModule()).CreateIdentifierExpression(name);
-        LowLevelModificationUtil.ReplaceChildRange(nameNode, nameNode, ruleName);
+        LowLevelModificationUtil.ReplaceChildRange(nameNode, nameNode, ruleName.FirstChild);
       }
     }
 
