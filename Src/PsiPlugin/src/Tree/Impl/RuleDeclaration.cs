@@ -211,7 +211,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
       get
       {
         IList<VariableDeclaration> elements = PsiTreeUtil.GetAllChildren<VariableDeclaration>(this).AsIList();
-        if (Parameters != null)
+        /*if (Parameters != null)
         {
           ITreeNode child = Parameters.FirstChild;
           while (child != null)
@@ -223,7 +223,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Tree.Impl
             }
             child = child.NextSibling;
           }
-        }
+        }*/
         return ResolveUtil.CreateSymbolTable(elements, 0);
       }
     }
