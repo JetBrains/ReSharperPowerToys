@@ -1,0 +1,45 @@
+options
+{
+  parserPackage="JetBrains.ReSharper.PsiPlugin.Psi.Lex.Parsing";
+  parserClassName="LexParserGenerated";
+  psiInterfacePackageName="JetBrains.ReSharper.PsiPlugin.Psi.Lex.Tree";
+  psiStubsPackageName="JetBrains.ReSharper.PsiPlugin.Psi.Lex.Tree.Impl";
+  psiStubsBaseClass="LexCompositeElement";
+  tokenTypePrefix="";
+  parserTargetSubdir="Parsing/Lex";
+  psiInterfacesTargetSubdir="Psi/Lex/Tree";
+  psiStubsTargetSubdir="Psi/Lex/Tree/Impl";
+  elementTypePrefix="";
+  visitorClassName="TreeNodeVisitor";
+  visitorMethodSuffix="";
+  testTargetSubdir="Psi/Test/Lex";
+  disableReflection;
+  separateHierarchies;
+  "treeElementClassFQName"="JetBrains.ReSharper.Psi.ExtensionsAPI.Tree.TreeElement";
+  "compositeElementClassFQName"="LexCompositeElement";
+  "psiElementVisitorClassFQName"="JetBrains.ReSharper.PsiPlugin.Psi.Lex.Tree.TreeNodeVisitor";
+  "tokenTypeClassFQName"="JetBrains.ReSharper.PsiPlugin.Psi.Lex.Parsing.LexTokenType";
+  "visitMethodPrefix"="Visit";
+  "lexerClassName"="JetBrains.ReSharper.Psi.Parsing.ILexer";
+  "psiClassesPrefix"="";
+  "psiElementClassFQName"="JetBrains.ReSharper.PsiPlugin.Psi.Lex.Tree.ILexTreeNode";
+  customImplPackage="JetBrains.ReSharper.PsiPlugin.Psi.Lex.Tree.Impl";
+  customInterfacePackage="JetBrains.ReSharper.PsiPlugin.Psi.Lex.Tree";
+  "interfaceNamePrefix"="I";
+  "tokenElementClassFQName"="JetBrains.ReSharper.Psi.Tree.ITokenNode";
+  "customImplSuffix"="";
+  "objectClassFQName"="System.Object";
+  tokenBitsetThreshold=4;
+  elementTypeBaseClass="JetBrains.ReSharper.PsiPlugin.Psi.Lex.Tree.LexCompositeNodeType";
+  parserMessagesClass="JetBrains.ReSharper.PsiPlugin.Psi.Lex.Parsing.ParserMessages";
+  generateWorkingPsi;
+}
+
+errorhandling lexFile
+options
+{
+  stubBase="LexFileElement";
+}
+  :
+    IDENTIFIER*
+  ;

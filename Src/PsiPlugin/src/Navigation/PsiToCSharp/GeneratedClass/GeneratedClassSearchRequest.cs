@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
+using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl;
 using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Navigation.PsiToCSharp.GeneratedClass

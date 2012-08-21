@@ -10,8 +10,8 @@ using JetBrains.ReSharper.Psi.Impl.Shared;
 using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Psi.Web.Generation;
-using JetBrains.ReSharper.PsiPlugin.Grammar;
-using JetBrains.ReSharper.PsiPlugin.Tree;
+using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
+using JetBrains.ReSharper.PsiPlugin.PsiGrammar;
 using JetBrains.Text;
 using JetBrains.Util;
 

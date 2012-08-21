@@ -6,8 +6,8 @@ using JetBrains.ReSharper.Psi.ExtensionsAPI;
 using JetBrains.ReSharper.Psi.Impl.Search.SearchDomain;
 using JetBrains.ReSharper.Psi.Search;
 using JetBrains.ReSharper.PsiPlugin.Feature.Services.FindUsages;
-using JetBrains.ReSharper.PsiPlugin.Grammar;
-using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
+using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl;
+using JetBrains.ReSharper.PsiPlugin.PsiGrammar;
 using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Resolve

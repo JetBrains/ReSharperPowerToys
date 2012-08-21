@@ -5,7 +5,7 @@ using JetBrains.ReSharper.Feature.Services.Intentions.Impl.MemberBodyTemplates;
 using JetBrains.ReSharper.Feature.Services.Intentions.Impl.TemplateFieldHolders;
 using JetBrains.ReSharper.LiveTemplates;
 using JetBrains.ReSharper.Psi.Tree;
-using JetBrains.ReSharper.PsiPlugin.Tree;
+using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
 
 namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
 {

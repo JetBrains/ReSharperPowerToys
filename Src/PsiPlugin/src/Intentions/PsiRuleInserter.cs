@@ -1,8 +1,8 @@
 using JetBrains.Application;
 using JetBrains.ReSharper.Feature.Services.Intentions.DataProviders;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
-using JetBrains.ReSharper.PsiPlugin.Tree;
-using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
+using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
+using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl;
 
 namespace JetBrains.ReSharper.PsiPlugin.Intentions
 {

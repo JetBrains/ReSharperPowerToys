@@ -7,8 +7,8 @@ using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.Impl;
 using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Tree;
-using JetBrains.ReSharper.PsiPlugin.Tree;
-using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
+using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
+using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl;
 
 [assembly: RegisterConfigurableSeverity("UnresolvedReference", null, HighlightingGroupIds.LanguageUsage, "Unresolved reference", @"
           Unresolved reference", Severity.ERROR, false, Internal = false)]

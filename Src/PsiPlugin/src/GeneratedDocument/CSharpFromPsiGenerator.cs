@@ -3,8 +3,8 @@ using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.Impl.Shared;
 using JetBrains.ReSharper.Psi.Tree;
+using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Resolve;
-using JetBrains.ReSharper.PsiPlugin.Tree;
 using JetBrains.ReSharper.Psi.Web.Generation;
 
 namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
@@ -64,38 +64,21 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
       return myGeneratedFile;
     }
 
-    private void AddOptions(IPsiFile psiFile)
+    private void AddOptions(ITreeNode treeNode)
     {
-      var child = psiFile.FirstChild;
-
-      while (child != null)
+      if (treeNode is IOptionsDefinition || treeNode is IInterfacesDefinition || treeNode is IRuleDeclaration || treeNode is IPsiFile)
       {
-        var optionsDefinition = child as IOptionsDefinition;
-        if (optionsDefinition != null)
+        var child = treeNode.FirstChild;
+        while (child != null)
         {
-          AddOptions(optionsDefinition);
-          return;
+          AddOptions(child);
+          child = child.NextSibling;
         }
-        if (! child.IsWhitespaceToken())
-        {
-          return;
-        }
-        child = child.NextSibling;
       }
-    }
-
-    private void AddOptions(IOptionsDefinition optionsDefinition)
-    {
-      var child = optionsDefinition.FirstChild;
-
-      while (child != null)
+      var optionDefinition = treeNode as IOptionDefinition;
+      if (optionDefinition != null)
       {
-        var optionDefinition = child as IOptionDefinition;
-        if (optionDefinition != null)
-        {
-          AddOption(optionDefinition);
-        }
-        child = child.NextSibling;
+        AddOption(optionDefinition);
       }
     }
 

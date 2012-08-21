@@ -2,9 +2,9 @@
 using JetBrains.ReSharper.Feature.Services.CodeCompletion.Impl;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Resolve;
-using JetBrains.ReSharper.PsiPlugin.Grammar;
+using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl;
+using JetBrains.ReSharper.PsiPlugin.PsiGrammar;
 using JetBrains.ReSharper.PsiPlugin.Resolve;
-using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
 
 namespace JetBrains.ReSharper.PsiPlugin.Completion
 {
