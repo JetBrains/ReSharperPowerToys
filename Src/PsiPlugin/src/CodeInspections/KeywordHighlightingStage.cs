@@ -7,8 +7,8 @@ using JetBrains.ReSharper.Daemon.Stages;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings;
-using JetBrains.ReSharper.PsiPlugin.Parsing;
-using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
+using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing;
+using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl;
 using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections

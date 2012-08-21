@@ -4,8 +4,8 @@ using JetBrains.Application.Settings;
 using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.PsiPlugin.Grammar;
-using JetBrains.ReSharper.PsiPlugin.Tree;
+using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
+using JetBrains.ReSharper.PsiPlugin.PsiGrammar;
 
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections
 {

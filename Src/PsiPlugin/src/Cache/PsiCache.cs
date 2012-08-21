@@ -10,7 +10,7 @@ using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Psi.Util.Caches;
-using JetBrains.ReSharper.PsiPlugin.Grammar;
+using JetBrains.ReSharper.PsiPlugin.PsiGrammar;
 using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Cache
@@ -18,7 +18,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
   [PsiComponent]
   public class PsiCache : ICache
   {
-    private const int VERSION = 7;
+    private const int VERSION = 8;
     private readonly JetHashSet<IPsiSourceFile> myDirtyFiles = new JetHashSet<IPsiSourceFile>();
     private readonly OneToSetMap<string, PsiOptionSymbol> myNameToSymbolsOptionMap = new OneToSetMap<string, PsiOptionSymbol>();
 

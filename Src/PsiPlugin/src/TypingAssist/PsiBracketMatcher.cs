@@ -1,6 +1,6 @@
 ﻿using JetBrains.ReSharper.Feature.Services.TypingAssist;
 using JetBrains.ReSharper.Psi.Parsing;
-using JetBrains.ReSharper.PsiPlugin.Parsing;
+using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing;
 using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.TypingAssist

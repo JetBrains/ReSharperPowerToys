@@ -9,7 +9,7 @@ using JetBrains.ReSharper.Psi.Impl.Search;
 using JetBrains.ReSharper.Psi.Search;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Psi.Util;
-using JetBrains.ReSharper.PsiPlugin.Grammar;
+using JetBrains.ReSharper.PsiPlugin.PsiGrammar;
 using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.FindUsages
