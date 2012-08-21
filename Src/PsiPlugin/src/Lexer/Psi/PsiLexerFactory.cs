@@ -1,8 +1,8 @@
 ﻿using JetBrains.ReSharper.Psi.Parsing;
-using JetBrains.ReSharper.PsiPlugin.Parsing;
+using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing;
 using JetBrains.Text;
 
-namespace JetBrains.ReSharper.PsiPlugin.Lexer
+namespace JetBrains.ReSharper.PsiPlugin.Lexer.Psi
 {
   internal class PsiLexerFactory : ILexerFactory
   {
