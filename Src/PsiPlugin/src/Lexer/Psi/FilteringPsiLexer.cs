@@ -1,7 +1,7 @@
 ﻿using JetBrains.ReSharper.Psi.Parsing;
-using JetBrains.ReSharper.PsiPlugin.Parsing;
+using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing;
 
-namespace JetBrains.ReSharper.PsiPlugin.Lexer
+namespace JetBrains.ReSharper.PsiPlugin.Lexer.Psi
 {
   public class FilteringPsiLexer : FilteringLexer
   {
