@@ -45,6 +45,21 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Lex.Parsing
     }
     public static readonly TokenNodeType INIT_KEYWORD = new InitKeywordNodeType();
     #endregion
+    #region INCLUDE_KEYWORD
+    private class IncludeKeywordNodeType : KeywordTokenNodeType
+    {
+      public IncludeKeywordNodeType(): base ("INCLUDE_KEYWORD", "include") {}
+      public override LeafElementBase Create(IBuffer buffer, TreeOffset startOffset, TreeOffset endOffset)
+      {
+        return new IncludeKeywordTokenElement(this);
+      }
+    }
+    private class IncludeKeywordTokenElement : FixedTokenElement
+    {
+      public IncludeKeywordTokenElement(IncludeKeywordNodeType tokenNodeType) : base(tokenNodeType) { }
+    }
+    public static readonly TokenNodeType INCLUDE_KEYWORD = new IncludeKeywordNodeType();
+    #endregion
 
     #region LPARENTH
     private class LparenthNodeType : FixedTokenNodeType
@@ -390,6 +405,21 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Lex.Parsing
       public DivTokenElement(DivNodeType tokenNodeType) : base(tokenNodeType) { }
     }
     public static readonly TokenNodeType DIV = new DivNodeType();
+    #endregion
+    #region BACK_SLASH
+    private class BackSlashNodeType : FixedTokenNodeType
+    {
+      public BackSlashNodeType(): base ("BACK_SLASH", "\\") {}
+      public override LeafElementBase Create(IBuffer buffer, TreeOffset startOffset, TreeOffset endOffset)
+      {
+        return new BackSlashTokenElement(this);
+      }
+    }
+    private class BackSlashTokenElement : FixedTokenElement
+    {
+      public BackSlashTokenElement(BackSlashNodeType tokenNodeType) : base(tokenNodeType) { }
+    }
+    public static readonly TokenNodeType BACK_SLASH = new BackSlashNodeType();
     #endregion
     #region AND
     private class AndNodeType : FixedTokenNodeType

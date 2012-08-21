@@ -339,7 +339,7 @@ namespace JetBrains.ReSharper.PsiPlugin.TypingAssist
         // Resync with modified text
         lexer = GetCachingLexer(textControl);
         lexer.FindTokenAt(lBracePos);
-        Logger.Assert(lexer.TokenType == PsiTokenType.LBRACE, "The condition (lexer.TokenType == CSharpTokenType.LBRACE) is false.");
+        Logger.Assert(lexer.TokenType == PsiTokenType.LBRACE, "The condition (lexer.tokenTypeName == CSharpTokenType.LBRACE) is false.");
       }
 
       // Find the matched RBRACE and check they are on the same line

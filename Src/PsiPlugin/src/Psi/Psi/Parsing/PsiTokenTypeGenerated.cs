@@ -616,6 +616,21 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing
     }
     public static readonly TokenNodeType DIV = new DivNodeType();
     #endregion
+    #region BACK_SLASH
+    private class BackSlashNodeType : FixedTokenNodeType
+    {
+      public BackSlashNodeType(): base ("BACK_SLASH", "\\") {}
+      public override LeafElementBase Create(IBuffer buffer, TreeOffset startOffset, TreeOffset endOffset)
+      {
+        return new BackSlashTokenElement(this);
+      }
+    }
+    private class BackSlashTokenElement : FixedTokenElement
+    {
+      public BackSlashTokenElement(BackSlashNodeType tokenNodeType) : base(tokenNodeType) { }
+    }
+    public static readonly TokenNodeType BACK_SLASH = new BackSlashNodeType();
+    #endregion
     #region AND
     private class AndNodeType : FixedTokenNodeType
     {

@@ -41,5 +41,214 @@ options
   stubBase="LexFileElement";
 }
   :
-    IDENTIFIER*
+    usingList
+    definitionBlock
+    lexingBlock
+  ;
+
+usingList
+  :
+    //todo
+    IDENTIFIER
+  ;
+
+definitionBlock
+  :
+    encodingDefinition
+    initBlock
+    braceBlock?
+    lexerOptions
+    declarationOrInclude
+  ;
+
+encodingDefinition
+  :
+//todo
+    IDENTIFIER
+  ;
+
+initBlock
+  :
+//todo
+    IDENTIFIER
+  ;
+
+braceBlock
+  :
+//todo
+    IDENTIFIER
+  ;
+
+lexerOptions
+  :
+//todo
+    IDENTIFIER
+  ;
+
+declarationOrInclude
+  :
+    (tokenDeclaration | includeStatement)*
+  ;
+
+tokenDeclaration
+  :
+    tokenDeclaredName
+    EQ
+    lexingExpression
+  ;
+
+tokenDeclaredName
+  :
+    IDENTIFIER
+  ;
+
+char
+  :
+    BACK_SLASH
+    (charId | specialChar)
+  ;
+
+specialChar
+  :
+    (BACK_SLASH | BACK_QUOTE | AT)
+  ;
+
+charId
+  :
+    IDENTIFIER
+  ;
+
+lexingExpression
+  :
+    char
+    | sequence
+    | parenExpreession
+  ;
+
+sequence
+  :
+    simpleExpression+
+  ;
+
+simpleExpression
+  :
+    (qualified | STRING_LITERAL | INTEGER_LITERAL | tokenTypeUsage | parenExpreession | regexp)
+  ;
+
+qualified
+  :
+    (STRING_LITERAL | tokenTypeUsage | parenExpreession | regexp)
+    qualifier
+  ;
+
+qualifier
+  :
+    ASTERISK
+    | QUEST
+    | PLUS
+  ;
+
+tokenTypeUsage
+  :
+    LBRACE
+    tokenTypeName
+    RBRACE
+  ;
+
+parenExpreession
+  :
+    LPARENTH
+    choiceExpression
+    RPARENTH
+  ;
+
+choiceExpression
+  :
+    lexingExpression
+    (OR lexingExpression)*
+  ;
+
+regexp
+  :
+    LBRACKET
+    regexpBody
+    RBRACKET
+  ;
+
+regexpBody
+  :
+	//todo
+    IDENTIFIER
+  ;
+
+includeStatement
+  :
+    PERC
+    INCLUDE_KEYWORD
+    pathId
+  ;
+
+pathId
+  :
+    (folder DIV)*
+    file
+  ;
+
+folder
+  :
+    (IDENTIFIER | DOT DOT| DOT) 
+  ;
+
+file
+  :
+    fileName
+    DOT
+    fileExt
+  ;
+
+fileName
+  :
+    IDENTIFIER
+  ;
+
+fileExt
+  :
+    IDENTIFIER
+  ;
+
+lexingBlock
+  :
+    makeTokenBlock*
+  ;
+
+makeTokenBlock
+  :
+    state
+    ( LBRACE tokenTypeName RBRACE | STRING_LITERAL)
+    LBRACE
+    cSharpBlock
+    RBRACE    
+  ;
+
+state
+  :
+    LT
+    stateName
+    GT
+  ;
+
+stateName
+  :
+    IDENTIFIER
+  ;
+
+tokenTypeName
+  :
+    IDENTIFIER
+  ;
+
+cSharpBlock
+  :
+	//todo
+    IDENTIFIER
   ;
