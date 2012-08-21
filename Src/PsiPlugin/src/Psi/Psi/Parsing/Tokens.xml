@@ -41,6 +41,7 @@
   <Token name="MINUS" representation="-" />
   <Token name="ASTERISK" representation="*" />
   <Token name="DIV" representation="/" />
+  <Token name="BACK_SLASH" representation="\\" />
   <Token name="AND" representation="&amp;" />
   <Token name="OR" representation="|" />
   <Token name="XOR" representation="^" />

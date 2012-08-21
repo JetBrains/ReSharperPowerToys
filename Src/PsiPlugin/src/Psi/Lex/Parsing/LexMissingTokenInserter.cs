@@ -7,6 +7,7 @@ using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.ReSharper.PsiPlugin.LexGrammar;
+using JetBrains.ReSharper.PsiPlugin.Psi.Lex.Tree.Impl;
 using JetBrains.Text;
 using JetBrains.Util;
 using JetBrains.Util.DataStructures;

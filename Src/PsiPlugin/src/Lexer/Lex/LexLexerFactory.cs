@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using JetBrains.ReSharper.Psi.Parsing;
+using JetBrains.ReSharper.PsiPlugin.Psi.Lex.Parsing;
 using JetBrains.Text;
 
 namespace JetBrains.ReSharper.PsiPlugin.Lexer.Lex
