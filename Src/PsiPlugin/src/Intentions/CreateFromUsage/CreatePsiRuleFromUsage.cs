@@ -6,7 +6,7 @@ using JetBrains.ReSharper.Feature.Services.Intentions.DataProviders;
 using JetBrains.ReSharper.Intentions.CreateFromUsage;
 using JetBrains.ReSharper.Intentions.Extensibility;
 using JetBrains.ReSharper.Intentions.Extensibility.Menu;
-using JetBrains.ReSharper.PsiPlugin.CodeInspections.Highlightings;
+using JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi.Highlightings;
 using JetBrains.ReSharper.PsiPlugin.Resolve;
 using JetBrains.Util;
 using JetBrains.Util.Lazy;

@@ -49,7 +49,9 @@ ASTERISKS="*"+
 
 WHITE_SPACE_CHAR=({UNICODE_ZS}|(\u0009)|(\u000B)|(\u000C)|(\u200B)|(\uFEFF)|{NULL_CHAR})
 
-BACK_SLASH_CHAR = \u2216
+BACK_SLASH_CHAR = \\
+
+QUOT = \'
 
 DELIMITED_COMMENT_SECTION=([^\*]|({ASTERISKS}[^\*\/]))
 
@@ -77,6 +79,7 @@ SIMPLE_ESCAPE_SEQUENCE=(\\[\'\"\\0abfnrtv])
 HEXADECIMAL_ESCAPE_SEQUENCE=(\\x{HEX_DIGIT}({HEX_DIGIT}|{HEX_DIGIT}{HEX_DIGIT}|{HEX_DIGIT}{HEX_DIGIT}{HEX_DIGIT})?)
 UNICODE_ESCAPE_SEQUENCE=((\\u{HEX_DIGIT}{HEX_DIGIT}{HEX_DIGIT}{HEX_DIGIT})|(\\U{HEX_DIGIT}{HEX_DIGIT}{HEX_DIGIT}{HEX_DIGIT}{HEX_DIGIT}{HEX_DIGIT}{HEX_DIGIT}{HEX_DIGIT}))
 CHARACTER=({SINGLE_CHARACTER}|{SIMPLE_ESCAPE_SEQUENCE}|{HEXADECIMAL_ESCAPE_SEQUENCE}|{UNICODE_ESCAPE_SEQUENCE})
+
 BAD_ESCAPE_SEQUENCE=((\\u)|(\\[^\'\"\\0abfnrtv]))
 CHARACTER_LITERAL=\'({CHARACTER})\'
 UNFINISHED_CHARACTER_LITERAL=\'(({CHARACTER})|({BAD_ESCAPE_SEQUENCE}(\'?))|\')
@@ -131,8 +134,15 @@ END_LINE={NOT_NEW_LINE}*(({PP_NEW_LINE_PAIR})|({PP_NEW_LINE_CHAR}))
 
 <YYINITIAL> "using" { return currTokenType = makeToken(LexTokenType.USING_KEYWORD); }
 <YYINITIAL> "init" { return currTokenType = makeToken(LexTokenType.INIT_KEYWORD); }
-
-<YYINITIAL> {IDENTIFIER}  { currTokenType = makeToken (((TokenNodeType) keywords[yytext()]) ?? LexTokenType.IDENTIFIER); return currTokenType; }
+<YYINITIAL> "eofval" { return currTokenType = makeToken(LexTokenType.EOFVAL_KEYWORD); }
+<YYINITIAL> "type" { return currTokenType = makeToken(LexTokenType.TYPE_KEYWORD); }
+<YYINITIAL> "virtual" { return currTokenType = makeToken(LexTokenType.VIRTUAL_KEYWORD); }
+<YYINITIAL> "function" { return currTokenType = makeToken(LexTokenType.FUNCTION_KEYWORD); }
+<YYINITIAL> "implements" { return currTokenType = makeToken(LexTokenType.IMPLEMENTS_KEYWORD); }
+<YYINITIAL> "public" { return currTokenType = makeToken(LexTokenType.PUBLIC_KEYWORD); }
+<YYINITIAL> "class" { return currTokenType = makeToken(LexTokenType.CLASS_KEYWORD); }
+<YYINITIAL> "namespace" { return currTokenType = makeToken(LexTokenType.NAMESPACE_KEYWORD); }
+<YYINITIAL> "include" { return currTokenType = makeToken(LexTokenType.INCLUDE_KEYWORD); }
 
 <YYINITIAL> "{" { currTokenType = makeToken (LexTokenType.LBRACE); return currTokenType; }
 <YYINITIAL> "}" { currTokenType = makeToken (LexTokenType.RBRACE); return currTokenType; }
@@ -158,6 +168,7 @@ END_LINE={NOT_NEW_LINE}*(({PP_NEW_LINE_PAIR})|({PP_NEW_LINE_CHAR}))
 <YYINITIAL> "@" { currTokenType = makeToken (LexTokenType.AT); return currTokenType; }
 <YYINITIAL> "#" { currTokenType = makeToken (LexTokenType.SHARP); return currTokenType; }
 <YYINITIAL> "`" { currTokenType = makeToken (LexTokenType.BACK_QUOTE); return currTokenType; }
+<YYINITIAL> "$" { currTokenType = makeToken (LexTokenType.DOLLAR); return currTokenType; }
 
 <YYINITIAL> "=" { currTokenType = makeToken (LexTokenType.EQ); return currTokenType; }
 <YYINITIAL> ">" { currTokenType = makeToken (LexTokenType.GT); return currTokenType; }
@@ -200,3 +211,5 @@ END_LINE={NOT_NEW_LINE}*(({PP_NEW_LINE_PAIR})|({PP_NEW_LINE_CHAR}))
 <YYINITIAL> {STRING_LITERAL}  { currTokenType = makeToken (LexTokenType.STRING_LITERAL); return currTokenType; }
 <YYINITIAL> {ERROR_STRING_LITERAL}  { currTokenType = makeToken (LexTokenType.STRING_LITERAL); return currTokenType; }
 <YYINITIAL> {BACK_SLASH_CHAR} { currTokenType = makeToken (LexTokenType.BACK_SLASH); return currTokenType; }
+<YYINITIAL> {QUOT} { currTokenType = makeToken (LexTokenType.QUOTE); return currTokenType; }
+<YYINITIAL> {IDENTIFIER}  { currTokenType = makeToken (((TokenNodeType) keywords[yytext()]) ?? LexTokenType.IDENTIFIER); return currTokenType; }

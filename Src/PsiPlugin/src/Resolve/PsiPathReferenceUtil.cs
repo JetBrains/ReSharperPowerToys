@@ -38,7 +38,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
       if (qualifier == null)
       {
         IProjectFile file = pathReference.GetTreeNode().GetSourceFile().ToProjectFile();
-        Assertion.AssertNotNull(file, "file == null");
+        Assertion.AssertNotNull(file, "fileFullName == null");
         return file.Location.Directory;
       }
 

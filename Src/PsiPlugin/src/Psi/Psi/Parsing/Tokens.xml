@@ -35,6 +35,8 @@
   <Token name="SHARP" representation="#" />
   <Token name="AT" representation="@" />
   <Token name="BACK_QUOTE" representation="`" />
+  <Token name="QUOTE" representation="&apos;" />
+  <Token name="DOUBLE_QUOT" representation="\&quot;" />
   <Token name="QUEST" representation="?" />
   <Token name="COLON" representation=":" />
   <Token name="PLUS" representation="+" />
@@ -46,6 +48,7 @@
   <Token name="OR" representation="|" />
   <Token name="XOR" representation="^" />
   <Token name="PERC" representation="%" />
+  <Token name="DOLLAR" representation="$" />
   <Token name="EQEQ" representation="==" />
   <Token name="LE" representation="&lt;=" />
   <Token name="GE" representation=">=" />

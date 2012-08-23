@@ -46,51 +46,149 @@ options
     lexingBlock
   ;
 
-usingList
+errorhandling usingList
   :
-    //todo
+    usingItem*
+  ;
+
+errorhandling usingItem
+  :
+    USING_KEYWORD
+    cSharpNamespace
+    SEMICOLON
+  ;
+
+cSharpNamespace
+  :
+    cSharpNamespaceName
+    (DOT cSharpNamespaceName)*
+  ;
+
+cSharpNamespaceName
+  :
     IDENTIFIER
   ;
 
-definitionBlock
+errorhandling definitionBlock
   :
+    PERC
+    PERC
     encodingDefinition
     initBlock
     braceBlock?
-    lexerOptions
+    lexerOptionsBlock
     declarationOrInclude
   ;
 
 encodingDefinition
   :
-//todo
+    PERC
     IDENTIFIER
   ;
 
 initBlock
   :
-//todo
-    IDENTIFIER
+	PERC
+	INIT_KEYWORD
+	LBRACE
+	cSharpBlock
+	PERC
+	INIT_KEYWORD
+	RBRACE
   ;
 
 braceBlock
   :
-//todo
-    IDENTIFIER
+    PERC
+    LBRACE
+    PERC
+    RBRACE
   ;
 
-lexerOptions
+lexerOptionsBlock
   :
-//todo
+	lexerOption*
+  ;
+
+errorhandling lexerOption
+  :
+    PERC
+    (namespaceLexerOption
+    | classLexerOption
+    | classModifierLexerOption
+    | implementsLexerOption
+    | functionLexerOption
+    | functionModifierLexerOption
+    | typeLexerOption
+    | eofvalLexerOption)
+  ;
+
+namespaceLexerOption
+  :
+    NAMESPACE_KEYWORD
+    cSharpNamespace
+  ;
+
+classLexerOption
+  :
+    CLASS_KEYWORD
+    cSharpClassName
+  ;
+
+classModifierLexerOption
+  :
+    PUBLIC_KEYWORD
+  ;
+
+implementsLexerOption
+  :
+    IMPLEMENTS_KEYWORD
+    cSharpClassName
+  ;
+
+functionLexerOption
+  :
+    FUNCTION_KEYWORD
+    functionName
+  ;
+
+functionName
+  :
     IDENTIFIER
   ;
 
-declarationOrInclude
+functionModifierLexerOption
+  :
+    VIRTUAL_KEYWORD
+  ;
+
+typeLexerOption
+  :
+    TYPE_KEYWORD
+    cSharpClassName
+  ;
+
+cSharpClassName
+  :
+    IDENTIFIER
+  ;
+
+eofvalLexerOption
+  :
+    EOFVAL_KEYWORD
+    LBRACE
+    cSharpBlock
+    PERC
+    EOFVAL_KEYWORD
+    RBRACE
+  ;
+
+errorhandling declarationOrInclude
   :
     (tokenDeclaration | includeStatement)*
   ;
 
-tokenDeclaration
+errorhandling tokenDeclaration
   :
     tokenDeclaredName
     EQ
@@ -104,8 +202,14 @@ tokenDeclaredName
 
 char
   :
-    BACK_SLASH
-    (charId | specialChar)
+    BACK_SLASH 
+    specialChar
+    | unicodeChar
+  ;
+
+unicodeChar
+  :
+    IDENTIFIER
   ;
 
 specialChar
@@ -132,13 +236,8 @@ sequence
 
 simpleExpression
   :
-    (qualified | STRING_LITERAL | INTEGER_LITERAL | tokenTypeUsage | parenExpreession | regexp)
-  ;
-
-qualified
-  :
-    (STRING_LITERAL | tokenTypeUsage | parenExpreession | regexp)
-    qualifier
+    (STRING_LITERAL | INTEGER_LITERAL | tokenTypeUsage | parenExpreession | regexp )
+    qualifier?
   ;
 
 qualifier
@@ -177,11 +276,207 @@ regexp
 
 regexpBody
   :
-	//todo
+    basic_reg_exp
+  ;
+
+//http://pubs.opengroup.org/onlinepubs/007908799/xbd/re.html
+/* --------------------------------------------
+   Basic Regular Expression
+   --------------------------------------------
+*/
+basic_reg_exp
+  :
+    RE_expression DOLLAR?
+    | XOR RE_expression? DOLLAR?
+    | DOLLAR
+  ;
+RE_expression
+  :
+    simple_RE
+    | RE_expression
+    simple_RE
+  ;
+simple_RE
+  :
+    nondupl_RE
+    | nondupl_RE
+    RE_dupl_symbol
+  ;
+nondupl_RE
+  :    
+    BACK_SLASH
+    LPARENTH
+    RE_expression
+    BACK_SLASH
+    RPARENTH
+    | BACK_SLASH
+    LPARENTH
+    BACK_SLASH
+    RPARENTH
+    | backRef
+    | regexpList
+  ;
+
+regexpList
+  :
+    regexpListItem*
+  ;
+
+backRef
+  :
+    BACK_SLASH
+    INTEGER_LITERAL
+  ;
+
+regexpListItem
+  :
+//ORD_CHAR
+    quotedChar
+    | DOT
+    | unicodeChar
+    | bracket_expression
+  ;
+
+quotedChar
+  :
+    BACK_SLASH
+    (
+      XOR
+      | DOT
+      | ASTERISK
+      | LBRACKET
+      | DOLLAR
+      | BACK_SLASH
+    )
+  ;
+
+RE_dupl_symbol
+  :
+    ASTERISK
+    | BACK_SLASH
+    LBRACE
+    INTEGER_LITERAL
+    BACK_SLASH
+    RBRACE
+    | BACK_SLASH
+    LBRACE
+    INTEGER_LITERAL
+    COMMA
+    BACK_SLASH
+    RBRACE
+    | BACK_SLASH
+    LBRACE
+    INTEGER_LITERAL
+    COMMA
+    INTEGER_LITERAL
+    BACK_SLASH
+    RBRACE
+  ;
+
+/* --------------------------------------------
+   Bracket Expression
+   -------------------------------------------
+*/
+bracket_expression
+  :
+    LBRACKET
+    matching_list
+    RBRACKET
+    | LBRACKET
+    nonmatching_list
+    RBRACKET
+  ;
+matching_list
+  :
+    bracket_list
+  ;
+nonmatching_list
+  :
+    XOR
+    bracket_list
+  ;
+bracket_list
+  :
+    follow_list
+    | follow_list
+    MINUS
+  ;
+follow_list
+  :
+    expression_term
+    | follow_list
+    expression_term
+  ;
+expression_term
+  :
+    single_expression
+    | range_expression
+  ;
+single_expression
+  :
+    end_range
+    | character_class
+    | equivalence_class
+  ;
+range_expression
+  :
+    start_range
+    end_range
+    | start_range
+    MINUS
+  ;
+start_range
+  :
+    end_range
+    MINUS
+  ;
+end_range
+  :
+    coll_elem
+    collating_symbol
+  ;
+
+coll_elem
+  :
+//todo
+    IDENTIFIER
+  ;
+collating_symbol
+  :
+    LBRACKET DOT
+    coll_elem
+    DOT RBRACKET
+    | LBRACKET DOT
+    meta_char
+    DOT RBRACKET
+  ;
+
+meta_char
+  :
+//todo
+    IDENTIFIER
+  ;
+equivalence_class
+  :
+    LBRACKET EQ
+    coll_elem
+    EQ RBRACKET
+  ;
+character_class
+  :
+    LBRACKET COLON
+    regExpClass
+    COLON RBRACKET
+  ;
+
+regExpClass
+  :
     IDENTIFIER
   ;
 
-includeStatement
+///////////////////////////////////////////////////
+
+errorhandling includeStatement
   :
     PERC
     INCLUDE_KEYWORD
@@ -191,7 +486,7 @@ includeStatement
 pathId
   :
     (folder DIV)*
-    file
+    fileFullName
   ;
 
 folder
@@ -199,7 +494,7 @@ folder
     (IDENTIFIER | DOT DOT| DOT) 
   ;
 
-file
+fileFullName
   :
     fileName
     DOT
@@ -216,7 +511,7 @@ fileExt
     IDENTIFIER
   ;
 
-lexingBlock
+errorhandling lexingBlock
   :
     makeTokenBlock*
   ;
@@ -247,8 +542,8 @@ tokenTypeName
     IDENTIFIER
   ;
 
-cSharpBlock
+errorhandling cSharpBlock
   :
-	//todo
+//todo
     IDENTIFIER
   ;
