@@ -443,7 +443,7 @@ namespace JetBrains.ReSharper.PsiPlugin.TypingAssist
 
         newCaretPos = dummyNode.GetTreeStartOffset();
         file = file.ReParse(new TreeTextRange(newCaretPos, newCaretPos + dummyText.Length), "");
-        Assertion.Assert(file != null, "file != null");
+        Assertion.Assert(file != null, "fileFullName != null");
       }
 
       // dposition cursor

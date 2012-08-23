@@ -3,6 +3,14 @@
   <Keyword name="USING_KEYWORD" representation="using" />
   <Keyword name="INIT_KEYWORD" representation="init" />
   <Keyword name="INCLUDE_KEYWORD" representation="include" />
+  <Keyword name="EOFVAL_KEYWORD" representation="eofval" />
+  <Keyword name="TYPE_KEYWORD" representation="type" />
+  <Keyword name="VIRTUAL_KEYWORD" representation="virtual" />
+  <Keyword name="FUNCTION_KEYWORD" representation="function" />
+  <Keyword name="IMPLEMENTS_KEYWORD" representation="implements" />
+  <Keyword name="PUBLIC_KEYWORD" representation="public" />
+  <Keyword name="CLASS_KEYWORD" representation="class" />
+  <Keyword name="NAMESPACE_KEYWORD" representation="namespace" />
 
   <Token name="LPARENTH" representation="(" />
   <Token name="RPARENTH" representation=")" />
@@ -22,18 +30,19 @@
   <Token name="AT" representation="@" />
   <Token name="BACK_QUOTE" representation="`" />
   <Token name="QUOTE" representation="&apos;" />
-  <Token name="DOUBLE_QUOT" representation="&quot;" />
+  <Token name="DOUBLE_QUOT" representation="\&quot;" />
   <Token name="QUEST" representation="?" />
   <Token name="COLON" representation=":" />
   <Token name="PLUS" representation="+" />
   <Token name="MINUS" representation="-" />
   <Token name="ASTERISK" representation="*" />
   <Token name="DIV" representation="/" />
-  <Token name="BACK_SLASH" representation="\" />
+  <Token name="BACK_SLASH" representation="\\" />
   <Token name="AND" representation="&amp;" />
   <Token name="OR" representation="|" />
   <Token name="XOR" representation="^" />
   <Token name="PERC" representation="%" />
+  <Token name="DOLLAR" representation="$" />
   <Token name="EQEQ" representation="==" />
   <Token name="LE" representation="&lt;=" />
   <Token name="GE" representation=">=" />

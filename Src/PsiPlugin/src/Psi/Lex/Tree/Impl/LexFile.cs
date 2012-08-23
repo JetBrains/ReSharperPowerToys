@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.PsiPlugin.PsiGrammar;
+using JetBrains.ReSharper.PsiPlugin.LexGrammar;
 
 namespace JetBrains.ReSharper.PsiPlugin.Psi.Lex.Tree.Impl
 {
@@ -13,7 +13,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Lex.Tree.Impl
 
     public override PsiLanguageType Language
     {
-      get { return PsiLanguage.Instance; }
+      get { return LexLanguage.Instance; }
     }
 
     #endregion

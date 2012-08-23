@@ -49,7 +49,9 @@ ASTERISKS="*"+
 
 WHITE_SPACE_CHAR=({UNICODE_ZS}|(\u0009)|(\u000B)|(\u000C)|(\u200B)|(\uFEFF)|{NULL_CHAR})
 
-BACK_SLASH_CHAR = \u2216
+BACK_SLASH_CHAR = \\
+
+QUOT = \'
 
 DELIMITED_COMMENT_SECTION=([^\*]|({ASTERISKS}[^\*\/]))
 
@@ -174,6 +176,7 @@ END_LINE={NOT_NEW_LINE}*(({PP_NEW_LINE_PAIR})|({PP_NEW_LINE_CHAR}))
 <YYINITIAL> "@" { currTokenType = makeToken (PsiTokenType.AT); return currTokenType; }
 <YYINITIAL> "#" { currTokenType = makeToken (PsiTokenType.SHARP); return currTokenType; }
 <YYINITIAL> "`" { currTokenType = makeToken (PsiTokenType.BACK_QUOTE); return currTokenType; }
+<YYINITIAL> "$" { currTokenType = makeToken (PsiTokenType.DOLLAR); return currTokenType; }
 
 <YYINITIAL> "=" { currTokenType = makeToken (PsiTokenType.EQ); return currTokenType; }
 <YYINITIAL> ">" { currTokenType = makeToken (PsiTokenType.GT); return currTokenType; }
@@ -216,3 +219,5 @@ END_LINE={NOT_NEW_LINE}*(({PP_NEW_LINE_PAIR})|({PP_NEW_LINE_CHAR}))
 <YYINITIAL> {STRING_LITERAL}  { currTokenType = makeToken (PsiTokenType.STRING_LITERAL); return currTokenType; }
 <YYINITIAL> {ERROR_STRING_LITERAL}  { currTokenType = makeToken (PsiTokenType.STRING_LITERAL); return currTokenType; }
 <YYINITIAL> {BACK_SLASH_CHAR} { currTokenType = makeToken (PsiTokenType.BACK_SLASH); return currTokenType; }
+<YYINITIAL> {QUOT} { currTokenType = makeToken (PsiTokenType.QUOTE); return currTokenType; }
+

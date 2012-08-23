@@ -60,6 +60,126 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Lex.Parsing
     }
     public static readonly TokenNodeType INCLUDE_KEYWORD = new IncludeKeywordNodeType();
     #endregion
+    #region EOFVAL_KEYWORD
+    private class EofvalKeywordNodeType : KeywordTokenNodeType
+    {
+      public EofvalKeywordNodeType(): base ("EOFVAL_KEYWORD", "eofval") {}
+      public override LeafElementBase Create(IBuffer buffer, TreeOffset startOffset, TreeOffset endOffset)
+      {
+        return new EofvalKeywordTokenElement(this);
+      }
+    }
+    private class EofvalKeywordTokenElement : FixedTokenElement
+    {
+      public EofvalKeywordTokenElement(EofvalKeywordNodeType tokenNodeType) : base(tokenNodeType) { }
+    }
+    public static readonly TokenNodeType EOFVAL_KEYWORD = new EofvalKeywordNodeType();
+    #endregion
+    #region TYPE_KEYWORD
+    private class TypeKeywordNodeType : KeywordTokenNodeType
+    {
+      public TypeKeywordNodeType(): base ("TYPE_KEYWORD", "type") {}
+      public override LeafElementBase Create(IBuffer buffer, TreeOffset startOffset, TreeOffset endOffset)
+      {
+        return new TypeKeywordTokenElement(this);
+      }
+    }
+    private class TypeKeywordTokenElement : FixedTokenElement
+    {
+      public TypeKeywordTokenElement(TypeKeywordNodeType tokenNodeType) : base(tokenNodeType) { }
+    }
+    public static readonly TokenNodeType TYPE_KEYWORD = new TypeKeywordNodeType();
+    #endregion
+    #region VIRTUAL_KEYWORD
+    private class VirtualKeywordNodeType : KeywordTokenNodeType
+    {
+      public VirtualKeywordNodeType(): base ("VIRTUAL_KEYWORD", "virtual") {}
+      public override LeafElementBase Create(IBuffer buffer, TreeOffset startOffset, TreeOffset endOffset)
+      {
+        return new VirtualKeywordTokenElement(this);
+      }
+    }
+    private class VirtualKeywordTokenElement : FixedTokenElement
+    {
+      public VirtualKeywordTokenElement(VirtualKeywordNodeType tokenNodeType) : base(tokenNodeType) { }
+    }
+    public static readonly TokenNodeType VIRTUAL_KEYWORD = new VirtualKeywordNodeType();
+    #endregion
+    #region FUNCTION_KEYWORD
+    private class FunctionKeywordNodeType : KeywordTokenNodeType
+    {
+      public FunctionKeywordNodeType(): base ("FUNCTION_KEYWORD", "function") {}
+      public override LeafElementBase Create(IBuffer buffer, TreeOffset startOffset, TreeOffset endOffset)
+      {
+        return new FunctionKeywordTokenElement(this);
+      }
+    }
+    private class FunctionKeywordTokenElement : FixedTokenElement
+    {
+      public FunctionKeywordTokenElement(FunctionKeywordNodeType tokenNodeType) : base(tokenNodeType) { }
+    }
+    public static readonly TokenNodeType FUNCTION_KEYWORD = new FunctionKeywordNodeType();
+    #endregion
+    #region IMPLEMENTS_KEYWORD
+    private class ImplementsKeywordNodeType : KeywordTokenNodeType
+    {
+      public ImplementsKeywordNodeType(): base ("IMPLEMENTS_KEYWORD", "implements") {}
+      public override LeafElementBase Create(IBuffer buffer, TreeOffset startOffset, TreeOffset endOffset)
+      {
+        return new ImplementsKeywordTokenElement(this);
+      }
+    }
+    private class ImplementsKeywordTokenElement : FixedTokenElement
+    {
+      public ImplementsKeywordTokenElement(ImplementsKeywordNodeType tokenNodeType) : base(tokenNodeType) { }
+    }
+    public static readonly TokenNodeType IMPLEMENTS_KEYWORD = new ImplementsKeywordNodeType();
+    #endregion
+    #region PUBLIC_KEYWORD
+    private class PublicKeywordNodeType : KeywordTokenNodeType
+    {
+      public PublicKeywordNodeType(): base ("PUBLIC_KEYWORD", "public") {}
+      public override LeafElementBase Create(IBuffer buffer, TreeOffset startOffset, TreeOffset endOffset)
+      {
+        return new PublicKeywordTokenElement(this);
+      }
+    }
+    private class PublicKeywordTokenElement : FixedTokenElement
+    {
+      public PublicKeywordTokenElement(PublicKeywordNodeType tokenNodeType) : base(tokenNodeType) { }
+    }
+    public static readonly TokenNodeType PUBLIC_KEYWORD = new PublicKeywordNodeType();
+    #endregion
+    #region CLASS_KEYWORD
+    private class ClassKeywordNodeType : KeywordTokenNodeType
+    {
+      public ClassKeywordNodeType(): base ("CLASS_KEYWORD", "class") {}
+      public override LeafElementBase Create(IBuffer buffer, TreeOffset startOffset, TreeOffset endOffset)
+      {
+        return new ClassKeywordTokenElement(this);
+      }
+    }
+    private class ClassKeywordTokenElement : FixedTokenElement
+    {
+      public ClassKeywordTokenElement(ClassKeywordNodeType tokenNodeType) : base(tokenNodeType) { }
+    }
+    public static readonly TokenNodeType CLASS_KEYWORD = new ClassKeywordNodeType();
+    #endregion
+    #region NAMESPACE_KEYWORD
+    private class NamespaceKeywordNodeType : KeywordTokenNodeType
+    {
+      public NamespaceKeywordNodeType(): base ("NAMESPACE_KEYWORD", "namespace") {}
+      public override LeafElementBase Create(IBuffer buffer, TreeOffset startOffset, TreeOffset endOffset)
+      {
+        return new NamespaceKeywordTokenElement(this);
+      }
+    }
+    private class NamespaceKeywordTokenElement : FixedTokenElement
+    {
+      public NamespaceKeywordTokenElement(NamespaceKeywordNodeType tokenNodeType) : base(tokenNodeType) { }
+    }
+    public static readonly TokenNodeType NAMESPACE_KEYWORD = new NamespaceKeywordNodeType();
+    #endregion
 
     #region LPARENTH
     private class LparenthNodeType : FixedTokenNodeType
@@ -316,6 +436,36 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Lex.Parsing
     }
     public static readonly TokenNodeType BACK_QUOTE = new BackQuoteNodeType();
     #endregion
+    #region QUOTE
+    private class QuoteNodeType : FixedTokenNodeType
+    {
+      public QuoteNodeType(): base ("QUOTE", "'") {}
+      public override LeafElementBase Create(IBuffer buffer, TreeOffset startOffset, TreeOffset endOffset)
+      {
+        return new QuoteTokenElement(this);
+      }
+    }
+    private class QuoteTokenElement : FixedTokenElement
+    {
+      public QuoteTokenElement(QuoteNodeType tokenNodeType) : base(tokenNodeType) { }
+    }
+    public static readonly TokenNodeType QUOTE = new QuoteNodeType();
+    #endregion
+    #region DOUBLE_QUOT
+    private class DoubleQuotNodeType : FixedTokenNodeType
+    {
+      public DoubleQuotNodeType(): base ("DOUBLE_QUOT", "\"") {}
+      public override LeafElementBase Create(IBuffer buffer, TreeOffset startOffset, TreeOffset endOffset)
+      {
+        return new DoubleQuotTokenElement(this);
+      }
+    }
+    private class DoubleQuotTokenElement : FixedTokenElement
+    {
+      public DoubleQuotTokenElement(DoubleQuotNodeType tokenNodeType) : base(tokenNodeType) { }
+    }
+    public static readonly TokenNodeType DOUBLE_QUOT = new DoubleQuotNodeType();
+    #endregion
     #region QUEST
     private class QuestNodeType : FixedTokenNodeType
     {
@@ -480,6 +630,21 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Lex.Parsing
       public PercTokenElement(PercNodeType tokenNodeType) : base(tokenNodeType) { }
     }
     public static readonly TokenNodeType PERC = new PercNodeType();
+    #endregion
+    #region DOLLAR
+    private class DollarNodeType : FixedTokenNodeType
+    {
+      public DollarNodeType(): base ("DOLLAR", "$") {}
+      public override LeafElementBase Create(IBuffer buffer, TreeOffset startOffset, TreeOffset endOffset)
+      {
+        return new DollarTokenElement(this);
+      }
+    }
+    private class DollarTokenElement : FixedTokenElement
+    {
+      public DollarTokenElement(DollarNodeType tokenNodeType) : base(tokenNodeType) { }
+    }
+    public static readonly TokenNodeType DOLLAR = new DollarNodeType();
     #endregion
     #region EQEQ
     private class EqeqNodeType : FixedTokenNodeType
