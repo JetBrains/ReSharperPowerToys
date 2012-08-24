@@ -9,7 +9,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\Setup\ReSharperPowerToySetup.ico = ..\Setup\ReSharperPowerToySetup.ico
 		..\Setup\ReSharperPowerToySetup.Main.wxs = ..\Setup\ReSharperPowerToySetup.Main.wxs
 		..\Setup\ReSharperPowerToySetup.Property.wxs = ..\Setup\ReSharperPowerToySetup.Property.wxs
-		..\Setup\ReSharperPowerToySetup.Targets = ..\Setup\ReSharperPowerToySetup.Targets
 	EndProjectSection
 	ProjectSection(FolderStartupServices) = postProject
 		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}

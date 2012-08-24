@@ -192,7 +192,34 @@ errorhandling tokenDeclaration
   :
     tokenDeclaredName
     EQ
-    lexingExpression
+    firstLexingExpression
+  ;
+
+firstLexingExpression
+  :
+    (
+      firstLexingExpressionItem
+    )
+    (
+      OR
+      firstLexingExpressionItem
+    )*
+  ;
+
+firstLexingExpressionItem
+  :
+    parenExpression
+      | char
+      | simpleSequence
+      | regexp
+      | QUOTE
+      | BACK_SLASH
+      | DOUBLE_QUOTE
+  ;
+
+simpleSequence
+  :
+    ((tokenTypeUsage | STRING_LITERAL | parenExpression | QUOTE | BACK_SLASH | BACK_QUOTE) qualifier?)*
   ;
 
 tokenDeclaredName
@@ -214,7 +241,7 @@ unicodeChar
 
 specialChar
   :
-    (BACK_SLASH | BACK_QUOTE | AT)
+    (BACK_SLASH | BACK_QUOTE | AT | QUOTE | SHARP | DIV | DOUBLE_QUOTE)
   ;
 
 charId
@@ -224,9 +251,13 @@ charId
 
 lexingExpression
   :
-    char
-    | sequence
-    | parenExpreession
+    sequence choiceTail*
+  ;
+
+choiceTail
+  :
+    OR
+    sequence
   ;
 
 sequence
@@ -236,7 +267,7 @@ sequence
 
 simpleExpression
   :
-    (STRING_LITERAL | INTEGER_LITERAL | tokenTypeUsage | parenExpreession | regexp )
+    (STRING_LITERAL | INTEGER_LITERAL | tokenTypeUsage | parenExpression | regexp | IDENTIFIER | quotedChar | BACK_SLASH | QUOTE | DOUBLE_QUOTE | AT)
     qualifier?
   ;
 
@@ -254,17 +285,11 @@ tokenTypeUsage
     RBRACE
   ;
 
-parenExpreession
+parenExpression
   :
     LPARENTH
-    choiceExpression
-    RPARENTH
-  ;
-
-choiceExpression
-  :
     lexingExpression
-    (OR lexingExpression)*
+    RPARENTH
   ;
 
 regexp
@@ -292,29 +317,36 @@ basic_reg_exp
   ;
 RE_expression
   :
-    simple_RE
-    | RE_expression
-    simple_RE
+    simple_RE*
   ;
 simple_RE
   :
-    nondupl_RE
-    | nondupl_RE
-    RE_dupl_symbol
+    nondupl_RE+
+    //RE_dupl_symbol?
   ;
 nondupl_RE
-  :    
-    BACK_SLASH
-    LPARENTH
-    RE_expression
-    BACK_SLASH
-    RPARENTH
-    | BACK_SLASH
-    LPARENTH
-    BACK_SLASH
-    RPARENTH
-    | backRef
-    | regexpList
+  :
+    (
+      SIMPLE_BACK_SLASH
+      (
+        LPARENTH
+        RE_expression
+        BACK_SLASH
+        RPARENTH
+        | LPARENTH
+          BACK_SLASH
+          RPARENTH
+        | INTEGER_LITERAL
+        | specialChar
+        | IDENTIFIER
+      )?
+      | regexpList
+      | RPARENTH
+      | BACK_SLASH
+      | QUOTE
+      | DOUBLE_QUOTE
+      | SHARP
+    )
   ;
 
 regexpList
@@ -328,25 +360,48 @@ backRef
     INTEGER_LITERAL
   ;
 
-regexpListItem
+errorhandling regexpListItem
   :
 //ORD_CHAR
     quotedChar
     | DOT
-    | unicodeChar
+    | PLUS
+    | MINUS
     | bracket_expression
+    | interval
+    | digitInterval
+  ;
+
+digitInterval
+  :
+    INTEGER_LITERAL
+    (
+      MINUS
+      INTEGER_LITERAL
+    )*
+  ;
+
+interval
+  :
+    IDENTIFIER
+    (
+      MINUS
+      IDENTIFIER
+    )*
   ;
 
 quotedChar
   :
-    BACK_SLASH
+    SIMPLE_BACK_SLASH
     (
       XOR
       | DOT
       | ASTERISK
-      | LBRACKET
       | DOLLAR
-      | BACK_SLASH
+      | SHARP
+      | DIV
+      | AT
+      | IDENTIFIER
     )
   ;
 
@@ -485,26 +540,17 @@ errorhandling includeStatement
 
 pathId
   :
-    (folder DIV)*
-    fileFullName
-  ;
-
-folder
-  :
-    (IDENTIFIER | DOT DOT| DOT) 
-  ;
-
-fileFullName
-  :
-    fileName
+    (pathElement)
+    (DIV pathElement)*
     DOT
     fileExt
   ;
 
-fileName
+pathElement
   :
-    IDENTIFIER
+    (DOT DOT | DOT | IDENTIFIER)
   ;
+
 
 fileExt
   :

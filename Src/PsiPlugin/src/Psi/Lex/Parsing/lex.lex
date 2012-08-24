@@ -49,9 +49,11 @@ ASTERISKS="*"+
 
 WHITE_SPACE_CHAR=({UNICODE_ZS}|(\u0009)|(\u000B)|(\u000C)|(\u200B)|(\uFEFF)|{NULL_CHAR})
 
-BACK_SLASH_CHAR = \\
+BACK_SLASH = \\
+BACK_SLASH_CHAR = ({BACK_SLASH}\\)
 
-QUOT = \'
+QUOTE = ({BACK_SLASH}\')
+DOUBLE_QUOTE = ({BACK_SLASH}\")
 
 DELIMITED_COMMENT_SECTION=([^\*]|({ASTERISKS}[^\*\/]))
 
@@ -209,7 +211,9 @@ END_LINE={NOT_NEW_LINE}*(({PP_NEW_LINE_PAIR})|({PP_NEW_LINE_CHAR}))
 <YYINITIAL> {EXCEEDING_CHARACTER_LITERAL} { currTokenType = makeToken (LexTokenType.CHARACTER_LITERAL); return currTokenType; }
 
 <YYINITIAL> {STRING_LITERAL}  { currTokenType = makeToken (LexTokenType.STRING_LITERAL); return currTokenType; }
+<YYINITIAL> {DOUBLE_QUOTE} { currTokenType = makeToken (LexTokenType.DOUBLE_QUOTE); return currTokenType; }
 <YYINITIAL> {ERROR_STRING_LITERAL}  { currTokenType = makeToken (LexTokenType.STRING_LITERAL); return currTokenType; }
+<YYINITIAL> {BACK_SLASH}  { currTokenType = makeToken (LexTokenType.SIMPLE_BACK_SLASH); return currTokenType; }
 <YYINITIAL> {BACK_SLASH_CHAR} { currTokenType = makeToken (LexTokenType.BACK_SLASH); return currTokenType; }
-<YYINITIAL> {QUOT} { currTokenType = makeToken (LexTokenType.QUOTE); return currTokenType; }
+<YYINITIAL> {QUOTE} { currTokenType = makeToken (LexTokenType.QUOTE); return currTokenType; }
 <YYINITIAL> {IDENTIFIER}  { currTokenType = makeToken (((TokenNodeType) keywords[yytext()]) ?? LexTokenType.IDENTIFIER); return currTokenType; }

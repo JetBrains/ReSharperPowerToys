@@ -29,15 +29,16 @@
   <Token name="SHARP" representation="#" />
   <Token name="AT" representation="@" />
   <Token name="BACK_QUOTE" representation="`" />
-  <Token name="QUOTE" representation="&apos;" />
-  <Token name="DOUBLE_QUOT" representation="\&quot;" />
+  <Token name="QUOTE" representation="\\&apos;" />
+  <Token name="DOUBLE_QUOTE" representation="\\\&quot;" />
   <Token name="QUEST" representation="?" />
   <Token name="COLON" representation=":" />
   <Token name="PLUS" representation="+" />
   <Token name="MINUS" representation="-" />
   <Token name="ASTERISK" representation="*" />
   <Token name="DIV" representation="/" />
-  <Token name="BACK_SLASH" representation="\\" />
+  <Token name="BACK_SLASH" representation="\\\\" />
+  <Token name="SIMPLE_BACK_SLASH" representation="\\" />
   <Token name="AND" representation="&amp;" />
   <Token name="OR" representation="|" />
   <Token name="XOR" representation="^" />
