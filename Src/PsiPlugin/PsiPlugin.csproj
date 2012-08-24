@@ -733,7 +733,9 @@
     <ThemedIconPng Include="resources\PsiPluginSymbolIcons\psiPath[SymbolsIdea].png" />
     <ThemedIconPng Include="resources\PsiPluginSymbolIcons\psiPath.png" />
     <EmbeddedResource Include="resources\actions.xml" />
-    <Content Include="src\Psi\Lex\Parsing\Tokens.xml" />
+    <Content Include="src\Psi\Lex\Parsing\Tokens.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="src\Psi\Psi\Parsing\Tokens.xml">
       <SubType>Designer</SubType>
     </Content>

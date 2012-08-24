@@ -387,7 +387,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl
           IList<IDeclaredElement> elements = new List<IDeclaredElement>();
           foreach (IField field in fields)
           {
-            if (field.IsReadonly && field.IsStatic)
+            //if (field.IsReadonly && field.IsStatic)
+            if(field.IsReadonly)
             {
               elements.Add(field);
             }
