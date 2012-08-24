@@ -161,6 +161,7 @@ END_LINE={NOT_NEW_LINE}*(({PP_NEW_LINE_PAIR})|({PP_NEW_LINE_CHAR}))
 <YYINITIAL> "-" { currTokenType = makeToken (LexTokenType.MINUS); return currTokenType; }
 <YYINITIAL> "*" { currTokenType = makeToken (LexTokenType.ASTERISK); return currTokenType; }
 <YYINITIAL> "/" { currTokenType = makeToken (LexTokenType.DIV); return currTokenType; }
+<YYINITIAL> "%%" { currTokenType = makeToken (LexTokenType.PERCPERC); return currTokenType; }
 <YYINITIAL> "%" { currTokenType = makeToken (LexTokenType.PERC); return currTokenType; }
 <YYINITIAL> "&" { currTokenType = makeToken (LexTokenType.AND); return currTokenType; }
 <YYINITIAL> "|" { currTokenType = makeToken (LexTokenType.OR); return currTokenType; }

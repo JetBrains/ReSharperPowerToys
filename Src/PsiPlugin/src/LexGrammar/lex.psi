@@ -71,13 +71,13 @@ cSharpNamespaceName
 
 errorhandling definitionBlock
   :
-    PERC
-    PERC
+    PERCPERC
     encodingDefinition
     initBlock
     braceBlock?
     lexerOptionsBlock
     declarationOrInclude
+    PERCPERC
   ;
 
 encodingDefinition

@@ -43,6 +43,7 @@
   <Token name="OR" representation="|" />
   <Token name="XOR" representation="^" />
   <Token name="PERC" representation="%" />
+  <Token name="PERCPERC" representation="%%" />
   <Token name="DOLLAR" representation="$" />
   <Token name="EQEQ" representation="==" />
   <Token name="LE" representation="&lt;=" />

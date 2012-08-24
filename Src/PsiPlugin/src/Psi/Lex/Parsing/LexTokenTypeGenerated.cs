@@ -646,6 +646,21 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Lex.Parsing
     }
     public static readonly TokenNodeType PERC = new PercNodeType();
     #endregion
+    #region PERCPERC
+    private class PercpercNodeType : FixedTokenNodeType
+    {
+      public PercpercNodeType(): base ("PERCPERC", "%%") {}
+      public override LeafElementBase Create(IBuffer buffer, TreeOffset startOffset, TreeOffset endOffset)
+      {
+        return new PercpercTokenElement(this);
+      }
+    }
+    private class PercpercTokenElement : FixedTokenElement
+    {
+      public PercpercTokenElement(PercpercNodeType tokenNodeType) : base(tokenNodeType) { }
+    }
+    public static readonly TokenNodeType PERCPERC = new PercpercNodeType();
+    #endregion
     #region DOLLAR
     private class DollarNodeType : FixedTokenNodeType
     {
