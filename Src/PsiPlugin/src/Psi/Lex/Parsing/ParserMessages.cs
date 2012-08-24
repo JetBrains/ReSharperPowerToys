@@ -31,6 +31,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Lex.Parsing
     public static string IDS_FOLLOW_LIST = "follow list";
     public static string IDS_RANGE_EXPRESSION = "range expression";
     public static string IDS_SINGLE_EXPRESSION = "single expression";
+    public static string IDS_REGEXP_LIST_ITEM = "regexp list item";
+    public static string IDS_FILE_FULL_NAME = "file full name";
+    public static string IDS_PATH_ELEMENT = "path element";
+    public static string IDS_TOKEN_TYPE_USAGE = "token type usage";
     private const string IDS_EXPECTED_SYMBOL = "{0} expected";
     private const string IDS_EXPECTED_TWO_SYMBOLS = "{0} or {1} expected";
     private const string IDS_UNEXPECTED_TOKEN = "Unexpected token";

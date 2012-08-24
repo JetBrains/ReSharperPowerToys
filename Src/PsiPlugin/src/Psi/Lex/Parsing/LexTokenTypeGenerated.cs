@@ -439,7 +439,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Lex.Parsing
     #region QUOTE
     private class QuoteNodeType : FixedTokenNodeType
     {
-      public QuoteNodeType(): base ("QUOTE", "'") {}
+      public QuoteNodeType(): base ("QUOTE", "\\'") {}
       public override LeafElementBase Create(IBuffer buffer, TreeOffset startOffset, TreeOffset endOffset)
       {
         return new QuoteTokenElement(this);
@@ -451,20 +451,20 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Lex.Parsing
     }
     public static readonly TokenNodeType QUOTE = new QuoteNodeType();
     #endregion
-    #region DOUBLE_QUOT
-    private class DoubleQuotNodeType : FixedTokenNodeType
+    #region DOUBLE_QUOTE
+    private class DoubleQuoteNodeType : FixedTokenNodeType
     {
-      public DoubleQuotNodeType(): base ("DOUBLE_QUOT", "\"") {}
+      public DoubleQuoteNodeType(): base ("DOUBLE_QUOTE", "\\\"") {}
       public override LeafElementBase Create(IBuffer buffer, TreeOffset startOffset, TreeOffset endOffset)
       {
-        return new DoubleQuotTokenElement(this);
+        return new DoubleQuoteTokenElement(this);
       }
     }
-    private class DoubleQuotTokenElement : FixedTokenElement
+    private class DoubleQuoteTokenElement : FixedTokenElement
     {
-      public DoubleQuotTokenElement(DoubleQuotNodeType tokenNodeType) : base(tokenNodeType) { }
+      public DoubleQuoteTokenElement(DoubleQuoteNodeType tokenNodeType) : base(tokenNodeType) { }
     }
-    public static readonly TokenNodeType DOUBLE_QUOT = new DoubleQuotNodeType();
+    public static readonly TokenNodeType DOUBLE_QUOTE = new DoubleQuoteNodeType();
     #endregion
     #region QUEST
     private class QuestNodeType : FixedTokenNodeType
@@ -559,7 +559,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Lex.Parsing
     #region BACK_SLASH
     private class BackSlashNodeType : FixedTokenNodeType
     {
-      public BackSlashNodeType(): base ("BACK_SLASH", "\\") {}
+      public BackSlashNodeType(): base ("BACK_SLASH", "\\\\") {}
       public override LeafElementBase Create(IBuffer buffer, TreeOffset startOffset, TreeOffset endOffset)
       {
         return new BackSlashTokenElement(this);
@@ -570,6 +570,21 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Lex.Parsing
       public BackSlashTokenElement(BackSlashNodeType tokenNodeType) : base(tokenNodeType) { }
     }
     public static readonly TokenNodeType BACK_SLASH = new BackSlashNodeType();
+    #endregion
+    #region SIMPLE_BACK_SLASH
+    private class SimpleBackSlashNodeType : FixedTokenNodeType
+    {
+      public SimpleBackSlashNodeType(): base ("SIMPLE_BACK_SLASH", "\\") {}
+      public override LeafElementBase Create(IBuffer buffer, TreeOffset startOffset, TreeOffset endOffset)
+      {
+        return new SimpleBackSlashTokenElement(this);
+      }
+    }
+    private class SimpleBackSlashTokenElement : FixedTokenElement
+    {
+      public SimpleBackSlashTokenElement(SimpleBackSlashNodeType tokenNodeType) : base(tokenNodeType) { }
+    }
+    public static readonly TokenNodeType SIMPLE_BACK_SLASH = new SimpleBackSlashNodeType();
     #endregion
     #region AND
     private class AndNodeType : FixedTokenNodeType
