@@ -588,8 +588,78 @@ tokenTypeName
     IDENTIFIER
   ;
 
+
+//////////from csharp.psi
+
 errorhandling cSharpBlock
   :
-//todo
+	(cSharpToken | csharpIdentifier | csharpKeyword)*
+  ;
+
+cSharpToken
+  :    IDENTIFIER?
+    | INTEGER_LITERAL
+    | CHARACTER_LITERAL
+    | STRING_LITERAL
+    | NAMESPACE_KEYWORD
+    | PUBLIC_KEYWORD
+    | USING_KEYWORD
+    | VIRTUAL_KEYWORD
+    | LPARENTH
+    | RPARENTH
+    | LBRACE
+    | LBRACKET
+    | RBRACKET
+    | SEMICOLON
+    | COMMA
+    | DOT
+    | EQ
+    | GT
+    | LT
+    | EXCL
+    | TILDE
+    | QUEST
+    | COLON
+    | PLUS
+    | MINUS
+    | ASTERISK
+    | DIV
+    | AND
+    | OR
+    | XOR
+    | EQEQ
+    | LE
+    | GE
+    | NE
+    | ANDAND
+    | OROR
+    | PLUSPLUS
+    | MINUSMINUS
+    | LTLT
+    | GTGT
+    | PLUSEQ
+    | MINUSEQ
+    | ASTERISKEQ
+    | DIVEQ
+    | ANDEQ
+    | OREQ
+    | XOREQ
+    | PERCEQ
+    | LTLTEQ
+    | GTGTEQ
+    | ARROW
+    | DOUBLE_QUEST
+    | DOUBLE_COLON
+    
+  ;
+
+csharpIdentifier
+  :
     IDENTIFIER
+  ;
+
+csharpKeyword
+  :
+    RETURN_KEYWORD
+    | NULL_KEYWORD
   ;

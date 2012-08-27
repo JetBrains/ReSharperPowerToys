@@ -11,6 +11,8 @@
   <Keyword name="PUBLIC_KEYWORD" representation="public" />
   <Keyword name="CLASS_KEYWORD" representation="class" />
   <Keyword name="NAMESPACE_KEYWORD" representation="namespace" />
+  <Keyword name="RETURN_KEYWORD" representation="return" />
+  <Keyword name="NULL_KEYWORD" representation="null" />
 
   <Token name="LPARENTH" representation="(" />
   <Token name="RPARENTH" representation=")" />

@@ -180,6 +180,36 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Lex.Parsing
     }
     public static readonly TokenNodeType NAMESPACE_KEYWORD = new NamespaceKeywordNodeType();
     #endregion
+    #region RETURN_KEYWORD
+    private class ReturnKeywordNodeType : KeywordTokenNodeType
+    {
+      public ReturnKeywordNodeType(): base ("RETURN_KEYWORD", "return") {}
+      public override LeafElementBase Create(IBuffer buffer, TreeOffset startOffset, TreeOffset endOffset)
+      {
+        return new ReturnKeywordTokenElement(this);
+      }
+    }
+    private class ReturnKeywordTokenElement : FixedTokenElement
+    {
+      public ReturnKeywordTokenElement(ReturnKeywordNodeType tokenNodeType) : base(tokenNodeType) { }
+    }
+    public static readonly TokenNodeType RETURN_KEYWORD = new ReturnKeywordNodeType();
+    #endregion
+    #region NULL_KEYWORD
+    private class NullKeywordNodeType : KeywordTokenNodeType
+    {
+      public NullKeywordNodeType(): base ("NULL_KEYWORD", "null") {}
+      public override LeafElementBase Create(IBuffer buffer, TreeOffset startOffset, TreeOffset endOffset)
+      {
+        return new NullKeywordTokenElement(this);
+      }
+    }
+    private class NullKeywordTokenElement : FixedTokenElement
+    {
+      public NullKeywordTokenElement(NullKeywordNodeType tokenNodeType) : base(tokenNodeType) { }
+    }
+    public static readonly TokenNodeType NULL_KEYWORD = new NullKeywordNodeType();
+    #endregion
 
     #region LPARENTH
     private class LparenthNodeType : FixedTokenNodeType
