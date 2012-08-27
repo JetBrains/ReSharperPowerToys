@@ -419,8 +419,11 @@
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Coll_elemNavigator.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\CSharpBlockNavigator.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\CSharpClassNameNavigator.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Lex\Tree\CsharpIdentifierNavigator.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Lex\Tree\CsharpKeywordNavigator.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\CSharpNamespaceNameNavigator.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\CSharpNamespaceNavigator.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Lex\Tree\CSharpTokenNavigator.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\DeclarationOrIncludeNavigator.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\DefinitionBlockNavigator.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\DigitIntervalNavigator.cs" />
@@ -451,8 +454,11 @@
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\IColl_elem.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\ICSharpBlock.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\ICSharpClassName.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Lex\Tree\ICsharpIdentifier.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Lex\Tree\ICsharpKeyword.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\ICSharpNamespace.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\ICSharpNamespaceName.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Lex\Tree\ICSharpToken.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\IDeclarationOrInclude.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\IDefinitionBlock.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\IDigitInterval.cs" />
@@ -496,8 +502,11 @@
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\Coll_elem.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\CSharpBlock.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\CSharpClassName.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\CsharpIdentifier.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\CsharpKeyword.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\CSharpNamespace.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\CSharpNamespaceName.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\CSharpToken.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\DeclarationOrInclude.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\DefinitionBlock.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\DigitInterval.cs" />

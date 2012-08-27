@@ -145,6 +145,8 @@ END_LINE={NOT_NEW_LINE}*(({PP_NEW_LINE_PAIR})|({PP_NEW_LINE_CHAR}))
 <YYINITIAL> "class" { return currTokenType = makeToken(LexTokenType.CLASS_KEYWORD); }
 <YYINITIAL> "namespace" { return currTokenType = makeToken(LexTokenType.NAMESPACE_KEYWORD); }
 <YYINITIAL> "include" { return currTokenType = makeToken(LexTokenType.INCLUDE_KEYWORD); }
+<YYINITIAL> "return" { return currTokenType = makeToken(LexTokenType.RETURN_KEYWORD); }
+<YYINITIAL> "null" { return currTokenType = makeToken(LexTokenType.NULL_KEYWORD); }
 
 <YYINITIAL> "{" { currTokenType = makeToken (LexTokenType.LBRACE); return currTokenType; }
 <YYINITIAL> "}" { currTokenType = makeToken (LexTokenType.RBRACE); return currTokenType; }
