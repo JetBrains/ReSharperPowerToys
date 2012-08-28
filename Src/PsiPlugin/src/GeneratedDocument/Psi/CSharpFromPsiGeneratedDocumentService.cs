@@ -15,7 +15,7 @@ using JetBrains.ReSharper.PsiPlugin.PsiGrammar;
 using JetBrains.Text;
 using JetBrains.Util;
 
-namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
+namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument.Psi
 {
   [GeneratedDocumentService(typeof(PsiProjectFileType))]
   class CSharpFromPsiGeneratedDocumentService : IGeneratedDocumentService

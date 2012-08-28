@@ -7,7 +7,7 @@ using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Resolve;
 using JetBrains.ReSharper.Psi.Web.Generation;
 
-namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
+namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument.Psi
 {
   internal class CSharpFromPsiGenerator
   {

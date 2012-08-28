@@ -73,6 +73,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Lex.Parsing
       if (lexFile != null)
       {
         lexFile.SetSourceFile(SourceFile);
+        lexFile.CollectOptions();
         //lexFile.CreateRulesSymbolTable();
         //lexFile.CreateOptionSymbolTable(isFileReal);
       }
