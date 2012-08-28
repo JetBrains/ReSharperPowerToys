@@ -10,7 +10,7 @@ using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.PsiGrammar;
 
-namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument
+namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument.Psi
 {
   [ProjectFileType(typeof(PsiProjectFileType))]
   class CSharpInPsiCustomModificationHandler : ICSharpCustomModificationHandler

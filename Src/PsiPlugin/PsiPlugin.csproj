@@ -137,7 +137,11 @@
     <Compile Include="src\Cache\PsiOptionSymbol.cs" />
     <Compile Include="src\Cache\PsiRuleSymbol.cs" />
     <Compile Include="src\CodeInspections\Lex\ErrorElementHighlighting.cs" />
+    <Compile Include="src\CodeInspections\Lex\Highlighting\LexCommentHighlighting.cs" />
     <Compile Include="src\CodeInspections\Lex\Highlighting\LexErrorElementHighlighting.cs" />
+    <Compile Include="src\CodeInspections\Lex\Highlighting\LexKeywordHighlighting.cs" />
+    <Compile Include="src\CodeInspections\Lex\Highlighting\LexStringLiteralHighlighting.cs" />
+    <Compile Include="src\CodeInspections\Lex\KeywordHighlightingStage.cs" />
     <Compile Include="src\CodeInspections\Lex\LexDaemonStageBase.cs" />
     <Compile Include="src\CodeInspections\Lex\LexDaemonStageProcessBase.cs" />
     <Compile Include="src\CodeInspections\Lex\LexIncrementalDaemonStageProcessBase.cs" />
@@ -197,9 +201,12 @@
     <Compile Include="src\Formatter\PsiFormattingVisitor.cs" />
     <Compile Include="src\Formatter\PsiIndentingStage.cs" />
     <Compile Include="src\Formatter\PsiIndentVisitor.cs" />
-    <Compile Include="src\GeneratedDocument\CSharpFromPsiGeneratedDocumentService.cs" />
-    <Compile Include="src\GeneratedDocument\CSharpFromPsiGenerator.cs" />
-    <Compile Include="src\GeneratedDocument\CSharpInPsiCustomModificationHandler.cs" />
+    <Compile Include="src\GeneratedDocument\Lex\CSharpFromLexGeneratedDocumentService.cs" />
+    <Compile Include="src\GeneratedDocument\Lex\CSharpFromLexGenerator.cs" />
+    <Compile Include="src\GeneratedDocument\Lex\CSharpInLexCustomModificationHandler.cs" />
+    <Compile Include="src\GeneratedDocument\Psi\CSharpFromPsiGeneratedDocumentService.cs" />
+    <Compile Include="src\GeneratedDocument\Psi\CSharpFromPsiGenerator.cs" />
+    <Compile Include="src\GeneratedDocument\Psi\CSharpInPsiCustomModificationHandler.cs" />
     <Compile Include="src\CodeInspections\Psi\PsiFileStructureExplorer.cs" />
     <Compile Include="src\CodeInspections\Psi\KeywordHighlightingStage.cs" />
     <Compile Include="src\CodeInspections\Psi\PsiDaemonStageBase.cs" />
@@ -336,6 +343,7 @@
     <Compile Include="src\Psi\Lex\Tree\CommentType.cs" />
     <Compile Include="src\Psi\Lex\Tree\ILexFile.cs" />
     <Compile Include="src\Psi\Lex\Tree\ILexIdentifier.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Impl\ChildRole.cs" />
     <Compile Include="src\Psi\Lex\Tree\Impl\Comment.cs" />
     <Compile Include="src\Psi\Lex\Tree\Impl\Identifier.cs" />
     <Compile Include="src\Psi\Lex\Tree\Impl\LexGenericToken.cs" />

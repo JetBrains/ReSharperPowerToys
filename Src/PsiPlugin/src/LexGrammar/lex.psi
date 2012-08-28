@@ -40,9 +40,12 @@ options
 {
   stubBase="LexFileElement";
 }
+extras{
+	get {methodName = "DefinitionBlock" path = <lexFile:LEX_DEFINITION> };
+}
   :
     usingList
-    definitionBlock
+    definitionBlock<LEX_DEFINITION>
     lexingBlock
   ;
 
@@ -69,13 +72,17 @@ cSharpNamespaceName
     IDENTIFIER
   ;
 
+
 errorhandling definitionBlock
+extras{
+	get {methodName = "Options" path = <definitionBlock:LEX_OPTIONS> };
+}
   :
     PERCPERC
     encodingDefinition
     initBlock
     braceBlock?
-    lexerOptionsBlock
+    lexerOptionsBlock<LEX_OPTIONS>
     declarationOrInclude
     PERCPERC
   ;
@@ -124,9 +131,12 @@ errorhandling lexerOption
   ;
 
 namespaceLexerOption
+extras{
+	get {methodName = "Namespace" path = <namespaceLexerOption:LEX_NAMESPACE> };
+}
   :
     NAMESPACE_KEYWORD
-    cSharpNamespace
+    cSharpNamespace<LEX_NAMESPACE>
   ;
 
 classLexerOption

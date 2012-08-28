@@ -19,6 +19,17 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Lex.Parsing
     {
       OurKeywordTextMap[LexTokenType.USING_KEYWORD] = "using";
       OurKeywordTextMap[LexTokenType.INIT_KEYWORD] = "init";
+      OurKeywordTextMap[LexTokenType.INCLUDE_KEYWORD] = "include";
+      OurKeywordTextMap[LexTokenType.EOFVAL_KEYWORD] = "eofval";
+      OurKeywordTextMap[LexTokenType.TYPE_KEYWORD] = "type";
+      OurKeywordTextMap[LexTokenType.VIRTUAL_KEYWORD] = "virtual";
+      OurKeywordTextMap[LexTokenType.FUNCTION_KEYWORD] = "function";
+      OurKeywordTextMap[LexTokenType.IMPLEMENTS_KEYWORD] = "implements";
+      OurKeywordTextMap[LexTokenType.PUBLIC_KEYWORD] = "public";
+      OurKeywordTextMap[LexTokenType.CLASS_KEYWORD] = "class";
+      OurKeywordTextMap[LexTokenType.NAMESPACE_KEYWORD] = "namespace";
+      OurKeywordTextMap[LexTokenType.RETURN_KEYWORD] = "return";
+      OurKeywordTextMap[LexTokenType.NULL_KEYWORD] = "null";
 
       OurTokenTextMap[LexTokenType.LPARENTH] = "(";
       OurTokenTextMap[LexTokenType.RPARENTH] = ")";
