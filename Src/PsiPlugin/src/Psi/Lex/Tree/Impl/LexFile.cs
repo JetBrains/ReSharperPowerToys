@@ -32,25 +32,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Lex.Tree.Impl
 
     public void CollectOptions()
     {
-      var definitions = DefinitionBlock;
-      var options = definitions.Options;
-      var child = options.FirstChild;
-      while(child != null)
-      {
-        if(child is ILexerOption)
-        {
-          var node = child.FirstChild;
-          while(node != null)
-          {
-            if(node is INamespaceLexerOption)
-            {
-              myNamespace = (node as INamespaceLexerOption).Namespace.GetText();
-            }
-            node = node.NextSibling;
-          }
-        }
-        child = child.NextSibling;
-      }
     }
   }
 }

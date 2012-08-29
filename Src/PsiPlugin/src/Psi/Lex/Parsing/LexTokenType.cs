@@ -38,7 +38,18 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Lex.Parsing
         new NodeType[]
         {
           USING_KEYWORD,
-          INIT_KEYWORD
+          INIT_KEYWORD,
+          INCLUDE_KEYWORD,
+          EOFVAL_KEYWORD,
+          VIRTUAL_KEYWORD,
+          FUNCTION_KEYWORD,
+          IMPLEMENTS_KEYWORD,
+          PUBLIC_KEYWORD,
+          CLASS_KEYWORD,
+          NAMESPACE_KEYWORD,
+          RETURN_KEYWORD,
+          NULL_KEYWORD,
+          STATE_KEYWORD
         }
         );
       LITERALS = new NodeTypeSet(

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 using JetBrains.Application.Settings;
 using JetBrains.ReSharper.Daemon;
@@ -43,7 +44,9 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi
       public override void VisitNode(ITreeNode node, IHighlightingConsumer consumer)
       {
         String s = node.GetText();
-        if (PsiLexer.IsKeyword(s))
+        //if (PsiLexer.IsKeyword(s))
+        var keywordToken = node as ITokenNode;
+        if ((keywordToken != null) && (PsiTokenType.KEYWORDS.Contains(keywordToken.GetTokenType())))
         {
           AddHighlighting(consumer, node);
         }

@@ -13,6 +13,7 @@
   <Keyword name="NAMESPACE_KEYWORD" representation="namespace" />
   <Keyword name="RETURN_KEYWORD" representation="return" />
   <Keyword name="NULL_KEYWORD" representation="null" />
+  <Keyword name="STATE_KEYWORD" representation="state" />
 
   <Token name="LPARENTH" representation="(" />
   <Token name="RPARENTH" representation=")" />

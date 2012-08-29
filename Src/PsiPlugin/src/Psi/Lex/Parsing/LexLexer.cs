@@ -30,6 +30,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Lex.Parsing
       OurKeywordTextMap[LexTokenType.NAMESPACE_KEYWORD] = "namespace";
       OurKeywordTextMap[LexTokenType.RETURN_KEYWORD] = "return";
       OurKeywordTextMap[LexTokenType.NULL_KEYWORD] = "null";
+      OurKeywordTextMap[LexTokenType.STATE_KEYWORD] = "state";
 
       OurTokenTextMap[LexTokenType.LPARENTH] = "(";
       OurTokenTextMap[LexTokenType.RPARENTH] = ")";

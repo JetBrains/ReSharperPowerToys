@@ -210,6 +210,21 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Lex.Parsing
     }
     public static readonly TokenNodeType NULL_KEYWORD = new NullKeywordNodeType();
     #endregion
+    #region STATE_KEYWORD
+    private class StateKeywordNodeType : KeywordTokenNodeType
+    {
+      public StateKeywordNodeType(): base ("STATE_KEYWORD", "state") {}
+      public override LeafElementBase Create(IBuffer buffer, TreeOffset startOffset, TreeOffset endOffset)
+      {
+        return new StateKeywordTokenElement(this);
+      }
+    }
+    private class StateKeywordTokenElement : FixedTokenElement
+    {
+      public StateKeywordTokenElement(StateKeywordNodeType tokenNodeType) : base(tokenNodeType) { }
+    }
+    public static readonly TokenNodeType STATE_KEYWORD = new StateKeywordNodeType();
+    #endregion
 
     #region LPARENTH
     private class LparenthNodeType : FixedTokenNodeType
