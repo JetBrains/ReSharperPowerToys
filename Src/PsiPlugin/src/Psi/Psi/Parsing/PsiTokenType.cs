@@ -37,10 +37,19 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing
           ERRORHANDLING,
           EXTRAS,
           GET,
-          INTERFACE,
+          GETTER,
           OPTIONS,
+          INTERFACE,
+          INTERFACES,
+          ISCACHED,
           PRIVATE,
-          PATHS
+          PATHS,
+          RETURN_TYPE,
+          ROLE_KEYWORD,
+          CACHED,
+          NULL_KEYWORD,
+          LIST_KEYWORD,
+          SEP_KEYWORD
         }
         );
       LITERALS = new NodeTypeSet(

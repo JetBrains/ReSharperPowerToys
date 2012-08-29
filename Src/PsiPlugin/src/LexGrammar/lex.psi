@@ -74,65 +74,74 @@ cSharpNamespaceName
 
 
 errorhandling definitionBlock
-extras{
-	get {methodName = "Options" path = <definitionBlock:LEX_OPTIONS> };
-}
   :
     PERCPERC
-    encodingDefinition
-    initBlock
-    braceBlock?
-    lexerOptionsBlock<LEX_OPTIONS>
-    declarationOrInclude
+    (
+      (
+        PERC
+        (
+          encodingDefinition
+          | initBlock
+          | braceBlock
+          | lexerOption
+          | includeStatement
+          | stateDeclaration
+        )
+      )
+      | tokenDeclaration
+    )*
     PERCPERC
+  ;
+
+stateDeclaration
+  :
+    STATE_KEYWORD
+    stateDeclaredName
+  ;
+
+stateDeclaredName
+  :
+    IDENTIFIER
   ;
 
 encodingDefinition
   :
-    PERC
     IDENTIFIER
   ;
 
 initBlock
   :
-	PERC
-	INIT_KEYWORD
-	LBRACE
-	cSharpBlock
-	PERC
-	INIT_KEYWORD
-	RBRACE
+    INIT_KEYWORD
+    LBRACE
+    cSharpBlock
+    PERC
+    INIT_KEYWORD
+    RBRACE
   ;
 
 braceBlock
   :
-    PERC
     LBRACE
+    cSharpBlock?
     PERC
     RBRACE
   ;
 
-lexerOptionsBlock
-  :
-	lexerOption*
-  ;
-
 errorhandling lexerOption
   :
-    PERC
     (namespaceLexerOption
-    | classLexerOption
-    | classModifierLexerOption
-    | implementsLexerOption
-    | functionLexerOption
-    | functionModifierLexerOption
-    | typeLexerOption
-    | eofvalLexerOption)
+| classLexerOption
+| classModifierLexerOption
+| implementsLexerOption
+| functionLexerOption
+| functionModifierLexerOption
+| typeLexerOption
+| eofvalLexerOption)
   ;
 
 namespaceLexerOption
 extras{
-	get {methodName = "Namespace" path = <namespaceLexerOption:LEX_NAMESPACE> };
+  get {methodName = "Namespace" path = <namespaceLexerOption:LEX_NAMESPACE> };
 }
   :
     NAMESPACE_KEYWORD
@@ -202,7 +211,7 @@ errorhandling tokenDeclaration
   :
     tokenDeclaredName
     EQ
-    firstLexingExpression
+    (firstLexingExpression | unicodeChar)
   ;
 
 firstLexingExpression
@@ -218,18 +227,12 @@ firstLexingExpression
 
 firstLexingExpressionItem
   :
-    parenExpression
-      | char
-      | simpleSequence
-      | regexp
-      | QUOTE
-      | BACK_SLASH
-      | DOUBLE_QUOTE
+    simpleSequence
   ;
 
 simpleSequence
   :
-    ((tokenTypeUsage | STRING_LITERAL | parenExpression | QUOTE | BACK_SLASH | BACK_QUOTE) qualifier?)*
+    ((tokenTypeUsage | STRING_LITERAL | parenExpression | QUOTE | BACK_SLASH | BACK_QUOTE | SHARP | DOUBLE_QUOTE | regexp | SIMPLE_BACK_SLASH specialChar) qualifier?)*
   ;
 
 tokenDeclaredName
@@ -251,7 +254,7 @@ unicodeChar
 
 specialChar
   :
-    (BACK_SLASH | BACK_QUOTE | AT | QUOTE | SHARP | DIV | DOUBLE_QUOTE)
+    (BACK_SLASH | BACK_QUOTE | AT | QUOTE | SHARP | DIV | DOUBLE_QUOTE | PERC | ASTERISK | QUEST | DOUBLE_QUEST | RPARENTH | LPARENTH)
   ;
 
 charId
@@ -277,7 +280,7 @@ sequence
 
 simpleExpression
   :
-    (STRING_LITERAL | INTEGER_LITERAL | tokenTypeUsage | parenExpression | regexp | IDENTIFIER | quotedChar | BACK_SLASH | QUOTE | DOUBLE_QUOTE | AT)
+    (STRING_LITERAL | INTEGER_LITERAL | CHARACTER_LITERAL | tokenTypeUsage | parenExpression | regexp | IDENTIFIER | quotedChar | BACK_SLASH | QUOTE | DOUBLE_QUOTE | AT | LT GT? | GT | MINUS | MINUSMINUS | EQ | PERC | COLON |  SHARP | DIV | AND SHARP IDENTIFIER SEMICOLON)
     qualifier?
   ;
 
@@ -332,21 +335,21 @@ RE_expression
 simple_RE
   :
     nondupl_RE+
-    //RE_dupl_symbol?
+//RE_dupl_symbol?
   ;
 nondupl_RE
   :
     (
       SIMPLE_BACK_SLASH
-      (
-        LPARENTH
+      ( /*LPARENTH
         RE_expression
         BACK_SLASH
         RPARENTH
         | LPARENTH
-          BACK_SLASH
-          RPARENTH
-        | INTEGER_LITERAL
+        BACK_SLASH
+        RPARENTH
+        |*/
+        INTEGER_LITERAL
         | specialChar
         | IDENTIFIER
       )?
@@ -356,6 +359,11 @@ nondupl_RE
       | QUOTE
       | DOUBLE_QUOTE
       | SHARP
+      | GT
+      | LT GT?
+      | MINUS
+      | DIV
+      | PERC
     )
   ;
 
@@ -380,6 +388,7 @@ errorhandling regexpListItem
     | bracket_expression
     | interval
     | digitInterval
+    | tokenTypeUsage
   ;
 
 digitInterval
@@ -411,8 +420,12 @@ quotedChar
       | SHARP
       | DIV
       | AT
+      | PERC
       | IDENTIFIER
-    )
+      | DOUBLE_QUEST
+      | RPARENTH
+      | LPARENTH
+    )?
   ;
 
 RE_dupl_symbol
@@ -543,7 +556,6 @@ regExpClass
 
 errorhandling includeStatement
   :
-    PERC
     INCLUDE_KEYWORD
     pathId
   ;
@@ -551,7 +563,7 @@ errorhandling includeStatement
 pathId
   :
     (pathElement)
-    (DIV pathElement)*
+    ((DIV | SIMPLE_BACK_SLASH) pathElement)*
     DOT
     fileExt
   ;
@@ -575,16 +587,35 @@ errorhandling lexingBlock
 makeTokenBlock
   :
     state
-    ( LBRACE tokenTypeName RBRACE | STRING_LITERAL)
+    (
+      (
+        LBRACE
+        tokenTypeName
+        RBRACE
+        | STRING_LITERAL
+        | DOT
+      )
+      (
+        OR
+        (
+          LBRACE
+          tokenTypeName
+          RBRACE
+          | STRING_LITERAL
+          | DOT
+        )
+      )*
+    )
     LBRACE
     cSharpBlock
-    RBRACE    
+    RBRACE
   ;
 
 state
   :
     LT
     stateName
+    (COMMA stateName)*
     GT
   ;
 
@@ -603,64 +634,70 @@ tokenTypeName
 
 errorhandling cSharpBlock
   :
-	(cSharpToken | csharpIdentifier | csharpKeyword)*
+    (cSharpToken | csharpIdentifier | csharpKeyword | csharpBraceExpression)*
+  ;
+
+csharpBraceExpression
+  :
+    LBRACE
+    cSharpBlock
+    RBRACE
   ;
 
 cSharpToken
   :    IDENTIFIER?
-    | INTEGER_LITERAL
-    | CHARACTER_LITERAL
-    | STRING_LITERAL
-    | NAMESPACE_KEYWORD
-    | PUBLIC_KEYWORD
-    | USING_KEYWORD
-    | VIRTUAL_KEYWORD
-    | LPARENTH
-    | RPARENTH
-    | LBRACE
-    | LBRACKET
-    | RBRACKET
-    | SEMICOLON
-    | COMMA
-    | DOT
-    | EQ
-    | GT
-    | LT
-    | EXCL
-    | TILDE
-    | QUEST
-    | COLON
-    | PLUS
-    | MINUS
-    | ASTERISK
-    | DIV
-    | AND
-    | OR
-    | XOR
-    | EQEQ
-    | LE
-    | GE
-    | NE
-    | ANDAND
-    | OROR
-    | PLUSPLUS
-    | MINUSMINUS
-    | LTLT
-    | GTGT
-    | PLUSEQ
-    | MINUSEQ
-    | ASTERISKEQ
-    | DIVEQ
-    | ANDEQ
-    | OREQ
-    | XOREQ
-    | PERCEQ
-    | LTLTEQ
-    | GTGTEQ
-    | ARROW
-    | DOUBLE_QUEST
-    | DOUBLE_COLON
-    
+| INTEGER_LITERAL
+| CHARACTER_LITERAL
+| STRING_LITERAL
+| NAMESPACE_KEYWORD
+| PUBLIC_KEYWORD
+| USING_KEYWORD
+| VIRTUAL_KEYWORD
+| LPARENTH
+| RPARENTH
+| LBRACKET
+| RBRACKET
+| SEMICOLON
+| COMMA
+| DOT
+| EQ
+| GT
+| LT
+| EXCL
+| TILDE
+| QUEST
+| COLON
+| PLUS
+| MINUS
+| ASTERISK
+| DIV
+| AND
+| OR
+| XOR
+| EQEQ
+| LE
+| GE
+| NE
+| ANDAND
+| OROR
+| PLUSPLUS
+| MINUSMINUS
+| LTLT
+| GTGT
+| PLUSEQ
+| MINUSEQ
+| ASTERISKEQ
+| DIVEQ
+| ANDEQ
+| OREQ
+| XOREQ
+| PERCEQ
+| LTLTEQ
+| GTGTEQ
+| ARROW
+| DOUBLE_QUEST
+| DOUBLE_COLON
+| SHARP
   ;
 
 csharpIdentifier

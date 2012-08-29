@@ -426,6 +426,7 @@
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Collating_symbolNavigator.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Coll_elemNavigator.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\CSharpBlockNavigator.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Lex\Tree\CsharpBraceExpressionNavigator.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\CSharpClassNameNavigator.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\CsharpIdentifierNavigator.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\CsharpKeywordNavigator.cs" />
@@ -461,6 +462,7 @@
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\ICollating_symbol.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\IColl_elem.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\ICSharpBlock.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Lex\Tree\ICsharpBraceExpression.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\ICSharpClassName.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\ICsharpIdentifier.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\ICsharpKeyword.cs" />
@@ -487,7 +489,6 @@
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\IInitBlock.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\IInterval.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\ILexerOption.cs" />
-    <Compile Include="src\Psi\Lex\Tree\Lex\Tree\ILexerOptionsBlock.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\ILexFile.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\ILexingBlock.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\ILexingExpression.cs" />
@@ -509,6 +510,7 @@
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\Collating_symbol.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\Coll_elem.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\CSharpBlock.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\CsharpBraceExpression.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\CSharpClassName.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\CsharpIdentifier.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\CsharpKeyword.cs" />
@@ -537,7 +539,6 @@
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\InitBlock.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\Interval.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\LexerOption.cs" />
-    <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\LexerOptionsBlock.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\LexFile.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\LexingBlock.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\LexingExpression.cs" />
@@ -568,6 +569,8 @@
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\SpecialChar.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\Start_range.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\State.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\StateDeclaration.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\StateDeclaredName.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\StateName.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\TokenDeclaration.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\TokenDeclaredName.cs" />
@@ -605,6 +608,8 @@
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\ISpecialChar.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\IStart_range.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\IState.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Lex\Tree\IStateDeclaration.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Lex\Tree\IStateDeclaredName.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\IStateName.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\ITokenDeclaration.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\ITokenDeclaredName.cs" />
@@ -615,7 +620,6 @@
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\IUsingItem.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\IUsingList.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\LexerOptionNavigator.cs" />
-    <Compile Include="src\Psi\Lex\Tree\Lex\Tree\LexerOptionsBlockNavigator.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\LexFileNavigator.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\LexingBlockNavigator.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\LexingExpressionNavigator.cs" />
@@ -645,6 +649,8 @@
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Single_expressionNavigator.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\SpecialCharNavigator.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Start_rangeNavigator.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Lex\Tree\StateDeclarationNavigator.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Lex\Tree\StateDeclaredNameNavigator.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\StateNameNavigator.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\StateNavigator.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\TokenDeclarationNavigator.cs" />
