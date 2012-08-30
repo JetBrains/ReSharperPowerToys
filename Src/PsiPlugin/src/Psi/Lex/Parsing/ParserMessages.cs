@@ -36,6 +36,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Lex.Parsing
     public static string IDS_PATH_ELEMENT = "path element";
     public static string IDS_TOKEN_TYPE_USAGE = "token type usage";
     public static string IDS_CSHARP_KEYWORD = "csharp keyword";
+    public static string IDS_PARSE_ITEM = "parse item";
     private const string IDS_EXPECTED_SYMBOL = "{0} expected";
     private const string IDS_EXPECTED_TWO_SYMBOLS = "{0} or {1} expected";
     private const string IDS_UNEXPECTED_TOKEN = "Unexpected token";
