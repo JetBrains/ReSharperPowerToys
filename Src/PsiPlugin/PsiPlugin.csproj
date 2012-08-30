@@ -337,9 +337,6 @@
     <Compile Include="src\Gen\Psi\Psi\Tree\VariableNameNavigator.cs" />
     <Compile Include="src\Gen\Psi\Test\Lex\PsiGeneratedTest.cs" />
     <Compile Include="src\Gen\Psi\Test\Psi\PsiGeneratedTest.cs" />
-    <Compile Include="src\Psi\Lex\Parsing\Lex\ErrorMessages.cs" />
-    <Compile Include="src\Psi\Lex\Parsing\Lex\LexParserGenerated.cs" />
-    <Compile Include="src\Psi\Lex\Parsing\Lex\TokenBitsets.cs" />
     <Compile Include="src\Psi\Lex\Tree\CommentType.cs" />
     <Compile Include="src\Psi\Lex\Tree\ILexFile.cs" />
     <Compile Include="src\Psi\Lex\Tree\ILexIdentifier.cs" />
@@ -549,6 +546,9 @@
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\Nondupl_RE.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\Nonmatching_list.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\ParenExpression.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\ParseItem.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\ParseSequense.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\ParsingStatement.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\PathElement.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\PathId.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Impl\Qualifier.cs" />
@@ -588,6 +588,9 @@
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\INonmatching_list.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\IntervalNavigator.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\IParenExpression.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Lex\Tree\IParseItem.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Lex\Tree\IParseSequense.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Lex\Tree\IParsingStatement.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\IPathElement.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\IPathId.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\IQualifier.cs" />
@@ -630,6 +633,9 @@
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Nondupl_RENavigator.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\Nonmatching_listNavigator.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\ParenExpressionNavigator.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Lex\Tree\ParseItemNavigator.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Lex\Tree\ParseSequenseNavigator.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Lex\Tree\ParsingStatementNavigator.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\PathElementNavigator.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\PathIdNavigator.cs" />
     <Compile Include="src\Psi\Lex\Tree\Lex\Tree\QualifierNavigator.cs" />

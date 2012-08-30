@@ -14,6 +14,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Lex.Parsing
     protected static readonly Hashtable keywords = new Hashtable();
     protected static readonly Hashtable ourTokenTypeToText = new Hashtable();
     private int myBraces = 0;
+    private int myParen = 0;
 
     private static readonly NodeTypeSet MAKE_DIVIDE = new NodeTypeSet
       (

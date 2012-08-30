@@ -117,7 +117,6 @@ UNFINISHED_VERBATIM_STRING_LITERAL=(@\"{VERBATIM_STRING_LITERAL_CHARACTER}*)
 ERROR_REGULAR_STRING_LITERAL=(\"{REGULAR_STRING_LITERAL_CHARACTER}*{BAD_ESCAPE_SEQUENCE}({BAD_ESCAPE_SEQUENCE}|{REGULAR_STRING_LITERAL_CHARACTER})*\"?)
 ERROR_STRING_LITERAL=({UNFINISHED_REGULAR_STRING_LITERAL}|{UNFINISHED_VERBATIM_STRING_LITERAL}|{ERROR_REGULAR_STRING_LITERAL})
 
-
 NOT_NUMBER_SIGN=[^#]
 
 WHITE_SPACE=({WHITE_SPACE_CHAR}+)
@@ -125,17 +124,18 @@ END_LINE={NOT_NEW_LINE}*(({PP_NEW_LINE_PAIR})|({PP_NEW_LINE_CHAR}))
 
 
 %state YY_IN_BRACE_BLOCK
+%state YY_IN_PAREN_EXPRESSION
 
 %%
 
-<YYINITIAL> {NEW_LINE_PAIR} { currTokenType = makeToken (LexTokenType.NEW_LINE); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> {NEW_LINE_CHAR} { currTokenType = makeToken (LexTokenType.NEW_LINE); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> {NEW_LINE_PAIR} { currTokenType = makeToken (LexTokenType.NEW_LINE); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> {NEW_LINE_CHAR} { currTokenType = makeToken (LexTokenType.NEW_LINE); return currTokenType; }
 
-<YYINITIAL,YY_IN_BRACE_BLOCK> {DELIMITED_COMMENT}  { currTokenType = makeToken (LexTokenType.C_STYLE_COMMENT); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> {SINGLE_LINE_COMMENT}  { currTokenType = makeToken (LexTokenType.END_OF_LINE_COMMENT); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> {UNFINISHED_DELIMITED_COMMENT} { currTokenType = makeToken (LexTokenType.C_STYLE_COMMENT); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> {DELIMITED_COMMENT}  { currTokenType = makeToken (LexTokenType.C_STYLE_COMMENT); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> {SINGLE_LINE_COMMENT}  { currTokenType = makeToken (LexTokenType.END_OF_LINE_COMMENT); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> {UNFINISHED_DELIMITED_COMMENT} { currTokenType = makeToken (LexTokenType.C_STYLE_COMMENT); return currTokenType; }
 
-<YYINITIAL,YY_IN_BRACE_BLOCK> {WHITE_SPACE}  { currTokenType = makeToken(LexTokenType.WHITE_SPACE); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> {WHITE_SPACE}  { currTokenType = makeToken(LexTokenType.WHITE_SPACE); return currTokenType; }
 
 <YYINITIAL,YY_IN_BRACE_BLOCK> "using" { return currTokenType = makeToken(LexTokenType.USING_KEYWORD); }
 <YYINITIAL,YY_IN_BRACE_BLOCK> "init" { return currTokenType = makeToken(LexTokenType.INIT_KEYWORD); }
@@ -145,11 +145,11 @@ END_LINE={NOT_NEW_LINE}*(({PP_NEW_LINE_PAIR})|({PP_NEW_LINE_CHAR}))
 <YYINITIAL> "state" { return currTokenType = makeToken(LexTokenType.STATE_KEYWORD); }
 <YY_IN_BRACE_BLOCK> "type" {   currTokenType = makeToken (LexTokenType.IDENTIFIER); return currTokenType; }
 <YY_IN_BRACE_BLOCK> "state" {   currTokenType = makeToken (LexTokenType.IDENTIFIER); return currTokenType; }
-<YYINITIAL> "{" { yybegin(YY_IN_BRACE_BLOCK);  currTokenType = makeToken (LexTokenType.LBRACE); return currTokenType; }
+<YYINITIAL,YY_IN_PAREN_EXPRESSION> "{" { yybegin(YY_IN_BRACE_BLOCK);  currTokenType = makeToken (LexTokenType.LBRACE); return currTokenType; }
 <YY_IN_BRACE_BLOCK> "{" { myBraces++; currTokenType = makeToken (LexTokenType.LBRACE); return currTokenType; }
-<YYINITIAL> "}" { currTokenType = makeToken (LexTokenType.RBRACE); return currTokenType; }
+<YYINITIAL,YY_IN_PAREN_EXPRESSION> "}" { currTokenType = makeToken (LexTokenType.RBRACE); return currTokenType; }
 <YY_IN_BRACE_BLOCK> "}" { myBraces--; if(myBraces < 0){yybegin(YYINITIAL); myBraces = 0;} currTokenType = makeToken (LexTokenType.RBRACE); return currTokenType; }
-<YYINITIAL> "{" { yybegin(YY_IN_BRACE_BLOCK);  currTokenType = makeToken (LexTokenType.LBRACE); return currTokenType; }
+
 
 <YYINITIAL,YY_IN_BRACE_BLOCK> "virtual" { return currTokenType = makeToken(LexTokenType.VIRTUAL_KEYWORD); }
 <YYINITIAL,YY_IN_BRACE_BLOCK> "function" { return currTokenType = makeToken(LexTokenType.FUNCTION_KEYWORD); }
@@ -162,73 +162,77 @@ END_LINE={NOT_NEW_LINE}*(({PP_NEW_LINE_PAIR})|({PP_NEW_LINE_CHAR}))
 <YYINITIAL,YY_IN_BRACE_BLOCK> "null" { return currTokenType = makeToken(LexTokenType.NULL_KEYWORD); }
 
 
-<YYINITIAL,YY_IN_BRACE_BLOCK> "[" { currTokenType = makeToken (LexTokenType.LBRACKET); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "]" { currTokenType = makeToken (LexTokenType.RBRACKET); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "(" { currTokenType = makeToken (LexTokenType.LPARENTH); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "[" { currTokenType = makeToken (LexTokenType.LBRACKET); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "]" { currTokenType = makeToken (LexTokenType.RBRACKET); return currTokenType; }
+<YYINITIAL> "(" { yybegin(YY_IN_PAREN_EXPRESSION); currTokenType = makeToken (LexTokenType.LPARENTH); return currTokenType; }
+<YY_IN_BRACE_BLOCK> "(" { currTokenType = makeToken (LexTokenType.LPARENTH); return currTokenType; }
+<YY_IN_PAREN_EXPRESSION> "(" { myParen++; currTokenType = makeToken (LexTokenType.LPARENTH); return currTokenType; }
 <YYINITIAL,YY_IN_BRACE_BLOCK> ")" { currTokenType = makeToken (LexTokenType.RPARENTH); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "." { currTokenType = makeToken (LexTokenType.DOT); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "," { currTokenType = makeToken (LexTokenType.COMMA); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> ":" { currTokenType = makeToken (LexTokenType.COLON); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> ";" { currTokenType = makeToken (LexTokenType.SEMICOLON); return currTokenType; }
+<YY_IN_PAREN_EXPRESSION> ")" { myParen--; if(myParen < 0){yybegin(YYINITIAL); myParen = 0;} currTokenType = makeToken (LexTokenType.RPARENTH); return currTokenType; }
 
-<YYINITIAL,YY_IN_BRACE_BLOCK> "+" { currTokenType = makeToken (LexTokenType.PLUS); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "-" { currTokenType = makeToken (LexTokenType.MINUS); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "*" { currTokenType = makeToken (LexTokenType.ASTERISK); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "/" { currTokenType = makeToken (LexTokenType.DIV); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "%%" { currTokenType = makeToken (LexTokenType.PERCPERC); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "%" { currTokenType = makeToken (LexTokenType.PERC); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "&" { currTokenType = makeToken (LexTokenType.AND); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "|" { currTokenType = makeToken (LexTokenType.OR); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "^" { currTokenType = makeToken (LexTokenType.XOR); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "!" { currTokenType = makeToken (LexTokenType.EXCL); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "~" { currTokenType = makeToken (LexTokenType.TILDE); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "@" { currTokenType = makeToken (LexTokenType.AT); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "#" { currTokenType = makeToken (LexTokenType.SHARP); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "`" { currTokenType = makeToken (LexTokenType.BACK_QUOTE); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "$" { currTokenType = makeToken (LexTokenType.DOLLAR); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "." { currTokenType = makeToken (LexTokenType.DOT); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "," { currTokenType = makeToken (LexTokenType.COMMA); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> ":" { currTokenType = makeToken (LexTokenType.COLON); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> ";" { currTokenType = makeToken (LexTokenType.SEMICOLON); return currTokenType; }
 
-<YYINITIAL,YY_IN_BRACE_BLOCK> "=" { currTokenType = makeToken (LexTokenType.EQ); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> ">" { currTokenType = makeToken (LexTokenType.GT); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "<" { currTokenType = makeToken (LexTokenType.LT); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "?" { currTokenType = makeToken (LexTokenType.QUEST); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "++" { currTokenType = makeToken (LexTokenType.PLUSPLUS); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "--" { currTokenType = makeToken (LexTokenType.MINUSMINUS); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "&&" { currTokenType = makeToken (LexTokenType.ANDAND); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "||" { currTokenType = makeToken (LexTokenType.OROR); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "<<" { currTokenType = makeToken (LexTokenType.LTLT); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "+" { currTokenType = makeToken (LexTokenType.PLUS); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "-" { currTokenType = makeToken (LexTokenType.MINUS); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "*" { currTokenType = makeToken (LexTokenType.ASTERISK); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "/" { currTokenType = makeToken (LexTokenType.DIV); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "%%" { currTokenType = makeToken (LexTokenType.PERCPERC); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "%" { currTokenType = makeToken (LexTokenType.PERC); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "&" { currTokenType = makeToken (LexTokenType.AND); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "|" { currTokenType = makeToken (LexTokenType.OR); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "^" { currTokenType = makeToken (LexTokenType.XOR); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "!" { currTokenType = makeToken (LexTokenType.EXCL); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "~" { currTokenType = makeToken (LexTokenType.TILDE); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "@" { currTokenType = makeToken (LexTokenType.AT); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "#" { currTokenType = makeToken (LexTokenType.SHARP); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "`" { currTokenType = makeToken (LexTokenType.BACK_QUOTE); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "$" { currTokenType = makeToken (LexTokenType.DOLLAR); return currTokenType; }
 
-<YYINITIAL,YY_IN_BRACE_BLOCK> "??" { currTokenType = makeToken(LexTokenType.DOUBLE_QUEST); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "::" { currTokenType = makeToken(LexTokenType.DOUBLE_COLON); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "=" { currTokenType = makeToken (LexTokenType.EQ); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> ">" { currTokenType = makeToken (LexTokenType.GT); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "<" { currTokenType = makeToken (LexTokenType.LT); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "?" { currTokenType = makeToken (LexTokenType.QUEST); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "++" { currTokenType = makeToken (LexTokenType.PLUSPLUS); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "--" { currTokenType = makeToken (LexTokenType.MINUSMINUS); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "&&" { currTokenType = makeToken (LexTokenType.ANDAND); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "||" { currTokenType = makeToken (LexTokenType.OROR); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "<<" { currTokenType = makeToken (LexTokenType.LTLT); return currTokenType; }
 
-<YYINITIAL,YY_IN_BRACE_BLOCK> "==" { currTokenType = makeToken (LexTokenType.EQEQ); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "!=" { currTokenType = makeToken (LexTokenType.NE); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "<=" { currTokenType = makeToken (LexTokenType.LE); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> ">=" { currTokenType = makeToken (LexTokenType.GE); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "+=" { currTokenType = makeToken (LexTokenType.PLUSEQ); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "-=" { currTokenType = makeToken (LexTokenType.MINUSEQ); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "*=" { currTokenType = makeToken (LexTokenType.ASTERISKEQ); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "/=" { currTokenType = makeToken (LexTokenType.DIVEQ); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "%=" { currTokenType = makeToken (LexTokenType.PERCEQ); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "&=" { currTokenType = makeToken (LexTokenType.ANDEQ); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "??" { currTokenType = makeToken(LexTokenType.DOUBLE_QUEST); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "::" { currTokenType = makeToken(LexTokenType.DOUBLE_COLON); return currTokenType; }
 
-<YYINITIAL,YY_IN_BRACE_BLOCK> "|=" { currTokenType = makeToken (LexTokenType.OREQ); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "^=" { currTokenType = makeToken (LexTokenType.XOREQ); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "<<=" { currTokenType = makeToken (LexTokenType.LTLTEQ); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> "->" { currTokenType = makeToken (LexTokenType.ARROW); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "==" { currTokenType = makeToken (LexTokenType.EQEQ); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "!=" { currTokenType = makeToken (LexTokenType.NE); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "<=" { currTokenType = makeToken (LexTokenType.LE); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> ">=" { currTokenType = makeToken (LexTokenType.GE); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "+=" { currTokenType = makeToken (LexTokenType.PLUSEQ); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "-=" { currTokenType = makeToken (LexTokenType.MINUSEQ); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "*=" { currTokenType = makeToken (LexTokenType.ASTERISKEQ); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "/=" { currTokenType = makeToken (LexTokenType.DIVEQ); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "%=" { currTokenType = makeToken (LexTokenType.PERCEQ); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "&=" { currTokenType = makeToken (LexTokenType.ANDEQ); return currTokenType; }
 
-<YYINITIAL,YY_IN_BRACE_BLOCK> "=>" { currTokenType = makeToken (LexTokenType.LAMBDA_ARROW); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "|=" { currTokenType = makeToken (LexTokenType.OREQ); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "^=" { currTokenType = makeToken (LexTokenType.XOREQ); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "<<=" { currTokenType = makeToken (LexTokenType.LTLTEQ); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "->" { currTokenType = makeToken (LexTokenType.ARROW); return currTokenType; }
+
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> "=>" { currTokenType = makeToken (LexTokenType.LAMBDA_ARROW); return currTokenType; }
 
 
-<YYINITIAL,YY_IN_BRACE_BLOCK> {INTEGER_LITERAL}  { currTokenType = makeToken (LexTokenType.INTEGER_LITERAL); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> {INTEGER_LITERAL}  { currTokenType = makeToken (LexTokenType.INTEGER_LITERAL); return currTokenType; }
 
-<YYINITIAL,YY_IN_BRACE_BLOCK> {CHARACTER_LITERAL}  { currTokenType = makeToken (LexTokenType.CHARACTER_LITERAL); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> {UNFINISHED_CHARACTER_LITERAL} { currTokenType = makeToken (LexTokenType.CHARACTER_LITERAL); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> {EXCEEDING_CHARACTER_LITERAL} { currTokenType = makeToken (LexTokenType.CHARACTER_LITERAL); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> {CHARACTER_LITERAL}  { currTokenType = makeToken (LexTokenType.CHARACTER_LITERAL); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> {UNFINISHED_CHARACTER_LITERAL} { currTokenType = makeToken (LexTokenType.CHARACTER_LITERAL); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> {EXCEEDING_CHARACTER_LITERAL} { currTokenType = makeToken (LexTokenType.CHARACTER_LITERAL); return currTokenType; }
 
-<YYINITIAL,YY_IN_BRACE_BLOCK> {STRING_LITERAL}  { currTokenType = makeToken (LexTokenType.STRING_LITERAL); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> {DOUBLE_QUOTE} { currTokenType = makeToken (LexTokenType.DOUBLE_QUOTE); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> {ERROR_STRING_LITERAL}  { currTokenType = makeToken (LexTokenType.STRING_LITERAL); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> {BACK_SLASH}  { currTokenType = makeToken (LexTokenType.SIMPLE_BACK_SLASH); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> {BACK_SLASH_CHAR} { currTokenType = makeToken (LexTokenType.BACK_SLASH); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> {QUOTE} { currTokenType = makeToken (LexTokenType.QUOTE); return currTokenType; }
-<YYINITIAL,YY_IN_BRACE_BLOCK> {IDENTIFIER}  { currTokenType = makeToken (((TokenNodeType) keywords[yytext()]) ?? LexTokenType.IDENTIFIER); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> {STRING_LITERAL}  { currTokenType = makeToken (LexTokenType.STRING_LITERAL); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> {DOUBLE_QUOTE} { currTokenType = makeToken (LexTokenType.DOUBLE_QUOTE); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> {ERROR_STRING_LITERAL}  { currTokenType = makeToken (LexTokenType.STRING_LITERAL); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> {BACK_SLASH}  { currTokenType = makeToken (LexTokenType.SIMPLE_BACK_SLASH); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> {BACK_SLASH_CHAR} { currTokenType = makeToken (LexTokenType.BACK_SLASH); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> {QUOTE} { currTokenType = makeToken (LexTokenType.QUOTE); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> {IDENTIFIER}  { currTokenType = makeToken (((TokenNodeType) keywords[yytext()]) ?? LexTokenType.IDENTIFIER); return currTokenType; }

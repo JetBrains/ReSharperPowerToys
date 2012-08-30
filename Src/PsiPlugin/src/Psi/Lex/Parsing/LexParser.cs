@@ -17,6 +17,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Lex.Parsing
     private readonly SeldomInterruptChecker myCheckForInterrupt;
     private readonly ILexer myOriginalLexer;
     protected IPsiSourceFile SourceFile;
+    private bool myHasLBrace = false;
 
     public LexParser(ILexer lexer)
     {

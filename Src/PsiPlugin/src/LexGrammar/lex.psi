@@ -254,7 +254,7 @@ unicodeChar
 
 specialChar
   :
-    (BACK_SLASH | BACK_QUOTE | AT | QUOTE | SHARP | DIV | DOUBLE_QUOTE | PERC | ASTERISK | QUEST | DOUBLE_QUEST | RPARENTH | LPARENTH)
+    (BACK_SLASH | BACK_QUOTE | AT | QUOTE | SHARP | DIV | DOUBLE_QUOTE | PERC | ASTERISK | QUEST | DOUBLE_QUEST | RPARENTH | LPARENTH | RBRACKET)
   ;
 
 charId
@@ -296,6 +296,11 @@ tokenTypeUsage
     LBRACE
     tokenTypeName
     RBRACE
+  ;
+
+tokenTypeName
+  :
+    IDENTIFIER
   ;
 
 parenExpression
@@ -364,6 +369,7 @@ nondupl_RE
       | MINUS
       | DIV
       | PERC
+      | AND
     )
   ;
 
@@ -425,6 +431,7 @@ quotedChar
       | DOUBLE_QUEST
       | RPARENTH
       | LPARENTH
+      | RBRACKET
     )?
   ;
 
@@ -587,28 +594,35 @@ errorhandling lexingBlock
 makeTokenBlock
   :
     state
+    parsingStatement
+  ;
+
+parsingStatement
+  :
+    parseSequense
     (
-      (
-        LBRACE
-        tokenTypeName
-        RBRACE
-        | STRING_LITERAL
-        | DOT
-      )
-      (
-        OR
-        (
-          LBRACE
-          tokenTypeName
-          RBRACE
-          | STRING_LITERAL
-          | DOT
-        )
-      )*
+      OR
+      parseSequense
+    )*
+  ;
+
+
+
+parseSequense
+  :
+    parseItem+
+  ;
+
+parseItem
+  :
+    (
+      STRING_LITERAL
+      | DOT
+      | regexp
+      | parenExpression
+      | LBRACE cSharpBlock RBRACE
     )
-    LBRACE
-    cSharpBlock
-    RBRACE
+    qualifier?
   ;
 
 state
@@ -620,11 +634,6 @@ state
   ;
 
 stateName
-  :
-    IDENTIFIER
-  ;
-
-tokenTypeName
   :
     IDENTIFIER
   ;
