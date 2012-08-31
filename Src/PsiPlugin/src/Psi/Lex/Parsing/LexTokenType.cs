@@ -25,7 +25,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Lex.Parsing
     public static readonly TokenNodeType STRING_LITERAL = new LexTokenType.GenericTokenNodeType("STRING_LITERAL", "string literal");
     public static readonly TokenNodeType END_OF_LINE_COMMENT = new LexTokenType.EndOfLineCommentNodeType();
     public static readonly TokenNodeType C_STYLE_COMMENT = new LexTokenType.CommentNodeType("C_STYLE_COMMENT");
-    public static readonly TokenNodeType CHARACTER_LITERAL = new LexTokenType.GenericTokenNodeType("CHARACTER_LITERAL", "char literal");
 
     public static readonly TokenNodeType EOF = new LexTokenType.GenericTokenNodeType("EOF");
 
@@ -55,7 +54,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Lex.Parsing
       LITERALS = new NodeTypeSet(
         new NodeType[]
         {
-          INTEGER_LITERAL, STRING_LITERAL, CHARACTER_LITERAL
+          INTEGER_LITERAL, STRING_LITERAL
         }
         );
     }

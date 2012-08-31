@@ -44,7 +44,7 @@ extras{
 	get {methodName = "DefinitionBlock" path = <lexFile:LEX_DEFINITION> };
 }
   :
-    usingList
+    usingList?
     definitionBlock<LEX_DEFINITION>
     lexingBlock
   ;
@@ -75,7 +75,7 @@ cSharpNamespaceName
 
 errorhandling definitionBlock
   :
-    PERCPERC
+    PERCPERC?
     (
       (
         PERC
@@ -90,7 +90,7 @@ errorhandling definitionBlock
       )
       | tokenDeclaration
     )*
-    PERCPERC
+    PERCPERC?
   ;
 
 stateDeclaration
@@ -232,7 +232,7 @@ firstLexingExpressionItem
 
 simpleSequence
   :
-    ((tokenTypeUsage | STRING_LITERAL | parenExpression | QUOTE | BACK_SLASH | BACK_QUOTE | SHARP | DOUBLE_QUOTE | regexp | SIMPLE_BACK_SLASH specialChar) qualifier?)*
+    ((tokenTypeUsage | STRING_LITERAL | parenExpression | QUOTE | BACK_SLASH | BACK_QUOTE | SHARP | DOUBLE_QUOTE | regexp | SIMPLE_QUOTE | SIMPLE_BACK_SLASH specialChar) qualifier?)*
   ;
 
 tokenDeclaredName
@@ -254,7 +254,7 @@ unicodeChar
 
 specialChar
   :
-    (BACK_SLASH | BACK_QUOTE | AT | QUOTE | SHARP | DIV | DOUBLE_QUOTE | PERC | ASTERISK | QUEST | DOUBLE_QUEST | RPARENTH | LPARENTH | RBRACKET)
+    (BACK_SLASH | BACK_QUOTE | AT | QUOTE | SHARP | DIV | DOUBLE_QUOTE | PERC | ASTERISK | QUEST | DOUBLE_QUEST | RPARENTH | LPARENTH | LBRACKET | RBRACKET | LBRACE | RBRACE)
   ;
 
 charId
@@ -280,7 +280,7 @@ sequence
 
 simpleExpression
   :
-    (STRING_LITERAL | INTEGER_LITERAL | CHARACTER_LITERAL | tokenTypeUsage | parenExpression | regexp | IDENTIFIER | quotedChar | BACK_SLASH | QUOTE | DOUBLE_QUOTE | AT | LT GT? | GT | MINUS | MINUSMINUS | EQ | PERC | COLON |  SHARP | DIV | AND SHARP IDENTIFIER SEMICOLON)
+    (STRING_LITERAL | INTEGER_LITERAL | tokenTypeUsage | parenExpression | regexp | IDENTIFIER | quotedChar | BACK_SLASH | QUOTE | DOUBLE_QUOTE | AT | LT (EXCL MINUSMINUS| GT)? | GT | MINUS | MINUSMINUS | EQ | PERC | COLON |  SHARP | DIV | EXCL | DOUBLE_COLON | DOT | SEMICOLON | SIMPLE_QUOTE | AND SHARP? IDENTIFIER? SEMICOLON?)
     qualifier?
   ;
 
@@ -331,11 +331,11 @@ basic_reg_exp
   :
     RE_expression DOLLAR?
     | XOR RE_expression? DOLLAR?
-    | DOLLAR
   ;
 RE_expression
   :
-    simple_RE*
+    DOLLAR IDENTIFIER?
+    | simple_RE+
   ;
 simple_RE
   :
@@ -370,6 +370,13 @@ nondupl_RE
       | DIV
       | PERC
       | AND
+      | AT
+      | STRING_LITERAL
+      | SIMPLE_QUOTE
+      | ASTERISK
+      | DOT
+      | COLON
+      | SEMICOLON
     )
   ;
 
@@ -387,14 +394,15 @@ backRef
 errorhandling regexpListItem
   :
 //ORD_CHAR
-    quotedChar
+    (quotedChar
     | DOT
     | PLUS
     | MINUS
     | bracket_expression
     | interval
     | digitInterval
-    | tokenTypeUsage
+    | tokenTypeUsage)
+    qualifier?
   ;
 
 digitInterval
@@ -432,6 +440,8 @@ quotedChar
       | RPARENTH
       | LPARENTH
       | RBRACKET
+      | LBRACE
+      | RBRACE
     )?
   ;
 
@@ -588,7 +598,7 @@ fileExt
 
 errorhandling lexingBlock
   :
-    makeTokenBlock*
+    (makeTokenBlock | PERC includeStatement)*
   ;
 
 makeTokenBlock
@@ -621,6 +631,7 @@ parseItem
       | regexp
       | parenExpression
       | LBRACE cSharpBlock RBRACE
+	  | AT
     )
     qualifier?
   ;
@@ -656,7 +667,7 @@ csharpBraceExpression
 cSharpToken
   :    IDENTIFIER?
 | INTEGER_LITERAL
-| CHARACTER_LITERAL
+| SIMPLE_QUOTE
 | STRING_LITERAL
 | NAMESPACE_KEYWORD
 | PUBLIC_KEYWORD
@@ -707,6 +718,7 @@ cSharpToken
 | DOUBLE_QUEST
 | DOUBLE_COLON
 | SHARP
+| LAMBDA_ARROW
   ;
 
 csharpIdentifier

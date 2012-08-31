@@ -496,6 +496,21 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Lex.Parsing
     }
     public static readonly TokenNodeType QUOTE = new QuoteNodeType();
     #endregion
+    #region SIMPLE_QUOTE
+    private class SimpleQuoteNodeType : FixedTokenNodeType
+    {
+      public SimpleQuoteNodeType(): base ("SIMPLE_QUOTE", "'") {}
+      public override LeafElementBase Create(IBuffer buffer, TreeOffset startOffset, TreeOffset endOffset)
+      {
+        return new SimpleQuoteTokenElement(this);
+      }
+    }
+    private class SimpleQuoteTokenElement : FixedTokenElement
+    {
+      public SimpleQuoteTokenElement(SimpleQuoteNodeType tokenNodeType) : base(tokenNodeType) { }
+    }
+    public static readonly TokenNodeType SIMPLE_QUOTE = new SimpleQuoteNodeType();
+    #endregion
     #region DOUBLE_QUOTE
     private class DoubleQuoteNodeType : FixedTokenNodeType
     {
