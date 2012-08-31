@@ -7,7 +7,7 @@ using JetBrains.ReSharper.Feature.Services.Util;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Tree;
-using JetBrains.ReSharper.PsiPlugin.PsiGrammar;
+using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.ReSharper.Refactorings;
 using JetBrains.ReSharper.Refactorings.Conflicts;
 using JetBrains.ReSharper.Refactorings.Conflicts.New;

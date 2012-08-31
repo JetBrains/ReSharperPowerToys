@@ -1,5 +1,5 @@
 ﻿using System;
-using JetBrains.ReSharper.PsiPlugin.PsiGrammar;
+using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.ReSharper.PsiTests.parsing;
 using JetBrains.ReSharper.TestFramework;
 using NUnit.Framework;

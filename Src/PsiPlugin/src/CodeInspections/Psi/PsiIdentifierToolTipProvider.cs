@@ -3,7 +3,7 @@ using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Feature.Services.Descriptions;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
-using JetBrains.ReSharper.PsiPlugin.PsiGrammar;
+using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.TextControl.Markup;
 
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi

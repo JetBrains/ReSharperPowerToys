@@ -1,5 +1,5 @@
 ﻿using JetBrains.ProjectModel;
-using JetBrains.ReSharper.PsiPlugin.PsiGrammar;
+using JetBrains.ReSharper.PsiPlugin.Grammar;
 
 namespace JetBrains.ReSharper.PsiPlugin.Formatter
 {

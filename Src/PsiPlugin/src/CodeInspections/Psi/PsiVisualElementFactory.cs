@@ -1,7 +1,7 @@
 ﻿using JetBrains.ReSharper.Feature.Services.VisualElements;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
-using JetBrains.ReSharper.PsiPlugin.PsiGrammar;
+using JetBrains.ReSharper.PsiPlugin.Grammar;
 
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi
 {

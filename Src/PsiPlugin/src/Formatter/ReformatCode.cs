@@ -9,8 +9,8 @@ using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.CodeCleanup;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CodeStyle;
+using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
-using JetBrains.ReSharper.PsiPlugin.PsiGrammar;
 using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Formatter

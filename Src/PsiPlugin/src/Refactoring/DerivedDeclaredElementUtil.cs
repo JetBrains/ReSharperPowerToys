@@ -6,8 +6,8 @@ using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Cache;
+using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl;
-using JetBrains.ReSharper.PsiPlugin.PsiGrammar;
 using JetBrains.ReSharper.PsiPlugin.Refactoring.Rename;
 using JetBrains.Util;
 
