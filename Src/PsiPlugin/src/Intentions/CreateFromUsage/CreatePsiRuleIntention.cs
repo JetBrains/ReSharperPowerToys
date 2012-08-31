@@ -1,6 +1,6 @@
 using JetBrains.ReSharper.Feature.Services.Intentions;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.PsiPlugin.PsiGrammar;
+using JetBrains.ReSharper.PsiPlugin.Grammar;
 
 namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
 {

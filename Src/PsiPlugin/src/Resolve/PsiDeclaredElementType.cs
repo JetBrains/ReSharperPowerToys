@@ -1,5 +1,5 @@
 ﻿using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.PsiPlugin.PsiGrammar;
+using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.ReSharper.PsiPlugin.Resources;
 using JetBrains.ReSharper.PsiPlugin.Services;
 using JetBrains.UI.Icons;

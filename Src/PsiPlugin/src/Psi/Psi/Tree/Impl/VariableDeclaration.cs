@@ -2,7 +2,7 @@
 using System.Xml;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
-using JetBrains.ReSharper.PsiPlugin.PsiGrammar;
+using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.ReSharper.PsiPlugin.Resolve;
 using JetBrains.ReSharper.PsiPlugin.Util;
 using JetBrains.Util;

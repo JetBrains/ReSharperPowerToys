@@ -4,7 +4,7 @@ using JetBrains.ReSharper.Feature.Services.CodeCompletion;
 using JetBrains.ReSharper.Feature.Services.CodeCompletion.Settings;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
-using JetBrains.ReSharper.PsiPlugin.PsiGrammar;
+using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.TextControl;
 
 namespace JetBrains.ReSharper.PsiPlugin.Completion

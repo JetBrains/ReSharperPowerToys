@@ -1,0 +1,462 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ReSharperSdkTargets Condition=" '$(ReSharperSdkTargets)' == '' ">$(MSBuildExtensionsPath)\JetBrains\ReSharper.SDK\v7.0</ReSharperSdkTargets>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{70928A29-A814-4112-A0D6-782F2007451B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>JetBrains.ReSharper.LexPlugin</RootNamespace>
+    <AssemblyName>JetBrains.ReSharper.LexPlugin</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <PsiLanguageName>Lex</PsiLanguageName>
+    <ProductHomeDir>$(MSBuildProjectDirectory)</ProductHomeDir>
+    <TargetFrameworkProfile />
+    <ParserGenOutputBase>$(MSBuildProjectDirectory)\src\Gen</ParserGenOutputBase>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin</OutputPath>
+    <DefineConstants>TRACE;DEBUG;JET_MODE_ASSERT</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="JetBrains.Platform.CommonServices">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.CommonServices.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.ComponentModel">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.ComponentModel.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.DocumentManager">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.DocumentManager.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.DocumentModel">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.DocumentModel.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.IDE">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.IDE.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.ProjectModel">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.ProjectModel.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.Shell">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.Shell.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.TextControl">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.TextControl.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.UI">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.Util">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.Util.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Daemon">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Daemon.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Daemon.Engine">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Daemon.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Feature.Services">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Feature.Services.CSharp">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Feature.Services.Navigation">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Navigation.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Features.Common">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Features.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Features.Finding">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Features.Finding.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Intentions">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Intentions.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.NewRefactorings">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.NewRefactorings.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Psi">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Psi.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Psi.CSharp">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Psi.CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Psi.Services">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Psi.Services.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Psi.Web">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Psi.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Resources">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Resources.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Build" />
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.XML" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="src\CodeInspections\Lex\ErrorElementHighlighting.cs" />
+    <Compile Include="src\CodeInspections\Lex\Highlighting\LexCommentHighlighting.cs" />
+    <Compile Include="src\CodeInspections\Lex\Highlighting\LexErrorElementHighlighting.cs" />
+    <Compile Include="src\CodeInspections\Lex\Highlighting\LexKeywordHighlighting.cs" />
+    <Compile Include="src\CodeInspections\Lex\Highlighting\LexStringLiteralHighlighting.cs" />
+    <Compile Include="src\CodeInspections\Lex\KeywordHighlightingStage.cs" />
+    <Compile Include="src\CodeInspections\Lex\LexDaemonStageBase.cs" />
+    <Compile Include="src\CodeInspections\Lex\LexDaemonStageProcessBase.cs" />
+    <Compile Include="src\CodeInspections\Lex\LexIncrementalDaemonStageProcessBase.cs" />
+    <Compile Include="src\Gen\Parsing\Lex\ErrorMessages.cs" />
+    <Compile Include="src\Gen\Parsing\Lex\LexParserGenerated.cs" />
+    <Compile Include="src\Gen\Parsing\Lex\TokenBitsets.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\BackRefNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Basic_reg_expNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\BraceBlockNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Bracket_expressionNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Bracket_listNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Character_classNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\CharIdNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\CharNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\ChoiceTailNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\ClassLexerOptionNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\ClassModifierLexerOptionNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Collating_symbolNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Coll_elemNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\CSharpBlockNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\CsharpBraceExpressionNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\CSharpClassNameNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\CsharpIdentifierNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\CsharpKeywordNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\CSharpNamespaceNameNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\CSharpNamespaceNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\CSharpTokenNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\DeclarationOrIncludeNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\DefinitionBlockNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\DigitIntervalNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\EncodingDefinitionNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\End_rangeNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\EofvalLexerOptionNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Equivalence_classNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Expression_termNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\FileExtNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\FirstLexingExpressionItemNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\FirstLexingExpressionNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Follow_listNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\FunctionLexerOptionNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\FunctionModifierLexerOptionNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\FunctionNameNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IBackRef.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IBasic_reg_exp.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IBraceBlock.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IBracket_expression.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IBracket_list.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IChar.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\ICharacter_class.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\ICharId.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IChoiceTail.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IClassLexerOption.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IClassModifierLexerOption.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\ICollating_symbol.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IColl_elem.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\ICSharpBlock.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\ICsharpBraceExpression.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\ICSharpClassName.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\ICsharpIdentifier.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\ICsharpKeyword.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\ICSharpNamespace.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\ICSharpNamespaceName.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\ICSharpToken.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IDeclarationOrInclude.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IDefinitionBlock.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IDigitInterval.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IEncodingDefinition.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IEnd_range.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IEofvalLexerOption.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IEquivalence_class.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IExpression_term.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IFileExt.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IFirstLexingExpression.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IFirstLexingExpressionItem.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IFollow_list.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IFunctionLexerOption.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IFunctionModifierLexerOption.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IFunctionName.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IImplementsLexerOption.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IIncludeStatement.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IInitBlock.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IInterval.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\ILexerOption.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\ILexFile.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\ILexingBlock.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\ILexingExpression.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IMakeTokenBlock.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IMatching_list.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IMeta_char.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\ImplementsLexerOptionNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\BackRef.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\Basic_reg_exp.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\BraceBlock.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\Bracket_expression.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\Bracket_list.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\Char.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\Character_class.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\CharId.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\ChoiceTail.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\ClassLexerOption.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\ClassModifierLexerOption.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\Collating_symbol.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\Coll_elem.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\CSharpBlock.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\CsharpBraceExpression.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\CSharpClassName.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\CsharpIdentifier.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\CsharpKeyword.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\CSharpNamespace.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\CSharpNamespaceName.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\CSharpToken.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\DeclarationOrInclude.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\DefinitionBlock.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\DigitInterval.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\ElementBitsets.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\ElementType.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\EncodingDefinition.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\End_range.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\EofvalLexerOption.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\Equivalence_class.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\Expression_term.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\FileExt.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\FirstLexingExpression.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\FirstLexingExpressionItem.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\Follow_list.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\FunctionLexerOption.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\FunctionModifierLexerOption.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\FunctionName.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\ImplementsLexerOption.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\IncludeStatement.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\InitBlock.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\Interval.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\LexerOption.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\LexFile.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\LexingBlock.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\LexingExpression.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\MakeTokenBlock.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\Matching_list.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\Meta_char.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\NamespaceLexerOption.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\Nondupl_RE.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\Nonmatching_list.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\ParenExpression.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\ParseItem.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\ParseSequense.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\ParsingStatement.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\PathElement.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\PathId.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\Qualifier.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\QuotedChar.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\Range_expression.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\Regexp.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\RegexpBody.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\RegExpClass.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\RegexpList.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\RegexpListItem.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\RE_dupl_symbol.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\RE_expression.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\Sequence.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\SimpleExpression.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\SimpleSequence.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\Simple_RE.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\Single_expression.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\SpecialChar.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\Start_range.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\State.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\StateDeclaration.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\StateDeclaredName.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\StateName.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\TokenDeclaration.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\TokenDeclaredName.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\TokenType.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\TokenTypeName.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\TokenTypeUsage.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\TypeLexerOption.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\UnicodeChar.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\UsingItem.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\UsingList.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\INamespaceLexerOption.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IncludeStatementNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\InitBlockNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\INondupl_RE.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\INonmatching_list.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IntervalNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IParenExpression.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IParseItem.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IParseSequense.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IParsingStatement.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IPathElement.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IPathId.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IQualifier.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IQuotedChar.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IRange_expression.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IRegexp.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IRegexpBody.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IRegExpClass.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IRegexpList.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IRegexpListItem.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IRE_dupl_symbol.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IRE_expression.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\ISequence.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\ISimpleExpression.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\ISimpleSequence.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\ISimple_RE.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\ISingle_expression.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\ISpecialChar.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IStart_range.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IState.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IStateDeclaration.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IStateDeclaredName.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IStateName.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\ITokenDeclaration.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\ITokenDeclaredName.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\ITokenTypeName.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\ITokenTypeUsage.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\ITypeLexerOption.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IUnicodeChar.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IUsingItem.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\IUsingList.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\LexerOptionNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\LexFileNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\LexingBlockNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\LexingExpressionNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\MakeTokenBlockNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Matching_listNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Meta_charNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\NamespaceLexerOptionNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Nondupl_RENavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Nonmatching_listNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\ParenExpressionNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\ParseItemNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\ParseSequenseNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\ParsingStatementNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\PathElementNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\PathIdNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\QualifierNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\QuotedCharNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Range_expressionNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\RegexpBodyNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\RegExpClassNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\RegexpListItemNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\RegexpListNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\RegexpNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\RE_dupl_symbolNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\RE_expressionNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\SequenceNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\SimpleExpressionNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\SimpleSequenceNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Simple_RENavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Single_expressionNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\SpecialCharNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Start_rangeNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\StateDeclarationNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\StateDeclaredNameNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\StateNameNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\StateNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\TokenDeclarationNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\TokenDeclaredNameNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\TokenTypeNameNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\TokenTypeUsageNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\TreeNodeVisitor.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\TreeNodeVisitor`1.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\TreeNodeVisitor`2.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\TypeLexerOptionNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\UnicodeCharNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\UsingItemNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\UsingListNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Test\Lex\PsiGeneratedTest.cs" />
+    <Compile Include="src\Grammar\LexLanguage.cs" />
+    <Compile Include="src\Grammar\LexLanguageService.cs" />
+    <Compile Include="src\Grammar\LexProjectFileLanguageService.cs" />
+    <Compile Include="src\Grammar\LexProjectFileType.cs" />
+    <Compile Include="src\Grammar\LexWordIndexProvider.cs" />
+    <Compile Include="src\Lexer\Lex\FilteringLexLexer.cs" />
+    <Compile Include="src\Lexer\Lex\LexLexerFactory.cs" />
+    <Compile Include="src\Psi\Lex\Parsing\ILexParser.cs" />
+    <Compile Include="src\Psi\Lex\Parsing\LexLexer.cs" />
+    <Compile Include="src\Psi\Lex\Parsing\LexLexerSupplemential.cs" />
+    <Compile Include="src\Psi\Lex\Parsing\LexMissingTokenInserter.cs" />
+    <Compile Include="src\Psi\Lex\Parsing\LexParser.cs" />
+    <Compile Include="src\Psi\Lex\Parsing\LexTokenType.cs" />
+    <Compile Include="src\Psi\Lex\Parsing\LexTokenTypeGenerated.cs" />
+    <Compile Include="src\Psi\Lex\Parsing\lex_lex.cs" />
+    <Compile Include="src\Psi\Lex\Parsing\ParserMessages.cs" />
+    <Compile Include="src\Psi\Lex\Tree\CommentType.cs" />
+    <Compile Include="src\Psi\Lex\Tree\ILexFile.cs" />
+    <Compile Include="src\Psi\Lex\Tree\ILexIdentifier.cs" />
+    <Compile Include="src\Psi\Lex\Tree\ILexTreeNode.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Impl\ChildRole.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Impl\Comment.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Impl\Identifier.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Impl\LexCompositeElement.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Impl\LexFile.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Impl\LexFileElement.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Impl\LexGenericToken.cs" />
+    <Compile Include="src\Psi\Lex\Parsing\LexResolveUtil.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Impl\LexTokenBase.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Impl\Whitespace.cs" />
+    <Compile Include="src\Psi\Lex\Tree\IWhitespaceNode.cs" />
+    <Compile Include="src\Psi\Lex\Tree\LexCompositeNodeType.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ParserGen Include="src\Grammar\lex.psi" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="src\Psi\Lex\Parsing\Tokens.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <CsLex Include="src\Psi\Lex\Parsing\lex.lex" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Gen\Lex.timestamp" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(ReSharperSdkTargets)\Plugin.NoReferences.Targets" />
+  <Import Project="$(ReSharperSdkTools)\parserGen\ParserGen.Targets" />
+  <Import Project="$(ReSharperSdkTools)\MSBuild\JetBrains.Build.Common.Targets" />
+  <Import Project="$(ReSharperSdkTools)\CsLex\CsLex.Targets" />
+  <Target Name="BeforeBuild">
+    <MakeDir Directories="$(MSBuildProjectDirectory)\obj" />
+    <Copy SourceFiles="$(ReSharperSdkTools)\parserGen\Unicode.lex" DestinationFolder="$(MSBuildProjectDirectory)\obj" />
+  </Target>
+  <Import Project="$(ReSharperSdkTools)\MSBuild\JetBrains.Build.Platform.ThemedIconsConverter.Targets" />
+</Project>
