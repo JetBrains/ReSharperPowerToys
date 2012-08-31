@@ -33,6 +33,7 @@
   <Token name="AT" representation="@" />
   <Token name="BACK_QUOTE" representation="`" />
   <Token name="QUOTE" representation="\\&apos;" />
+  <Token name="SIMPLE_QUOTE" representation="&apos;" />
   <Token name="DOUBLE_QUOTE" representation="\\\&quot;" />
   <Token name="QUEST" representation="?" />
   <Token name="COLON" representation=":" />
