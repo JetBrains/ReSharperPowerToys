@@ -134,11 +134,17 @@
     <Compile Include="src\CodeInspections\Lex\Highlighting\LexCommentHighlighting.cs" />
     <Compile Include="src\CodeInspections\Lex\Highlighting\LexErrorElementHighlighting.cs" />
     <Compile Include="src\CodeInspections\Lex\Highlighting\LexKeywordHighlighting.cs" />
+    <Compile Include="src\CodeInspections\Lex\Highlighting\LexStateHighLighting.cs" />
     <Compile Include="src\CodeInspections\Lex\Highlighting\LexStringLiteralHighlighting.cs" />
+    <Compile Include="src\CodeInspections\Lex\Highlighting\LexTokenHighlighting.cs" />
+    <Compile Include="src\CodeInspections\Lex\IdentifierHighlighterProcess.cs" />
+    <Compile Include="src\CodeInspections\Lex\IdentifierHighlightingStage.cs" />
     <Compile Include="src\CodeInspections\Lex\KeywordHighlightingStage.cs" />
     <Compile Include="src\CodeInspections\Lex\LexDaemonStageBase.cs" />
     <Compile Include="src\CodeInspections\Lex\LexDaemonStageProcessBase.cs" />
     <Compile Include="src\CodeInspections\Lex\LexIncrementalDaemonStageProcessBase.cs" />
+    <Compile Include="src\CodeInspections\Lex\SmartResolverProcess.cs" />
+    <Compile Include="src\CodeInspections\Lex\SmartResolverStage.cs" />
     <Compile Include="src\Gen\Parsing\Lex\ErrorMessages.cs" />
     <Compile Include="src\Gen\Parsing\Lex\LexParserGenerated.cs" />
     <Compile Include="src\Gen\Parsing\Lex\TokenBitsets.cs" />
