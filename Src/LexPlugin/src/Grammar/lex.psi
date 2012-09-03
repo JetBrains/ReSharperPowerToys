@@ -208,8 +208,11 @@ errorhandling declarationOrInclude
   ;
 
 errorhandling tokenDeclaration
+extras{
+  get {methodName = "TokenName" path = <tokenDeclaration:LEX_TOKENNAME> };
+}
   :
-    tokenDeclaredName
+    tokenDeclaredName<LEX_TOKENNAME>
     EQ
     (firstLexingExpression | unicodeChar)
   ;
