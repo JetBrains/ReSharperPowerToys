@@ -633,10 +633,15 @@ parseItem
       | DOT
       | regexp
       | parenExpression
-      | LBRACE cSharpBlock RBRACE
+      | csharpOrToken
 	  | AT
     )
     qualifier?
+  ;
+
+csharpOrToken
+  :
+    LBRACE cSharpBlock RBRACE
   ;
 
 state

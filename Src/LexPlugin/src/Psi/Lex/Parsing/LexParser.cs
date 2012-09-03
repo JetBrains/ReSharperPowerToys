@@ -75,10 +75,127 @@ namespace JetBrains.ReSharper.LexPlugin.Psi.Lex.Parsing
       {
         lexFile.SetSourceFile(SourceFile);
         lexFile.CollectOptions();
-        //lexFile.CreateRulesSymbolTable();
-        //lexFile.CreateOptionSymbolTable(isFileReal);
       }
       return lexFile;
+    }
+
+    public override TreeElement parseCsharpOrToken()
+    {
+      TokenNodeType tokenType;
+      CompositeElement result = null;
+      TreeElement tempParsingResult = null;
+      try
+      {
+        result = TreeElementFactory.CreateCompositeElement(ElementType.CSHARP_OR_TOKEN);
+        tempParsingResult = match(TokenType.LBRACE);
+        result.AppendNewChild(tempParsingResult);
+        tokenType = myLexer.TokenType;
+        if (tokenType == TokenType.IDENTIFIER)
+        {
+          var tempParsingResult1 = parseTokenTypeName();
+          tokenType = myLexer.TokenType;
+          if (tokenType == TokenType.RBRACE)
+          {
+            result.AppendNewChild(tempParsingResult1);
+          } else
+          {
+            var node = TreeElementFactory.CreateCompositeElement(ElementType.CSHARP_IDENTIFIER);
+            node.AddChild(tempParsingResult1.FirstChild);
+            tempParsingResult = parseCSharpBlock(node);
+            result.AppendNewChild(tempParsingResult);
+          }
+        }
+        else
+        {
+          tempParsingResult = parseCSharpBlock();
+          result.AppendNewChild(tempParsingResult);
+        }
+        tempParsingResult = match(TokenType.RBRACE);
+        result.AppendNewChild(tempParsingResult);
+      }
+      catch (SyntaxError e)
+      {
+        if (e.ParsingResult != null && result != null)
+        {
+          result.AppendNewChild(e.ParsingResult);
+        }
+        if (result != null)
+        {
+          e.ParsingResult = result;
+        }
+        throw;
+      }
+      return result;
+    }
+
+    private TreeElement parseCSharpBlock(TreeElement treeElement)
+    {
+      TokenNodeType tokenType;
+      CompositeElement result = null;
+      TreeElement tempParsingResult = null;
+      try
+      {
+        result = TreeElementFactory.CreateCompositeElement(ElementType.C_SHARP_BLOCK);
+        result.AppendNewChild(treeElement);
+        tokenType = myLexer.TokenType;
+        while (tokenType != null && TokenBitsets.TokenBitset_2[tokenType])
+        {
+          tokenType = myLexer.TokenType;
+          if (tokenType != null && TokenBitsets.TokenBitset_3[tokenType])
+          {
+            tempParsingResult = parseCSharpToken();
+            result.AppendNewChild(tempParsingResult);
+          }
+          else if (tokenType == TokenType.IDENTIFIER)
+          {
+            tempParsingResult = parseCsharpIdentifier();
+            result.AppendNewChild(tempParsingResult);
+          }
+          else if (tokenType == TokenType.NULL_KEYWORD
+          || tokenType == TokenType.RETURN_KEYWORD)
+          {
+            tempParsingResult = parseCsharpKeyword();
+            result.AppendNewChild(tempParsingResult);
+          }
+          else if (tokenType == TokenType.LBRACE)
+          {
+            tempParsingResult = parseCsharpBraceExpression();
+            result.AppendNewChild(tempParsingResult);
+          }
+          else
+          {
+            tempParsingResult = parseCSharpToken();
+            result.AppendNewChild(tempParsingResult);
+          }
+          tokenType = myLexer.TokenType;
+        }
+        tokenType = myLexer.TokenType;
+        if (tokenType != null && !(tokenType == JetBrains.ReSharper.LexPlugin.Psi.Lex.Tree.Impl.TokenType.PERC
+            || tokenType == JetBrains.ReSharper.LexPlugin.Psi.Lex.Tree.Impl.TokenType.RBRACE))
+        {
+          throw new JetBrains.ReSharper.Psi.Parsing.FollowsFailure(ErrorMessages.GetErrorMessage5());
+        }
+      }
+      catch (JetBrains.ReSharper.Psi.Parsing.SyntaxError e)
+      {
+        if (e.ParsingResult != null && result != null)
+        {
+          result.AppendNewChild(e.ParsingResult);
+        }
+        if (result != null)
+        {
+          e.ParsingResult = result;
+        }
+        if (result != null)
+        {
+          handleErrorInCSharpBlock(result, e);
+        }
+        else
+        {
+          throw;
+        }
+      }
+      return result;
     }
   }
 }
