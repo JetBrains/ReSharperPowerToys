@@ -427,15 +427,24 @@
     <Compile Include="src\Psi\Lex\Tree\Impl\ChildRole.cs" />
     <Compile Include="src\Psi\Lex\Tree\Impl\Comment.cs" />
     <Compile Include="src\Psi\Lex\Tree\Impl\Identifier.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Impl\TokenTypeName.cs" />
+    <Compile Include="src\Psi\Lex\Tree\ITokenTypeName.cs" />
     <Compile Include="src\Psi\Lex\Tree\Impl\LexCompositeElement.cs" />
     <Compile Include="src\Psi\Lex\Tree\Impl\LexFile.cs" />
     <Compile Include="src\Psi\Lex\Tree\Impl\LexFileElement.cs" />
     <Compile Include="src\Psi\Lex\Tree\Impl\LexGenericToken.cs" />
     <Compile Include="src\Psi\Lex\Parsing\LexResolveUtil.cs" />
     <Compile Include="src\Psi\Lex\Tree\Impl\LexTokenBase.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Impl\TokenDeclaration.cs" />
     <Compile Include="src\Psi\Lex\Tree\Impl\Whitespace.cs" />
+    <Compile Include="src\Psi\Lex\Tree\ITokenDeclaration.cs" />
     <Compile Include="src\Psi\Lex\Tree\IWhitespaceNode.cs" />
     <Compile Include="src\Psi\Lex\Tree\LexCompositeNodeType.cs" />
+    <Compile Include="src\Resolve\LexDeclaredElementType.cs" />
+    <Compile Include="src\Resolve\LexReferenceBase.cs" />
+    <Compile Include="src\Resolve\LexTokenReference.cs" />
+    <Compile Include="src\Services\LexDeclaredElementPresenter.cs" />
+    <Compile Include="src\Util\LexTreeUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <ParserGen Include="src\Grammar\lex.psi" />
@@ -448,6 +457,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Gen\Lex.timestamp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="resources\LexPluginSymbolIcons\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(ReSharperSdkTargets)\Plugin.NoReferences.Targets" />
