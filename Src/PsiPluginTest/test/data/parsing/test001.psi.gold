@@ -1,0 +1,51 @@
+Language: PsiLanguageType:PSI
+IPsiFile
+  IRuleDeclaration
+    IRuleDeclaredName
+      Identifier(type:IDENTIFIER, text:a)
+    NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+    Whitespace(type:WHITE_SPACE, text:	) spaces:"	"
+    PsiTokenType+ColonTokenElement(type:COLON, text::)
+    NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+    Whitespace(type:WHITE_SPACE, text:	) spaces:"	"
+    IRuleBody
+      IPsiExpression
+        ISequence
+          INotChoiceExpression
+            ISimpleExpression
+              IRuleName
+                Identifier(type:IDENTIFIER, text:b)
+    NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+    Whitespace(type:WHITE_SPACE, text:  ) spaces:"  "
+    PsiTokenType+SemicolonTokenElement(type:SEMICOLON, text:;)
+
+Language: PsiLanguageType:CSHARP
+ICSharpFile
+  IUsingList
+  Class(qualifiedName:ZZZ_Generated_Class)
+    CSharpTokenType+ClassKeywordTokenElement(type:CLASS_KEYWORD, text:class)
+    Whitespace(type:WHITE_SPACE, text: ) spaces:" "
+    Identifier(type:IDENTIFIER, text:ZZZ_Generated_Class)
+    IClassBody
+      CSharpTokenType+LbraceTokenElement(type:LBRACE, text:{)
+      NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+      Whitespace(type:WHITE_SPACE, text: ) spaces:" "
+      MethodDeclaration(qualifiedName:ZZZ_Generated_Class.foo())
+        IPredefinedTypeUsage
+          IPredefinedTypeReference
+            CSharpTokenType+VoidKeywordTokenElement(type:VOID_KEYWORD, text:void)
+        Whitespace(type:WHITE_SPACE, text: ) spaces:" "
+        Identifier(type:IDENTIFIER, text:foo)
+        CSharpTokenType+LparenthTokenElement(type:LPARENTH, text:()
+        IFormalParameterList
+        CSharpTokenType+RparenthTokenElement(type:RPARENTH, text:))
+        ChameleonBlock
+          CSharpTokenType+LbraceTokenElement(type:LBRACE, text:{)
+          NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+          CSharpTokenType+RbraceTokenElement(type:RBRACE, text:})
+      NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+      Whitespace(type:WHITE_SPACE, text: ) spaces:" "
+      CSharpTokenType+RbraceTokenElement(type:RBRACE, text:})
+  NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+
+// 

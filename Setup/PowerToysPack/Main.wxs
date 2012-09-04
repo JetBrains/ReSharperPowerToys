@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*" Name="JetBrains ReSharper $(var.DynReSharperVersion2) PowerToys Pack (VS $(var.DynVsVersion))" Language="1033" Version="5.0.0.0" Manufacturer="JetBrains Inc" UpgradeCode="{2FE8E980-5EC7-4311-A428-964BBEDE72EE}">
+		<Package InstallerVersion="200" Compressed="yes" />
+
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="D.JetBrains" Name="JetBrains">
+					<Directory Id="D.ReSharper" Name="ReSharper">
+						<Directory Id="D.ReSharperVersion" Name="$(var.DynReSharperVersion2)">
+							<Directory Id="D.VsVersion" Name="$(var.DynVsVersion)">
+								<Directory Id="POWERTOYSHOME" Name="PowerToys">
+									<!-- This will be redirected into a per-machine or per-user location. -->
+									<Directory Id="D.PowerToysHome" />
+									<!-- Mount point for the components. -->
+								</Directory>
+								<Directory Id="RESHARPERPLUGINS" Name="Plugins">
+									<!-- This will be redirected into either R# installdir or user-data folder. -->
+									<Directory Id="D.Plugins" />
+								</Directory>
+							</Directory>
+						</Directory>
+					</Directory>
+				</Directory>
+			</Directory>
+		</Directory>
+
+		<!-- Include the features. -->
+		<FeatureRef Id="U.Binaries" />
+		<FeatureRef Id="U.Documentation" />
+
+		<!-- Include the whole ChoosePerUserFolder fragment. -->
+		<PropertyRef Id="ApplicationFolderName"/>
+
+		<!-- Reset the R# One-Time-Init status on each operation. -->
+		<CustomAction Id="CA.OneTimeInit.SetActionData.PerMachine" Property="CA.OneTimeInit" Value="HKLM\Software\JetBrains\ReSharper\v[RESHARPERVERSION2]\vs[VSVERSION][VSROOTSUFFIX]\One-Time Initialization Generation" Execute="immediate" />
+		<CustomAction Id="CA.OneTimeInit.SetActionData.PerUser" Property="CA.OneTimeInit" Value="HKCU\Software\JetBrains\ReSharper\v[RESHARPERVERSION2]\vs[VSVERSION][VSROOTSUFFIX]\One-Time Initialization Generation" Execute="immediate" />
+		<CustomAction Id="CA.OneTimeInit" Execute="deferred" Script="jscript" Return="ignore" Impersonate="yes">
+			new ActiveXObject("WScript.Shell").RegWrite(Session.Property("CustomActionData"), Math.random(), "REG_SZ");
+		</CustomAction>
+		<InstallExecuteSequence>
+			<Custom Action="CA.OneTimeInit.SetActionData.PerMachine" Before="CA.OneTimeInit">ALLUSERS=1 OR (ALLUSERS=2 AND Privileged)</Custom>
+			<Custom Action="CA.OneTimeInit.SetActionData.PerUser" Before="CA.OneTimeInit">ALLUSERS="" OR (ALLUSERS=2 AND (NOT Privileged))</Custom>
+			<Custom Action="CA.OneTimeInit" Before="InstallFinalize" />
+		</InstallExecuteSequence>
+	</Product>
+</Wix>

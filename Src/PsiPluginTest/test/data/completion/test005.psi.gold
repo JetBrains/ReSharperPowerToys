@@ -1,0 +1,8 @@
+// ${COMPLETE_ITEM:options}
+// ${SHOW_SIGNATURES:false}
+// ${CASE_SENSITIVE_COMPLETION:false}
+// ${COMPLETION_TYPE:Replace}
+
+b options {caret}:
+	c
+  ;

@@ -1,0 +1,12 @@
+// ${COMPLETE_ITEM:PSI_GET}
+// ${SHOW_SIGNATURES:false}
+// ${CASE_SENSITIVE_COMPLETION:false}
+// ${COMPLETION_TYPE:Replace}
+
+a
+extras{
+	get {methodName = "Get" path = <a:PSI_GET> };
+}
+	: 
+	b<PSI_GET{caret}>
+  ;

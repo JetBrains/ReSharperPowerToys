@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 
+  This file contains actions configuration for this plugin. 
+  It will be loaded automatically by resource name specified in the [ActionsXmlAttribute] of the plugin assembly.
+-->
+
+<actions>
+
+  <!-- Declare plugin actions. -->
+  <!-- 
+      The "action" element declares an action. 
+      There should be an action handler class marked with [ActionHandlerAttribute]. 
+      Action ID should be unique so it's recommended to prefix IDs of all your actions with your plugin prefix.
+    -->
+  <action id="AddMenuItem.ShowCurrentSolution" text="Show Current Solution" 
+          image="JetBrains.ReSharper.PowerToys.MenuItem.resources.testImage.gif" />
+  <action id="AddMenuItem.ShowCurrentLineNumber" text="Show Current Line" />
+
+  <!-- Insert items into the main menu (to the end of the Navigate menu). -->
+  <insert group-id="ReSharper.Navigate" position="last">
+    <separator />
+    <action-ref id="AddMenuItem.ShowCurrentSolution" />
+    <action-ref id="AddMenuItem.ShowCurrentLineNumber" />
+  </insert>
+
+  <!-- Insert 'Show Current Line' action into editor's popup menu. -->
+  <!-- “VS#” means we're inserting into Visual Studio command bars. The remaining part is the path in the command bars (submenus, drop-down buttons on toolbars, etc) separated by “#”. -->
+  <!-- You can also use the menu CommandID here, in the form of “VS#(GUID:ID)”-->
+  <insert group-id="VS#Code Window" position="last">
+    <separator />
+    <action-ref id="AddMenuItem.ShowCurrentLineNumber" />
+  </insert>
+
+  <!-- Insert 'Show Current Solution' action into solution explorer Solution menu -->
+  <insert group-id="VS#Solution" position="last">
+    <separator />
+    <action-ref id="AddMenuItem.ShowCurrentSolution" />
+  </insert>
+
+  <!-- Insert 'Show Current Line' action into solution explorer Item menu -->
+  <insert group-id="VS#Item" position="last">
+    <separator />
+    <action-ref id="AddMenuItem.ShowCurrentSolution" />
+  </insert>
+
+  <!-- Insert 'Show Current Line' action into solution explorer Project menu -->
+  <insert group-id="VS#Project" position="last">
+    <separator />
+    <action-ref id="AddMenuItem.ShowCurrentSolution" />
+  </insert>
+</actions>

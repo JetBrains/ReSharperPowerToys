@@ -1,0 +1,14 @@
+// ${COMPLETE_ITEM:bbb}
+// ${SHOW_SIGNATURES:false}
+// ${CASE_SENSITIVE_COMPLETION:false}
+// ${COMPLETION_TYPE:Replace}
+
+a
+	:
+	bbb{caret}
+  ;
+
+bbb
+	:
+	c
+  ;
