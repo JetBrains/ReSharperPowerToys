@@ -34,7 +34,6 @@ options {
   generateWorkingPsi;
 }
 
-
 errorhandling psiFile options {
 	stubBase="PsiFileElement";
 }

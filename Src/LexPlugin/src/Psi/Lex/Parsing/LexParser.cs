@@ -17,7 +17,6 @@ namespace JetBrains.ReSharper.LexPlugin.Psi.Lex.Parsing
     private readonly SeldomInterruptChecker myCheckForInterrupt;
     private readonly ILexer myOriginalLexer;
     protected IPsiSourceFile SourceFile;
-    private bool myHasLBrace = false;
 
     public LexParser(ILexer lexer)
     {
@@ -170,13 +169,13 @@ namespace JetBrains.ReSharper.LexPlugin.Psi.Lex.Parsing
           tokenType = myLexer.TokenType;
         }
         tokenType = myLexer.TokenType;
-        if (tokenType != null && !(tokenType == JetBrains.ReSharper.LexPlugin.Psi.Lex.Tree.Impl.TokenType.PERC
-            || tokenType == JetBrains.ReSharper.LexPlugin.Psi.Lex.Tree.Impl.TokenType.RBRACE))
+        if (tokenType != null && !(tokenType == TokenType.PERC
+            || tokenType == TokenType.RBRACE))
         {
-          throw new JetBrains.ReSharper.Psi.Parsing.FollowsFailure(ErrorMessages.GetErrorMessage5());
+          throw new FollowsFailure(ErrorMessages.GetErrorMessage5());
         }
       }
-      catch (JetBrains.ReSharper.Psi.Parsing.SyntaxError e)
+      catch (SyntaxError e)
       {
         if (e.ParsingResult != null && result != null)
         {

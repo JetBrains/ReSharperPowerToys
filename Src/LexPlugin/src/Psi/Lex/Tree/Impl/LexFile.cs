@@ -16,6 +16,13 @@ namespace JetBrains.ReSharper.LexPlugin.Psi.Lex.Tree.Impl
     private ISymbolTable myTokenSymbolTable;
     private readonly Dictionary<string, IDeclaredElement> myDeclarations = new Dictionary<string, IDeclaredElement>();
 
+    protected override void ClearCachedData()
+    {
+      base.ClearCachedData();
+      myTokenSymbolTable = null;
+      myDeclarations.Clear();
+    }
+
     #region Overrides of TreeElement
 
     public override PsiLanguageType Language
