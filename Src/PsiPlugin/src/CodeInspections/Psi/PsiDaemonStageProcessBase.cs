@@ -76,7 +76,7 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi
       }
       else
       {
-        //VisitNode(element, consumer);
+        VisitNode(element, consumer);
       }
     }
 
