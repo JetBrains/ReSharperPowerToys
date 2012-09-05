@@ -145,6 +145,8 @@
     <Compile Include="src\CodeInspections\Lex\LexIncrementalDaemonStageProcessBase.cs" />
     <Compile Include="src\CodeInspections\Lex\SmartResolverProcess.cs" />
     <Compile Include="src\CodeInspections\Lex\SmartResolverStage.cs" />
+    <Compile Include="src\Features\Services\FindUsages\LexReferenceSearcher.cs" />
+    <Compile Include="src\Features\Services\FindUsages\LexReferenceSearcherFactory.cs" />
     <Compile Include="src\Gen\Parsing\Lex\ErrorMessages.cs" />
     <Compile Include="src\Gen\Parsing\Lex\LexParserGenerated.cs" />
     <Compile Include="src\Gen\Parsing\Lex\TokenBitsets.cs" />
@@ -446,6 +448,8 @@
     <Compile Include="src\Psi\Lex\Tree\ITokenDeclaration.cs" />
     <Compile Include="src\Psi\Lex\Tree\IWhitespaceNode.cs" />
     <Compile Include="src\Psi\Lex\Tree\LexCompositeNodeType.cs" />
+    <Compile Include="src\Refactoring\Rename\LexAtomicRename.cs" />
+    <Compile Include="src\Refactoring\Rename\LexRenamesFactory.cs" />
     <Compile Include="src\Resolve\LexDeclaredElementType.cs" />
     <Compile Include="src\Resolve\LexReferenceBase.cs" />
     <Compile Include="src\Resolve\LexTokenReference.cs" />
