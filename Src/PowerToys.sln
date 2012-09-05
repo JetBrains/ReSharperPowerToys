@@ -44,6 +44,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NewFolder1", "NewFolder1", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LexPlugin", "LexPlugin\LexPlugin.csproj", "{70928A29-A814-4112-A0D6-782F2007451B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LexPluginTest", "LexPluginTest\LexPluginTest.csproj", "{671C20B3-E951-45AF-92C1-24305BB6DB2D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -106,6 +108,10 @@ Global
 		{70928A29-A814-4112-A0D6-782F2007451B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70928A29-A814-4112-A0D6-782F2007451B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70928A29-A814-4112-A0D6-782F2007451B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{671C20B3-E951-45AF-92C1-24305BB6DB2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{671C20B3-E951-45AF-92C1-24305BB6DB2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{671C20B3-E951-45AF-92C1-24305BB6DB2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{671C20B3-E951-45AF-92C1-24305BB6DB2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

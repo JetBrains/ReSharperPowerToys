@@ -1,0 +1,13 @@
+Language: PsiLanguageType:Lex
+ILexFile
+  IUsingList
+    IUsingItem
+      LexTokenType+UsingKeywordTokenElement(type:USING_KEYWORD, text:using)
+      Whitespace(type:WHITE_SPACE, text: ) spaces:" "
+      ICSharpNamespace
+        ICSharpNamespaceName
+          Identifier(type:IDENTIFIER, text:System)
+      LexTokenType+SemicolonTokenElement(type:SEMICOLON, text:;)
+  IDefinitionBlock
+  ILexingBlock
+
