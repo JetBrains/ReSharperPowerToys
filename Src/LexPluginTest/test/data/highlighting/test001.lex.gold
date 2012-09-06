@@ -30,6 +30,7 @@ LOWER_CASE_LETTER_CHARACTER = ("a"|"b"|"c"|"d"|"e"|"f"|"g"|"h"|"i"|"j"|"k"|"l"|"
 
 %%
 
-<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> {NEW_LINE_PAIR} { currTokenType = makeToken (LexTokenType.NEW_LINE); return currTokenType; }
+<YYINITIAL,YY_IN_BRACE_BLOCK,|YY_IN_PAREN_EXPRESSION|(0)> {NEW_LINE_PAIR} { currTokenType = makeToken (LexTokenType.NEW_LINE); return currTokenType; }
 
 ---------------------------------------------------------
+(0): ReSharper Underlined Error Highlighting: Unresolved reference

@@ -25,6 +25,7 @@ namespace JetBrains.ReSharper.LexPlugin.Psi.Lex.Tree.Impl
       myTokenSymbolTable = null;
       myStateSymbolTable = null;
       myTokenDeclarations.Clear();
+      myStateDeclarations.Clear();
     }
 
     #region Overrides of TreeElement
@@ -112,15 +113,15 @@ namespace JetBrains.ReSharper.LexPlugin.Psi.Lex.Tree.Impl
       CollectStateDeclarations();
       if (GetSourceFile() != null)
       {
-        IList<IDeclaredElement> elements = myTokenDeclarations.Values.ToList();
+        IList<IDeclaredElement> elements = myStateDeclarations.Values.ToList();
         elements.Add(new InitialStateDeclaredElement(GetSourceFile(), GetPsiServices()));
-        myTokenSymbolTable = ResolveUtil.CreateSymbolTable(elements, 0);
+        myStateSymbolTable = ResolveUtil.CreateSymbolTable(elements, 0);
       }
       else
       {
-        myTokenSymbolTable = null;
+        myStateSymbolTable = null;
       }
-      return myTokenSymbolTable;
+      return myStateSymbolTable;
     }
 
     private void CollectStateDeclarations()

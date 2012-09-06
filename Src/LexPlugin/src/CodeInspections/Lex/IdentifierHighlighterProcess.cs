@@ -8,6 +8,7 @@ using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.Stages;
 using JetBrains.ReSharper.LexPlugin.CodeInspections.Lex.Highlighting;
 using JetBrains.ReSharper.LexPlugin.Psi.Lex.Tree;
+using JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve;
 using JetBrains.ReSharper.Psi.Tree;
 
 namespace JetBrains.ReSharper.LexPlugin.CodeInspections.Lex
@@ -46,7 +47,14 @@ namespace JetBrains.ReSharper.LexPlugin.CodeInspections.Lex
     public override void VisitStateName(IStateName stateNameParam, IHighlightingConsumer consumer)
     {
       DocumentRange colorConstantRange = stateNameParam.GetDocumentRange();
-      AddHighLighting(colorConstantRange, stateNameParam, consumer, new LexStateHighlighting(stateNameParam));
+      ResolveResultWithInfo resolve = stateNameParam.StateNameReference.Resolve();
+      if ((resolve == null) || ((resolve.Result.DeclaredElement == null) && (resolve.Result.Candidates.Count == 0)))
+      {
+        AddHighLighting(colorConstantRange, stateNameParam, consumer, new LexUnresolvedStateHighlighting(stateNameParam));
+      } else
+      {
+        AddHighLighting(colorConstantRange, stateNameParam, consumer, new LexStateHighlighting(stateNameParam));
+      }
       base.VisitStateName(stateNameParam, consumer);
     }
 

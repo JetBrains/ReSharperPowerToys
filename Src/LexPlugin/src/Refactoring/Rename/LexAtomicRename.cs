@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
@@ -118,10 +119,12 @@ namespace JetBrains.ReSharper.LexPlugin.Refactoring.Rename
 
       myNewReferences.Clear();
       OneToSetMap<PsiLanguageType, IReference> references = LanguageUtil.SortReferences(primaryReferences.Where(x => x.IsValid()));
+
+
       IList<IReference> referencesToRename = new List<IReference>();
       foreach (var pair in references)
       {
-        List<IReference> sortedReferences = LanguageUtil.GetSortedReferences(pair.Value);
+        List<IReference> sortedReferences = pair.Value.ToList();//LanguageUtil.GetSortedReferences(pair.Value);
         foreach (IReference reference in sortedReferences)
         {
           IReference oldReferenceForConflict = reference;
