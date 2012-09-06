@@ -145,6 +145,12 @@
     <Compile Include="src\CodeInspections\Lex\LexIncrementalDaemonStageProcessBase.cs" />
     <Compile Include="src\CodeInspections\Lex\SmartResolverProcess.cs" />
     <Compile Include="src\CodeInspections\Lex\SmartResolverStage.cs" />
+    <Compile Include="src\Completion\LexAutomaticStrategy.cs" />
+    <Compile Include="src\Completion\LexCodeCompletionContextProvider.cs" />
+    <Compile Include="src\Completion\LexCodeCompletionItemsProvider.cs" />
+    <Compile Include="src\Completion\LexIntellisenseManager.cs" />
+    <Compile Include="src\Completion\LexReparsedCompletionContext.cs" />
+    <Compile Include="src\Completion\LexCodeCompletionContext.cs" />
     <Compile Include="src\Features\Services\FindUsages\LexReferenceSearcher.cs" />
     <Compile Include="src\Features\Services\FindUsages\LexReferenceSearcherFactory.cs" />
     <Compile Include="src\Gen\Parsing\Lex\ErrorMessages.cs" />
