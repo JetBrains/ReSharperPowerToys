@@ -133,7 +133,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
       IList<IReference> referencesToRename = new List<IReference>();
       foreach (var pair in references)
       {
-        List<IReference> sortedReferences = LanguageUtil.GetSortedReferences(pair.Value);
+        List<IReference> sortedReferences = pair.Value.ToList();//LanguageUtil.GetSortedReferences(pair.Value);
         foreach (IReference reference in sortedReferences)
         {
           IReference oldReferenceForConflict = reference;

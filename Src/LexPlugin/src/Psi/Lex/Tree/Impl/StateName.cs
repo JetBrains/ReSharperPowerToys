@@ -11,7 +11,7 @@ namespace JetBrains.ReSharper.LexPlugin.Psi.Lex.Tree.Impl
   {
     private LexStateReference myStateNameReference;
 
-    public LexStateReference RuleNameReference
+    public LexStateReference StateNameReference
     {
       get
       {
@@ -22,12 +22,12 @@ namespace JetBrains.ReSharper.LexPlugin.Psi.Lex.Tree.Impl
 
     public override ReferenceCollection GetFirstClassReferences()
     {
-      return new ReferenceCollection(RuleNameReference);
+      return new ReferenceCollection(StateNameReference);
     }
 
     public void SetName(string shortName)
     {
-      RuleNameReference.SetName(shortName);
+      StateNameReference.SetName(shortName);
     }
   }
 }

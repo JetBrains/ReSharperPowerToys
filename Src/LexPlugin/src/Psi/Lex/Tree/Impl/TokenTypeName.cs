@@ -11,7 +11,7 @@ namespace JetBrains.ReSharper.LexPlugin.Psi.Lex.Tree.Impl
   {
     private LexTokenReference myTokenNameReference;
 
-    public LexTokenReference RuleNameReference
+    public LexTokenReference TokenNameReference
     {
       get
       {
@@ -22,12 +22,12 @@ namespace JetBrains.ReSharper.LexPlugin.Psi.Lex.Tree.Impl
 
     public override ReferenceCollection GetFirstClassReferences()
     {
-      return new ReferenceCollection(RuleNameReference);
+      return new ReferenceCollection(TokenNameReference);
     }
 
     public void SetName(string shortName)
     {
-      RuleNameReference.SetName(shortName);
+      TokenNameReference.SetName(shortName);
     }
   }
 }

@@ -18,7 +18,6 @@ namespace JetBrains.ReSharper.LexPlugin.Resolve
     {
     }
 
-
     public override ISymbolTable GetReferenceSymbolTable(bool useReferenceName)
     {
       var file = TreeNode.GetContainingFile() as LexFile;

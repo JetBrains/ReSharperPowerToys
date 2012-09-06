@@ -137,6 +137,7 @@
     <Compile Include="src\CodeInspections\Lex\Highlighting\LexStateHighLighting.cs" />
     <Compile Include="src\CodeInspections\Lex\Highlighting\LexStringLiteralHighlighting.cs" />
     <Compile Include="src\CodeInspections\Lex\Highlighting\LexTokenHighlighting.cs" />
+    <Compile Include="src\CodeInspections\Lex\Highlighting\LexUnresolvedStateHighlighting.cs" />
     <Compile Include="src\CodeInspections\Lex\IdentifierHighlighterProcess.cs" />
     <Compile Include="src\CodeInspections\Lex\IdentifierHighlightingStage.cs" />
     <Compile Include="src\CodeInspections\Lex\KeywordHighlightingStage.cs" />
@@ -445,6 +446,7 @@
     <Compile Include="src\Psi\Lex\Tree\Impl\StateName.cs" />
     <Compile Include="src\Psi\Lex\Tree\Impl\TokenTypeName.cs" />
     <Compile Include="src\Psi\Lex\Tree\IStateDeclaration.cs" />
+    <Compile Include="src\Psi\Lex\Tree\IStateName.cs" />
     <Compile Include="src\Psi\Lex\Tree\ITokenTypeName.cs" />
     <Compile Include="src\Psi\Lex\Tree\Impl\LexCompositeElement.cs" />
     <Compile Include="src\Psi\Lex\Tree\Impl\LexFile.cs" />
@@ -462,7 +464,7 @@
     <Compile Include="src\Resolve\InitialStateDeclaredElement.cs" />
     <Compile Include="src\Resolve\LexDeclaredElementType.cs" />
     <Compile Include="src\Resolve\LexReferenceBase.cs" />
-    <Compile Include="src\Resolve\LexStatereference.cs" />
+    <Compile Include="src\Resolve\LexStateReference.cs" />
     <Compile Include="src\Resolve\LexTokenReference.cs" />
     <Compile Include="src\Services\LexDeclaredElementPresenter.cs" />
     <Compile Include="src\Util\LexTreeUtil.cs" />
