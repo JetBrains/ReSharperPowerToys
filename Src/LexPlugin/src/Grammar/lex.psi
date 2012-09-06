@@ -94,9 +94,12 @@ errorhandling definitionBlock
   ;
 
 stateDeclaration
+extras{
+  get {methodName = "StateName" path = <stateDeclaration:LEX_STATENAME> };
+}
   :
     STATE_KEYWORD
-    stateDeclaredName
+    stateDeclaredName<LEX_STATENAME>
   ;
 
 stateDeclaredName
