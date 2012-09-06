@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 using JetBrains.ReSharper.LexPlugin.Grammar;
+using JetBrains.ReSharper.LexPlugin.Resolve;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Refactorings.Rename;
 using JetBrains.ReSharper.Refactorings.RenameModel;
+using JetBrains.Util;
 
 namespace JetBrains.ReSharper.LexPlugin.Refactoring.Rename
 {
@@ -15,6 +17,10 @@ namespace JetBrains.ReSharper.LexPlugin.Refactoring.Rename
     {
       if (declaredElement.PresentationLanguage.Is<LexLanguage>())
       {
+        if (declaredElement is InitialStateDeclaredElement)
+        {
+          return false;
+        }
         return true;
       }
       return false;
@@ -22,7 +28,7 @@ namespace JetBrains.ReSharper.LexPlugin.Refactoring.Rename
 
     public override IEnumerable<AtomicRenameBase> CreateAtomicRenames(IDeclaredElement declaredElement, string newName, bool doNotAddBindingConflicts)
     {
-      yield return new LexAtomicRename(declaredElement, newName, doNotAddBindingConflicts);
+       yield return new LexAtomicRename(declaredElement, newName, doNotAddBindingConflicts);
     }
 
     public override RenameAvailabilityCheckResult CheckRenameAvailability(IDeclaredElement element)

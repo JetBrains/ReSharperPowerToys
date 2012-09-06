@@ -14,6 +14,7 @@ namespace JetBrains.ReSharper.LexPlugin.Resolve
     private static readonly PsiLanguageType Language = LexLanguage.Instance;
 
     public static readonly LexDeclaredElementType Token = new LexDeclaredElementType("Rule");
+    public static readonly LexDeclaredElementType State = new LexDeclaredElementType("State");
     private readonly IDeclaredElementPresenter myElementPresenter;
     private readonly IconId myIconId;
 
@@ -23,7 +24,7 @@ namespace JetBrains.ReSharper.LexPlugin.Resolve
       myElementPresenter = new LexDeclaredElementPresenter();
       myIconId = null;
     }
-
+    
     #region Overrides of DeclaredElementType
 
     protected override IconId GetImage()

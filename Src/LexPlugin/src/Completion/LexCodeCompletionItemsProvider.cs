@@ -4,14 +4,13 @@ using System.Linq;
 using System.Text;
 using JetBrains.ReSharper.Feature.Services.CodeCompletion;
 using JetBrains.ReSharper.Feature.Services.CodeCompletion.Impl;
-using JetBrains.ReSharper.LexPlugin.Completion;
 using JetBrains.ReSharper.LexPlugin.Grammar;
 using JetBrains.ReSharper.LexPlugin.Psi.Lex.Tree.Impl;
 using JetBrains.ReSharper.LexPlugin.Resolve;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Resolve;
 
-namespace JetBrains.ReSharper.LexPlugin.src.Completion
+namespace JetBrains.ReSharper.LexPlugin.Completion
 {
   [Language(typeof(LexLanguage))]
   internal class LexCodeCompletionItemsProvider : ItemsProviderWithReference<LexCodeCompletionContext, LexReferenceBase, LexFile>

@@ -441,7 +441,10 @@
     <Compile Include="src\Psi\Lex\Tree\Impl\ChildRole.cs" />
     <Compile Include="src\Psi\Lex\Tree\Impl\Comment.cs" />
     <Compile Include="src\Psi\Lex\Tree\Impl\Identifier.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Impl\StateDeclaration.cs" />
+    <Compile Include="src\Psi\Lex\Tree\Impl\StateName.cs" />
     <Compile Include="src\Psi\Lex\Tree\Impl\TokenTypeName.cs" />
+    <Compile Include="src\Psi\Lex\Tree\IStateDeclaration.cs" />
     <Compile Include="src\Psi\Lex\Tree\ITokenTypeName.cs" />
     <Compile Include="src\Psi\Lex\Tree\Impl\LexCompositeElement.cs" />
     <Compile Include="src\Psi\Lex\Tree\Impl\LexFile.cs" />
@@ -456,8 +459,10 @@
     <Compile Include="src\Psi\Lex\Tree\LexCompositeNodeType.cs" />
     <Compile Include="src\Refactoring\Rename\LexAtomicRename.cs" />
     <Compile Include="src\Refactoring\Rename\LexRenamesFactory.cs" />
+    <Compile Include="src\Resolve\InitialStateDeclaredElement.cs" />
     <Compile Include="src\Resolve\LexDeclaredElementType.cs" />
     <Compile Include="src\Resolve\LexReferenceBase.cs" />
+    <Compile Include="src\Resolve\LexStatereference.cs" />
     <Compile Include="src\Resolve\LexTokenReference.cs" />
     <Compile Include="src\Services\LexDeclaredElementPresenter.cs" />
     <Compile Include="src\Util\LexTreeUtil.cs" />
