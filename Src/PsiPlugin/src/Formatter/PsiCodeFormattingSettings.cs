@@ -7,10 +7,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     public PsiCodeFormattingSettings(GlobalFormatSettings globalSettings)
     {
       GlobalSettings = globalSettings;
-      //CommonSettings = commonSettings;
     }
 
-    //public readonly CommonFormatterSettingsKey CommonSettings;
     public readonly GlobalFormatSettings GlobalSettings;
   }
 }

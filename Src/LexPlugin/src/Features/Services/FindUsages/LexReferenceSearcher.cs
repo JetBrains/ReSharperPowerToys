@@ -5,6 +5,7 @@ using System.Text;
 using JetBrains.DocumentModel;
 using JetBrains.ReSharper.LexPlugin.Grammar;
 using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.ExtensionsAPI;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Finder;
 using JetBrains.ReSharper.Psi.Search;
@@ -50,7 +51,7 @@ namespace JetBrains.ReSharper.LexPlugin.Features.Services.FindUsages
 
     public bool ProcessProjectItem<TResult>(IPsiSourceFile sourceFile, IFindResultConsumer<TResult> consumer)
     {
-      if (myElements.All(element => !CanContainReferencesTo(sourceFile, element)))
+      if (!CanContainReferencesTo(sourceFile))
       {
         return false;
       }
@@ -80,9 +81,9 @@ namespace JetBrains.ReSharper.LexPlugin.Features.Services.FindUsages
 
     #endregion
 
-    private bool CanContainReferencesTo(IPsiSourceFile sourceFile, IDeclaredElement element)
+    private bool CanContainReferencesTo(IPsiSourceFile sourceFile)
     {
-      return true;
+      return ((Equals(sourceFile.PrimaryPsiLanguage, LexLanguage.Instance)) || (Equals(sourceFile.PrimaryPsiLanguage, CSharpLanguage.Instance)));
     }
   }
 }

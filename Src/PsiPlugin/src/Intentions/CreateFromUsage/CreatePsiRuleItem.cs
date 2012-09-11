@@ -32,7 +32,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
     {
       var result = ExecutePsiIntention();
 
-      //Assertion.Assert(result.Holders != null, "result.Holders != null");
       Assertion.Assert(result.ResultDeclaration != null, "result.ResultDeclaration != null");
       Assertion.Assert(result.ResultDeclaration.IsValid(), "result.ResultDeclaration.IsValid()");
       result.ResultDeclaration.GetPsiServices().PsiManager.UpdateCaches();

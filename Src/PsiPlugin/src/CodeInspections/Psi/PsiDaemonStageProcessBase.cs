@@ -20,14 +20,10 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi
     {
       myDaemonProcess = process;
       mySettingsStore = settingsStore;
-      PsiServices = process.Solution.GetPsiServices();
       myFile = PsiDaemonStageBase.GetPsiFile(myDaemonProcess.SourceFile);
     }
 
-    private IPsiServices PsiServices { get; set; }
-
-
-    public IPsiFile File
+    protected IPsiFile File
     {
       get { return myFile; }
     }
