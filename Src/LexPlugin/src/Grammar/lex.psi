@@ -205,11 +205,6 @@ eofvalLexerOption
     RBRACE
   ;
 
-errorhandling declarationOrInclude
-  :
-    (tokenDeclaration | includeStatement)*
-  ;
-
 errorhandling tokenDeclaration
 extras{
   get {methodName = "TokenName" path = <tokenDeclaration:LEX_TOKENNAME> };
@@ -238,7 +233,7 @@ firstLexingExpressionItem
 
 simpleSequence
   :
-    ((tokenTypeUsage | STRING_LITERAL | parenExpression | QUOTE | BACK_SLASH | BACK_QUOTE | SHARP | DOUBLE_QUOTE | regexp | SIMPLE_QUOTE | SIMPLE_BACK_SLASH specialChar) qualifier?)*
+    ((tokenTypeUsage | STRING_LITERAL | parenExpression | QUOTE | BACK_SLASH | BACK_QUOTE | SHARP | DOUBLE_QUOTE | regexp | SIMPLE_QUOTE | SIMPLE_BACK_SLASH specialChar | AT) qualifier?)*
   ;
 
 tokenDeclaredName
@@ -578,9 +573,12 @@ regExpClass
 ///////////////////////////////////////////////////
 
 errorhandling includeStatement
+extras{
+  get {methodName = "PathId" path = <includeStatement:LEX_PATHID> };
+}
   :
     INCLUDE_KEYWORD
-    pathId
+    pathId<LEX_PATHID>
   ;
 
 pathId

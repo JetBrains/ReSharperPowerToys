@@ -73,7 +73,7 @@ namespace JetBrains.ReSharper.LexPlugin.Psi.Lex.Parsing
       if (lexFile != null)
       {
         lexFile.SetSourceFile(SourceFile);
-        lexFile.CollectOptions();
+        lexFile.CollectIncluded();
       }
       return lexFile;
     }
