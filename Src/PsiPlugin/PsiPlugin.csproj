@@ -150,7 +150,6 @@
     <Compile Include="src\CodeInspections\Psi\Highlightings\PsiVariableHighlighting.cs" />
     <Compile Include="src\CodeInspections\Psi\Highlightings\RepeatedChoiceWarning.cs" />
     <Compile Include="src\CodeInspections\Psi\PsiFileStructure.cs" />
-    <Compile Include="src\CodeInspections\Psi\PsiVisualElementFactory.cs" />
     <Compile Include="src\CodeInspections\Psi\SmartResolverProcess.cs" />
     <Compile Include="src\Completion\KeywordCompletionUtil.cs" />
     <Compile Include="src\Completion\KeywordsBetterFilter.cs" />
@@ -170,9 +169,6 @@
     <Compile Include="src\CodeInspections\Psi\PsiIdentifierToolTipProvider.cs" />
     <Compile Include="src\CodeInspections\Psi\PsiIncrementalDaemonStageProcessBase.cs" />
     <Compile Include="src\CodeInspections\Psi\SmartResolverStage.cs" />
-    <Compile Include="src\Feature\Finding\FindResultPsiSymbol.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="src\Feature\Finding\GotoMember\PsiGotoFileMemberProvider.cs">
       <SubType>Code</SubType>
     </Compile>

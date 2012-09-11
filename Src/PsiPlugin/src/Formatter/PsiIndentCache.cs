@@ -1,4 +1,3 @@
-using System;
 using System.Text;
 using JetBrains.ReSharper.Psi.CodeStyle;
 using JetBrains.ReSharper.Psi.Impl.CodeStyle;
@@ -9,7 +8,6 @@ using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Formatter
 {
-  //public class PsiIndentCache : IndentCache<ITreeNode>
   public class PsiIndentCache : CustomizableIndentCacheBase
   {
     public PsiIndentCache()

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
 using JetBrains.Application.Progress;
 using JetBrains.Application.Settings;
 using JetBrains.DataFlow;
@@ -25,14 +24,12 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     private readonly IEnumerable<IPsiCodeFormatterExtension> myExtensions;
     private readonly ElementsCache<TokenTypePair, bool> myGlueingCache = new ElementsCache<TokenTypePair, bool>(IsTokensGlued);
     private readonly PsiLanguage myLanguage;
-    private ISettingsOptimization mySettingsOptimization;
 
     public PsiCodeFormatter(Lifetime lifetime, PsiLanguage language, ISettingsStore settingsStore, IViewable<IPsiCodeFormatterExtension> extensions, ISettingsOptimization settingsOptimization)
       : base(settingsStore)
     {
       myLanguage = language;
       myExtensions = extensions.ToLiveEnumerable(lifetime);
-      mySettingsOptimization = settingsOptimization;
     }
 
     protected override PsiLanguageType LanguageType
@@ -107,7 +104,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       return new ITreeNode[] { PsiFormatterHelper.CreateSpace(indent) };
     }
 
-    public override ITreeRange Format(ITreeNode firstElement, ITreeNode lastElement, CodeFormatProfile profile, [CanBeNull] IProgressIndicator pi, IContextBoundSettingsStore overrideSettingsStore = null)
+    public override ITreeRange Format(ITreeNode firstElement, ITreeNode lastElement, CodeFormatProfile profile, IProgressIndicator pi, IContextBoundSettingsStore overrideSettingsStore = null)
     {
       var psiProfile = new PsiFormatProfile(profile);
       ITreeNode firstNode = firstElement;
@@ -121,11 +118,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
         ITreeNode commonParent = firstNode.FindCommonParent(lastNode);
         ITreeNode firstChild = firstNode;
         ITreeNode lastChild = lastElement;
-        while (firstChild.Parent != commonParent)
+        while ((firstChild != null) && (firstChild.Parent != commonParent))
         {
           firstChild = firstChild.Parent;
         }
-        while (lastChild.Parent != commonParent)
+        while ((lastChild != null)&&(lastChild.Parent != commonParent))
         {
           lastChild = lastChild.Parent;
         }
@@ -164,21 +161,15 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
         }
       }
       ISolution solution = firstNode.GetSolution();
-      var contextBoundSettingsStore = GetProperContextBoundSettingsStore(overrideSettingsStore, firstNode);
       GlobalFormatSettings globalSettings = GlobalFormatSettingsHelper.GetService(solution).GetSettingsForLanguage(myLanguage);
-      //var formatterSettings = new PsiCodeFormattingSettings(globalSettings, contextBoundSettingsStore.GetKey<CommonFormatterSettingsKey>(mySettingsOptimization));
       var formatterSettings = new PsiCodeFormattingSettings(globalSettings);
-      using (pi.SafeTotal(4))
+      using (pi.SafeTotal(3))
       {
         var context = new PsiCodeFormattingContext(this, firstNode, lastNode, NullProgressIndicator.Instance);
         if (psiProfile.Profile != CodeFormatProfile.INDENT)
         {
-          using (pi.CreateSubProgress(1))
-          {
-            //FormatterImplHelper.DecoratingIterateNodes(context, context.FirstNode, context.LastNode, new PsiDecorationStage(formatterSettings, psiProfile, subPi));
-          }
 
-          using (IProgressIndicator subPi = pi.CreateSubProgress(1))
+          using (IProgressIndicator subPi = pi.CreateSubProgress(2))
           {
             using (subPi.SafeTotal(2))
             {

@@ -104,7 +104,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
         if (! node.IsWhitespaceToken())
         {
           ITreeNode nextNode = null;
-          while (nextNode == null)
+          while ((node != null)&&(nextNode == null))
           {
             var sibling = node.NextSibling;
             while (sibling != null && sibling.IsWhitespaceToken())
