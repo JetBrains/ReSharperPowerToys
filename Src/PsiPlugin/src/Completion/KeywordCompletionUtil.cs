@@ -11,7 +11,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion
     public static IEnumerable<string> GetAplicableKeywords(IPsiFile file, TreeTextRange referenceRange)
     {
       // statements part ...
-      //var ret = new HashSet<string>();
       IList<string> list = new List<string>();
       var token = file.FindNodeAt(referenceRange) as ITokenNode;
       if (token == null)

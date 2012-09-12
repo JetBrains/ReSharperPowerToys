@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using JetBrains.Annotations;
 using JetBrains.ReSharper.Psi.ExtensionsAPI;
@@ -68,6 +69,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       if (lastSpace != null && lastSpace.GetTokenType() != PsiTokenType.NEW_LINE)
       {
         ITreeNode firstSpace = lastSpace.LeftWhitespaces().TakeWhile(ws => ws != PsiTokenType.NEW_LINE).LastOrDefault() ?? lastSpace;
+        Debug.Assert(firstSpace != null, "firstSpace != null");
         while (firstSpace.GetTokenType() != PsiTokenType.NEW_LINE)
         {
           firstSpace = firstSpace.GetNextToken();

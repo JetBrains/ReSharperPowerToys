@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using JetBrains.Application;
 using JetBrains.ReSharper.Feature.Services.Intentions.DataProviders;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
@@ -22,6 +23,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Intentions
       using (WriteLockCookie.Create())
       {
         var anchor = myTarget.Anchor;
+        Debug.Assert(anchor != null, "anchor != null");
         var parent = anchor.Parent;
         var whiteSpace = ModificationUtil.AddChildAfter(parent, anchor, new NewLine("\n"));
         whiteSpace = ModificationUtil.AddChildAfter(parent, whiteSpace, new NewLine("\n"));

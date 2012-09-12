@@ -10,8 +10,6 @@ using JetBrains.ReSharper.Psi.Tree;
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi.Highlightings
 {
   [ConfigurableSeverityHighlighting("LeftRecursion", "PSI", OverlapResolve = OverlapResolveKind.WARNING, ToolTipFormatString = "Left Recursion")]
-  //[StaticSeverityHighlighting(Severity.INFO, HighlightingGroupIds.CompilerWarnings,
-    //OverlapResolve = OverlapResolveKind.WARNING, ShowToolTipInStatusBar = false)]
   internal class LeftRecursionWarning : IHighlightingWithRange, ICustomAttributeIdHighlighting
   {
     private const string AtributeId = HighlightingAttributeIds.WARNING_ATTRIBUTE;

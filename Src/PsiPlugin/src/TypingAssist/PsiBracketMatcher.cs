@@ -13,7 +13,7 @@ namespace JetBrains.ReSharper.PsiPlugin.TypingAssist
         {
           new Pair<TokenNodeType, TokenNodeType>(PsiTokenType.LBRACE, PsiTokenType.RBRACE),
           new Pair<TokenNodeType, TokenNodeType>(PsiTokenType.LBRACKET, PsiTokenType.RBRACKET),
-          new Pair<TokenNodeType, TokenNodeType>(PsiTokenType.LPARENTH, PsiTokenType.RPARENTH),
+          new Pair<TokenNodeType, TokenNodeType>(PsiTokenType.LPARENTH, PsiTokenType.RPARENTH)
         })
     {
     }
