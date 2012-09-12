@@ -17,8 +17,8 @@ using JetBrains.ReSharper.Psi.Services;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Formatter;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
-using JetBrains.ReSharper.PsiPlugin.Parsing;
-using JetBrains.ReSharper.PsiPlugin.Tree;
+using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing;
+using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Util;
 using JetBrains.Text;
 using JetBrains.TextControl;
@@ -339,7 +339,7 @@ namespace JetBrains.ReSharper.PsiPlugin.TypingAssist
         // Resync with modified text
         lexer = GetCachingLexer(textControl);
         lexer.FindTokenAt(lBracePos);
-        Logger.Assert(lexer.TokenType == PsiTokenType.LBRACE, "The condition (lexer.TokenType == CSharpTokenType.LBRACE) is false.");
+        Logger.Assert(lexer.TokenType == PsiTokenType.LBRACE, "The condition (lexer.tokenTypeName == CSharpTokenType.LBRACE) is false.");
       }
 
       // Find the matched RBRACE and check they are on the same line
@@ -443,7 +443,7 @@ namespace JetBrains.ReSharper.PsiPlugin.TypingAssist
 
         newCaretPos = dummyNode.GetTreeStartOffset();
         file = file.ReParse(new TreeTextRange(newCaretPos, newCaretPos + dummyText.Length), "");
-        Assertion.Assert(file != null, "file != null");
+        Assertion.Assert(file != null, "fileFullName != null");
       }
 
       // dposition cursor

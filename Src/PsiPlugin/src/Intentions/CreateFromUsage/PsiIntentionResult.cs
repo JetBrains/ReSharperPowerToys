@@ -62,7 +62,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
       solution.GetComponent<SolutionDocumentTransactionManager>().AssertNotUnderTransaction();
 
       IFile file = myAnchor.GetContainingFile();
-      Assertion.Assert(file != null, "file!= null");
+      Assertion.Assert(file != null, "fileFullName!= null");
       var item = file.GetSourceFile().ToProjectFile();
 
       var infos = GetFieldInfos(newDeclaration, myHolders);

@@ -1,0 +1,141 @@
+Language: PsiLanguageType:Lex
+ILexFile
+  NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+  IDefinitionBlock
+    LexTokenType+PercTokenElement(type:PERC, text:%)
+    IIncludeStatement
+      LexTokenType+IncludeKeywordTokenElement(type:INCLUDE_KEYWORD, text:include)
+      Whitespace(type:WHITE_SPACE, text: ) spaces:" "
+      IPathId
+        IPathElement
+          LexTokenType+DotTokenElement(type:DOT, text:.)
+          LexTokenType+DotTokenElement(type:DOT, text:.)
+        LexTokenType+DivTokenElement(type:DIV, text:/)
+        IPathElement
+          LexTokenType+DotTokenElement(type:DOT, text:.)
+          LexTokenType+DotTokenElement(type:DOT, text:.)
+        LexTokenType+DivTokenElement(type:DIV, text:/)
+        IPathElement
+          LexTokenType+DotTokenElement(type:DOT, text:.)
+          LexTokenType+DotTokenElement(type:DOT, text:.)
+        LexTokenType+DivTokenElement(type:DIV, text:/)
+        IPathElement
+          LexTokenType+DotTokenElement(type:DOT, text:.)
+          LexTokenType+DotTokenElement(type:DOT, text:.)
+        LexTokenType+DivTokenElement(type:DIV, text:/)
+        IPathElement
+          Identifier(type:IDENTIFIER, text:obj)
+        LexTokenType+DivTokenElement(type:DIV, text:/)
+        IPathElement
+          Identifier(type:IDENTIFIER, text:Unicode)
+        LexTokenType+DotTokenElement(type:DOT, text:.)
+        IFileExt
+          Identifier(type:IDENTIFIER, text:lex)
+    NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+    NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+    ITokenDeclaration
+      ITokenDeclaredName
+        Identifier(type:IDENTIFIER, text:REAL_LITERAL)
+      LexTokenType+EqTokenElement(type:EQ, text:=)
+      IFirstLexingExpression
+        IFirstLexingExpressionItem
+          ISimpleSequence
+            IParenExpression
+              LexTokenType+LparenthTokenElement(type:LPARENTH, text:()
+              ILexingExpression
+                ISequence
+                  ISimpleExpression
+                    ITokenTypeUsage
+                      LexTokenType+LbraceTokenElement(type:LBRACE, text:{)
+                      ITokenTypeName
+                        Identifier(type:IDENTIFIER, text:DECIMAL_DIGIT)
+                      LexTokenType+RbraceTokenElement(type:RBRACE, text:})
+                    IQualifier
+                      LexTokenType+AsteriskTokenElement(type:ASTERISK, text:*)
+                  ISimpleExpression
+                    LexGenericToken(type:STRING_LITERAL, text:".")
+                  ISimpleExpression
+                    ITokenTypeUsage
+                      LexTokenType+LbraceTokenElement(type:LBRACE, text:{)
+                      ITokenTypeName
+                        Identifier(type:IDENTIFIER, text:DECIMAL_DIGIT)
+                      LexTokenType+RbraceTokenElement(type:RBRACE, text:})
+                    IQualifier
+                      LexTokenType+PlusTokenElement(type:PLUS, text:+)
+                  ISimpleExpression
+                    IParenExpression
+                      LexTokenType+LparenthTokenElement(type:LPARENTH, text:()
+                      ILexingExpression
+                        ISequence
+                          ISimpleExpression
+                            ITokenTypeUsage
+                              LexTokenType+LbraceTokenElement(type:LBRACE, text:{)
+                              ITokenTypeName
+                                Identifier(type:IDENTIFIER, text:EXPONENT_PART)
+                              LexTokenType+RbraceTokenElement(type:RBRACE, text:})
+                      LexTokenType+RparenthTokenElement(type:RPARENTH, text:))
+                    IQualifier
+                      LexTokenType+QuestTokenElement(type:QUEST, text:?)
+                  ISimpleExpression
+                    ITokenTypeUsage
+                      LexTokenType+LbraceTokenElement(type:LBRACE, text:{)
+                      ITokenTypeName
+                        Identifier(type:IDENTIFIER, text:REAL_TYPE_SUFFIX)
+                      LexTokenType+RbraceTokenElement(type:RBRACE, text:})
+                    IQualifier
+                      LexTokenType+QuestTokenElement(type:QUEST, text:?)
+              LexTokenType+RparenthTokenElement(type:RPARENTH, text:))
+        LexTokenType+OrTokenElement(type:OR, text:|)
+        IFirstLexingExpressionItem
+          ISimpleSequence
+            IParenExpression
+              LexTokenType+LparenthTokenElement(type:LPARENTH, text:()
+              ILexingExpression
+                ISequence
+                  ISimpleExpression
+                    ITokenTypeUsage
+                      LexTokenType+LbraceTokenElement(type:LBRACE, text:{)
+                      ITokenTypeName
+                        Identifier(type:IDENTIFIER, text:DECIMAL_DIGIT)
+                      LexTokenType+RbraceTokenElement(type:RBRACE, text:})
+                    IQualifier
+                      LexTokenType+PlusTokenElement(type:PLUS, text:+)
+                  ISimpleExpression
+                    IParenExpression
+                      LexTokenType+LparenthTokenElement(type:LPARENTH, text:()
+                      ILexingExpression
+                        ISequence
+                          ISimpleExpression
+                            ITokenTypeUsage
+                              LexTokenType+LbraceTokenElement(type:LBRACE, text:{)
+                              ITokenTypeName
+                                Identifier(type:IDENTIFIER, text:EXPONENT_PART)
+                              LexTokenType+RbraceTokenElement(type:RBRACE, text:})
+                        IChoiceTail
+                          LexTokenType+OrTokenElement(type:OR, text:|)
+                          ISequence
+                            ISimpleExpression
+                              IParenExpression
+                                LexTokenType+LparenthTokenElement(type:LPARENTH, text:()
+                                ILexingExpression
+                                  ISequence
+                                    ISimpleExpression
+                                      ITokenTypeUsage
+                                        LexTokenType+LbraceTokenElement(type:LBRACE, text:{)
+                                        ITokenTypeName
+                                          Identifier(type:IDENTIFIER, text:EXPONENT_PART)
+                                        LexTokenType+RbraceTokenElement(type:RBRACE, text:})
+                                      IQualifier
+                                        LexTokenType+QuestTokenElement(type:QUEST, text:?)
+                                    ISimpleExpression
+                                      ITokenTypeUsage
+                                        LexTokenType+LbraceTokenElement(type:LBRACE, text:{)
+                                        ITokenTypeName
+                                          Identifier(type:IDENTIFIER, text:REAL_TYPE_SUFFIX)
+                                        LexTokenType+RbraceTokenElement(type:RBRACE, text:})
+                                LexTokenType+RparenthTokenElement(type:RPARENTH, text:))
+                      LexTokenType+RparenthTokenElement(type:RPARENTH, text:))
+              LexTokenType+RparenthTokenElement(type:RPARENTH, text:))
+  ILexingBlock
+  NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+

@@ -3,8 +3,8 @@ using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.ContextNavigation.ContextSearches.BaseSearches;
 using JetBrains.ReSharper.Feature.Services.Search.SearchRequests;
 using JetBrains.ReSharper.Psi.Services;
-using JetBrains.ReSharper.PsiPlugin.Tree;
-using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
+using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
+using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl;
 
 namespace JetBrains.ReSharper.PsiPlugin.Navigation.PsiToCSharp
 {

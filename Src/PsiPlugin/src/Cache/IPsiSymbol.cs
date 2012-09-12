@@ -10,12 +10,12 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
   public interface IPsiSymbol
   {
     /// <summary>
-    ///   Offset of symbol declaration in the source file tree
+    ///   Offset of symbol declaration in the source fileFullName tree
     /// </summary>
     int Offset { get; }
 
     /// <summary>
-    ///   Owner PSI source file
+    ///   Owner PSI source fileFullName
     /// </summary>
     IPsiSourceFile SourceFile { get; }
 

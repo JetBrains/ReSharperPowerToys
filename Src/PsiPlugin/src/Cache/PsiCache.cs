@@ -18,7 +18,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
   [PsiComponent]
   public class PsiCache : ICache
   {
-    private const int VERSION = 7;
+    private const int VERSION = 8;
     private readonly JetHashSet<IPsiSourceFile> myDirtyFiles = new JetHashSet<IPsiSourceFile>();
     private readonly OneToSetMap<string, PsiOptionSymbol> myNameToSymbolsOptionMap = new OneToSetMap<string, PsiOptionSymbol>();
 

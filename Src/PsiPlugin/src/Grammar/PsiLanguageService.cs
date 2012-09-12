@@ -5,8 +5,8 @@ using JetBrains.ReSharper.Psi.Impl;
 using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Formatter;
-using JetBrains.ReSharper.PsiPlugin.Lexer;
-using JetBrains.ReSharper.PsiPlugin.Parsing;
+using JetBrains.ReSharper.PsiPlugin.Lexer.Psi;
+using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing;
 
 namespace JetBrains.ReSharper.PsiPlugin.Grammar
 {
