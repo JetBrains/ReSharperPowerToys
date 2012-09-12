@@ -1,0 +1,21 @@
+{caret}
+/*global variable declaration*/
+var global = "HELLO JAM!!";
+
+sub div(x, y)
+{
+  var result = x / y;
+  return result;
+}
+
+sub test()
+{
+  /*variable with numeric*/
+  var bar = 123;
+
+  /*variable with string*/
+  var buzz = "123";
+
+  /*variable with expression*/
+  var foo = bar + (100 * 10) / div(100, 5);
+}

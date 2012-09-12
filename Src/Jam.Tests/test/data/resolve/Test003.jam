@@ -1,0 +1,9 @@
+sub test(x)
+{
+  return x;
+}
+
+sub test(x)
+{
+  return test(x);
+}

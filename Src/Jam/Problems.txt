@@ -1,0 +1,4 @@
+﻿# Cannot register new highlighter by RegisterHighlighterAttribute
+# CanRename in CodeStructure show editor outside
+# CanRemove used only for Region?
+# ErrorsGen is out of SDK

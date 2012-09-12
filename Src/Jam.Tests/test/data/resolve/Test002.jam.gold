@@ -1,0 +1,13 @@
+﻿var x = 0;
+
+sub test(x)
+{
+  var x = 10;
+  return |x|(0);
+}
+------------------------------------------------
+0: result=MULTIPLE_CANDIDATES declaredElem=null
+Candidates:
+  global variable x
+  local variable x
+  parameter x

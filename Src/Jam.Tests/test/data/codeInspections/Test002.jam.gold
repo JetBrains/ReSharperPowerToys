@@ -1,0 +1,10 @@
+﻿sub test()
+{
+  return |x|(0) + |SHIFT|(1) + |div|(2)(|x|(3), |SHIFT|(4));
+}
+---------------------------------------------------------
+(0): ReSharper Error Highlighting: Cannot resolve symbol 'x'
+(1): ReSharper Error Highlighting: Cannot resolve symbol 'SHIFT'
+(2): ReSharper Error Highlighting: Cannot resolve symbol 'div'
+(3): ReSharper Error Highlighting: Cannot resolve symbol 'x'
+(4): ReSharper Error Highlighting: Cannot resolve symbol 'SHIFT'

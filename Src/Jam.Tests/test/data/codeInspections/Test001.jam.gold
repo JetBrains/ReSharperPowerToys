@@ -1,0 +1,8 @@
+﻿var SHIFT = 0;
+
+sub div(x, y)
+{
+  var result = x / y;
+  return result + SHIFT;
+}
+---------------------------------------------------------

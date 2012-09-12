@@ -1,0 +1,17 @@
+﻿sub test(x)
+{
+  return |x|(0);
+}
+
+sub test(x)
+{
+  return |test|(1)(|x|(2));
+}
+
+------------------------------------------------
+0: result=OK declaredElem=parameter x
+1: result=MULTIPLE_CANDIDATES declaredElem=null
+Candidates:
+  procedure test
+  procedure test
+2: result=OK declaredElem=parameter x

@@ -1,0 +1,12 @@
+﻿var SHIFT = 0;
+
+sub div(x, y)
+{
+  var result = |x|(0) / |y|(1);
+  return |result|(2) + |SHIFT|(3);
+}
+------------------------------------------------
+0: result=OK declaredElem=parameter x
+1: result=OK declaredElem=parameter y
+2: result=OK declaredElem=local variable result
+3: result=OK declaredElem=global variable SHIFT

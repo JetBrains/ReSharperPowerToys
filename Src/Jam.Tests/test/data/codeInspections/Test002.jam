@@ -1,0 +1,4 @@
+sub test()
+{
+  return x + SHIFT + div(x, SHIFT);
+}

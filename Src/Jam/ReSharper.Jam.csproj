@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DEA8CC7E-F89C-4F67-B065-93BEDDC0F45B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>JetBrains.ReSharper.Psi.Jam</RootNamespace>
+    <AssemblyName>JetBrains.ReSharper.Psi.Jam</AssemblyName>
+    <PsiLanguageName>Jam</PsiLanguageName>
+    <ProductHomeDir>$(MSBuildProjectDirectory)</ProductHomeDir>
+    <ParserGenOutputBase>$(MSBuildProjectDirectory)\src\Gen</ParserGenOutputBase>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>JET_MODE_ASSERT;DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="src\Cache\IJamSymbol.cs" />
+    <Compile Include="src\Cache\JamCache.cs" />
+    <Compile Include="src\Cache\JamSymbol.cs" />
+    <Compile Include="src\Cache\JamSymbolsBuilder.cs" />
+    <Compile Include="src\Cache\JamSymbolType.cs" />
+    <Compile Include="src\CodeInspections\Highlightings\JamAmbiguousReferenceError.cs" />
+    <Compile Include="src\CodeInspections\Highlightings\JamSymbolNotResolvedError.cs" />
+    <Compile Include="src\CodeInspections\JamResolveProblemHighlighter.cs" />
+    <Compile Include="src\CodeInspections\JamDaemonBehaviour.cs" />
+    <Compile Include="src\CodeInspections\Highlightings\JamHighlightingAttributeIds.cs" />
+    <Compile Include="src\CodeInspections\Highlightings\JamHighlightingBase.cs" />
+    <Compile Include="src\CodeInspections\Highlightings\JamIdentifierHighlighting.cs" />
+    <Compile Include="src\CodeInspections\Highlightings\JamSyntaxError.cs" />
+    <Compile Include="src\CodeInspections\JamIdentifierHighlightingStage.cs" />
+    <Compile Include="src\CodeInspections\JamDaemonBase.cs" />
+    <Compile Include="src\CodeInspections\JamDaemonProcessBase.cs" />
+    <Compile Include="src\CodeInspections\JamFileStructure.cs" />
+    <Compile Include="src\CodeInspections\JamFileStructureExplorer.cs" />
+    <Compile Include="src\CodeInspections\JamIdentifierTooltipProvider.cs" />
+    <Compile Include="src\CodeInspections\JamErrorElementHighlightingStage.cs" />
+    <Compile Include="src\CodeInspections\JamResolveStage.cs" />
+    <Compile Include="src\CodeInspections\JamSyntaxHighlightingStage.cs" />
+    <Compile Include="src\CodeStructure\JamCodeElementAspectBase.cs" />
+    <Compile Include="src\CodeStructure\JamCodeStructureElementBase.cs" />
+    <Compile Include="src\CodeStructure\JamCodeStructureProvider.cs" />
+    <Compile Include="src\CodeStructure\JamCodeStructureRootElement.cs" />
+    <Compile Include="src\CodeStructure\JamGlobalVariableCodeElement.cs" />
+    <Compile Include="src\CodeStructure\JamProcedureCodeElement.cs" />
+    <Compile Include="src\CodeStyle\JamCodeStyleColors.cs" />
+    <Compile Include="src\Impl\JamGlobalVariableDeclaredElement.cs" />
+    <Compile Include="src\Impl\JamParameterDeclaredElement.cs" />
+    <Compile Include="src\Impl\Tree\IdentifierExpression.cs" />
+    <Compile Include="src\Impl\Tree\InvocationExpression.cs" />
+    <Compile Include="src\Impl\Tree\LocalVariableDeclarationStatement.cs" />
+    <Compile Include="src\IGlobalVariableDeclaredElement.cs" />
+    <Compile Include="src\ILocalVariableDeclaredElement.cs" />
+    <Compile Include="src\Impl\Tree\Parameter.cs" />
+    <Compile Include="src\Resolve\JamCacheSymbolTableBase.cs" />
+    <Compile Include="src\Resolve\JamGlobalVariableSymbolTable.cs" />
+    <Compile Include="src\Resolve\JamLocalVariableSymbolTable.cs" />
+    <Compile Include="src\Resolve\JamParameterSymbolTable.cs" />
+    <Compile Include="src\Resolve\JamProcedureSymbolTable.cs" />
+    <Compile Include="src\Resolve\JamResolveErrorType.cs" />
+    <Compile Include="src\Resolve\JamSymbolTableBuilder.cs" />
+    <Compile Include="src\Resolve\ProcedureReference.cs" />
+    <Compile Include="src\Resolve\ResolveInfoEx.cs" />
+    <Compile Include="src\Resolve\VariableReference.cs" />
+    <Compile Include="src\IParameterDeclaredElement.cs" />
+    <Compile Include="src\IVariableDeclaredElement.cs" />
+    <Compile Include="src\IProcedureDeclaredElement.cs" />
+    <Compile Include="src\Impl\JamDeclaredElementPresenter.cs" />
+    <Compile Include="src\Impl\JamDeclaredElementBase.cs" />
+    <Compile Include="src\Impl\JamDeclaredElementType.cs" />
+    <Compile Include="src\Impl\JamProcedureDeclaredElement.cs" />
+    <Compile Include="src\Impl\Tree\JamStatementBase.cs" />
+    <Compile Include="src\Impl\Tree\ProcedureDeclaration.cs" />
+    <Compile Include="src\Impl\Tree\GlobalVariableDeclaration.cs" />
+    <Compile Include="src\Impl\JamLocalVariableDeclaredElement.cs" />
+    <Compile Include="src\Navigation\GotoJamSymbolProvider.cs" />
+    <Compile Include="src\Navigation\JamGotoFileMemberProvider.cs" />
+    <Compile Include="src\Tree\IGlobalVariableDeclaration.cs" />
+    <Compile Include="src\Tree\IIdentifierExpression.cs" />
+    <Compile Include="src\Tree\IInvocationExpression.cs" />
+    <Compile Include="src\Tree\IJamDeclaration.cs" />
+    <Compile Include="src\Impl\Tree\JamDeclarationBase.cs" />
+    <Compile Include="src\Impl\Tree\PsiGeneratedGetterTestUtil.cs" />
+    <Compile Include="src\Parsing\IJamParser.cs" />
+    <Compile Include="src\IJamDeclaredElement.cs" />
+    <Compile Include="src\Tree\IJamExpression.cs" />
+    <Compile Include="src\Impl\Tree\JamComment.cs" />
+    <Compile Include="src\Impl\Tree\JamExpressionBase.cs" />
+    <Compile Include="src\Impl\Tree\JamIdentifierToken.cs" />
+    <Compile Include="src\Impl\Tree\JamKeyword.cs" />
+    <Compile Include="src\Impl\Tree\JamLiteralToken.cs" />
+    <Compile Include="src\Impl\Tree\JamNewLineToken.cs" />
+    <Compile Include="src\Impl\Tree\JamWhitespaceToken.cs" />
+    <Compile Include="src\Impl\Tree\JamWhitespaceTokenBase.cs" />
+    <Compile Include="src\Impl\Tree\JamFile.cs" />
+    <Compile Include="src\Impl\Tree\JamFileElement.cs" />
+    <Compile Include="src\Impl\Tree\JamToken.cs" />
+    <Compile Include="src\Impl\Tree\JamTokenBase.cs" />
+    <Compile Include="src\Parsing\FilteringJamLexer.cs" />
+    <Compile Include="src\JamLanguage.cs" />
+    <Compile Include="src\JamProjectFileType.cs" />
+    <Compile Include="src\Impl\Tree\JamChildRole.cs" />
+    <Compile Include="src\Parsing\JamLexer.cs" />
+    <Compile Include="src\Parsing\JamLexerFactory.cs" />
+    <Compile Include="src\Parsing\JamLexerGenerated.cs" />
+    <Compile Include="src\Parsing\JamMissingTokensInserter.cs" />
+    <Compile Include="src\Parsing\JamParser.cs" />
+    <Compile Include="src\JamWordIndexProvider.cs" />
+    <Compile Include="src\Parsing\JamTokenType.cs" />
+    <Compile Include="src\Parsing\Jam_lex.cs">
+      <DependentUpon>Jam.lex</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="src\JamLanguageService.cs" />
+    <Compile Include="src\JamProjectFileLanguageService.cs" />
+    <Compile Include="resources\JamSymbolIcons\ThemedIcons.JamSymbol.Generated.cs" />
+    <Compile Include="src\Gen\**\*.cs" />
+    <Compile Include="src\Parsing\ParserMessages.cs" />
+    <Compile Include="src\Tree\IJamCommentNode.cs" />
+    <Compile Include="src\Tree\IJamFile.cs" />
+    <Compile Include="src\Tree\IJamIdentifier.cs" />
+    <Compile Include="src\Tree\IJamStatement.cs" />
+    <Compile Include="src\Tree\IJamTreeNode.cs" />
+    <Compile Include="src\Impl\Tree\JamCompositeElement.cs" />
+    <Compile Include="src\Tree\ILocalVariableDeclaration.cs" />
+    <Compile Include="src\Tree\ILocalVariableDeclarationStatement.cs" />
+    <Compile Include="src\Tree\IParameter.cs" />
+    <Compile Include="src\Tree\IProcedureDeclaration.cs" />
+    <Compile Include="src\Tree\IWhitespaceTokenNode.cs" />
+    <Compile Include="src\Tree\JamCompositeNodeType.cs" />
+    <Compile Include="src\Util\JamElementFactory.cs" />
+    <Compile Include="src\Util\JamElementFactoryImpl.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ThemedIconPng Include="resources\JamSymbolIcons\file[SymbolsIdea].png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="resources\JamSymbolIcons\ThemedIcons.JamSymbol.Generated.Xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Done.txt" />
+    <Content Include="TODO.txt" />
+    <ParserGen Include="src\Parsing\Jam.psi" />
+    <CsLex Include="src\Parsing\Jam.lex" />
+    <ThemedIconPng Include="resources\JamSymbolIcons\local-var[SymbolsIdea].png" />
+    <ThemedIconPng Include="resources\JamSymbolIcons\procedure[SymbolsIdea].png" />
+    <ThemedIconPng Include="resources\JamSymbolIcons\global-var[SymbolsIdea].png" />
+    <Content Include="Problems.txt" />
+    <ThemedIconPng Include="resources\JamSymbolIcons\parameter[SymbolsIdea].png" />
+    <ThemedIconPng Include="resources\JamSymbolIcons\global-var[SymbolsVs08].png" />
+    <ThemedIconPng Include="resources\JamSymbolIcons\local-var[SymbolsVs08].png" />
+    <ThemedIconPng Include="resources\JamSymbolIcons\parameter[SymbolsVs08].png" />
+    <ThemedIconPng Include="resources\JamSymbolIcons\procedure[SymbolsVs08].png" />
+    <Content Include="src\Parsing\Tokens.xml" />
+  </ItemGroup>
+  <ItemGroup />
+  <PropertyGroup>
+    <ReSharperSdkTargets Condition=" '$(ReSharperSdkTargets)' == '' ">$(MSBuildExtensionsPath)\JetBrains\ReSharper.SDK\v7.0</ReSharperSdkTargets>
+  </PropertyGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(ReSharperSdkTargets)\Plugin.Targets" />
+  <Import Project="$(ReSharperSdkTools)\parserGen\ParserGen.Targets" />
+  <Import Project="$(ReSharperSdkTools)\MSBuild\JetBrains.Build.Common.Targets" />
+  <Import Project="$(ReSharperSdkTools)\CsLex\CsLex.Targets" />
+  <Target Name="BeforeBuild">
+    <MakeDir Directories="$(MSBuildProjectDirectory)\obj" />
+    <Copy SourceFiles="$(ReSharperSdkTools)\parserGen\Unicode.lex" DestinationFolder="$(MSBuildProjectDirectory)\obj" />
+  </Target>
+  <Import Project="$(ReSharperSdkTools)\MSBuild\JetBrains.Build.Platform.ThemedIconsConverter.Targets" />
+</Project>
