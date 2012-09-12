@@ -20,9 +20,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
   {
     private const int VERSION = 8;
     private readonly JetHashSet<IPsiSourceFile> myDirtyFiles = new JetHashSet<IPsiSourceFile>();
-    private readonly OneToSetMap<string, PsiOptionSymbol> myNameToSymbolsOptionMap = new OneToSetMap<string, PsiOptionSymbol>();
 
-    private readonly OneToSetMap<string, IPsiSymbol> myNameToSymbolsRuleMap = new OneToSetMap<string, IPsiSymbol>();
+    private readonly OneToSetMap<string, PsiOptionSymbol> myNameToSymbolsOptionMap = new OneToSetMap<string, PsiOptionSymbol>();
+    private readonly OneToSetMap<string, PsiRuleSymbol> myNameToSymbolsRuleMap = new OneToSetMap<string, PsiRuleSymbol>();
+
     private readonly IPersistentIndexManager myPersistentIdIndex;
     private readonly OneToListMap<IPsiSourceFile, PsiOptionSymbol> myProjectFileToSymbolsOptionMap = new OneToListMap<IPsiSourceFile, PsiOptionSymbol>();
     private readonly OneToListMap<IPsiSourceFile, PsiRuleSymbol> myProjectFileToSymbolsRuleMap = new OneToListMap<IPsiSourceFile, PsiRuleSymbol>();

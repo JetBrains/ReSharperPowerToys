@@ -47,40 +47,38 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi
       }
     }
 
-    public override void VisitNode(ITreeNode element, IHighlightingConsumer consumer)
+    public override void VisitVariableName(IVariableName variableNameParam, IHighlightingConsumer consumer)
     {
-      DocumentRange colorConstantRange = element.GetDocumentRange();
-
-      if ((element is ITokenNode) && ((ITokenNode)element).GetTokenType().IsWhitespace)
-      {
-        return;
-      }
-
-      var variableName = element as VariableName;
+      DocumentRange colorConstantRange = variableNameParam.GetDocumentRange();
+      var variableName = variableNameParam as VariableName;
       if (variableName != null)
       {
         ResolveResultWithInfo resolve = variableName.Resolve();
         if ((resolve != null) && ((resolve.Result.DeclaredElement != null) || (resolve.Result.Candidates.Count > 0)))
         {
-          AddHighLighting(colorConstantRange, element, consumer, new PsiVariableHighlighting(element));
+          AddHighLighting(colorConstantRange, variableNameParam, consumer, new PsiVariableHighlighting(variableNameParam));
         }
         else
         {
-          AddHighLighting(colorConstantRange, element, consumer, new PsiUnresolvedVariableReferenceHighlighting(variableName));
-          return;
+          AddHighLighting(colorConstantRange, variableNameParam, consumer, new PsiUnresolvedVariableReferenceHighlighting(variableName));
         }
       }
-      var pathName = element as PathName;
+    }
+
+    public override void VisitPathName(IPathName pathNameParam, IHighlightingConsumer consumer)
+    {
+      DocumentRange colorConstantRange = pathNameParam.GetDocumentRange();
+      var pathName = pathNameParam as PathName;
       if (pathName != null)
       {
         ResolveResultWithInfo resolve = pathName.Resolve();
         if ((resolve != null) && ((resolve.Result.DeclaredElement != null) || (resolve.Result.Candidates.Count > 0)))
         {
-          AddHighLighting(colorConstantRange, element, consumer, new PsiRuleHighlighting(element));
+          AddHighLighting(colorConstantRange, pathNameParam, consumer, new PsiRuleHighlighting(pathNameParam));
         }
         else
         {
-          AddHighLighting(colorConstantRange, element, consumer, new PsiUnresolvedPathReferenceHighlighting(pathName));
+          AddHighLighting(colorConstantRange, pathNameParam, consumer, new PsiUnresolvedPathReferenceHighlighting(pathName));
         }
       }
     }
