@@ -51,7 +51,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Util
       var node = CreateParser(name + braceParameters + "\n" + ":" + "\n" + ";").ParsePsiFile(false) as IPsiFile;
       if (node == null)
       {
-        throw new ElementFactoryException(string.Format("Cannot create expression '{0}'"));
+        throw new ElementFactoryException(string.Format("Cannot create expression '{0}'", name + braceParameters + "\n" + ":" + "\n" + ";"));
       }
       SandBox.CreateSandBoxFor(node, myModule);
       var ruleDeclaration = node.FirstChild as IRuleDeclaration;
@@ -59,7 +59,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Util
       {
         return ruleDeclaration;
       }
-      throw new ElementFactoryException(string.Format("Cannot create expression '{0}'" + name));
+      throw new ElementFactoryException(string.Format("Cannot create expression '{0}'", name));
     }
 
     public override IRuleDeclaration CreateRuleDeclaration(string name, bool hasBraceParameters, IList<Pair<string, string>> variableParameters)
@@ -85,7 +85,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Util
       var node = CreateParser(name + braceParameters + variableParametersString + "\n" + ":" + "\n" + ";").ParsePsiFile(false) as IPsiFile;
       if (node == null)
       {
-        throw new ElementFactoryException(string.Format("Cannot create expression '{0}'"));
+        throw new ElementFactoryException(string.Format("Cannot create expression '{0}'", name + braceParameters + variableParametersString + "\n" + ":" + "\n" + ";"));
       }
       SandBox.CreateSandBoxFor(node, myModule);
       var ruleDeclaration = node.FirstChild as IRuleDeclaration;
@@ -93,7 +93,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Util
       {
         return ruleDeclaration;
       }
-      throw new ElementFactoryException(string.Format("Cannot create expression '{0}'" + name));
+      throw new ElementFactoryException(string.Format("Cannot create expression '{0}'", name));
     }
 
     private ITreeNode CreateExpression(string format, string name)

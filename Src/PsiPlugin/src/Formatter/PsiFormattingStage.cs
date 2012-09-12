@@ -17,10 +17,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     private readonly CodeFormattingContext myContext;
     private readonly PsiFormattingVisitor myFmtVisitor;
 
-    private PsiFormattingStage(FormattingStageData data)
+    private PsiFormattingStage(CodeFormattingContext context)
     {
-      myContext = data.Context;
-      myFmtVisitor = CreateFormattingVisitor(data);
+      myContext = context;
+      myFmtVisitor = CreateFormattingVisitor(context);
     }
 
     private CodeFormattingContext Context
@@ -28,35 +28,35 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       get { return myContext; }
     }
 
-    private static PsiFormattingVisitor CreateFormattingVisitor(FormattingStageData data)
+    private static PsiFormattingVisitor CreateFormattingVisitor(CodeFormattingContext context)
     {
-      IPsiSourceFile sourceFile = data.Context.FirstNode.GetSourceFile();
+      IPsiSourceFile sourceFile = context.FirstNode.GetSourceFile();
       if (sourceFile != null)
       {
         var projectFileTypeServices = Shell.Instance.GetComponent<IProjectFileTypeServices>();
         var factory = projectFileTypeServices.TryGetService<IPsiCodeFormatterFactory>(sourceFile.LanguageType);
         if (factory != null)
         {
-          return factory.CreateFormattingVisitor(data);
+          return factory.CreateFormattingVisitor(context);
         }
       }
 
-      return new PsiFormattingVisitor(data);
+      return new PsiFormattingVisitor(context);
     }
 
-    public static void DoFormat(FormattingStageData data, IProgressIndicator pi)
+    public static void DoFormat(CodeFormattingContext context, IProgressIndicator pi)
     {
-      if (data.Context.FirstNode == data.Context.LastNode)
+      if (context.FirstNode == context.LastNode)
       {
         return;
       }
 
-      var stage = new PsiFormattingStage(data);
+      var stage = new PsiFormattingStage(context);
 
-      IEnumerable<FormattingRange> nodePairs = GetNodePairs(data.Context);
+      IEnumerable<FormattingRange> nodePairs = GetNodePairs(context);
 
       IEnumerable<FormatResult<IEnumerable<string>>> spaces = nodePairs.Select(
-        range => new FormatResult<IEnumerable<string>>(range, stage.CalcSpaces(new PsiFmtStageContext(range))));
+        range => new FormatResult<IEnumerable<string>>(range, stage.CalcSpaces(new FormattingStageContext(range))));
 
       FormatterImplHelper.ForeachResult(spaces, pi, res => stage.MakeFormat(res.Range, res.ResultValue));
     }
@@ -146,7 +146,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       }
     }
 
-    private IEnumerable<string> CalcSpaces(PsiFmtStageContext context)
+    private IEnumerable<string> CalcSpaces(FormattingStageContext context)
     {
       var psiTreeNode = context.Parent as IPsiTreeNode;
       return psiTreeNode != null ? psiTreeNode.Accept(myFmtVisitor, context) : null;

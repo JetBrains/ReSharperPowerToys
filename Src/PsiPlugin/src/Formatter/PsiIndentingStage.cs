@@ -13,20 +13,17 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
   {
     private readonly bool myInTypingAssist;
     private static PsiIndentVisitor _indentVisitor;
-    [UsedImplicitly]
-    private PsiCodeFormattingSettings myFormattingSettings;
 
-    private PsiIndentingStage(PsiCodeFormattingSettings formattingSettings, bool inTypingAssist = false)
+    private PsiIndentingStage(bool inTypingAssist = false)
     {
-      myFormattingSettings = formattingSettings;
       myInTypingAssist = inTypingAssist;
     }
 
-    public static void DoIndent(PsiCodeFormattingSettings formattingSettings, CodeFormattingContext context, IProgressIndicator progress, bool inTypingAssist)
+    public static void DoIndent(CodeFormattingContext context, IProgressIndicator progress, bool inTypingAssist)
     {
       var indentCache = new PsiIndentCache();
       _indentVisitor = CreateIndentVisitor(indentCache, inTypingAssist);
-      var stage = new PsiIndentingStage(formattingSettings, inTypingAssist);
+      var stage = new PsiIndentingStage(inTypingAssist);
       List<FormattingRange> nodePairs = context.SequentialEnumNodes().Where(p => context.CanModifyInsideNodeRange(p.First, p.Last)).ToList();
       IEnumerable<FormatResult<string>> indents = nodePairs.
         Select(range => new FormatResult<string>(range, stage.CalcIndent(new FormattingStageContext(range)))).

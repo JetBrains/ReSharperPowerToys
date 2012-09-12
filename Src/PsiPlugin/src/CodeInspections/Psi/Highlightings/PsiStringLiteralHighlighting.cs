@@ -9,8 +9,6 @@ using JetBrains.ReSharper.Psi.Tree;
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi.Highlightings
 {
   [ConfigurableSeverityHighlighting("String", "PSI", OverlapResolve = OverlapResolveKind.NONE, ToolTipFormatString = "String")]
-  //[StaticSeverityHighlighting(Severity.INFO, HighlightingGroupIds.CodeInfo,
-    //OverlapResolve = OverlapResolveKind.NONE, ShowToolTipInStatusBar = false)]
   internal class PsiStringLiteralHighlighting : ICustomAttributeIdHighlighting, IHighlightingWithRange
   {
     private const string AtributeId = HighlightingAttributeIds.TYPE_INTERFACE_ATTRIBUTE;

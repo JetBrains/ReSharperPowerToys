@@ -9,8 +9,6 @@ using JetBrains.ReSharper.Psi.Tree;
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi.Highlightings
 {
   [ConfigurableSeverityHighlighting("Repeated Choice", "PSI", OverlapResolve = OverlapResolveKind.NONE, ToolTipFormatString = "Repeated Choice")]
-  //[StaticSeverityHighlighting(Severity.INFO, HighlightingGroupIds.CompilerWarnings,
-    //OverlapResolve = OverlapResolveKind.WARNING, ShowToolTipInStatusBar = false)]
   internal class RepeatedChoiceWarning : IHighlightingWithRange, ICustomAttributeIdHighlighting
   {
     private const string Error = "Repeated Choice";

@@ -62,9 +62,5 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 
       return indent.ToString();
     }
-
-    /*public PsiIndentCache(ICodeFormatterImpl codeFormatter, Func<ITreeNode, CustomIndentType, string> customLineIndenter, AlignmentTabFillStyle tabFillStyle, GlobalFormatSettings formatSettings) : base(codeFormatter, customLineIndenter, tabFillStyle, formatSettings)
-    {
-    }*/
   }
 }

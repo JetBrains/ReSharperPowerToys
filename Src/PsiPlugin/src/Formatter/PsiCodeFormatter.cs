@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using JetBrains.Application.Progress;
+﻿using JetBrains.Application.Progress;
 using JetBrains.Application.Settings;
 using JetBrains.DataFlow;
-using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CodeStyle;
 using JetBrains.ReSharper.Psi.Impl.CodeStyle;
@@ -21,15 +18,13 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
   [Language(typeof (PsiLanguage))]
   public class PsiCodeFormatter : CodeFormatterBase
   {
-    private readonly IEnumerable<IPsiCodeFormatterExtension> myExtensions;
     private readonly ElementsCache<TokenTypePair, bool> myGlueingCache = new ElementsCache<TokenTypePair, bool>(IsTokensGlued);
     private readonly PsiLanguage myLanguage;
 
-    public PsiCodeFormatter(Lifetime lifetime, PsiLanguage language, ISettingsStore settingsStore, IViewable<IPsiCodeFormatterExtension> extensions, ISettingsOptimization settingsOptimization)
+    public PsiCodeFormatter(Lifetime lifetime, PsiLanguage language, ISettingsStore settingsStore, ISettingsOptimization settingsOptimization)
       : base(settingsStore)
     {
       myLanguage = language;
-      myExtensions = extensions.ToLiveEnumerable(lifetime);
     }
 
     protected override PsiLanguageType LanguageType
@@ -82,6 +77,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       if ((leftToken.GetTokenType() == PsiTokenType.COLON || leftToken.GetTokenType() == PsiTokenType.SEMICOLON) &&
         (!(rightToken.GetTokenType() == PsiTokenType.C_STYLE_COMMENT || rightToken.GetTokenType() == PsiTokenType.END_OF_LINE_COMMENT)))
       {
+        if(rightToken.Parent is IRoleName)
+        {
+          return null;
+        }
         return PsiFormatterHelper.CreateNewLine("\r\n");
       }
 
@@ -106,9 +105,41 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 
     public override ITreeRange Format(ITreeNode firstElement, ITreeNode lastElement, CodeFormatProfile profile, IProgressIndicator pi, IContextBoundSettingsStore overrideSettingsStore = null)
     {
-      var psiProfile = new PsiFormatProfile(profile);
-      ITreeNode firstNode = firstElement;
-      ITreeNode lastNode = lastElement;
+      ITreeNode firstNode;
+      ITreeNode lastNode;
+
+      GetFirstAndLastNode(firstElement, lastElement, out firstNode, out lastNode);
+
+      using (pi.SafeTotal(3))
+      {
+        var context = new PsiCodeFormattingContext(this, firstNode, lastNode, NullProgressIndicator.Instance);
+        if (profile != CodeFormatProfile.INDENT)
+        {
+
+          using (IProgressIndicator subPi = pi.CreateSubProgress(2))
+          {
+            using (subPi.SafeTotal(2))
+            {
+              PsiFormattingStage.DoFormat(context, subPi.CreateSubProgress(1));
+              PsiIndentingStage.DoIndent(context, subPi.CreateSubProgress(1), false);
+            }
+          }
+        }
+        else
+        {
+          using (IProgressIndicator subPi = pi.CreateSubProgress(4))
+          {
+            PsiIndentingStage.DoIndent(context, subPi, true);
+          }
+        }
+      }
+      return new TreeRange(firstElement, lastElement);
+    }
+
+    private static void GetFirstAndLastNode(ITreeNode firstElement, ITreeNode lastElement, out ITreeNode firstNode, out ITreeNode lastNode)
+    {
+      firstNode = firstElement;
+      lastNode = lastElement;
       if (firstElement != lastElement)
       {
         if (firstElement == null)
@@ -118,41 +149,28 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
         ITreeNode commonParent = firstNode.FindCommonParent(lastNode);
         ITreeNode firstChild = firstNode;
         ITreeNode lastChild = lastElement;
-        while ((firstChild != null) && (firstChild.Parent != commonParent))
+        while ((firstChild.Parent != null) && (firstChild.Parent != commonParent))
         {
           firstChild = firstChild.Parent;
         }
-        while ((lastChild != null)&&(lastChild.Parent != commonParent))
+        while ((lastChild.Parent != null) && (lastChild.Parent != commonParent))
         {
           lastChild = lastChild.Parent;
         }
 
-        bool hasPrevSibling = false;
-        while (firstNode.NextSibling == null)
-        {
-          if (firstNode.PrevSibling != null)
-          {
-            hasPrevSibling = true;
-          }
-          firstNode = firstNode.Parent;
-          if (firstNode == firstChild)
-          {
-            break;
-          }
-        }
-        if (hasPrevSibling)
-        {
-          while ((firstNode == firstChild) || (firstChild.IsWhitespaceToken()))
-          {
-            firstChild = firstChild.NextSibling;
-          }
-        }
         firstNode = firstChild;
         while (firstNode.FirstChild != null)
         {
           firstNode = firstNode.FirstChild;
         }
-      } else
+
+        lastNode = lastChild;
+        while (lastNode.LastChild != null)
+        {
+          lastNode = lastNode.LastChild;
+        }
+      }
+      else
       {
         if (firstElement.FirstChild != null)
         {
@@ -160,34 +178,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
           lastNode = firstElement.LastChild;
         }
       }
-      ISolution solution = firstNode.GetSolution();
-      GlobalFormatSettings globalSettings = GlobalFormatSettingsHelper.GetService(solution).GetSettingsForLanguage(myLanguage);
-      var formatterSettings = new PsiCodeFormattingSettings(globalSettings);
-      using (pi.SafeTotal(3))
-      {
-        var context = new PsiCodeFormattingContext(this, firstNode, lastNode, NullProgressIndicator.Instance);
-        if (psiProfile.Profile != CodeFormatProfile.INDENT)
-        {
-
-          using (IProgressIndicator subPi = pi.CreateSubProgress(2))
-          {
-            using (subPi.SafeTotal(2))
-            {
-              var data = new FormattingStageData(formatterSettings, context, psiProfile, myExtensions.ToList());
-              PsiFormattingStage.DoFormat(data, subPi.CreateSubProgress(1));
-              PsiIndentingStage.DoIndent(formatterSettings, context, subPi.CreateSubProgress(1), false);
-            }
-          }
-        }
-        else
-        {
-          using (IProgressIndicator subPi = pi.CreateSubProgress(4))
-          {
-            PsiIndentingStage.DoIndent(formatterSettings, context, subPi, true);
-          }
-        }
-      }
-      return new TreeRange(firstElement, lastElement);
     }
 
     public override void FormatInsertedNodes(ITreeNode nodeFirst, ITreeNode nodeLast, bool formatSurround)

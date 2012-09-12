@@ -17,7 +17,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
   {
     public bool IsCompatibleWithLanguage(PsiLanguageType languageType)
     {
-      return ((languageType == PsiLanguage.Instance) || (languageType == CSharpLanguage.Instance));
+      return ((Equals(languageType, PsiLanguage.Instance)) || (Equals(languageType, CSharpLanguage.Instance)));
     }
 
     public IDomainSpecificSearcher CreateConstructorSpecialReferenceSearcher(ICollection<IConstructor> constructors)
