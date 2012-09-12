@@ -1,0 +1,278 @@
+options
+{
+  parserPackage="JetBrains.ReSharper.Psi.Jam";
+  parserClassName="JamParserGenerated";
+  psiInterfacePackageName="JetBrains.ReSharper.Psi.Jam.Tree";
+  psiStubsPackageName="JetBrains.ReSharper.Psi.Jam.Impl.Tree";
+  psiStubsBaseClass="JetBrains.ReSharper.Psi.Jam.Impl.Tree.JamCompositeElement";
+  tokenClassName="JetBrains.ReSharper.Psi.Jam.Impl.Tree.JamToken";
+  tokenTypePrefix="";
+  parserTargetSubdir="Parsing/Jam";
+  psiInterfacesTargetSubdir="Psi/Jam";
+  psiStubsTargetSubdir="Psi/Jam/Impl";
+  elementTypePrefix="";
+  visitorClassName="TreeNodeVisitor";
+  visitorMethodSuffix="";
+  testTargetSubdir="Psi/Test/Jam";
+  disableReflection;
+  separateHierarchies;
+  visitorSuperClassName="JetBrains.ReSharper.Psi.Jam.Tree.TreeNodeVisitor";
+  "treeElementClassFQName"="JetBrains.ReSharper.Psi.ExtensionsAPI.Tree.TreeElement";
+// "leafElementClassFQName"="JetBrains.ReSharper.Psi.Jam.Impl.Tree.LeafElement";
+  "compositeElementClassFQName"="JetBrains.ReSharper.Psi.Jam.Impl.Tree.JamCompositeElement";
+  "psiElementVisitorClassFQName"="JetBrains.ReSharper.Psi.Jam.Tree.TreeNodeVisitor";
+  "tokenTypeClassFQName"="JetBrains.ReSharper.Psi.Jam.Parsing.JamTokenType";
+  "unexpectedTokenClassFQName"="UnexpectedToken";
+  "syntaxErrorClassFQName"="SyntaxError";
+  "parserGenRuntimePackageName"="JetBrains.ReSharper.Psi.Parsing";
+  "visitMethodPrefix"="Visit";
+  "lexerClassName"="JetBrains.ReSharper.Psi.Parsing.ILexer";
+  "psiClassesPrefix"="";
+  "psiElementClassFQName"="JetBrains.ReSharper.Psi.Jam.Tree.IJamTreeNode";
+  customImplPackage="JetBrains.ReSharper.Psi.Jam.Impl.Tree";
+  customInterfacePackage="JetBrains.ReSharper.Psi.Jam.Tree";
+  "interfaceNamePrefix"="I";
+  "tokenElementClassFQName"="JetBrains.ReSharper.Psi.Tree.ITokenNode";
+  "customImplSuffix"="";
+  "objectClassFQName"="System.Object";
+  publicChildRolePrefix="JAM_";
+  publicChildRoleClass="(short)JetBrains.ReSharper.Psi.Jam.Impl.Tree.JamChildRole";
+  tokenBitsetThreshold=4;
+  elementTypeBaseClass="JetBrains.ReSharper.Psi.Jam.Tree.JamCompositeNodeType";
+  parserMessagesClass="JetBrains.ReSharper.Psi.Jam.Parsing.ParserMessages";
+  generateWorkingPsi;
+}
+
+errorhandling JamFile
+options
+{
+  stubBase="JamFileElement";
+}
+  :
+    jamDeclaration<JAM_DECLARATION, Declarations>*
+  ;
+
+interface jamDeclaration
+options
+{
+  stubBase="JamDeclarationBase";
+}
+  :
+    globalVariableDeclaration
+    | procedureDeclaration
+  ;
+
+errorhandling globalVariableDeclaration
+options
+{
+  stubBase="JamDeclarationBase";
+}
+  :
+    VAR_KEYWORD<JAM_VAR, VarKeyword>
+    identifier<JAM_IDENTIFIER, Name>
+    EQUALS<JAM_OPERATOR, EqualsToken>
+    jamExpression<JAM_EXPRESSION, ValueExpression>
+    SEMICOLON<JAM_SEMICOLON, SemicolonToken>
+  ;
+
+errorhandling procedureDeclaration
+options
+{
+  stubBase="JamDeclarationBase";
+}
+  :
+    SUB_KEYWORD<JAM_SUB, SubKeyword>
+    identifier<JAM_IDENTIFIER, Name>
+    LPAREN<JAM_LPAREN, LParenToken>
+    parameterList<JAM_PARAMETER_LIST, ParameterList>?
+    RPAREN<JAM_RPAREN, RParenToken>
+    LBRACE<JAM_LBRACE, LBraceToken>
+    jamStatement<JAM_STATEMENT, Statements>*
+    RBRACE<JAM_RBRACE, RBraceToken>
+  ;
+
+errorhandling parameterList
+options
+{
+}
+  :
+    LIST parameter<JAM_PARAMETER, Parameters> SEP COMMA<JAM_COMMA, CommaToken>
+  ;
+
+errorhandling parameter
+options
+{
+  stubBase="JamDeclarationBase";
+}
+  :
+    identifier<JAM_IDENTIFIER, Name>
+  ;
+
+interface jamStatement
+options
+{
+}
+  :
+    assignStatement
+    | localVariableDeclarationStatement
+    | returnStatement
+  ;
+
+errorhandling assignStatement
+options
+{
+  stubBase="JamStatementBase";
+}
+  :
+    identifier<JAM_IDENTIFIER, Name>
+    EQUALS<JAM_OPERATOR, EqualsToken>
+    jamExpression<JAM_EXPRESSION, ValueExpression>
+    SEMICOLON<JAM_SEMICOLON, SemicolonToken>
+  ;
+
+errorhandling localVariableDeclarationStatement
+options
+{
+  stubBase="JamStatementBase";
+}
+  :
+    VAR_KEYWORD<JAM_VAR, VarKeyword>
+    identifier<JAM_IDENTIFIER, Name>
+    EQUALS<JAM_OPERATOR, EqualsToken>
+    jamExpression<JAM_EXPRESSION, ValueExpression>
+    SEMICOLON<JAM_SEMICOLON, SemicolonToken>
+  ;
+
+returnStatement
+options
+{
+  stubBase="JamStatementBase";
+}
+  :
+    RETURN_KEYWORD<JAM_RETURN, ReturnToken>
+    jamExpression<JAM_EXPRESSION, Expression>
+    SEMICOLON<JAM_SEMICOLON, SemicolonToken>
+  ;
+
+interface jamExpression
+options
+{
+  stubBase="JamExpressionBase";
+  customParseFunction;
+}
+  :
+    literalExpression
+    | stringLiteralExpression
+    | identifierExpression
+    | groupExpression
+    | invocationExpression
+    | additiveExpression[null]
+    | multiplicativeExpression[null]
+  ;
+
+literalExpression
+options
+{
+  stubBase="JamExpressionBase";
+}
+  :
+    INTEGER_LITERAL<JAM_LITERAL, LiteralToken>
+    | REAL_LITERAL<JAM_LITERAL, LiteralToken>
+  ;
+
+stringLiteralExpression
+options
+{
+  stubBase="JamExpressionBase";
+}
+  :
+    STRING_LITERAL<JAM_LITERAL, LiteralToken>
+  ;
+
+identifierExpression
+options
+{
+  stubBase="JamExpressionBase";
+}
+  :
+    identifier<JAM_LITERAL, LiteralToken>
+  ;
+
+errorhandling groupExpression
+options
+{
+  stubBase="JamExpressionBase";
+  customParseFunction;
+}
+  :
+    LPAREN<JAM_LPAREN, LParenToken>
+    jamExpression<JAM_EXPRESSION, Expression>
+    RPAREN<JAM_RPAREN, RParenToken>
+  ;
+
+errorhandling additiveExpression [jamExpression left]
+options
+{
+  stubBase="JamExpressionBase";
+  customParseFunction;
+}
+  :
+    &left<JAM_LVALUE, LValue>
+    (
+      PLUS<JAM_OPERATOR, OperatorToken>
+      | MINUS<JAM_OPERATOR, OperatorToken>
+    )
+    jamExpression<JAM_RVALUE, RValue>
+  ;
+
+errorhandling multiplicativeExpression [jamExpression left]
+options
+{
+  stubBase="JamExpressionBase";
+  customParseFunction;
+}
+  :
+    &left<JAM_LVALUE, LValue>
+    (
+      MULTIPLY<JAM_OPERATOR, OperatorToken>
+      | DIVIDE<JAM_OPERATOR, OperatorToken>
+    )
+    jamExpression<JAM_RVALUE, RValue>
+  ;
+
+errorhandling invocationExpression
+options
+{
+  stubBase="JamExpressionBase";
+}
+  :
+    identifier<JAM_IDENTIFIER, Name>
+    LPAREN<JAM_LPAREN, LParenToken>
+    argumentList<JAM_ARGUMENT_LIST, ArgumentList>?
+    RPAREN<JAM_RPAREN, RParenToken>
+  ;
+
+errorhandling argumentList
+options
+{
+}
+  :
+    LIST argument<JAM_ARGUMENT, Arguments> SEP COMMA<JAM_COMMA, CommaToken>
+  ;
+
+errorhandling argument
+options
+{
+}
+  :
+    jamExpression<JAM_EXPRESSION, Expression>
+  ;
+
+abstract identifier
+options
+{
+  interfaceName = "JetBrains.ReSharper.Psi.Jam.Tree.IJamIdentifier";
+}
+  :
+    IDENTIFIER
+  ;

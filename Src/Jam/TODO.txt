@@ -1,0 +1,16 @@
+﻿# Related files
+# Find & Searching
+# Code Completion
+# Compleate Statement
+# Typing Assist
+# ParameterInfo
+# QuickDoc
+# Code Style - formater
+# Code Cleanup
+# Refactorings
+# Naming
+# Incremental reparse & daemon
+# Live Templates
+# Control flow
+# Code Injection
+# SSR

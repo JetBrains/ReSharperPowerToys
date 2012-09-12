@@ -1,0 +1,7 @@
+﻿<Tokens TokenTypeNamespace="JetBrains.ReSharper.Psi.Jam.Parsing"
+        TokenTypeClass="JamTokenType"
+        KeywordNodeType="KeywordTokenNodeType"
+        KeywordTokenElement="FixedTokenElement"
+        TokenNodeType="FixedTokenNodeType"
+        TokenTokenElement="FixedTokenElement">
+</Tokens>

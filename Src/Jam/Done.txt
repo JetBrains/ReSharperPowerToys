@@ -1,0 +1,11 @@
+﻿# Language Services
+# Lexer
+# Parser
+# Declaration & Delcared Elements
+# Caches
+# Code Structure
+# Go to symbol
+# Go to file member
+# Syntax Highlighting
+# Identifier Colorizer
+# References
