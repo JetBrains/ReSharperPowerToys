@@ -36,7 +36,7 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi
 
     public override void VisitRuleDeclaredName(IRuleDeclaredName ruleDeclaredName, IHighlightingConsumer consumer)
     {
-      string name = ruleDeclaredName.GetText();
+      var name = ruleDeclaredName.GetText();
       if (myDeclarations.ContainsKey(name))
       {
         List<IDeclaration> list = myDeclarations.GetValue(name);

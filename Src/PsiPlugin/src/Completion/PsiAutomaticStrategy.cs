@@ -40,7 +40,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion
         return false;
       }
       return true;
-      //return textControl.Caret.Offset() == 1 || this.MatchText(textControl, 1, text => !IsIdentStart(text[0]));
     }
 
     public bool ProcessSubsequentTyping(char c, ITextControl textControl)
