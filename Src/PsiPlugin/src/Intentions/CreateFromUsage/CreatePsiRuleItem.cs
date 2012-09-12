@@ -54,7 +54,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
     {
       return null;
       /*return LanguageManager.Instance.GetService<ICreatePsiRuleIntention>(
-        GetContext().Target.GetTargetDeclaration().Language).ExecuteEx(GetContext());*/
+        GetContext().myTarget.GetTargetDeclaration().Language).ExecuteEx(GetContext());*/
     }
   }
 }
