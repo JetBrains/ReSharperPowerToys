@@ -12,7 +12,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
 {
   public class CreatePsiRuleTarget : ICreationTarget
   {
-    private readonly PsiRuleReference myReference;
     private readonly ITreeNode myElement;
     private readonly IRuleDeclaration myDeclaration;
 
@@ -23,7 +22,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
 
     public CreatePsiRuleTarget(PsiRuleReference reference)
     {
-      myReference = reference;
       myElement = reference.GetTreeNode();
       string name = reference.GetName();
 

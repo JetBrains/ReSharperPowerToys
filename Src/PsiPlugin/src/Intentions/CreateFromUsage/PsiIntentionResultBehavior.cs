@@ -8,7 +8,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
   [ShellComponent]
   public class PsiIntentionResultBehavior
   {
-    protected HotspotSessionExecutor HotspotSessionExecutor { get; private set; }
+    private HotspotSessionExecutor HotspotSessionExecutor { get; set; }
 
     public PsiIntentionResultBehavior(HotspotSessionExecutor hotspotSessionExecutor)
     {

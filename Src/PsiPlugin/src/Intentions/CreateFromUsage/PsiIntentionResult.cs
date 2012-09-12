@@ -39,9 +39,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
     {
       get
       {
-        return myPrefferedSelection == null 
-          ? DocumentRange.InvalidRange 
-          : myPrefferedSelection;
+        return myPrefferedSelection;
       }
     }
 

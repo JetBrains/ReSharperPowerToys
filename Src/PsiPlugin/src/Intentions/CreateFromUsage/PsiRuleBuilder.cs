@@ -7,7 +7,7 @@ using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
 
 namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
 {
-  public class PsiRuleBuilder
+  public static class PsiRuleBuilder
   {
     public static PsiIntentionResult Create(CreatePsiRuleContext context)
     {
