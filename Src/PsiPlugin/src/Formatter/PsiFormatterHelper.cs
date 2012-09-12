@@ -6,9 +6,9 @@ using JetBrains.ReSharper.Psi.ExtensionsAPI;
 using JetBrains.ReSharper.Psi.Impl.CodeStyle;
 using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.ReSharper.Psi.Tree;
-using JetBrains.ReSharper.PsiPlugin.Parsing;
-using JetBrains.ReSharper.PsiPlugin.Tree;
-using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
+using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing;
+using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
+using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl;
 using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Formatter

@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using JetBrains.ReSharper.Psi.Impl.CodeStyle;
 using JetBrains.ReSharper.Psi.Tree;
-using JetBrains.ReSharper.PsiPlugin.Parsing;
-using JetBrains.ReSharper.PsiPlugin.Tree;
-using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
-using IWhitespaceNode = JetBrains.ReSharper.PsiPlugin.Tree.IWhitespaceNode;
+using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing;
+using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
+using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl;
+using IWhitespaceNode = JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.IWhitespaceNode;
 
 namespace JetBrains.ReSharper.PsiPlugin.Formatter
 {

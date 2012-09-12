@@ -12,8 +12,8 @@ using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Psi.Util;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
-using JetBrains.ReSharper.PsiPlugin.Parsing;
-using JetBrains.ReSharper.PsiPlugin.Tree;
+using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing;
+using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
 using JetBrains.Text;
 using JetBrains.Util;
 

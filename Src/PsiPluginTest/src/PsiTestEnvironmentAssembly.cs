@@ -3,9 +3,9 @@
 using System.Collections.Generic;
 using System.Reflection;
 using JetBrains.Application;
+using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing;
 using NUnit.Framework;
 using JetBrains.Threading;
-using JetBrains.ReSharper.PsiPlugin.Parsing;
 
 [SetUpFixture]
 public class PsiTestEnvironmentAssembly : ReSharperTestEnvironmentAssembly

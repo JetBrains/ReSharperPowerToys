@@ -8,8 +8,8 @@ using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
+using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl;
 using JetBrains.ReSharper.PsiPlugin.Resolve;
-using JetBrains.ReSharper.PsiPlugin.Tree.Impl;
 using JetBrains.ReSharper.Refactorings;
 using JetBrains.ReSharper.Refactorings.Conflicts;
 using JetBrains.ReSharper.Refactorings.Conflicts.New;
@@ -133,7 +133,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
       IList<IReference> referencesToRename = new List<IReference>();
       foreach (var pair in references)
       {
-        List<IReference> sortedReferences = LanguageUtil.GetSortedReferences(pair.Value);
+        List<IReference> sortedReferences = pair.Value.ToList();//LanguageUtil.GetSortedReferences(pair.Value);
         foreach (IReference reference in sortedReferences)
         {
           IReference oldReferenceForConflict = reference;

@@ -1,8 +1,8 @@
 options { 
-  parserPackage="JetBrains.ReSharper.PsiPlugin.Parsing";
+  parserPackage="JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing";
   parserClassName="PsiParserGenerated";
-  psiInterfacePackageName="JetBrains.ReSharper.PsiPlugin.Tree";
-  psiStubsPackageName="JetBrains.ReSharper.PsiPlugin.Tree.Impl";
+  psiInterfacePackageName="JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree";
+  psiStubsPackageName="JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl";
   psiStubsBaseClass="PsiCompositeElement";
   tokenTypePrefix="";
   parserTargetSubdir="Parsing/Psi";
@@ -16,24 +16,23 @@ options {
   separateHierarchies;
   "treeElementClassFQName"="JetBrains.ReSharper.Psi.ExtensionsAPI.Tree.TreeElement";
   "compositeElementClassFQName"="PsiCompositeElement";
-  "psiElementVisitorClassFQName"="JetBrains.ReSharper.PsiPlugin.Tree.TreeNodeVisitor";
-  "tokenTypeClassFQName"="JetBrains.ReSharper.PsiPlugin.Parsing.PsiTokenType";
+  "psiElementVisitorClassFQName"="JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.TreeNodeVisitor";
+  "tokenTypeClassFQName"="JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing.PsiTokenType";
   "visitMethodPrefix"="Visit";
   "lexerClassName"="JetBrains.ReSharper.Psi.Parsing.ILexer";
   "psiClassesPrefix"="";
-  "psiElementClassFQName"="JetBrains.ReSharper.PsiPlugin.Tree.IPsiTreeNode";
-  customImplPackage="JetBrains.ReSharper.PsiPlugin.Tree.Impl";
-  customInterfacePackage="JetBrains.ReSharper.PsiPlugin.Tree";
+  "psiElementClassFQName"="JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.IPsiTreeNode";
+  customImplPackage="JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl";
+  customInterfacePackage="JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree";
   "interfaceNamePrefix"="I"; 
   "tokenElementClassFQName"="JetBrains.ReSharper.Psi.Tree.ITokenNode";   
   "customImplSuffix"="";
   "objectClassFQName"="System.Object";
   tokenBitsetThreshold=4;
-  elementTypeBaseClass="JetBrains.ReSharper.PsiPlugin.Tree.PsiCompositeNodeType";
-  parserMessagesClass="JetBrains.ReSharper.PsiPlugin.Parsing.ParserMessages";
+  elementTypeBaseClass="JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.PsiCompositeNodeType";
+  parserMessagesClass="JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing.ParserMessages";
   generateWorkingPsi;
 }
-
 
 errorhandling psiFile options {
 	stubBase="PsiFileElement";
