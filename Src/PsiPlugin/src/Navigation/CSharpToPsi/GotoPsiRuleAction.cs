@@ -3,7 +3,7 @@ using JetBrains.ReSharper.Features.Finding.NavigateFromHere;
 
 namespace JetBrains.ReSharper.PsiPlugin.Navigation.CSharpToPsi
 {
-  [ActionHandler(new string[] { "GotoPsiRule" })]
+  [ActionHandler(new[] { "GotoPsiRule" })]
   public class GotoPsiRuleAction : ContextNavigationActionBase<CSharpToPsiNavigateProvider>
   {
   }

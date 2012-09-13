@@ -101,7 +101,7 @@ ruleName
 errorhandling roleGetterParameter
 	:
 	LBRACE
-	(ROLE_KEYWORD
+	((ROLE_KEYWORD | ROLE_KEYWORD_LOWER)
 	COMMA)?
 	GETTER
 	RBRACE
@@ -271,11 +271,11 @@ ruleAngleParameters
     LT
     (
       AT
-      ROLE_KEYWORD
+      (ROLE_KEYWORD |  ROLE_KEYWORD_LOWER)
       COMMA
       AT
       GETTER
-      | ROLE_KEYWORD
+      | (ROLE_KEYWORD |  ROLE_KEYWORD_LOWER)
       COMMA
       GETTER
       | roleName
@@ -305,9 +305,13 @@ ruleBraceParameters
 	:
 	LBRACE
 	(AT
-	ROLE_KEYWORD
+	(ROLE_KEYWORD |  ROLE_KEYWORD_LOWER)
 	COMMA
 	AT
+	GETTER
+	|
+	(ROLE_KEYWORD | ROLE_KEYWORD_LOWER)
+	COMMA
 	GETTER
 	|
 	roleName (EQ STRING_LITERAL)?
