@@ -29,35 +29,36 @@ IJamFile
         JamIdentifierToken(type:IDENTIFIER, text:y)
     JamToken(type:RPAREN, text:))
     JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
-    JamToken(type:LBRACE, text:{)
-    JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
-    JamWhitespaceToken(type:WHITE_SPACE, text:  ) spaces:"  "
-    ILocalVariableDeclarationStatement
-      JamKeyword(type:VAR_KEYWORD, text:var)
-      JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
-      JamIdentifierToken(type:IDENTIFIER, text:result)
-      JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
-      JamToken(type:EQUALS, text:=)
-      JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
-      IMultiplicativeExpression
-        IIdentifierExpression
-          JamIdentifierToken(type:IDENTIFIER, text:x)
+    IBlock
+      JamToken(type:LBRACE, text:{)
+      JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
+      JamWhitespaceToken(type:WHITE_SPACE, text:  ) spaces:"  "
+      ILocalVariableDeclarationStatement
+        JamKeyword(type:VAR_KEYWORD, text:var)
         JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
-        JamToken(type:DIVIDE, text:/)
-        JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
-        IIdentifierExpression
-          JamIdentifierToken(type:IDENTIFIER, text:y)
-      JamToken(type:SEMICOLON, text:;)
-    JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
-    JamWhitespaceToken(type:WHITE_SPACE, text:  ) spaces:"  "
-    IReturnStatement
-      JamKeyword(type:RETURN_KEYWORD, text:return)
-      JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
-      IIdentifierExpression
         JamIdentifierToken(type:IDENTIFIER, text:result)
-      JamToken(type:SEMICOLON, text:;)
-    JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
-    JamToken(type:RBRACE, text:})
+        JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
+        JamToken(type:EQUALS, text:=)
+        JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
+        IMultiplicativeExpression
+          IIdentifierExpression
+            JamIdentifierToken(type:IDENTIFIER, text:x)
+          JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
+          JamToken(type:DIVIDE, text:/)
+          JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
+          IIdentifierExpression
+            JamIdentifierToken(type:IDENTIFIER, text:y)
+        JamToken(type:SEMICOLON, text:;)
+      JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
+      JamWhitespaceToken(type:WHITE_SPACE, text:  ) spaces:"  "
+      IReturnStatement
+        JamKeyword(type:RETURN_KEYWORD, text:return)
+        JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
+        IIdentifierExpression
+          JamIdentifierToken(type:IDENTIFIER, text:result)
+        JamToken(type:SEMICOLON, text:;)
+      JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
+      JamToken(type:RBRACE, text:})
   JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
   JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
   IProcedureDeclaration
@@ -67,86 +68,87 @@ IJamFile
     JamToken(type:LPAREN, text:()
     JamToken(type:RPAREN, text:))
     JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
-    JamToken(type:LBRACE, text:{)
-    JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
-    JamWhitespaceToken(type:WHITE_SPACE, text:  ) spaces:"  "
-    JamComment(type:COMMENT, text:/*variable with numeric*/)
-    JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
-    JamWhitespaceToken(type:WHITE_SPACE, text:  ) spaces:"  "
-    ILocalVariableDeclarationStatement
-      JamKeyword(type:VAR_KEYWORD, text:var)
-      JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
-      JamIdentifierToken(type:IDENTIFIER, text:bar)
-      JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
-      JamToken(type:EQUALS, text:=)
-      JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
-      ILiteralExpression
-        JamLiteralToken(type:INTEGER_LITERAL, text:123)
-      JamToken(type:SEMICOLON, text:;)
-    JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
-    JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
-    JamWhitespaceToken(type:WHITE_SPACE, text:  ) spaces:"  "
-    JamComment(type:COMMENT, text:/*variable with string*/)
-    JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
-    JamWhitespaceToken(type:WHITE_SPACE, text:  ) spaces:"  "
-    ILocalVariableDeclarationStatement
-      JamKeyword(type:VAR_KEYWORD, text:var)
-      JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
-      JamIdentifierToken(type:IDENTIFIER, text:buzz)
-      JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
-      JamToken(type:EQUALS, text:=)
-      JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
-      IStringLiteralExpression
-        JamLiteralToken(type:STRING_LITERAL, text:"123")
-      JamToken(type:SEMICOLON, text:;)
-    JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
-    JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
-    JamWhitespaceToken(type:WHITE_SPACE, text:  ) spaces:"  "
-    JamComment(type:COMMENT, text:/*variable with expression*/)
-    JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
-    JamWhitespaceToken(type:WHITE_SPACE, text:  ) spaces:"  "
-    ILocalVariableDeclarationStatement
-      JamKeyword(type:VAR_KEYWORD, text:var)
-      JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
-      JamIdentifierToken(type:IDENTIFIER, text:foo)
-      JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
-      JamToken(type:EQUALS, text:=)
-      JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
-      IAdditiveExpression
-        IIdentifierExpression
-          JamIdentifierToken(type:IDENTIFIER, text:bar)
+    IBlock
+      JamToken(type:LBRACE, text:{)
+      JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
+      JamWhitespaceToken(type:WHITE_SPACE, text:  ) spaces:"  "
+      JamComment(type:COMMENT, text:/*variable with numeric*/)
+      JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
+      JamWhitespaceToken(type:WHITE_SPACE, text:  ) spaces:"  "
+      ILocalVariableDeclarationStatement
+        JamKeyword(type:VAR_KEYWORD, text:var)
         JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
-        JamToken(type:PLUS, text:+)
+        JamIdentifierToken(type:IDENTIFIER, text:bar)
         JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
-        IMultiplicativeExpression
-          IGroupExpression
-            JamToken(type:LPAREN, text:()
-            IMultiplicativeExpression
-              ILiteralExpression
-                JamLiteralToken(type:INTEGER_LITERAL, text:100)
-              JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
-              JamToken(type:MULTIPLY, text:*)
-              JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
-              ILiteralExpression
-                JamLiteralToken(type:INTEGER_LITERAL, text:10)
-            JamToken(type:RPAREN, text:))
+        JamToken(type:EQUALS, text:=)
+        JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
+        ILiteralExpression
+          JamLiteralToken(type:INTEGER_LITERAL, text:123)
+        JamToken(type:SEMICOLON, text:;)
+      JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
+      JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
+      JamWhitespaceToken(type:WHITE_SPACE, text:  ) spaces:"  "
+      JamComment(type:COMMENT, text:/*variable with string*/)
+      JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
+      JamWhitespaceToken(type:WHITE_SPACE, text:  ) spaces:"  "
+      ILocalVariableDeclarationStatement
+        JamKeyword(type:VAR_KEYWORD, text:var)
+        JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
+        JamIdentifierToken(type:IDENTIFIER, text:buzz)
+        JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
+        JamToken(type:EQUALS, text:=)
+        JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
+        IStringLiteralExpression
+          JamLiteralToken(type:STRING_LITERAL, text:"123")
+        JamToken(type:SEMICOLON, text:;)
+      JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
+      JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
+      JamWhitespaceToken(type:WHITE_SPACE, text:  ) spaces:"  "
+      JamComment(type:COMMENT, text:/*variable with expression*/)
+      JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
+      JamWhitespaceToken(type:WHITE_SPACE, text:  ) spaces:"  "
+      ILocalVariableDeclarationStatement
+        JamKeyword(type:VAR_KEYWORD, text:var)
+        JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
+        JamIdentifierToken(type:IDENTIFIER, text:foo)
+        JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
+        JamToken(type:EQUALS, text:=)
+        JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
+        IAdditiveExpression
+          IIdentifierExpression
+            JamIdentifierToken(type:IDENTIFIER, text:bar)
           JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
-          JamToken(type:DIVIDE, text:/)
+          JamToken(type:PLUS, text:+)
           JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
-          IInvocationExpression
-            JamIdentifierToken(type:IDENTIFIER, text:div)
-            JamToken(type:LPAREN, text:()
-            IArgumentList
-              IArgument
+          IMultiplicativeExpression
+            IGroupExpression
+              JamToken(type:LPAREN, text:()
+              IMultiplicativeExpression
                 ILiteralExpression
                   JamLiteralToken(type:INTEGER_LITERAL, text:100)
-              JamToken(type:COMMA, text:,)
-              JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
-              IArgument
+                JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
+                JamToken(type:MULTIPLY, text:*)
+                JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
                 ILiteralExpression
-                  JamLiteralToken(type:INTEGER_LITERAL, text:5)
-            JamToken(type:RPAREN, text:))
-      JamToken(type:SEMICOLON, text:;)
-    JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
-    JamToken(type:RBRACE, text:})
+                  JamLiteralToken(type:INTEGER_LITERAL, text:10)
+              JamToken(type:RPAREN, text:))
+            JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
+            JamToken(type:DIVIDE, text:/)
+            JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
+            IInvocationExpression
+              JamIdentifierToken(type:IDENTIFIER, text:div)
+              JamToken(type:LPAREN, text:()
+              IArgumentList
+                IArgument
+                  ILiteralExpression
+                    JamLiteralToken(type:INTEGER_LITERAL, text:100)
+                JamToken(type:COMMA, text:,)
+                JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
+                IArgument
+                  ILiteralExpression
+                    JamLiteralToken(type:INTEGER_LITERAL, text:5)
+              JamToken(type:RPAREN, text:))
+        JamToken(type:SEMICOLON, text:;)
+      JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
+      JamToken(type:RBRACE, text:})
 

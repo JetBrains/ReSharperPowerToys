@@ -62,11 +62,17 @@ namespace JetBrains.ReSharper.Psi.Jam.Parsing
       if (tokenType == JamTokenType.MULTIPLY || tokenType == JamTokenType.DIVIDE)
         return parseMultiplicativeExpression(leftExpression);
 
+      if ( tokenType == JamTokenType.EQEQ || tokenType == JamTokenType.NEQ || tokenType == JamTokenType.GT || tokenType == JamTokenType.LT || tokenType == JamTokenType.GE || tokenType == JamTokenType.LE)
+        return parseConditionalExpression(leftExpression);
+
       return leftExpression;
     }
 
     public override TreeElement parseAdditiveExpression(TreeElement left)
     {
+      if (left == null)
+        left = ParseLeftExpression();
+
       var result = TreeElementFactory.CreateCompositeElement(ElementType.ADDITIVE_EXPRESSION);
 
       try
@@ -107,6 +113,9 @@ namespace JetBrains.ReSharper.Psi.Jam.Parsing
 
     public override TreeElement parseMultiplicativeExpression(TreeElement left)
     {
+      if (left == null)
+        left = ParseLeftExpression();
+
       var result = TreeElementFactory.CreateCompositeElement(ElementType.MULTIPLICATIVE_EXPRESSION);
 
       try
@@ -135,6 +144,65 @@ namespace JetBrains.ReSharper.Psi.Jam.Parsing
         if (result != null)
         {
           handleErrorInMultiplicativeExpression(result, e);
+        }
+        else
+        {
+          throw;
+        }
+      }
+
+      return result;
+    }
+
+    public override TreeElement parseConditionalExpression(TreeElement left)
+    {
+      if (left == null)
+        left = ParseLeftExpression();
+
+      var result = TreeElementFactory.CreateCompositeElement(ElementType.CONDITIONAL_EXPRESSION);
+
+      try
+      {
+        result.AppendNewChild(left);
+
+        var tokenType = myLexer.TokenType;
+
+        if (tokenType == TokenType.EQEQ)
+          result.AppendNewChild(match(TokenType.EQEQ));
+        else if (tokenType == TokenType.NEQ)
+          result.AppendNewChild(match(TokenType.NEQ));
+        else if (tokenType == TokenType.GT)
+          result.AppendNewChild(match(TokenType.GT));
+        else if (tokenType == TokenType.LT)
+          result.AppendNewChild(match(TokenType.LT));
+        else if (tokenType == TokenType.GE)
+          result.AppendNewChild(match(TokenType.GE));
+        else if (tokenType == TokenType.LE)
+          result.AppendNewChild(match(TokenType.LE));
+        else {
+          if (result.firstChild == null) result = null;
+          throw new UnexpectedToken (ParserMessages.GetExpectedMessage(ParserMessages.IDS_JAM_CONDITIONAL_OPERATOR));
+        }
+
+        result.AppendNewChild(parseJamExpression());
+      }
+      catch (SyntaxError e)
+      {
+        if (left != null && left.Parent == null)
+        {
+          if (result != null) result.AppendNewChild(left);
+        }
+        if (e.ParsingResult != null && result != null)
+        {
+          result.AppendNewChild(e.ParsingResult);
+        }
+        if (result != null)
+        {
+          e.ParsingResult = result;
+        }
+        if (result != null)
+        {
+          handleErrorInConditionalExpression(result, e);
         }
         else
         {

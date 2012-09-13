@@ -6,8 +6,6 @@ namespace JetBrains.ReSharper.Psi.Jam.Impl.Tree
 {
   internal partial class ProcedureDeclaration
   {
-    int? IResolveIsolationScope.ModificationStamp { get; set; }
-
     public new IProcedureDeclaredElement DeclaredElement
     {
       get { return (IProcedureDeclaredElement) base.DeclaredElement; }

@@ -1,0 +1,9 @@
+sub test(x)
+{
+  {
+    var y = 1;
+    return y;
+  }
+
+  return x + y;
+}

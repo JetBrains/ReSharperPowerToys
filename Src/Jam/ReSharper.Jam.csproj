@@ -79,6 +79,7 @@
     <Compile Include="src\CodeStyle\JamCodeStyleColors.cs" />
     <Compile Include="src\Impl\JamGlobalVariableDeclaredElement.cs" />
     <Compile Include="src\Impl\JamParameterDeclaredElement.cs" />
+    <Compile Include="src\Impl\Tree\Block.cs" />
     <Compile Include="src\Impl\Tree\IdentifierExpression.cs" />
     <Compile Include="src\Impl\Tree\InvocationExpression.cs" />
     <Compile Include="src\Impl\Tree\LocalVariableDeclarationStatement.cs" />
@@ -108,6 +109,7 @@
     <Compile Include="src\Impl\JamLocalVariableDeclaredElement.cs" />
     <Compile Include="src\Navigation\GotoJamSymbolProvider.cs" />
     <Compile Include="src\Navigation\JamGotoFileMemberProvider.cs" />
+    <Compile Include="src\Tree\IBlock.cs" />
     <Compile Include="src\Tree\IGlobalVariableDeclaration.cs" />
     <Compile Include="src\Tree\IIdentifierExpression.cs" />
     <Compile Include="src\Tree\IInvocationExpression.cs" />

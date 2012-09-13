@@ -91,10 +91,14 @@ DELIMITED_COMMENT={UNFINISHED_DELIMITED_COMMENT}{ASTERISKS}"/"
 <YYINITIAL> {STRING_LITERAL}  { currTokenType = makeToken(JamTokenType.STRING_LITERAL); return currTokenType; }
 <YYINITIAL> {STRING_LITERAL_ERROR}  { currTokenType = makeToken(JamTokenType.STRING_LITERAL); return currTokenType; }
 
+<YYINITIAL> "if"  { currTokenType = makeToken(JamTokenType.IF_KEYWORD); return currTokenType; }
+<YYINITIAL> "else"  { currTokenType = makeToken(JamTokenType.ELSE_KEYWORD); return currTokenType; }
 <YYINITIAL> "var"  { currTokenType = makeToken(JamTokenType.VAR_KEYWORD); return currTokenType; }
 <YYINITIAL> "sub"  { currTokenType = makeToken(JamTokenType.SUB_KEYWORD); return currTokenType; }
 <YYINITIAL> "return"  { currTokenType = makeToken(JamTokenType.RETURN_KEYWORD); return currTokenType; }
 
+<YYINITIAL> "=="  { currTokenType = makeToken(JamTokenType.EQEQ); return currTokenType; }
+<YYINITIAL> "!="  { currTokenType = makeToken(JamTokenType.NEQ); return currTokenType; }
 <YYINITIAL> "="  { currTokenType = makeToken(JamTokenType.EQUALS); return currTokenType; }
 <YYINITIAL> ";"  { currTokenType = makeToken(JamTokenType.SEMICOLON); return currTokenType; }
 <YYINITIAL> ","  { currTokenType = makeToken(JamTokenType.COMMA); return currTokenType; }
@@ -102,6 +106,10 @@ DELIMITED_COMMENT={UNFINISHED_DELIMITED_COMMENT}{ASTERISKS}"/"
 <YYINITIAL> "-"  { currTokenType = makeToken(JamTokenType.MINUS); return currTokenType; }
 <YYINITIAL> "/"  { currTokenType = makeToken(JamTokenType.DIVIDE); return currTokenType; }
 <YYINITIAL> "*"  { currTokenType = makeToken(JamTokenType.MULTIPLY); return currTokenType; }
+<YYINITIAL> ">="  { currTokenType = makeToken(JamTokenType.GE); return currTokenType; }
+<YYINITIAL> "<="  { currTokenType = makeToken(JamTokenType.LE); return currTokenType; }
+<YYINITIAL> ">"  { currTokenType = makeToken(JamTokenType.GT); return currTokenType; }
+<YYINITIAL> "<"  { currTokenType = makeToken(JamTokenType.LT); return currTokenType; }
 <YYINITIAL> "("  { currTokenType = makeToken(JamTokenType.LPAREN); return currTokenType; }
 <YYINITIAL> ")"  { currTokenType = makeToken(JamTokenType.RPAREN); return currTokenType; }
 <YYINITIAL> "{"  { currTokenType = makeToken(JamTokenType.LBRACE); return currTokenType; }

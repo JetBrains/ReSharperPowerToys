@@ -86,9 +86,7 @@ options
     LPAREN<JAM_LPAREN, LParenToken>
     parameterList<JAM_PARAMETER_LIST, ParameterList>?
     RPAREN<JAM_RPAREN, RParenToken>
-    LBRACE<JAM_LBRACE, LBraceToken>
-    jamStatement<JAM_STATEMENT, Statements>*
-    RBRACE<JAM_RBRACE, RBraceToken>
+    block<JAM_BODY, Boby>
   ;
 
 errorhandling parameterList
@@ -115,6 +113,8 @@ options
   :
     assignStatement
     | localVariableDeclarationStatement
+    | blockStatement
+    | ifElseStatement
     | returnStatement
   ;
 
@@ -143,7 +143,33 @@ options
     SEMICOLON<JAM_SEMICOLON, SemicolonToken>
   ;
 
-returnStatement
+errorhandling blockStatement
+options
+{
+  stubBase="JamStatementBase";
+}
+  :
+    block<JAM_BLOCK, Block>
+  ;
+
+errorhandling ifElseStatement
+options
+{
+  stubBase="JamStatementBase";
+}
+  :
+    IF_KEYWORD<JAM_IF, IfKeyword>
+    LPAREN<JAM_LPAREN, LParenToken>
+    conditionalExpression<JAM_CONDITIONAL_EXPRESSION, ConditionalExpression>[null]
+    RPAREN<JAM_RPAREN, RParenToken>
+    block<JAM_IF_BODY, IfBody>
+    (
+      ELSE_KEYWORD<JAM_ELSE, ElseKeyword>
+      block<JAM_ELSE_BODY, ElseBody>
+    )?
+  ;
+
+errorhandling returnStatement
 options
 {
   stubBase="JamStatementBase";
@@ -152,6 +178,16 @@ options
     RETURN_KEYWORD<JAM_RETURN, ReturnToken>
     jamExpression<JAM_EXPRESSION, Expression>
     SEMICOLON<JAM_SEMICOLON, SemicolonToken>
+  ;
+
+errorhandling block
+options 
+{
+}
+  :
+    LBRACE<JAM_LBRACE, LBraceToken>
+    jamStatement<JAM_STATEMENT, Statements>*
+    RBRACE<JAM_RBRACE, RBraceToken>
   ;
 
 interface jamExpression
@@ -168,6 +204,7 @@ options
     | invocationExpression
     | additiveExpression[null]
     | multiplicativeExpression[null]
+    | conditionalExpression[null]
   ;
 
 literalExpression
@@ -236,6 +273,25 @@ options
     (
       MULTIPLY<JAM_OPERATOR, OperatorToken>
       | DIVIDE<JAM_OPERATOR, OperatorToken>
+    )
+    jamExpression<JAM_RVALUE, RValue>
+  ;
+
+errorhandling conditionalExpression [jamExpression left]
+options
+{
+  stubBase="JamExpressionBase";
+  customParseFunction;
+}
+  :
+    &left<JAM_LVALUE, LValue>
+    (
+      EQEQ<JAM_OPERATOR, OperatorToken>
+      | NEQ<JAM_OPERATOR, OperatorToken>
+      | GT<JAM_OPERATOR, OperatorToken>
+      | LT<JAM_OPERATOR, OperatorToken>
+      | GE<JAM_OPERATOR, OperatorToken>
+      | LE<JAM_OPERATOR, OperatorToken>
     )
     jamExpression<JAM_RVALUE, RValue>
   ;

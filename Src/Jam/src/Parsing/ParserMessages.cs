@@ -18,6 +18,7 @@ namespace JetBrains.ReSharper.Psi.Jam.Parsing
     public const string IDS_JAM_EXPRESSION = "expression";
     public const string IDS_PRIMITIVE_EXPRESSION = "expression";
     public const string IDS_LITERAL_EXPRESSION = "expression";
+    public const string IDS_JAM_CONDITIONAL_OPERATOR = "==, !=, >, <, >=, <=";
 // ReSharper restore InconsistentNaming
 
     public static string GetString(string id)

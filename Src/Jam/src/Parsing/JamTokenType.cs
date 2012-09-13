@@ -26,17 +26,25 @@ namespace JetBrains.ReSharper.Psi.Jam.Parsing
     public static readonly TokenNodeType COMMENT = new JamCommentTokenType("COMMENT", "/*comment*/");
 
     public static readonly TokenNodeType SEMICOLON = new JamTokenType("SEMICOLON", ";");
+    public static readonly TokenNodeType EQEQ = new JamTokenType("EQEQ", "==");
+    public static readonly TokenNodeType NEQ = new JamTokenType("NEQ", "!=");
     public static readonly TokenNodeType EQUALS = new JamTokenType("EQUALS", "=");
     public static readonly TokenNodeType COMMA = new JamTokenType("COMMA", ",");
-    public static readonly TokenNodeType DIVIDE = new JamTokenType("DIVIDE", "/");
-    public static readonly TokenNodeType MULTIPLY = new JamTokenType("MULTIPLY", "*");
     public static readonly TokenNodeType PLUS = new JamTokenType("PLUS", "+");
     public static readonly TokenNodeType MINUS = new JamTokenType("MINUS", "-");
+    public static readonly TokenNodeType DIVIDE = new JamTokenType("DIVIDE", "/");
+    public static readonly TokenNodeType MULTIPLY = new JamTokenType("MULTIPLY", "*");
+    public static readonly TokenNodeType GE = new JamTokenType("GE", ">=");
+    public static readonly TokenNodeType LE = new JamTokenType("LE", "<=");
+    public static readonly TokenNodeType GT = new JamTokenType("GT", ">");
+    public static readonly TokenNodeType LT = new JamTokenType("LT", "<");
     public static readonly TokenNodeType LPAREN = new JamTokenType("LPAREN", "(");
     public static readonly TokenNodeType RPAREN = new JamTokenType("RPAREN", ")");
     public static readonly TokenNodeType LBRACE = new JamTokenType("LBRACE", "{");
     public static readonly TokenNodeType RBRACE = new JamTokenType("RBRACE", "}");
 
+    public static readonly TokenNodeType IF_KEYWORD = new JamKeywordTokenType("IF_KEYWORD", "if");
+    public static readonly TokenNodeType ELSE_KEYWORD = new JamKeywordTokenType("ELSE_KEYWORD", "else");
     public static readonly TokenNodeType VAR_KEYWORD = new JamKeywordTokenType("VAR_KEYWORD", "var");
     public static readonly TokenNodeType SUB_KEYWORD = new JamKeywordTokenType("SUB_KEYWORD", "sub");
     public static readonly TokenNodeType RETURN_KEYWORD = new JamKeywordTokenType("RETURN_KEYWORD", "return");
