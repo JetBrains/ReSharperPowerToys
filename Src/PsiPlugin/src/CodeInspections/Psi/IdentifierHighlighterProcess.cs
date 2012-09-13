@@ -24,23 +24,27 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi
       base.VisitRuleDeclaredName(ruleDeclaredName, consumer);
     }
 
-    public override void VisitRuleName(IRuleName ruleName, IHighlightingConsumer consumer)
+    public override void VisitRuleName(IRuleName ruleNameParam, IHighlightingConsumer consumer)
     {
-      DocumentRange colorConstantRange = ruleName.GetDocumentRange();
-
-      ResolveResultWithInfo resolve = ruleName.RuleNameReference.Resolve();
-
-      bool isRuleResolved = resolve.Result.DeclaredElement != null || (resolve.Result.Candidates.Count > 0);
-      if (isRuleResolved)
+      var ruleName = ruleNameParam as RuleName;
+      if (ruleName != null)
       {
-        AddHighLighting(colorConstantRange, ruleName, consumer, new PsiRuleHighlighting(ruleName));
-      }
-      else
-      {
-        AddHighLighting(colorConstantRange, ruleName, consumer, new PsiUnresolvedRuleReferenceHighlighting(ruleName));
-      }
+        DocumentRange colorConstantRange = ruleName.GetDocumentRange();
 
-      base.VisitRuleName(ruleName, consumer);
+        ResolveResultWithInfo resolve = ruleName.RuleNameReference.Resolve();
+
+        bool isRuleResolved = resolve.Result.DeclaredElement != null || (resolve.Result.Candidates.Count > 0);
+        if (isRuleResolved)
+        {
+          AddHighLighting(colorConstantRange, ruleName, consumer, new PsiRuleHighlighting(ruleName));
+        }
+        else
+        {
+          AddHighLighting(colorConstantRange, ruleName, consumer, new PsiUnresolvedRuleReferenceHighlighting(ruleName));
+        }
+
+        base.VisitRuleName(ruleName, consumer);
+      }
     }
 
     public override void VisitNode(ITreeNode element, IHighlightingConsumer consumer)

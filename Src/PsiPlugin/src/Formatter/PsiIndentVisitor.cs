@@ -109,10 +109,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
         }
         return indent;
       }
-      else
-      {
-        return GetParentIndent(context.Parent);
-      }
+      return GetParentIndent(context.Parent);
     }
 
     public override string VisitChoiceTail(IChoiceTail choiceTailParam, FormattingStageContext context)

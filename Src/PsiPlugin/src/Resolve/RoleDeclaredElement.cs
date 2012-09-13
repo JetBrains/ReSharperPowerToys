@@ -89,7 +89,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
 
     public bool HasDeclarationsIn(IPsiSourceFile sourceFile)
     {
-      return sourceFile == myFile;
+      return sourceFile == myFile.GetSourceFile();
     }
 
     public string ShortName

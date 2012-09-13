@@ -1,4 +1,5 @@
 ﻿using JetBrains.ProjectModel;
+using JetBrains.ReSharper.Psi.Impl.CodeStyle;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
 
 namespace JetBrains.ReSharper.PsiPlugin.Formatter
@@ -8,9 +9,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
   {
     #region IPsiCodeFormatterFactory Members
 
-    public PsiFormattingVisitor CreateFormattingVisitor(FormattingStageData formattingData)
+    public PsiFormattingVisitor CreateFormattingVisitor(CodeFormattingContext context)
     {
-      return new PsiFormattingVisitor(formattingData);
+      return new PsiFormattingVisitor(context);
     }
 
     #endregion

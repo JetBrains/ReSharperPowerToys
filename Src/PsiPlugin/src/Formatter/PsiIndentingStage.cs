@@ -11,28 +11,19 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 {
   public class PsiIndentingStage
   {
-    private bool myInTypingAssist;
-    private PsiIndentCache myIndentCache;
-    private static PsiIndentVisitor myIndentVisitor;
-    [UsedImplicitly]
-    private PsiCodeFormattingSettings myFormattingSettings;
+    private readonly bool myInTypingAssist;
+    private static PsiIndentVisitor _indentVisitor;
 
-    private PsiIndentingStage(PsiCodeFormattingSettings formattingSettings, bool inTypingAssist = false)
+    private PsiIndentingStage(bool inTypingAssist = false)
     {
-      myFormattingSettings = formattingSettings;
       myInTypingAssist = inTypingAssist;
     }
 
-    public static void DoIndent(PsiCodeFormattingSettings formattingSettings, CodeFormattingContext context, IProgressIndicator progress, bool inTypingAssist)
+    public static void DoIndent(CodeFormattingContext context, IProgressIndicator progress, bool inTypingAssist)
     {
-      /*PsiIndentCache indentCache = new PsiIndentCache(
-        context.CodeFormatter,
-        null,
-        formattingSettings.CommonSettings.ALIGNMENT_TAB_FILL_STYLE,
-        formattingSettings.GlobalSettings); */
-      PsiIndentCache indentCache = new PsiIndentCache();
-      myIndentVisitor = CreateIndentVisitor(indentCache, inTypingAssist);
-      var stage = new PsiIndentingStage(formattingSettings, inTypingAssist);
+      var indentCache = new PsiIndentCache();
+      _indentVisitor = CreateIndentVisitor(indentCache, inTypingAssist);
+      var stage = new PsiIndentingStage(inTypingAssist);
       List<FormattingRange> nodePairs = context.SequentialEnumNodes().Where(p => context.CanModifyInsideNodeRange(p.First, p.Last)).ToList();
       IEnumerable<FormatResult<string>> indents = nodePairs.
         Select(range => new FormatResult<string>(range, stage.CalcIndent(new FormattingStageContext(range)))).
@@ -51,15 +42,14 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       ITreeNode rChild = context.RightChild;
       if ((!context.LeftChild.HasLineFeedsTo(rChild)) && (!myInTypingAssist))
       {
-        //if ((!context.LeftChild.HasLineFeedsTo(rChild)))
         return null;
       }
 
       var psiTreeNode = context.Parent as IPsiTreeNode;
 
       return psiTreeNode != null
-        ? psiTreeNode.Accept(myIndentVisitor, context)
-        : myIndentVisitor.VisitNode(parent, context);
+        ? psiTreeNode.Accept(_indentVisitor, context)
+        : _indentVisitor.VisitNode(parent, context);
     }
 
     [NotNull]

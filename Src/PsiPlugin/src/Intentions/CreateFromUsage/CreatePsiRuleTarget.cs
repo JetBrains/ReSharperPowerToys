@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using JetBrains.DocumentManagers;
-using JetBrains.DocumentModel;
-using JetBrains.ProjectModel;
+﻿using System.Collections.Generic;
 using JetBrains.ReSharper.Feature.Services.Intentions.DataProviders;
-using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.Impl;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
@@ -25,7 +17,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
     private readonly IRuleDeclaration myDeclaration;
 
     private readonly bool myHasBraceParameters;
-    private IList<Pair<string, string>> myVariableParameters = new List<Pair<string,string>>();
+    private readonly IList<Pair<string, string>> myVariableParameters = new List<Pair<string,string>>();
     private const string UndefinedRuleName = "_rule_name";
     private const string UndefinedParameterName = "_parameter_name_";
 
@@ -94,40 +86,40 @@ namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
           {
             var variableDeclaration = declaredElement as IVariableDeclaration;
             string typeName = UndefinedRuleName;
-            if(variableDeclaration.Parent is SharpExpression)
+            if (variableDeclaration != null)
             {
-              sibling = variableDeclaration.NextSibling;
-              while(sibling != null)
+              if (variableDeclaration.Parent is SharpExpression)
               {
-                if(sibling is IRuleName)
+                sibling = variableDeclaration.NextSibling;
+                while (sibling != null)
                 {
-                  typeName = sibling.GetText();
-                  break;
-                }
-                sibling = sibling.NextSibling;
-              }
-            }
-
-            if(variableDeclaration.Parent is RuleBracketTypedParameters)
-            {
-              sibling = variableDeclaration.PrevSibling;
-              while(sibling != null)
-              {
-                if(! sibling.IsWhitespaceToken())
-                {
-                  if(! (sibling is IRuleName))
-                  {
-                    break;
-                  } else
+                  if (sibling is IRuleName)
                   {
                     typeName = sibling.GetText();
                     break;
                   }
+                  sibling = sibling.NextSibling;
                 }
-                sibling = sibling.PrevSibling;
+              }
+
+              if (variableDeclaration.Parent is RuleBracketTypedParameters)
+              {
+                sibling = variableDeclaration.PrevSibling;
+                while (sibling != null)
+                {
+                  if (!sibling.IsWhitespaceToken())
+                  {
+                    if (!(sibling is IRuleName))
+                    {
+                      break;
+                    }
+                    typeName = sibling.GetText();
+                    break;
+                  }
+                  sibling = sibling.PrevSibling;
+                }
               }
             }
-
             myVariableParameters.Add(new Pair<string, string>(variableName.GetText(), typeName));
           }
           else
@@ -160,11 +152,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
     public IEnumerable<ITreeNode> GetPossibleTargetDeclarations()
     {
       yield return myDeclaration.Parent;
-    }
-
-    public PsiRuleReference Reference
-    {
-      get { return myReference; }
     }
 
     public ITreeNode Anchor { get; private set; }

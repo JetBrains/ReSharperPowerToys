@@ -14,8 +14,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Navigation.CSharpToPsi
 {
   public class CSharpToPsiSearchRequest : SearchRequest
   {
-    protected DeclaredElementEnvoy<IDeclaredElement> myTarget;
-    protected ISolution mySolution;
+    private DeclaredElementEnvoy<IDeclaredElement> myTarget;
+    private ISolution mySolution;
     private string myCachedTitle;
 
     public CSharpToPsiSearchRequest(IDeclaredElement declaredElement)

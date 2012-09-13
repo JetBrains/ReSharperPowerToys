@@ -9,8 +9,6 @@ using JetBrains.ReSharper.Psi.Tree;
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi.Highlightings
 {
   [ConfigurableSeverityHighlighting("Comment", "PSI", OverlapResolve = OverlapResolveKind.NONE, ToolTipFormatString = "Comment")]
-//[StaticSeverityHighlighting(Severity.INFO, HighlightingGroupIds.CodeInfo, 
-    //OverlapResolve = OverlapResolveKind.NONE, ShowToolTipInStatusBar = false)]
   internal class PsiCommentHighlighting : ICustomAttributeIdHighlighting, IHighlightingWithRange
   {
     private const string AtributeId = HighlightingAttributeIds.JAVA_SCRIPT_XML_DOC_TAG;

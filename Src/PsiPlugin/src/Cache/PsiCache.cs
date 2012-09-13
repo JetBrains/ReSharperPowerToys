@@ -184,8 +184,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
             myNameToSymbolsOptionMap.Remove(oldName, oldDeclaration);
           }
         }
-
-        //myProjectFileToSymbolsOptionMap.AddValueRange(sourceFile, optionData);
         myDirtyFiles.Remove(sourceFile);
 
         myProjectFileToSymbolsRuleMap.RemoveKey(sourceFile);

@@ -53,7 +53,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion
       return true;
     }
 
-    protected TextLookupRanges EvaluateRanges(ISpecificCodeCompletionContext context)
+    private TextLookupRanges EvaluateRanges(ISpecificCodeCompletionContext context)
     {
       var file = context.BasicContext.File as IPsiFile;
 

@@ -3,7 +3,6 @@ using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.Impl;
 using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Tree;
-using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl;
 
 [assembly: RegisterConfigurableSeverity("UnresolvedReference", null, HighlightingGroupIds.LanguageUsage, "Unresolved reference", @"
@@ -11,17 +10,17 @@ using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl;
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi.Highlightings
 {
   [ConfigurableSeverityHighlighting("UnresolvedReference", "PSI", OverlapResolve = OverlapResolveKind.ERROR, ToolTipFormatString = Error)]
-  class PsiUnresolvedPathReferenceHighlighting : IHighlightingWithRange
+  internal class PsiUnresolvedPathReferenceHighlighting : IHighlightingWithRange
   {
     private const string Error = "Unresolved reference";
     private readonly ITreeNode myElement;
     private IReference myReference;
 
-    public PsiUnresolvedPathReferenceHighlighting(IPathName element)
+    public PsiUnresolvedPathReferenceHighlighting(PathName element)
     {
       myElement = element;
 
-      myReference = (element as PathName).Reference;
+      myReference = element.Reference;
 
     }
 

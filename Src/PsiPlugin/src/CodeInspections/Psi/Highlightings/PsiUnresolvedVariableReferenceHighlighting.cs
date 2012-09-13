@@ -11,17 +11,17 @@ using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl;
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi.Highlightings
 {
    [ConfigurableSeverityHighlighting("UnresolvedReference", "PSI", OverlapResolve = OverlapResolveKind.ERROR, ToolTipFormatString = Error)]
-  class PsiUnresolvedVariableReferenceHighlighting : IHighlightingWithRange
+  internal class PsiUnresolvedVariableReferenceHighlighting : IHighlightingWithRange
   {
     private const string Error = "Unresolved reference";
     private readonly ITreeNode myElement;
     private IReference myReference;
 
-    public PsiUnresolvedVariableReferenceHighlighting(IVariableName element)
+    public PsiUnresolvedVariableReferenceHighlighting(VariableName element)
     {
       myElement = element;
 
-      myReference = (element as VariableName).Reference;
+      myReference = element.Reference;
 
     }
 

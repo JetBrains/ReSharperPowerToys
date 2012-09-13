@@ -150,7 +150,6 @@
     <Compile Include="src\CodeInspections\Psi\Highlightings\PsiVariableHighlighting.cs" />
     <Compile Include="src\CodeInspections\Psi\Highlightings\RepeatedChoiceWarning.cs" />
     <Compile Include="src\CodeInspections\Psi\PsiFileStructure.cs" />
-    <Compile Include="src\CodeInspections\Psi\PsiVisualElementFactory.cs" />
     <Compile Include="src\CodeInspections\Psi\SmartResolverProcess.cs" />
     <Compile Include="src\Completion\KeywordCompletionUtil.cs" />
     <Compile Include="src\Completion\KeywordsBetterFilter.cs" />
@@ -170,23 +169,15 @@
     <Compile Include="src\CodeInspections\Psi\PsiIdentifierToolTipProvider.cs" />
     <Compile Include="src\CodeInspections\Psi\PsiIncrementalDaemonStageProcessBase.cs" />
     <Compile Include="src\CodeInspections\Psi\SmartResolverStage.cs" />
-    <Compile Include="src\Feature\Finding\FindResultPsiSymbol.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="src\Feature\Finding\GotoMember\PsiGotoFileMemberProvider.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="src\Feature\Services\FindUsages\PsiReferenceSearcher.cs" />
     <Compile Include="src\Feature\Services\FindUsages\PsiReferenceSearcherFactory.cs" />
-    <Compile Include="src\Formatter\FormattingStageData.cs" />
-    <Compile Include="src\Formatter\IPsiCodeFormatterExtension.cs" />
     <Compile Include="src\Formatter\IPsiCodeFormatterFactory.cs" />
     <Compile Include="src\Formatter\PsiCodeFormatterFactory.cs" />
-    <Compile Include="src\Formatter\PsiCodeFormattingSettings.cs" />
     <Compile Include="src\Formatter\PsiIndentCache.cs" />
     <Compile Include="src\Formatter\ReformatCode.cs" />
-    <Compile Include="src\Formatter\PsiFmtStageContext.cs" />
-    <Compile Include="src\Formatter\PsiFormatProfile.cs" />
     <Compile Include="src\Formatter\PsiFormatterHelper.cs" />
     <Compile Include="src\Formatter\PsiFormattingStage.cs" />
     <Compile Include="src\Formatter\PsiFormattingVisitor.cs" />

@@ -45,14 +45,18 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring
 
       // TODO: move symbol binding logic to the cache, remove copy-paste.
       IPsiSymbol returnSymbol = Enumerable.ToArray(symbols)[0];
-      ITreeNode element = returnSymbol.SourceFile.GetPsiFile<PsiLanguage>(new DocumentRange(returnSymbol.SourceFile.Document, 0)).FindNodeAt(new TreeTextRange(new TreeOffset(returnSymbol.Offset), 1));
-      while (element != null)
+      var psiFile = returnSymbol.SourceFile.GetPsiFile<PsiLanguage>(new DocumentRange(returnSymbol.SourceFile.Document, 0));
+      if (psiFile != null)
       {
-        var ret = element as IDeclaredElement;
-        if (ret != null)
-          return ret;
+        ITreeNode element = psiFile.FindNodeAt(new TreeTextRange(new TreeOffset(returnSymbol.Offset), 1));
+        while (element != null)
+        {
+          var ret = element as IDeclaredElement;
+          if (ret != null)
+            return ret;
 
-        element = element.Parent;
+          element = element.Parent;
+        }
       }
       return null;
     }
@@ -65,20 +69,21 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring
       if (symbols.Count > 0)
       {
         IPsiSymbol symbol = symbols.ToArray()[0];
-        ITreeNode element =
-          symbol.SourceFile.GetPsiFile<PsiLanguage>(new DocumentRange(symbol.SourceFile.Document, 0)).FindNodeAt(new TreeTextRange(new TreeOffset(symbol.Offset), 1));
-        while (element != null)
+        var psiFile = symbol.SourceFile.GetPsiFile<PsiLanguage>(new DocumentRange(symbol.SourceFile.Document, 0));
+        if (psiFile != null)
         {
-          if (element is IDeclaredElement)
+          ITreeNode element =
+            psiFile.FindNodeAt(new TreeTextRange(new TreeOffset(symbol.Offset), 1));
+          while (element != null)
           {
+            if (element is IDeclaredElement)
             {
-              return (IDeclaredElement)element;
+              {
+                return (IDeclaredElement)element;
+              }
             }
+            element = element.Parent;
           }
-          element = element.Parent;
-        }
-        {
-          return null;
         }
       }
       return null;
@@ -95,38 +100,42 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring
         if (symbols.Count > 0)
         {
           IPsiSymbol symbol = symbols.ToArray()[0];
-          ITreeNode element = symbol.SourceFile.GetPsiFile<PsiLanguage>(new DocumentRange(symbol.SourceFile.Document, 0)).FindNodeAt(new TreeTextRange(new TreeOffset(symbol.Offset), 1));
-          List<PsiOptionSymbol> parserPackageName = cache.GetOptionSymbols("parserPackage").ToList();
-          List<PsiOptionSymbol> parserClassName = cache.GetOptionSymbols("parserClassName").ToList();
-          IList<IDeclaredElement> classes = new List<IDeclaredElement>();
-          foreach (PsiOptionSymbol packageName in parserPackageName)
+          var psiFile = symbol.SourceFile.GetPsiFile<PsiLanguage>(new DocumentRange(symbol.SourceFile.Document, 0));
+          if (psiFile != null)
           {
-            foreach (PsiOptionSymbol className in parserClassName)
+            ITreeNode element = psiFile.FindNodeAt(new TreeTextRange(new TreeOffset(symbol.Offset), 1));
+            List<PsiOptionSymbol> parserPackageName = cache.GetOptionSymbols("parserPackage").ToList();
+            List<PsiOptionSymbol> parserClassName = cache.GetOptionSymbols("parserClassName").ToList();
+            IList<IDeclaredElement> classes = new List<IDeclaredElement>();
+            foreach (PsiOptionSymbol packageName in parserPackageName)
             {
-              if (packageName.SourceFile == className.SourceFile)
+              foreach (PsiOptionSymbol className in parserClassName)
               {
-                IPsiSourceFile sourceFile = packageName.SourceFile;
-                CollectionUtil.AddRange(
-                classes, sourceFile.PsiModule.GetPsiServices().CacheManager.GetDeclarationsCache(sourceFile.PsiModule, false, true).
-                    GetTypeElementsByCLRName(packageName.Value + "." + className.Value));
+                if (packageName.SourceFile == className.SourceFile)
+                {
+                  IPsiSourceFile sourceFile = packageName.SourceFile;
+                  CollectionUtil.AddRange(
+                    classes, sourceFile.PsiModule.GetPsiServices().CacheManager.GetDeclarationsCache(sourceFile.PsiModule, false, true).
+                      GetTypeElementsByCLRName(packageName.Value + "." + className.Value));
+                }
               }
             }
-          }
 
-          var parentClass = declaredElement.GetContainingType() as IClass;
-          if (parentClass != null)
-          {
-            if (classes.Contains(parentClass))
+            var parentClass = declaredElement.GetContainingType() as IClass;
+            if (parentClass != null)
             {
-              while (element != null)
+              if (classes.Contains(parentClass))
               {
-                if (element is IDeclaredElement)
+                while (element != null)
                 {
+                  if (element is IDeclaredElement)
                   {
-                    return (IDeclaredElement)element;
+                    {
+                      return (IDeclaredElement)element;
+                    }
                   }
+                  element = element.Parent;
                 }
-                element = element.Parent;
               }
             }
           }

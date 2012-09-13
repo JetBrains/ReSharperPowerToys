@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using JetBrains.DocumentModel;
-using JetBrains.ReSharper.Feature.Services.Intentions.Impl.LanguageSpecific;
-using JetBrains.ReSharper.Feature.Services.Intentions.Impl.MemberBodyTemplates;
 using JetBrains.ReSharper.Feature.Services.Intentions.Impl.TemplateFieldHolders;
 using JetBrains.ReSharper.LiveTemplates;
 using JetBrains.ReSharper.Psi.Tree;
@@ -26,7 +24,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
         {
           if((child is IRuleName) || (child is IVariableDeclaration))
           {
-            holders.Add(new FindersTemplateFieldHolder(new TemplateField(child.GetText(), child.GetNavigationRange().TextRange.StartOffset), new PsiTemplateFinder[] { new PsiTemplateFinder(child) }));
+            holders.Add(new FindersTemplateFieldHolder(new TemplateField(child.GetText(), child.GetNavigationRange().TextRange.StartOffset), new ITemplateFieldFinder[] { new PsiTemplateFinder(child) }));
           }
           child = child.NextSibling;
         }
