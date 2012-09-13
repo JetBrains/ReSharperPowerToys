@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using JetBrains.Application;
 using JetBrains.DocumentManagers.Transactions;
@@ -16,10 +17,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
 {
   public class PsiIntentionResult
   {
-    private IDeclaration myDeclaration;
-    private List<ITemplateFieldHolder> myHolders;
-    private DocumentRange myPrefferedSelection;
-    private ITreeNode myAnchor;
+    private readonly IDeclaration myDeclaration;
+    private readonly List<ITemplateFieldHolder> myHolders;
+    private readonly DocumentRange myPrefferedSelection;
+    private readonly ITreeNode myAnchor;
 
     public PsiIntentionResult(List<ITemplateFieldHolder> holders, IDeclaration declaration, ITreeNode anchor, DocumentRange range)
     {
@@ -34,11 +35,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
       get { return myDeclaration; }
     }
 
-    public IList<ITemplateFieldHolder> Holders
-    {
-      get { return myHolders; }
-    }
- 
     public DocumentRange PrefferedSelection
     {
       get
@@ -56,6 +52,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
 
       ISolution solution = newDeclaration.GetPsiModule().GetSolution();
 
+      Debug.Assert(Shell.Instance.Invocator != null, "Shell.Instance.Invocator != null");
       Shell.Instance.Invocator.Dispatcher.AssertAccess();
 
       Assertion.Assert(!PsiManager.GetInstance(solution).HasActiveTransaction, "PSI transaction is active");

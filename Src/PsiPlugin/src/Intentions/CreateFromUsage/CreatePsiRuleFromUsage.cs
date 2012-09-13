@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Feature.Services.Bulbs;
@@ -14,7 +15,7 @@ using JetBrains.Util.Lazy;
 namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
 {
   [QuickFix]
-  public class CreatePsiRuleFromUsage : CreateFromUsageActionBase<CreatePsiRuleContext, ICreatePsiRuleIntention, PsiRuleReference>, IQuickFix
+  internal class CreatePsiRuleFromUsage : CreateFromUsageActionBase<CreatePsiRuleContext, ICreatePsiRuleIntention, PsiRuleReference>, IQuickFix
   {
     public CreatePsiRuleFromUsage(PsiUnresolvedRuleReferenceHighlighting error): base(error.Reference)
     {
@@ -32,6 +33,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
 
     protected override IEnumerable<IBulbAction> CreateBulbItems()
     {
+      Debug.Assert(Reference != null, "Reference != null");
       yield return new CreatePsiRuleItem(Lazy.Of(GetContext), string.Format("Create rule {0}", Reference.GetName()));
     }
 

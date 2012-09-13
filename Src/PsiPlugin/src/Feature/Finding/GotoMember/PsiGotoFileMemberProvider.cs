@@ -31,12 +31,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Finding.GotoMember
 
       var primaryMembersData = GetPrimaryMembers(fileMemberScope);
 
-      var primarySourceFile = fileMemberScope.GetPrimarySourceFile();
       ICollection<ClrFileMemberData> secondaryMembersData = new Collection<ClrFileMemberData>();
       if (scope.ExtendedSearchFlag == LibrariesFlag.SolutionAndLibraries)
       {
         var secondaryFilesGetter = fileMemberScope.GetSecondaryFilesGetter();
-        secondaryMembersData = GetSecondaryMembers(primarySourceFile, secondaryFilesGetter);
+        secondaryMembersData = GetSecondaryMembers(secondaryFilesGetter);
       }
 
       var clrFileMembersMap = new ClrFileMembersMap();
@@ -131,14 +130,14 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Finding.GotoMember
       return primaryMembers;
     }
 
-    protected IEnumerable<IPsiSymbol> GetPsiSourceFileTypeElements(IPsiSourceFile primarySourceFile)
+    private IEnumerable<IPsiSymbol> GetPsiSourceFileTypeElements(IPsiSourceFile primarySourceFile)
     {
       var solution = primarySourceFile.GetSolution();
       var typeElements = solution.GetComponent<PsiCache>().GetSymbolsDeclaredInFile(primarySourceFile);
       return typeElements.ToList();
     }
 
-    protected ICollection<ClrFileMemberData> GetSecondaryMembers(IPsiSourceFile primarySourceFile, Func<ICollection<IProjectFile>> secondaryProjectFilesGetter)
+    protected ICollection<ClrFileMemberData> GetSecondaryMembers(Func<ICollection<IProjectFile>> secondaryProjectFilesGetter)
     {
       var secondaryProjectFiles = secondaryProjectFilesGetter();
       ICollection<ClrFileMemberData> secondaryMembersData = new Collection<ClrFileMemberData>();

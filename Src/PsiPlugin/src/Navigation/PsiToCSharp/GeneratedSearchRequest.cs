@@ -41,11 +41,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Navigation.PsiToCSharp
       }
     }
 
-    public DeclaredElementEnvoy<IDeclaredElement> Target
-    {
-      get { return myTarget; }
-    }
-
     public override ISolution Solution
     {
       get { return mySolution; }

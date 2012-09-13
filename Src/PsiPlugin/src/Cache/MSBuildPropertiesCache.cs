@@ -66,7 +66,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
         Project loadedProject = loadedProjects[0];
         ProjectInstance projectInstance =
           BuildManager.DefaultBuildManager.GetProjectInstanceForBuild(loadedProject);
-        if (projectInstance.Build(resolveassemblyreference, JetBrains.Util.EmptyList<ILogger>.InstanceList))
+        if (projectInstance.Build(resolveassemblyreference, EmptyList<ILogger>.InstanceList))
         {
           ICollection<ProjectPropertyInstance> allProperties = projectInstance.Properties;
           foreach (ProjectPropertyInstance property in allProperties)
