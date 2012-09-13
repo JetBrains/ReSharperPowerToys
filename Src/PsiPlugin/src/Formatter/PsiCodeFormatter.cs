@@ -147,28 +147,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
           firstNode = lastElement;
         }
         ITreeNode commonParent = firstNode.FindCommonParent(lastNode);
-        ITreeNode firstChild = firstNode;
-        ITreeNode lastChild = lastElement;
-        while ((firstChild.Parent != null) && (firstChild.Parent != commonParent))
-        {
-          firstChild = firstChild.Parent;
-        }
-        while ((lastChild.Parent != null) && (lastChild.Parent != commonParent))
-        {
-          lastChild = lastChild.Parent;
-        }
 
-        firstNode = firstChild;
-        while (firstNode.FirstChild != null)
-        {
-          firstNode = firstNode.FirstChild;
-        }
+        firstNode = GetFirstNode(firstNode, commonParent);
+        lastNode = GetLastNode(lastNode, commonParent);
 
-        lastNode = lastChild;
-        while (lastNode.LastChild != null)
-        {
-          lastNode = lastNode.LastChild;
-        }
       }
       else
       {
@@ -178,6 +160,36 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
           lastNode = firstElement.LastChild;
         }
       }
+    }
+
+    private static ITreeNode GetLastNode(ITreeNode lastChild, ITreeNode commonParent)
+    {
+      while ((lastChild.Parent != null) && (lastChild.Parent != commonParent))
+      {
+        lastChild = lastChild.Parent;
+      }
+
+      ITreeNode lastNode = lastChild;
+      while (lastNode.LastChild != null)
+      {
+        lastNode = lastNode.LastChild;
+      }
+      return lastNode;
+    }
+
+    private static ITreeNode GetFirstNode(ITreeNode firstChild, ITreeNode commonParent)
+    {
+      while ((firstChild.Parent != null) && (firstChild.Parent != commonParent))
+      {
+        firstChild = firstChild.Parent;
+      }
+
+      ITreeNode firstNode = firstChild;
+      while (firstNode.FirstChild != null)
+      {
+        firstNode = firstNode.FirstChild;
+      }
+      return firstNode;
     }
 
     public override void FormatInsertedNodes(ITreeNode nodeFirst, ITreeNode nodeLast, bool formatSurround)

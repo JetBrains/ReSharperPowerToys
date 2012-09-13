@@ -12,13 +12,15 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl
   internal partial class PsiFile
   {
     private readonly Dictionary<string, IDeclaredElement> myDeclarations = new Dictionary<string, IDeclaredElement>();
-    private string myInterfacePrefix = "";
+
     private ISymbolTable myOptionSymbolTable;
-    private string myParserClassName = "";
-    private string myParserPackageName = "";
     private ISymbolTable myPathSymbolTable;
     private ISymbolTable myRoleSymbolTable;
     private ISymbolTable myRuleSymbolTable;
+
+    private string myInterfacePrefix = "";
+    private string myParserClassName = "";
+    private string myParserPackageName = "";
     private string myTokenTypeClassFqName = "";
     private string myTreeClassesPackageName = "";
     private string myTreeInterfacesPackageName = "";
@@ -310,25 +312,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl
       {
         myInterfacePrefix = "_";
       }
-
-      //CollectDerivedElements();
-    }
-
-    public void CollectDerivedElements()
-    {
-      ICollection<ITypeElement> classes =
-        GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(
-          myParserPackageName + "." + myParserClassName);
-      ICollection<ITypeElement> visitorClasses = CollectVisitorClasses();
-      Dictionary<string, IDeclaredElement>.ValueCollection elements = myDeclarations.Values;
-      foreach (IDeclaredElement declaredElement in elements)
-      {
-        IEnumerator<ITypeElement> enumerator = classes.GetEnumerator();
-        if (enumerator.MoveNext())
-        {
-          ((RuleDeclaration)declaredElement).CollectDerivedDeclaredElements((IClass)enumerator.Current, visitorClasses, myTreeInterfacesPackageName, myTreeClassesPackageName, myInterfacePrefix, myVisitorMethodPrefix, myVisitorMethodSuffix);
-        }
-      }
     }
 
 
@@ -387,7 +370,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl
           IList<IDeclaredElement> elements = new List<IDeclaredElement>();
           foreach (IField field in fields)
           {
-            //if (field.IsReadonly && field.IsStatic)
             if(field.IsReadonly)
             {
               elements.Add(field);

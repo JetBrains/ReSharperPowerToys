@@ -13,6 +13,7 @@
   <Keyword name="PATHS" representation="paths" />
   <Keyword name="RETURN_TYPE" representation="returnType" />
   <Keyword name="ROLE_KEYWORD" representation="ROLE" />
+  <Keyword name="ROLE_KEYWORD_LOWER" representation="Role" />
   <Keyword name="CACHED" representation="cached" />
   <Keyword name="NULL_KEYWORD" representation="null" />
   <Keyword name="LIST_KEYWORD" representation="LIST" />

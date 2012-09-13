@@ -141,6 +141,7 @@ END_LINE={NOT_NEW_LINE}*(({PP_NEW_LINE_PAIR})|({PP_NEW_LINE_CHAR}))
 <YYINITIAL> "paths" { return currTokenType = makeToken(PsiTokenType.PATHS); }
 <YYINITIAL> "get" { return currTokenType = makeToken(PsiTokenType.GET); }
 <YYINITIAL> "ROLE" { return currTokenType = makeToken(PsiTokenType.ROLE_KEYWORD); }
+<YYINITIAL> "Role" { return currTokenType = makeToken(PsiTokenType.ROLE_KEYWORD_LOWER); }
 <YYINITIAL> "getter" { return currTokenType = makeToken(PsiTokenType.GETTER); }
 <YYINITIAL> "Getter" { return currTokenType = makeToken(PsiTokenType.GETTER); }
 <YYINITIAL> "returnType" { return currTokenType = makeToken(PsiTokenType.RETURN_TYPE); }

@@ -87,7 +87,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
                                                             "objectClassFQName",
                                                             "parserMessagesClass",
                                                             "tokenBitsetThreshold",
-                                                            "elementTypeBaseClass"
+                                                            "elementTypeBaseClass",
+                                                            //"stubBase",
+                                                            //"interfaceName"
                                                           };
 
     public static readonly IList<string> ClassesOptionsWithShortNamespace = new List<string>
