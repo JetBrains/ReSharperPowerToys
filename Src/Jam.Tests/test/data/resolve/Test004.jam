@@ -1,0 +1,15 @@
+sub test(x)
+{
+  if (x > 0)
+  {
+    var y = 1;
+    return y;
+  }
+  else
+  {
+    var y  = 2;
+    return y;
+  }
+
+  return x + y;
+}

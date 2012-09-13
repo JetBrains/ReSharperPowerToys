@@ -1,0 +1,13 @@
+﻿sub test(x)
+{
+  {
+    var y = 1;
+    return |y|(0);
+  }
+
+  return |x|(1) + |y|(2);
+}
+------------------------------------------------
+0: result=OK declaredElem=local variable y
+1: result=OK declaredElem=parameter x
+2: result=VARIABLE_NOT_RESOLVED declaredElem=null

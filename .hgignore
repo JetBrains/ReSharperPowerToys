@@ -38,4 +38,5 @@ _ReSharper*/
 *.[Pp]ublish.xml
 
 Src\PsiPlugin\src\Gen
+Src\LexPlugin\src\Gen
 Src\Jam\src\Gen

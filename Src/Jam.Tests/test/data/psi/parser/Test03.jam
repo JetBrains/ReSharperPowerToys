@@ -1,0 +1,19 @@
+{caret}
+
+sub test(y)
+{
+  {
+    var x = 0;
+    if (x == y)
+    {
+      x = 2;
+    }
+    else
+    {
+      if (y == 2)
+      {
+        return 4;
+      }
+    }
+  }
+}

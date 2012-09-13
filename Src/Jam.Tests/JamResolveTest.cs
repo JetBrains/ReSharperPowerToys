@@ -27,5 +27,7 @@ namespace JetBrains.ReSharper.Psi.Jam.Tests
     [Test] public void Test001() {DoNamedTest();}
     [Test] public void Test002() {DoNamedTest();}
     [Test] public void Test003() {DoNamedTest();}
+    [Test] public void Test004() {DoNamedTest();}
+    [Test] public void Test005() {DoNamedTest();}
   }
 }

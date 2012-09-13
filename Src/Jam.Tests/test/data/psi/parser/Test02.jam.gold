@@ -1,0 +1,71 @@
+﻿Language: PsiLanguageType:JAM
+IJamFile
+  JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
+  JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
+  IProcedureDeclaration
+    JamKeyword(type:SUB_KEYWORD, text:sub)
+    JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
+    JamIdentifierToken(type:IDENTIFIER, text:test)
+    JamToken(type:LPAREN, text:()
+    IParameterList
+      IParameter
+        JamIdentifierToken(type:IDENTIFIER, text:x)
+      JamToken(type:COMMA, text:,)
+      JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
+      IParameter
+        JamIdentifierToken(type:IDENTIFIER, text:y)
+    JamToken(type:RPAREN, text:))
+    JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
+    IBlock
+      JamToken(type:LBRACE, text:{)
+      JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
+      JamWhitespaceToken(type:WHITE_SPACE, text:  ) spaces:"  "
+      IIfElseStatement
+        JamKeyword(type:IF_KEYWORD, text:if)
+        JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
+        JamToken(type:LPAREN, text:()
+        IConditionalExpression
+          IIdentifierExpression
+            JamIdentifierToken(type:IDENTIFIER, text:x)
+          JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
+          JamToken(type:GE, text:>=)
+          JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
+          IIdentifierExpression
+            JamIdentifierToken(type:IDENTIFIER, text:y)
+        JamToken(type:RPAREN, text:))
+        JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
+        JamWhitespaceToken(type:WHITE_SPACE, text:  ) spaces:"  "
+        IBlock
+          JamToken(type:LBRACE, text:{)
+          JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
+          JamWhitespaceToken(type:WHITE_SPACE, text:    ) spaces:"    "
+          IReturnStatement
+            JamKeyword(type:RETURN_KEYWORD, text:return)
+            JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
+            ILiteralExpression
+              JamLiteralToken(type:INTEGER_LITERAL, text:0)
+            JamToken(type:SEMICOLON, text:;)
+          JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
+          JamWhitespaceToken(type:WHITE_SPACE, text:  ) spaces:"  "
+          JamToken(type:RBRACE, text:})
+        JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
+        JamWhitespaceToken(type:WHITE_SPACE, text:  ) spaces:"  "
+        JamKeyword(type:ELSE_KEYWORD, text:else)
+        JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
+        JamWhitespaceToken(type:WHITE_SPACE, text:  ) spaces:"  "
+        IBlock
+          JamToken(type:LBRACE, text:{)
+          JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
+          JamWhitespaceToken(type:WHITE_SPACE, text:    ) spaces:"    "
+          IReturnStatement
+            JamKeyword(type:RETURN_KEYWORD, text:return)
+            JamWhitespaceToken(type:WHITE_SPACE, text: ) spaces:" "
+            ILiteralExpression
+              JamLiteralToken(type:INTEGER_LITERAL, text:1)
+            JamToken(type:SEMICOLON, text:;)
+          JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
+          JamWhitespaceToken(type:WHITE_SPACE, text:  ) spaces:"  "
+          JamToken(type:RBRACE, text:})
+      JamNewLineToken(type:NEW_LINE, text:\n) spaces:"\n"
+      JamToken(type:RBRACE, text:})
+
