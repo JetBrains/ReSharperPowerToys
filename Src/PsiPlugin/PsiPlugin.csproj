@@ -422,7 +422,6 @@
     <Compile Include="src\TypingAssist\PsiBracketMatcher.cs" />
     <Compile Include="src\TypingAssist\PsiTypingAssist.cs" />
     <Compile Include="src\Util\PsiDataContextEx.cs" />
-    <Compile Include="src\Util\PsiDeclaredElementElementUtil.cs" />
     <Compile Include="src\Util\PsiElementFactory.cs" />
     <Compile Include="src\Util\PsiElementFactoryImpl.cs" />
     <Compile Include="src\Util\PsiTreeUtil.cs" />

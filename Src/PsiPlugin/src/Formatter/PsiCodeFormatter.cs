@@ -110,7 +110,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 
       GetFirstAndLastNode(firstElement, lastElement, out firstNode, out lastNode);
 
-      using (pi.SafeTotal(3))
+      using (pi.SafeTotal(4))
       {
         var context = new PsiCodeFormattingContext(this, firstNode, lastNode, NullProgressIndicator.Instance);
         if (profile != CodeFormatProfile.INDENT)
