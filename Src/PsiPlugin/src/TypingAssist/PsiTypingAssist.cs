@@ -728,33 +728,6 @@ namespace JetBrains.ReSharper.PsiPlugin.TypingAssist
       return true;
     }
 
-    /*private bool HandleRightBraceTyped(ITypingContext typingContext)
-    {
-      var textControl = typingContext.TextControl;
-      using (CommandProcessor.UsingCommand("Smart LBRACE"))
-      {
-        typingContext.CallNext();
-
-        // check if typed char is a token
-        int charPos = TextControlToLexer(textControl, textControl.Caret.Offset() - 1);
-        CachingLexer lexer = GetCachingLexer(textControl);
-        if (charPos < 0 || !lexer.FindTokenAt(charPos) || lexer.TokenStart != charPos)
-          return true;
-
-        if (NeedAutoinsertCloseBracket(lexer))
-        {
-          if (typingContext.EnsureWritable() != EnsureWritableResult.SUCCESS)
-            return true;
-
-          AutoinsertRBrace(textControl, lexer);
-          var position = charPos + 1;
-          if (position >= 0)
-            textControl.Caret.MoveTo(position, CaretVisualPlacement.DontScrollIfVisible);
-        }
-      }
-      return true;
-    }*/
-
     private bool AutoinsertRBrace(ITextControl textControl, CachingLexer lexer)
     {
       int charPos = lexer.TokenEnd;

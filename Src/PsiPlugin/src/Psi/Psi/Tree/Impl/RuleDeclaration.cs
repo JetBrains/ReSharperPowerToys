@@ -211,19 +211,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl
       get
       {
         IList<VariableDeclaration> elements = PsiTreeUtil.GetAllChildren<VariableDeclaration>(this).AsIList();
-        /*if (Parameters != null)
-        {
-          ITreeNode child = Parameters.FirstChild;
-          while (child != null)
-          {
-            var variableDeclaration = child as VariableDeclaration;
-            if (variableDeclaration != null)
-            {
-              elements.Add(variableDeclaration);
-            }
-            child = child.NextSibling;
-          }
-        }*/
         return ResolveUtil.CreateSymbolTable(elements, 0);
       }
     }

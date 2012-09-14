@@ -75,7 +75,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
           firstSpace = firstSpace.GetNextToken();
         }
         firstSpace = firstSpace.GetNextToken();
-        if (firstSpace != lastSpace || lastSpace.GetText() != indent)
+        if ((firstSpace != lastSpace || lastSpace.GetText() != indent) && (firstSpace.Parent == lastSpace.Parent))
         {
           if (indent.IsEmpty())
           {

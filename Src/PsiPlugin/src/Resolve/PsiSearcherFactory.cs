@@ -64,13 +64,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
     {
       var shortName = element.ShortName;
 
-      /*var psiLanguageService = element.PresentationLanguage.LanguageService() as PsiLanguageService;
-      if (psiLanguageService != null)
-      {
-        if (!psiLanguageService.IsValidJavaScriptReferenceExpressionName(shortName))
-          return new[] { string.Empty };
-      }*/
-
       return new[] { shortName };
     }
 
