@@ -70,11 +70,14 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       {
         ITreeNode firstSpace = lastSpace.LeftWhitespaces().TakeWhile(ws => ws != PsiTokenType.NEW_LINE).LastOrDefault() ?? lastSpace;
         Debug.Assert(firstSpace != null, "firstSpace != null");
-        while (firstSpace.GetTokenType() != PsiTokenType.NEW_LINE)
+        if (firstSpace != lastSpace)
         {
+          while ((firstSpace.GetTokenType() != PsiTokenType.NEW_LINE) && (firstSpace.GetNextToken() != lastSpace))
+          {
+            firstSpace = firstSpace.GetNextToken();
+          }
           firstSpace = firstSpace.GetNextToken();
         }
-        firstSpace = firstSpace.GetNextToken();
         if ((firstSpace != lastSpace || lastSpace.GetText() != indent) && (firstSpace.Parent == lastSpace.Parent))
         {
           if (indent.IsEmpty())
