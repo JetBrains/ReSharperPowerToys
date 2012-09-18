@@ -7,6 +7,7 @@ using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.ExtensionsAPI;
 using JetBrains.ReSharper.Psi.Impl.CodeStyle;
 using JetBrains.ReSharper.Psi.Tree;
+using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
 using JetBrains.Util;
 
@@ -149,7 +150,12 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     private IEnumerable<string> CalcSpaces(FormattingStageContext context)
     {
       var psiTreeNode = context.Parent as IPsiTreeNode;
+      if(context.RightChild is IQuantifier)
+      {
+        return new  List<string>(){""};
+      } 
       return psiTreeNode != null ? psiTreeNode.Accept(myFmtVisitor, context) : null;
+
     }
 
     private void MakeFormat(FormattingRange range, IEnumerable<string> space)
@@ -157,29 +163,28 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       PsiFormatterHelper.ReplaceSpaces(range.First, range.Last, space);
 
       // TODO: Move antiglueing logic into CalcSpaces()
-      ITokenNode nextToken;
+      /*ITokenNode nextToken;
       ITokenNode prevToken = range.First.FindLastTokenIn();
-      if (prevToken != null)
+      while ((prevToken != null) && (prevToken.IsWhitespaceToken()))
       {
-        nextToken = prevToken.GetNextToken();
+        prevToken = prevToken.GetPrevToken();
       }
-      else
+     
+      nextToken = range.First.NextSibling.FindFirstTokenIn();
+
+      while ((nextToken != null) && (nextToken.IsWhitespaceToken()))
       {
-        nextToken = range.First.NextSibling.FindFirstTokenIn();
-        if (nextToken != null)
-        {
-          prevToken = nextToken.GetPrevToken();
-        }
+        nextToken = nextToken.GetNextToken();
       }
 
       if (prevToken != null && nextToken != null)
       {
-        ITokenNode separator = Context.CodeFormatter.GetMinimalSeparator(prevToken, nextToken);
-        if (separator != null)
-        {
-          LowLevelModificationUtil.AddChildAfter(range.First, separator);
-        }
-      }
+        //ITokenNode separator = Context.CodeFormatter.GetMinimalSeparator(prevToken, nextToken);
+        //if (separator != null)
+        //{
+          //LowLevelModificationUtil.AddChildAfter(range.First, separator);
+        //}
+      }*/
     }
   }
 }

@@ -207,63 +207,74 @@ notChoiceExpression
 
 choiceTail
 extras{
-	get {methodName = "Sequence" path = <choiceTail:PSI_SEQUENCE> };
+  get {methodName = "Sequence" path = <choiceTail:PSI_SEQUENCE> };
 }
-	:
-	OR
-	sequence<PSI_SEQUENCE>
+  :
+    OR
+    sequence<PSI_SEQUENCE>
   ;
 
 quantifier
-	:
-	ASTERISK
-	| QUEST
-	| PLUS
+  :
+    ASTERISK
+    | QUEST
+    | PLUS
   ;
 
 predicated
-	:
-	EXCL simpleExpression quantifier?
-	| AND variableName ruleParameters? quantifier?
+  :
+    EXCL
+    simpleExpression quantifier?
+    | AND
+    variableName
+    ruleParameters?
+    quantifier?
   ;
 
 simpleExpression
-	:
-	(parenExpression
-	| listExpression
-	| ruleName (BACK_QUOTE afterQuote)? ruleParameters ?) 
+  :
+    (
+      parenExpression
+      | listExpression
+      | ruleName
+      (
+        BACK_QUOTE
+        afterQuote
+      )?
+      ruleParameters?
+    )
   ;
 
 errorhandling listExpression
-	:
-	LIST_KEYWORD
-	(parenExpression | ruleName (BACK_QUOTE afterQuote)? ruleParameters ?)
-	SEP_KEYWORD
-	(parenExpression | ruleName (BACK_QUOTE afterQuote)? ruleParameters ?)
+  :
+    LIST_KEYWORD
+    (parenExpression | ruleName (BACK_QUOTE afterQuote)? ruleParameters ?)
+    SEP_KEYWORD
+    (parenExpression | ruleName (BACK_QUOTE afterQuote)? ruleParameters ?)
   ;
 
 errorhandling ruleParameters
-	:
-	ruleAngleParameters ruleBracketParameters?
-	| ruleBraceParameters ruleBracketParameters?
-	| ruleBracketParameters
+  :
+    ruleAngleParameters ruleBracketParameters?
+    | ruleBraceParameters ruleBracketParameters?
+    | ruleBracketParameters
   ;
 
 errorhandling ruleBracketTypedParameters
-	:
-	LBRACKET
-	ruleName
-	variableDeclaration
-	(COMMA ruleName variableDeclaration)*
-	RBRACKET
+  :
+    LBRACKET
+    ruleName
+    variableDeclaration
+    (COMMA ruleName variableDeclaration)*
+    RBRACKET
   ;
 
 ruleBracketParameters
-	:
-	LBRACKET
-	(NULL_KEYWORD | variableName)
-	(COMMA (NULL_KEYWORD | variableName))*
-	RBRACKET
+  :
+    LBRACKET
+    (NULL_KEYWORD | variableName)
+    (COMMA (NULL_KEYWORD | variableName))*
+    RBRACKET
   ;
 
 ruleAngleParameters
@@ -302,116 +313,115 @@ ruleAngleParameters
   ;
 
 ruleBraceParameters
-	:
-	LBRACE
-	(AT
-	(ROLE_KEYWORD |  ROLE_KEYWORD_LOWER)
-	COMMA
-	AT
-	GETTER
-	|
+  :
+    LBRACE
+    (AT
+(ROLE_KEYWORD |  ROLE_KEYWORD_LOWER)
+COMMA
+AT
+GETTER
+|
 	(ROLE_KEYWORD | ROLE_KEYWORD_LOWER)
-	COMMA
-	GETTER
-	|
+COMMA
+GETTER
+|
 	roleName (EQ STRING_LITERAL)?
-	
-	(
-	  COMMA
-	  (
-	    (
-	      IDENTIFIER
-	      | CACHED
-	    )
-	    (
-	      EQ
-	      STRING_LITERAL
-	    )?
-	    | ISCACHED
-	  )
-	)*)
-	RBRACE
+(
+  COMMA
+  (
+    (
+      IDENTIFIER
+      | CACHED
+    )
+    (
+      EQ
+      STRING_LITERAL
+    )?
+    | ISCACHED
+  )
+)*)
+    RBRACE
   ;
 
 
 
 sequence
-	:
-	notChoiceExpression*
+  :
+    notChoiceExpression*
   ;
 
 parenExpression
-	:
-	LPARENTH
-	(psiExpression
-	| sharpExpression)
-	RPARENTH
+  :
+    LPARENTH
+    (psiExpression
+| sharpExpression)
+    RPARENTH
   ;
 
 sharpExpression
-	:
-	SHARP
-	variableDeclaration
-	COLON
-	ruleName (BACK_QUOTE afterQuote)? ruleParameters ?
+  :
+    SHARP
+    variableDeclaration
+    COLON
+    ruleName (BACK_QUOTE afterQuote)? ruleParameters ?
   ;
 
 variableDeclaration
-	:
-	variableName
+  :
+    variableName
   ;
 
 variableName
-	:
-	IDENTIFIER
+  :
+    IDENTIFIER
   ;
 
 afterQuote
-	:
-	IDENTIFIER
+  :
+    IDENTIFIER
   ;
 
 pathsDeclaration
-	:
-	PATHS
-	LBRACE
-	pathDeclaration*
-	RBRACE
+  :
+    PATHS
+    LBRACE
+    pathDeclaration*
+    RBRACE
   ;
 
 errorhandling pathDeclaration
 extras{
-	get {methodName = "PathName" path = <pathDeclaration:PSI_PATH_NAME> };
+  get {methodName = "PathName" path = <pathDeclaration:PSI_PATH_NAME> };
 }
-	:
-	pathName<PSI_PATH_NAME>
-	EQ
-	pathValue
-	SEMICOLON
+  :
+    pathName<PSI_PATH_NAME>
+    EQ
+    pathValue
+    SEMICOLON
   ;
 
 pathName
-	:
-	IDENTIFIER
+  :
+    IDENTIFIER
   ;
 
 pathValue
-	:
-	LT
-	pathElement
-	(DIV
-	pathElement)*
-	GT 
+  :
+    LT
+    pathElement
+    (DIV
+pathElement)*
+    GT 
   ;
 
 pathElement
 extras{
-	get {methodName = "RoleName" path = <pathElement:PSI_ROLE_NAME> };
+  get {methodName = "RoleName" path = <pathElement:PSI_ROLE_NAME> };
 }
-	:
-	pathName
-	(COLON
-	roleName<PSI_ROLE_NAME>)?
+  :
+    pathName
+    (COLON
+roleName<PSI_ROLE_NAME>)?
   ;
 
 roleName
