@@ -4,10 +4,8 @@ using JetBrains.Application;
 using JetBrains.Application.Progress;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.ExtensionsAPI;
 using JetBrains.ReSharper.Psi.Impl.CodeStyle;
 using JetBrains.ReSharper.Psi.Tree;
-using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
 using JetBrains.Util;
 
@@ -15,18 +13,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 {
   public class PsiFormattingStage
   {
-    private readonly CodeFormattingContext myContext;
     private readonly PsiFormattingVisitor myFmtVisitor;
 
     private PsiFormattingStage(CodeFormattingContext context)
     {
-      myContext = context;
       myFmtVisitor = CreateFormattingVisitor(context);
-    }
-
-    private CodeFormattingContext Context
-    {
-      get { return myContext; }
     }
 
     private static PsiFormattingVisitor CreateFormattingVisitor(CodeFormattingContext context)
@@ -152,7 +143,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       var psiTreeNode = context.Parent as IPsiTreeNode;
       if(context.RightChild is IQuantifier)
       {
-        return new  List<string>(){""};
+        return new  List<string> {""};
       } 
       return psiTreeNode != null ? psiTreeNode.Accept(myFmtVisitor, context) : null;
 
@@ -161,30 +152,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     private void MakeFormat(FormattingRange range, IEnumerable<string> space)
     {
       PsiFormatterHelper.ReplaceSpaces(range.First, range.Last, space);
-
-      // TODO: Move antiglueing logic into CalcSpaces()
-      /*ITokenNode nextToken;
-      ITokenNode prevToken = range.First.FindLastTokenIn();
-      while ((prevToken != null) && (prevToken.IsWhitespaceToken()))
-      {
-        prevToken = prevToken.GetPrevToken();
-      }
-     
-      nextToken = range.First.NextSibling.FindFirstTokenIn();
-
-      while ((nextToken != null) && (nextToken.IsWhitespaceToken()))
-      {
-        nextToken = nextToken.GetNextToken();
-      }
-
-      if (prevToken != null && nextToken != null)
-      {
-        //ITokenNode separator = Context.CodeFormatter.GetMinimalSeparator(prevToken, nextToken);
-        //if (separator != null)
-        //{
-          //LowLevelModificationUtil.AddChildAfter(range.First, separator);
-        //}
-      }*/
     }
   }
 }
