@@ -5,7 +5,6 @@ using System.Linq;
 using JetBrains.Annotations;
 using JetBrains.ReSharper.Psi.ExtensionsAPI;
 using JetBrains.ReSharper.Psi.Impl.CodeStyle;
-using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
@@ -72,21 +71,24 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
         Debug.Assert(firstSpace != null, "firstSpace != null");
         if (firstSpace != lastSpace)
         {
-          while ((firstSpace.GetTokenType() != PsiTokenType.NEW_LINE) && (firstSpace.GetNextToken() != lastSpace))
+          while ((firstSpace != null) && (firstSpace.GetTokenType() != PsiTokenType.NEW_LINE) && (firstSpace.GetNextToken() != lastSpace))
           {
             firstSpace = firstSpace.GetNextToken();
           }
           firstSpace = firstSpace.GetNextToken();
         }
-        if ((firstSpace != lastSpace || lastSpace.GetText() != indent) && (firstSpace.Parent == lastSpace.Parent))
+        if (firstSpace != null)
         {
-          if (indent.IsEmpty())
+          if ((firstSpace != lastSpace || lastSpace.GetText() != indent) && (firstSpace.Parent == lastSpace.Parent))
           {
-            LowLevelModificationUtil.DeleteChildRange(firstSpace, lastSpace);
-          }
-          else
-          {
-            LowLevelModificationUtil.ReplaceChildRange(firstSpace, lastSpace, CreateSpace(indent));
+            if (indent.IsEmpty())
+            {
+              LowLevelModificationUtil.DeleteChildRange(firstSpace, lastSpace);
+            }
+            else
+            {
+              LowLevelModificationUtil.ReplaceChildRange(firstSpace, lastSpace, CreateSpace(indent));
+            }
           }
         }
       }
@@ -99,13 +101,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     public static bool HasLineFeedsTo(this ITreeNode fromNode, ITreeNode toNode)
     {
       return fromNode.GetLineFeedsTo(toNode).Any();
-    }
-
-    public static string GetSampleText(this TokenNodeType type)
-    {
-      string text = type.TokenRepresentation;
-      Assertion.Assert(text != null, "No sample for token of type " + type);
-      return text;
     }
   }
 }
