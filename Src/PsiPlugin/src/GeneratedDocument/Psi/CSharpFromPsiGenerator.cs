@@ -175,7 +175,7 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument.Psi
             return;
         }
       }
-      AddClassOption(endOffset, startOffset, optionValueText, startInGenerated);
+      AddStaticClassOption(endOffset, startOffset, optionValueText, startInGenerated);
     }
 
     private void AddClassOption(int endOffset, int startOffset, string optionValueText, int startInGenerated)
