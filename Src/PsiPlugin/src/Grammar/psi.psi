@@ -236,21 +236,31 @@ simpleExpression
     (
       parenExpression
       | listExpression
-      | ruleName
-      (
-        BACK_QUOTE
-        afterQuote
-      )?
-      ruleParameters?
+      | ruleNameUsage
     )
+  ;
+
+ruleNameUsage
+extras{
+  get {methodName = "Name" path = <ruleNameUsage:PSI_NAME> };
+  get {methodName = "Parameters" path = <ruleNameUsage:PSI_INVOCATION_PARAMETERS> };
+}
+  :
+    ruleName<PSI_NAME>
+    
+    (
+      BACK_QUOTE
+      afterQuote
+    )?
+    ruleParameters<PSI_INVOCATION_PARAMETERS> ?
   ;
 
 errorhandling listExpression
   :
     LIST_KEYWORD
-    (parenExpression | ruleName (BACK_QUOTE afterQuote)? ruleParameters ?)
+    (parenExpression | ruleNameUsage)
     SEP_KEYWORD
-    (parenExpression | ruleName (BACK_QUOTE afterQuote)? ruleParameters ?)
+    (parenExpression | ruleNameUsage)
   ;
 
 errorhandling ruleParameters
@@ -363,7 +373,7 @@ sharpExpression
     SHARP
     variableDeclaration
     COLON
-    ruleName (BACK_QUOTE afterQuote)? ruleParameters ?
+    ruleNameUsage
   ;
 
 variableDeclaration

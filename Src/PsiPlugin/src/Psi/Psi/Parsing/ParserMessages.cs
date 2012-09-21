@@ -20,6 +20,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing
     public const string IDS_VARIABLE_NAME = "variable name";
     public const string IDS_PREDICATED = "predicated";
     public const string IDS_RULE_NAME = "rule name";
+    public static string IDS_RULE_NAME_USAGE = "rule name usage";
 
     public static string GetString(string id)
     {

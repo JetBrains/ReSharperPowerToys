@@ -174,6 +174,9 @@
     </Compile>
     <Compile Include="src\Feature\Services\FindUsages\PsiReferenceSearcher.cs" />
     <Compile Include="src\Feature\Services\FindUsages\PsiReferenceSearcherFactory.cs" />
+    <Compile Include="src\Feature\Services\ParameterInfo\PsiParameterInfoCandidate.cs" />
+    <Compile Include="src\Feature\Services\ParameterInfo\PsiParameterInfoContext.cs" />
+    <Compile Include="src\Feature\Services\ParameterInfo\PsiParameterInfoContextFactory.cs" />
     <Compile Include="src\Formatter\IPsiCodeFormatterFactory.cs" />
     <Compile Include="src\Formatter\PsiCodeFormatterFactory.cs" />
     <Compile Include="src\Formatter\PsiIndentCache.cs" />
