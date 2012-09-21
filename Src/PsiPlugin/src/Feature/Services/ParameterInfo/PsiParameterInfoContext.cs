@@ -1,12 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using JetBrains.Application.Settings;
-using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.ParameterInfo;
-using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.PsiPlugin.Completion;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
 using JetBrains.Util;
 
@@ -16,17 +10,19 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.ParameterInfo
   {
     private readonly ICandidate[] myCandidates;
     private readonly TextRange myTextRange;
-    //private readonly PsiServices myServices;
-    private readonly IPsiSourceFile myGetSourceFile;
-    private IRuleNameUsage myRuleNameUsage;
 
     public PsiParameterInfoContext(IRuleNameUsage ruleNameUsage, int argumentIndex)
     {
-      myRuleNameUsage = ruleNameUsage;
       myCandidates = GetCandidates(ruleNameUsage);
       NamedArguments = EmptyArray<string>.Instance;
       Argument = argumentIndex;
-      myTextRange = ruleNameUsage.Parameters.FirstChild.GetNavigationRange().TextRange;
+      if (ruleNameUsage.Parameters.FirstChild != null)
+      {
+        myTextRange = ruleNameUsage.Parameters.FirstChild.GetNavigationRange().TextRange;
+      } else
+      {
+        myTextRange = TextRange.InvalidRange;
+      }
     }
 
     #region Implementation of IParameterInfoContext
@@ -42,7 +38,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.ParameterInfo
       {
         var psiRuleSignature = new PsiRuleSignature(ruleDeclaration);
         var candidates = new ICandidate[1];
-        candidates[0] = new PsiParameterInfoCandidate(psiRuleSignature, ruleDeclaration.GetSourceFile());
+        candidates[0] = new PsiParameterInfoCandidate(psiRuleSignature);
         return candidates;
       }
       return null;

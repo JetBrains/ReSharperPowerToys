@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using JetBrains.Application.Settings;
 using JetBrains.DocumentModel;
 using JetBrains.ProjectModel;
@@ -17,8 +15,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.ParameterInfo
   [ParameterInfoContextFactory(typeof(PsiLanguage))]
   public class PsiParameterInfoContextFactory : IParameterInfoContextFactory
   {
-    private static readonly char[] ourImportantChars = new[] { '[', ']' };
-    private static readonly char[] ourChars = new[] { '[', ',' };
+    private static readonly char[] OurImportantChars = new[] { '[', ']' };
+    private static readonly char[] OurChars = new[] { '[', ',' };
 
     #region Implementation of IParameterInfoContextFactory
 
@@ -26,7 +24,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.ParameterInfo
     {
       if (!solution.GetComponent<PsiIntellisenseManager>().GetIntellisenseEnabled(contextBoundSettingsStore))
         return null;
-      //return new PsiParameterInfoContext();
 
       var documentRange = new DocumentRange(document, caretOffset);
       var file = solution.GetPsiServices().PsiManager.GetPsiFile<PsiLanguage>(documentRange);
@@ -53,7 +50,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.ParameterInfo
 
     public bool ShouldPopup(IDocument document, int caretOffset, char c, ISolution solution, IContextBoundSettingsStore contextBoundSettingsStore)
     {
-      if (!ourChars.Contains(c))
+      if (!OurChars.Contains(c))
         return false;
       if (!solution.GetComponent<PsiIntellisenseManager>().GetIntellisenseEnabled(contextBoundSettingsStore))
         return false;
@@ -70,7 +67,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.ParameterInfo
     {
       get
       {
-        return ourImportantChars;
+        return OurImportantChars;
       }
     }
 

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using JetBrains.ReSharper.Feature.Services.ParameterInfo;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Util;
@@ -21,7 +19,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.ParameterInfo
 
     #region Implementation of ICandidate
 
-    public  PsiParameterInfoCandidate(PsiRuleSignature signature, IPsiSourceFile sourceFile)
+    public  PsiParameterInfoCandidate(PsiRuleSignature signature)
     {
       myParameters = signature.Parameters.ToArray();
       myParameterRanges = new TextRange[myParameters.Length];
