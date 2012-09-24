@@ -41,6 +41,7 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="src\Completion\PsiCompletionTest.cs" />
     <Compile Include="src\Feature\Services\ParameterInfo\PsiParameterInfoTest.cs" />
+    <Compile Include="src\Feature\Services\RearrangeCode\PsiRearrangeCodeTest.cs" />
     <Compile Include="src\Find\PsiFindUsagesTest.cs" />
     <Compile Include="src\Highlighting\PsiHighlightingTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
