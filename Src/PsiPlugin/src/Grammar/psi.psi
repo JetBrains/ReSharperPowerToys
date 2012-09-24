@@ -48,6 +48,7 @@ extras{
 	  interfacesDefinition<PSI_INTERFACES>?
   ;
 
+
 interfacesDefinition
 	:
 	INTERFACES
@@ -74,6 +75,8 @@ extras{
 	ruleBody<PSI_BODY>
 	SEMICOLON
   ;
+
+
 
 errorhandling ruleBody
 	:
