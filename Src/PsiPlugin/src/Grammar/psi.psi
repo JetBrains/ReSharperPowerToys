@@ -34,6 +34,7 @@ options {
   generateWorkingPsi;
 }
 
+
 errorhandling psiFile options {
 	stubBase="PsiFileElement";
 }
@@ -48,7 +49,6 @@ extras{
 	  interfacesDefinition<PSI_INTERFACES>?
   ;
 
-
 interfacesDefinition
 	:
 	INTERFACES
@@ -56,6 +56,9 @@ interfacesDefinition
 	ruleDeclaration*
 	RBRACE
   ;
+
+
+
 
 errorhandling ruleDeclaration
 extras{

@@ -7,14 +7,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.ParameterInfo
   public class PsiRuleSignature
   {
     private IList<IDeclaredElement> myParameters = new List<IDeclaredElement>();
-    private IRuleDeclaration myRuleDeclaration;
-    private IPsiSourceFile mySourceFile;
 
     public PsiRuleSignature(IRuleDeclaration ruleDeclaration)
     {
       var parameters = ruleDeclaration.Parameters;
-      myRuleDeclaration = ruleDeclaration;
-      mySourceFile = myRuleDeclaration.GetSourceFile();
       if(parameters != null)
       {
         var child = parameters.FirstChild;
@@ -49,22 +45,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.ParameterInfo
       get
       {
         return myParameters;
-      }
-    }
-
-    public int ParametersCount
-    {
-      get
-      {
-        return myParameters.Count;
-      }
-    }
-
-    public IPsiSourceFile SourceFile
-    {
-      get
-      {
-        return mySourceFile;
       }
     }
   }

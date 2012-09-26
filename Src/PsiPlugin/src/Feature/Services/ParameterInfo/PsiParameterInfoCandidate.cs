@@ -54,14 +54,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.ParameterInfo
     {
       paramNames = myParameters.Select(x => GetShortName(x)).ToArray();
       isParamsArray = false;
-      //if (myDocSignature != null)
-      //{
-        paramDescriptions = GetParamDescriptions();
-      //}
-      //else
-      //{
-        //paramDescriptions = new RichTextBlock[PositionalParameterCount];
-      //}
+      paramDescriptions = GetParamDescriptions();
     }
 
     public RichTextBlock[] GetParamDescriptions()
