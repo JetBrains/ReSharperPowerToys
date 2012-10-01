@@ -53,9 +53,15 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 
       GetFirstAndLastNode(firstElement, lastElement, out firstNode, out lastNode);
 
+      var contextBoundSettingsStore = GetProperContextBoundSettingsStore(overrideSettingsStore, firstNode);
+
+      var globalSettings = GlobalFormatSettingsHelper
+        .GetService(firstNode.GetSolution())
+        .GetSettingsForLanguage(myLanguage, firstNode.GetProjectFileType(), contextBoundSettingsStore);
+
       using (pi.SafeTotal(4))
       {
-        var context = new PsiCodeFormattingContext(this, firstNode, lastNode, NullProgressIndicator.Instance);
+        var context = new PsiCodeFormattingContext(this, firstNode, lastNode);
         if (profile != CodeFormatProfile.INDENT)
         {
 
@@ -64,7 +70,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
             using (subPi.SafeTotal(2))
             {
               PsiFormattingStage.DoFormat(context, subPi.CreateSubProgress(1));
-              PsiIndentingStage.DoIndent(context, subPi.CreateSubProgress(1), false);
+              PsiIndentingStage.DoIndent(context, globalSettings,   subPi.CreateSubProgress(1), false);
             }
           }
         }
@@ -72,7 +78,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
         {
           using (IProgressIndicator subPi = pi.CreateSubProgress(4))
           {
-            PsiIndentingStage.DoIndent(context, subPi, true);
+            PsiIndentingStage.DoIndent(context, globalSettings,   subPi, true);
           }
         }
       }
@@ -163,8 +169,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 
   public class PsiCodeFormattingContext : CodeFormattingContext
   {
-    public PsiCodeFormattingContext(PsiCodeFormatter psiCodeFormatter, ITreeNode firstNode, ITreeNode lastNode, NullProgressIndicator instance)
-      : base(psiCodeFormatter, firstNode, lastNode, instance)
+    public PsiCodeFormattingContext(PsiCodeFormatter psiCodeFormatter, ITreeNode firstNode, ITreeNode lastNode)
+      : base(psiCodeFormatter, firstNode, lastNode)
     {
     }
 

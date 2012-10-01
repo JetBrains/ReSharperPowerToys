@@ -20,6 +20,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.ParameterInfo
 
     #region Implementation of IParameterInfoContextFactory
 
+    public bool IsIntellisenseEnabled(ISolution solution, IContextBoundSettingsStore contextBoundSettingsStore)
+    {
+      return solution.GetComponent<PsiIntellisenseManager>().GetIntellisenseEnabled(contextBoundSettingsStore);
+    }
+
     public IParameterInfoContext CreateContext(ISolution solution, IDocument document, int caretOffset, int expectedLParenthOffset, char invocationChar, IContextBoundSettingsStore contextBoundSettingsStore)
     {
       if (!solution.GetComponent<PsiIntellisenseManager>().GetIntellisenseEnabled(contextBoundSettingsStore))

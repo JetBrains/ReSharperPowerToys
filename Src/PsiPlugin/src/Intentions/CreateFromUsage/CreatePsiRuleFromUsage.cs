@@ -15,13 +15,13 @@ using JetBrains.Util.Lazy;
 namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
 {
   [QuickFix]
-  internal class CreatePsiRuleFromUsage : CreateFromUsageActionBase<CreatePsiRuleContext, ICreatePsiRuleIntention, PsiRuleReference>, IQuickFix
+  internal class CreatePsiRuleFromUsage : CreateFromUsageActionBase<ICreatePsiRuleIntention, PsiRuleReference>, IQuickFix
   {
     public CreatePsiRuleFromUsage(PsiUnresolvedRuleReferenceHighlighting error): base(error.Reference)
     {
     }
 
-    protected override CreatePsiRuleContext GetContext()
+    private CreatePsiRuleContext GetContext()
     {
       return new CreatePsiRuleContext(GetTarget() as CreatePsiRuleTarget);
     }
