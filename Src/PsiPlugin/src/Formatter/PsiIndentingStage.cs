@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using JetBrains.Application.Progress;
+using JetBrains.ReSharper.Psi.CodeStyle;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 using JetBrains.ReSharper.Psi.Impl.CodeStyle;
 using JetBrains.ReSharper.Psi.Tree;
@@ -12,17 +13,18 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
   public class PsiIndentingStage
   {
     private readonly bool myInTypingAssist;
-    private static PsiIndentVisitor _indentVisitor;
+    private static PsiIndentVisitor ourIndentVisitor;
 
     private PsiIndentingStage(bool inTypingAssist = false)
     {
       myInTypingAssist = inTypingAssist;
     }
 
-    public static void DoIndent(CodeFormattingContext context, IProgressIndicator progress, bool inTypingAssist)
+    public static void DoIndent(CodeFormattingContext context, GlobalFormatSettings formatSettings, IProgressIndicator progress, bool inTypingAssist)
     {
-      var indentCache = new PsiIndentCache();
-      _indentVisitor = CreateIndentVisitor(indentCache, inTypingAssist);
+      var indentCache = new PsiIndentCache(context.CodeFormatter, null, AlignmentTabFillStyle.OPTIMAL_FILL, formatSettings);
+
+      ourIndentVisitor = CreateIndentVisitor(indentCache, inTypingAssist);
       var stage = new PsiIndentingStage(inTypingAssist);
       List<FormattingRange> nodePairs = context.SequentialEnumNodes().Where(p => context.CanModifyInsideNodeRange(p.First, p.Last)).ToList();
       //List<FormattingRange> nodePairs = GetNodePairs(context).ToList();
@@ -49,8 +51,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       var psiTreeNode = context.Parent as IPsiTreeNode;
 
       return psiTreeNode != null
-        ? psiTreeNode.Accept(_indentVisitor, context)
-        : _indentVisitor.VisitNode(parent, context);
+        ? psiTreeNode.Accept(ourIndentVisitor, context)
+        : ourIndentVisitor.VisitNode(parent, context);
     }
 
     [NotNull]

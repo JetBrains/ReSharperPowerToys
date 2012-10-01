@@ -182,8 +182,8 @@
     <Compile Include="src\Gen\Psi\Lex\Tree\CsharpKeywordNavigator.cs" />
     <Compile Include="src\Gen\Psi\Lex\Tree\CSharpNamespaceNameNavigator.cs" />
     <Compile Include="src\Gen\Psi\Lex\Tree\CSharpNamespaceNavigator.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\CsharpOrTokenNavigator.cs" />
     <Compile Include="src\Gen\Psi\Lex\Tree\CSharpTokenNavigator.cs" />
-    <Compile Include="src\Gen\Psi\Lex\Tree\DeclarationOrIncludeNavigator.cs" />
     <Compile Include="src\Gen\Psi\Lex\Tree\DefinitionBlockNavigator.cs" />
     <Compile Include="src\Gen\Psi\Lex\Tree\DigitIntervalNavigator.cs" />
     <Compile Include="src\Gen\Psi\Lex\Tree\EncodingDefinitionNavigator.cs" />
@@ -218,8 +218,8 @@
     <Compile Include="src\Gen\Psi\Lex\Tree\ICsharpKeyword.cs" />
     <Compile Include="src\Gen\Psi\Lex\Tree\ICSharpNamespace.cs" />
     <Compile Include="src\Gen\Psi\Lex\Tree\ICSharpNamespaceName.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\ICsharpOrToken.cs" />
     <Compile Include="src\Gen\Psi\Lex\Tree\ICSharpToken.cs" />
-    <Compile Include="src\Gen\Psi\Lex\Tree\IDeclarationOrInclude.cs" />
     <Compile Include="src\Gen\Psi\Lex\Tree\IDefinitionBlock.cs" />
     <Compile Include="src\Gen\Psi\Lex\Tree\IDigitInterval.cs" />
     <Compile Include="src\Gen\Psi\Lex\Tree\IEncodingDefinition.cs" />
@@ -266,8 +266,8 @@
     <Compile Include="src\Gen\Psi\Lex\Tree\Impl\CsharpKeyword.cs" />
     <Compile Include="src\Gen\Psi\Lex\Tree\Impl\CSharpNamespace.cs" />
     <Compile Include="src\Gen\Psi\Lex\Tree\Impl\CSharpNamespaceName.cs" />
+    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\CsharpOrToken.cs" />
     <Compile Include="src\Gen\Psi\Lex\Tree\Impl\CSharpToken.cs" />
-    <Compile Include="src\Gen\Psi\Lex\Tree\Impl\DeclarationOrInclude.cs" />
     <Compile Include="src\Gen\Psi\Lex\Tree\Impl\DefinitionBlock.cs" />
     <Compile Include="src\Gen\Psi\Lex\Tree\Impl\DigitInterval.cs" />
     <Compile Include="src\Gen\Psi\Lex\Tree\Impl\ElementBitsets.cs" />
