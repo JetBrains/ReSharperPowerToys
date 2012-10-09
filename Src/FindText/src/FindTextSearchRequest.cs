@@ -133,11 +133,15 @@ namespace JetBrains.ReSharper.PowerToys.FindText
             // E.g. ASP with C# or VB script language
             IBuffer contentBuffer = document.Buffer;
             var factory = PsiProjectFileTypeCoordinator.Instance;
-            var lexerFactory = factory.CreateLexerFactory(mySolution, projectFile.LanguageType, contentBuffer, projectFile.ToSourceFile());
-            if (lexerFactory != null)
+            var projectFileType = projectFile.LanguageType;
+            if (!projectFile.LanguageType.Is<UnknownProjectFileType>())
             {
-              lexer = lexerFactory.CreateLexer(contentBuffer);
-              lexer.Start();
+              var lexerFactory = factory.CreateLexerFactory(mySolution, projectFileType, contentBuffer, projectFile.ToSourceFile());
+              if (lexerFactory != null)
+              {
+                lexer = lexerFactory.CreateLexer(contentBuffer);
+                lexer.Start();
+              }
             }
           }
 
