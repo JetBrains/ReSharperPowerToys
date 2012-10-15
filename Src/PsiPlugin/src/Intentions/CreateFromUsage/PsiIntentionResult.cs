@@ -62,7 +62,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
 
       var infos = GetFieldInfos(newDeclaration, myHolders);
 
-      var textControl = EditorManager.GetInstance(solution).OpenProjectFile(item, true, TabOptions.DefaultTab);
+      var textControl = EditorManager.GetInstance(solution).OpenProjectFile(item, true);
       if (textControl == null)
       {
         if (Shell.Instance.IsInInternalMode || Shell.Instance.IsTestShell) Logger.Fail("textControl != null");

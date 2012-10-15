@@ -4,6 +4,7 @@ using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.CSharp.Parsing;
+using JetBrains.ReSharper.Psi.CSharp.Resources;
 using JetBrains.ReSharper.Psi.ExtensionsAPI;
 using JetBrains.ReSharper.Psi.Impl.PsiManagerImpl;
 using JetBrains.ReSharper.Psi.Impl.Shared;
@@ -25,9 +26,14 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument.Psi
     {
     }
 
-    public ICollection<PsiLanguageType> GetSecondaryPsiLanguageTypes(IProject project)
+    public IEnumerable<PsiLanguageType> GetSecondaryPsiLanguageTypes(IProject project)
     {
       return new List<PsiLanguageType> { CSharpLanguage.Instance };
+    }
+
+    public bool IsSecondaryPsiLanguageType(IProject project, PsiLanguageType language)
+    {
+      return language.Is<CSharpLanguage>();
     }
 
     public bool CanHandle(ProjectFileType projectFileType)
