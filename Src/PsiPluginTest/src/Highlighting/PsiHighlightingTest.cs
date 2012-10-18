@@ -32,11 +32,13 @@ namespace PsiPluginTest.Highlighting
     {
       DoTestFiles("test001.psi");
     }
+
     [Test]
     public void test002()
     {
       DoTestFiles("test002.psi");
     }
+
     [Test]
     public void test003()
     {

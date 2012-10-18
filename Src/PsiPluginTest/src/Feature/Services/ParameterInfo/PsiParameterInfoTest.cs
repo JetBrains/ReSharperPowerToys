@@ -19,6 +19,9 @@ namespace PsiPluginTest.Feature.Services.ParameterInfo
     }
 
     [Test]
-    public void test001() { DoNamedTest(); }
+    public void test001()
+    {
+      DoNamedTest();
+    }
   }
 }

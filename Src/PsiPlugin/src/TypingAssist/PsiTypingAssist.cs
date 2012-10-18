@@ -19,6 +19,8 @@ using JetBrains.ReSharper.PsiPlugin.Formatter;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
+using JetBrains.ReSharper.PsiPlugin.ResearchFormatter;
+using JetBrains.ReSharper.PsiPlugin.ResearchFormatter.Psi;
 using JetBrains.ReSharper.PsiPlugin.Util;
 using JetBrains.Text;
 using JetBrains.TextControl;
@@ -29,7 +31,7 @@ using JetBrains.Util;
 namespace JetBrains.ReSharper.PsiPlugin.TypingAssist
 {
   [SolutionComponent]
-  public class PsiTypingAssist : TypingAssistLanguageBase<PsiLanguage, PsiCodeFormatter>, ITypingHandler
+  public class PsiTypingAssist : TypingAssistLanguageBase<PsiLanguage, PsiResearchFormatter>, ITypingHandler
   {
     public PsiTypingAssist(Lifetime lifetime, ISolution solution, ISettingsStore settingsStore, CachingLexerService cachingLexerService, ICommandProcessor commandProcessor,
       ITypingAssistManager typingAssistManager, IPsiServices psiServices)
@@ -257,8 +259,7 @@ namespace JetBrains.ReSharper.PsiPlugin.TypingAssist
           }
           return;
         }
-
-        PsiCodeFormatter codeFormatter = GetCodeFormatter(file);
+        var codeFormatter = GetCodeFormatter(file);
         int offsetInToken = rangeInJsTree.Offset - tokenNode.GetTreeStartOffset().Offset;
 
         using (PsiTransactionCookie.CreateAutoCommitCookieWithCachesUpdate(PsiServices, "Typing assist"))
@@ -273,7 +274,7 @@ namespace JetBrains.ReSharper.PsiPlugin.TypingAssist
                 return;
               }
 
-              if (tokenNode.Parent is IParenExpression || prevToken.Parent is IParenExpression)
+              /*if (tokenNode.Parent is IParenExpression || prevToken.Parent is IParenExpression)
               {
                 var node = tokenNode.Parent;
                 if (prevToken.Parent is IParenExpression)
@@ -284,10 +285,10 @@ namespace JetBrains.ReSharper.PsiPlugin.TypingAssist
                   CodeFormatProfile.DEFAULT, NullProgressIndicator.Instance, boundSettingsStore);
               }
               else
-              {
+              {*/
                 codeFormatter.Format(prevToken, tokenNode,
                   CodeFormatProfile.INDENT, NullProgressIndicator.Instance, boundSettingsStore);
-              }
+              //}
             });
           offset = file.GetDocumentRange(tokenNode.GetTreeStartOffset()).TextRange.StartOffset +
             offsetInToken;
@@ -661,7 +662,7 @@ namespace JetBrains.ReSharper.PsiPlugin.TypingAssist
         startNode = node.FirstChild;
       }
 
-      PsiCodeFormatter codeFormatter = GetCodeFormatter(tokenNode);
+      var codeFormatter = GetCodeFormatter(tokenNode);
       using (PsiTransactionCookie.CreateAutoCommitCookieWithCachesUpdate(PsiServices, "Format code"))
       {
         using (WriteLockCookie.Create())

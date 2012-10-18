@@ -16,9 +16,15 @@ namespace PsiPluginTest.Feature.Services.RearrangeCode
     }
 
     [Test]
-    public void test001() { DoTestFiles("test001.psi"); }
+    public void test001()
+    {
+      DoTestFiles("test001.psi");
+    }
 
     [Test]
-    public void test002() { DoTestFiles("test002.psi"); }
+    public void test002()
+    {
+      DoTestFiles("test002.psi");
+    }
   }
 }
