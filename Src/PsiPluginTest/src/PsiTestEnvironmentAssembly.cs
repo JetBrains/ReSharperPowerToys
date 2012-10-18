@@ -17,7 +17,7 @@ public class PsiTestEnvironmentAssembly : ReSharperTestEnvironmentAssembly
   private static IEnumerable<Assembly> GetAssembliesToLoad()
   {
     // Plugin code
-    yield return typeof(PsiLexer).Assembly;
+    yield return typeof (PsiLexer).Assembly;
 
     // Test assembly
     yield return Assembly.GetExecutingAssembly();

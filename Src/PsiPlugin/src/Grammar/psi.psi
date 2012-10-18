@@ -24,7 +24,7 @@ options {
   "psiElementClassFQName"="JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.IPsiTreeNode";
   customImplPackage="JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl";
   customInterfacePackage="JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree";
-  "interfaceNamePrefix"="I"; 
+  "interfaceNamePrefix"="I";
   "tokenElementClassFQName"="JetBrains.ReSharper.Psi.Tree.ITokenNode";   
   "customImplSuffix"="";
   "objectClassFQName"="System.Object";
@@ -298,11 +298,17 @@ ruleAngleParameters
     LT
     (
       AT
-      (ROLE_KEYWORD |  ROLE_KEYWORD_LOWER)
+      (
+        ROLE_KEYWORD
+        | ROLE_KEYWORD_LOWER
+      )
       COMMA
       AT
       GETTER
-      | (ROLE_KEYWORD |  ROLE_KEYWORD_LOWER)
+      | (
+        ROLE_KEYWORD
+        | ROLE_KEYWORD_LOWER
+      )
       COMMA
       GETTER
       | roleName
@@ -331,31 +337,41 @@ ruleAngleParameters
 ruleBraceParameters
   :
     LBRACE
-    (AT
-(ROLE_KEYWORD |  ROLE_KEYWORD_LOWER)
-COMMA
-AT
-GETTER
-|
-	(ROLE_KEYWORD | ROLE_KEYWORD_LOWER)
-COMMA
-GETTER
-|
-	roleName (EQ STRING_LITERAL)?
-(
-  COMMA
-  (
     (
-      IDENTIFIER
-      | CACHED
+      AT
+      (
+        ROLE_KEYWORD
+        | ROLE_KEYWORD_LOWER
+      )
+      COMMA
+      AT
+      GETTER
+      | (
+        ROLE_KEYWORD
+        | ROLE_KEYWORD_LOWER
+      )
+      COMMA
+      GETTER
+      | roleName
+      (
+        EQ
+        STRING_LITERAL
+      )?
+      (
+        COMMA
+        (
+          (
+            IDENTIFIER
+            | CACHED
+          )
+          (
+            EQ
+            STRING_LITERAL
+          )?
+          | ISCACHED
+        )
+      )*
     )
-    (
-      EQ
-      STRING_LITERAL
-    )?
-    | ISCACHED
-  )
-)*)
     RBRACE
   ;
 
@@ -369,8 +385,10 @@ sequence
 parenExpression
   :
     LPARENTH
-    (psiExpression
-| sharpExpression)
+    (
+      psiExpression
+      | sharpExpression
+    )
     RPARENTH
   ;
 

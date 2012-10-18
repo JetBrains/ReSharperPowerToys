@@ -8,7 +8,7 @@ namespace PsiPluginTest.Parsing
 {
   [Category("PSI")]
   [TestFileExtension(PsiProjectFileType.PsiExtension)]
-  class PsiIncrementalReparseTest : IncrementalReparseTestBase
+  internal class PsiIncrementalReparseTest : IncrementalReparseTestBase
   {
     protected override String RelativeTestDataPath
     {

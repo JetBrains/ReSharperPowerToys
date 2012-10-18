@@ -7,15 +7,17 @@ using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Formatter;
 using JetBrains.ReSharper.PsiPlugin.Lexer.Psi;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing;
+using JetBrains.ReSharper.PsiPlugin.ResearchFormatter;
+using JetBrains.ReSharper.PsiPlugin.ResearchFormatter.Psi;
 
 namespace JetBrains.ReSharper.PsiPlugin.Grammar
 {
   [Language(typeof (PsiLanguage))]
   public class PsiLanguageService : LanguageService
   {
-    private readonly PsiCodeFormatter myFormatter;
+    private readonly PsiResearchFormatter myFormatter;
 
-    public PsiLanguageService(PsiLanguageType psiLanguageType, IConstantValueService constantValueService, PsiCodeFormatter formatter)
+    public PsiLanguageService(PsiLanguageType psiLanguageType, IConstantValueService constantValueService, PsiResearchFormatter formatter)
       : base(psiLanguageType, constantValueService)
 
     {

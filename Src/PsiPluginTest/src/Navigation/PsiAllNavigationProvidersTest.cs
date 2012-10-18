@@ -16,14 +16,14 @@ namespace PsiPluginTest.Navigation
       get
       {
         return new List<WhatToDump>(new[]
-                                      {
-                                        WhatToDump.MenuItemPresentation,
-                                        WhatToDump.NavigationResult,
-                                        WhatToDump.OccurenceDump,
-                                        WhatToDump.NavigationProvider,
-                                        WhatToDump.OccurenceType,
-                                        WhatToDump.OccurenceKind
-                                      });
+          {
+            WhatToDump.MenuItemPresentation,
+            WhatToDump.NavigationResult,
+            WhatToDump.OccurenceDump,
+            WhatToDump.NavigationProvider,
+            WhatToDump.OccurenceType,
+            WhatToDump.OccurenceKind
+          });
       }
     }
 
