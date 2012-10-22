@@ -66,7 +66,7 @@
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.TextControl.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.UI">
-      <HintPath>..\..\..\ReSharper\Main\bin\JetBrains.Platform.ReSharper.UI.dll</HintPath>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.UI.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.Util">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.Util.dll</HintPath>
