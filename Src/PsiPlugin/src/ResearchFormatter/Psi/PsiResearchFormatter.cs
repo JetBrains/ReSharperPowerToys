@@ -14,7 +14,7 @@ using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter.Psi
 {
-  [Language(typeof(PsiLanguage))]
+  //[Language(typeof(PsiLanguage))]
   public class PsiResearchFormatter : FormatterResearchBase
   {
     private readonly PsiLanguageType myLanguage;

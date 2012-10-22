@@ -366,17 +366,27 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl
         var tokenTypeClass = enumerator.Current as IClass;
         if (tokenTypeClass != null)
         {
-          IEnumerable<IField> fields = tokenTypeClass.Fields;
           IList<IDeclaredElement> elements = new List<IDeclaredElement>();
-          foreach (IField field in fields)
+          AddTokenElements(tokenTypeClass, elements);
+          while((tokenTypeClass != null) && (tokenTypeClass.GetBaseClassType() != null) && (tokenTypeClass.GetBaseClassType().GetTypeElement() as IClass != null))
           {
-            if(field.IsReadonly)
-            {
-              elements.Add(field);
-            }
+            tokenTypeClass = tokenTypeClass.GetBaseClassType().GetTypeElement() as IClass;
+            AddTokenElements(tokenTypeClass, elements);
           }
           ISymbolTable tokenSymbolTable = ResolveUtil.CreateSymbolTable(elements, 0);
           myRuleSymbolTable = myRuleSymbolTable.Merge(tokenSymbolTable);
+        }
+      }
+    }
+
+    private static void AddTokenElements(IClass tokenTypeClass, IList<IDeclaredElement> elements)
+    {
+      IEnumerable<IField> fields = tokenTypeClass.Fields;
+      foreach (IField field in fields)
+      {
+        if (field.IsReadonly)
+        {
+          elements.Add(field);
         }
       }
     }
