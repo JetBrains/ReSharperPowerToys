@@ -15,9 +15,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Grammar
   [Language(typeof (PsiLanguage))]
   public class PsiLanguageService : LanguageService
   {
-    private readonly PsiResearchFormatter myFormatter;
+    private readonly PsiCodeFormatter myFormatter;
 
-    public PsiLanguageService(PsiLanguageType psiLanguageType, IConstantValueService constantValueService, PsiResearchFormatter formatter)
+    public PsiLanguageService(PsiLanguageType psiLanguageType, IConstantValueService constantValueService, PsiCodeFormatter formatter)
       : base(psiLanguageType, constantValueService)
 
     {

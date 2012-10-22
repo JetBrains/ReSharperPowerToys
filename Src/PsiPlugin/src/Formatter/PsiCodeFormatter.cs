@@ -10,7 +10,7 @@ using JetBrains.ReSharper.PsiPlugin.Grammar;
 
 namespace JetBrains.ReSharper.PsiPlugin.Formatter
 {
-  //[Language(typeof (PsiLanguage))]
+  [Language(typeof (PsiLanguage))]
   public class PsiCodeFormatter : CodeFormatterBase
   {
     private readonly PsiLanguage myLanguage;

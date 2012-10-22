@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Application.Progress;
 using JetBrains.ReSharper.Psi;
@@ -60,7 +61,16 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter
       {
         if (indentingRangeType.Match(node))
         {
-          range = new IndentRange(new[] { node });
+          LinkedList<ITreeNode> nodes = new LinkedList<ITreeNode>();
+          /*var token = node.GetFirstTokenIn();
+          token = token.GetPrevToken();
+          while((token != null) && (token.IsWhitespaceToken()))
+          {
+            token = token.GetPrevToken();
+            nodes.AddFirst(token);
+          }*/
+          nodes.AddLast(node);
+          range = new IndentRange(nodes.ToArray());
         }
       }
       return range;
@@ -118,10 +128,9 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter
       if (indent)
       {
         parentIndent = GetIndent(range.Nodes[0].Parent);
-        return parentIndent;
       }
       string selfIndent = CalcSelfIndent(range, offset);
-      return parentIndent + selfIndent;
+      return selfIndent;
     }
 
     private string CalcSelfIndent(IndentRange indentRange, TreeOffset offset)
@@ -129,6 +138,10 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter
       IList<TreeOffset> newLineOffsets = new List<TreeOffset>();
       var token = indentRange.Nodes[0].GetFirstTokenIn();
       var prevToken = token.GetPrevToken();
+      /*while ((prevToken != null) && (prevToken.GetTokenType() != NewLineType))
+      {
+        prevToken = prevToken.GetPrevToken();
+      }*/
       if(prevToken != null)
       {
         if(prevToken.GetTokenType() == NewLineType)
