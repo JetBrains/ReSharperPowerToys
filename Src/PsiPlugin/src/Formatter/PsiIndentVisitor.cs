@@ -87,6 +87,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       return myIndentCache.GetNodeIndent(psiExpressionParam);
     }
 
+    public override string VisitPsiFile(IPsiFile psiFileParam, FormattingStageContext context)
+    {
+      return "";
+    }
+
     public override string VisitParenExpression(IParenExpression parenExpressionParam, FormattingStageContext context)
     {
       string parentIndent = GetParentIndent(context.Parent);
