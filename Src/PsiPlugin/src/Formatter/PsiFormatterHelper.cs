@@ -67,7 +67,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       var lastSpace = indentNode.PrevSibling as IWhitespaceNode;
       if (lastSpace != null && lastSpace.GetTokenType() != PsiTokenType.NEW_LINE)
       {
-        ITreeNode firstSpace = lastSpace.LeftWhitespaces().TakeWhile(ws => ws != PsiTokenType.NEW_LINE).LastOrDefault() ?? lastSpace;
+        ITreeNode firstSpace = lastSpace.LeftWhitespaces().TakeWhile(ws => ws.GetTokenType() != PsiTokenType.NEW_LINE).LastOrDefault() ?? lastSpace;
         Debug.Assert(firstSpace != null, "firstSpace != null");
         if (firstSpace != lastSpace)
         {
@@ -79,8 +79,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
         }
         if (firstSpace != null)
         {
-          if ((firstSpace != lastSpace || lastSpace.GetText() != indent) && (firstSpace.Parent == lastSpace.Parent))
-          {
+          /*if ((firstSpace != lastSpace || lastSpace.GetText() != indent) && (firstSpace.Parent == lastSpace.Parent))
+          {*/
             if (indent.IsEmpty())
             {
               LowLevelModificationUtil.DeleteChildRange(firstSpace, lastSpace);
@@ -89,7 +89,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
             {
               LowLevelModificationUtil.ReplaceChildRange(firstSpace, lastSpace, CreateSpace(indent));
             }
-          }
+          //}
         }
       }
       else if (!indent.IsEmpty())
@@ -101,6 +101,91 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     public static bool HasLineFeedsTo(this ITreeNode fromNode, ITreeNode toNode)
     {
       return fromNode.GetLineFeedsTo(toNode).Any();
+    }
+
+    public static IEnumerable<FormattingRange> GetNodePairs(this CodeFormattingContext context)
+    {
+      ITreeNode firstNode = context.FirstNode;
+      ITreeNode lastNode = context.LastNode;
+      IList<FormattingRange> list = new List<FormattingRange>();
+      GetNodePairs(firstNode, lastNode, list);
+      return list;
+    }
+
+    private static void GetNodePairs(ITreeNode firstNode, ITreeNode lastNode, IList<FormattingRange> list)
+    {
+      var firstChild = firstNode;
+      var lastChild = lastNode;
+      var commonParent = firstNode.FindCommonParent(lastNode);
+      while (firstChild != null && firstChild.Parent != commonParent)
+      {
+        firstChild = firstChild.Parent;
+      }
+      while (lastChild != null && lastChild.Parent != commonParent)
+      {
+        lastChild = lastChild.Parent;
+      }
+      Assertion.Assert(firstChild != null, "firstChild != null");
+      Assertion.Assert(lastChild != null, "lastChild != null");
+      var node = firstChild;
+      while (node != null && node != lastChild.NextSibling)
+      {
+        if (!node.IsWhitespaceToken())
+        {
+          GetNodePairs(node, list, commonParent);
+        }
+        node = node.NextSibling;
+      }
+    }
+
+    private static void GetNodePairs(ITreeNode treeNode, IList<FormattingRange> list, ITreeNode parent)
+    {
+      ITreeNode node = treeNode;
+      if (node.FirstChild == null)
+      {
+        if (!node.IsWhitespaceToken())
+        {
+          ITreeNode nextNode = null;
+          while ((node != null) && (nextNode == null))
+          {
+            var sibling = node.NextSibling;
+            while (sibling != null && sibling.IsWhitespaceToken())
+            {
+              sibling = sibling.NextSibling;
+            }
+            if (sibling == null)
+            {
+              node = node.Parent;
+              if (node == parent)
+              {
+                break;
+              }
+            }
+            else
+            {
+              nextNode = sibling;
+            }
+          }
+          if (nextNode != null)
+          {
+            list.Add(new FormattingRange(node, nextNode));
+          }
+        }
+      }
+      else
+      {
+        ITreeNode child = node.FirstChild;
+        {
+          while (child != null)
+          {
+            if (!child.IsWhitespaceToken())
+            {
+              GetNodePairs(child, list, parent);
+            }
+            child = child.NextSibling;
+          }
+        }
+      }
     }
   }
 }

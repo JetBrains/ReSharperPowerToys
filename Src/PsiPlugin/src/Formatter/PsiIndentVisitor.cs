@@ -155,6 +155,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 
     private string GetIndentByOldParent(ITreeNode parent)
     {
+      if(parent is IRuleBody)
+      {
+        return StandartIndent + StandartIndent;
+      }
       string result = "";
       ITreeNode node = parent;
       if (node == null)

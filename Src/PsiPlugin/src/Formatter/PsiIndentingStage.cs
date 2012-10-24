@@ -24,8 +24,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       var indentCache = new PsiIndentCache();
       _indentVisitor = CreateIndentVisitor(indentCache, inTypingAssist);
       var stage = new PsiIndentingStage(inTypingAssist);
-      List<FormattingRange> nodePairs = context.SequentialEnumNodes().Where(p => context.CanModifyInsideNodeRange(p.First, p.Last)).ToList();
-      //List<FormattingRange> nodePairs = GetNodePairs(context).ToList();
+      //List<FormattingRange> nodePairs = context.SequentialEnumNodes().Where(p => context.CanModifyInsideNodeRange(p.First, p.Last)).ToList();
+      List<FormattingRange> nodePairs = context.GetNodePairs().Where(p => context.CanModifyInsideNodeRange(p.First, p.Last)).ToList();
       IEnumerable<FormatResult<string>> indents = nodePairs.
         Select(range => new FormatResult<string>(range, stage.CalcIndent(new FormattingStageContext(range)))).
         Where(res => res.ResultValue != null);

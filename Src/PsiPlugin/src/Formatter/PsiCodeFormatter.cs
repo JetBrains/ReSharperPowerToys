@@ -7,6 +7,7 @@ using JetBrains.ReSharper.Psi.Impl.CodeStyle;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Psi.Util;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
+using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
 
 namespace JetBrains.ReSharper.PsiPlugin.Formatter
 {
@@ -83,7 +84,31 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     {
       firstNode = firstElement;
       lastNode = lastElement;
-      if (firstElement != lastElement)
+      while (firstElement is IWhitespaceNode)
+      {
+        firstElement = firstElement.GetNextToken();
+      }
+      while (lastElement is IWhitespaceNode)
+      {
+        lastElement = lastElement.GetPreviousToken();
+      }
+      if (firstElement == lastElement)
+      {
+        if (firstElement != null)
+        {
+          ITreeNode node = lastElement.Parent;
+          while ((node != null) && (node.Parent != null) && (PrevNoWhitecpaceSibling(node) == null))
+          {
+            node = node.Parent;
+          }
+          if (node != null)
+          {
+            firstNode = PrevNoWhitecpaceSibling(node);
+            lastNode = node;
+          }
+        }
+      }
+      else
       {
         if (firstElement == null)
         {
@@ -93,16 +118,45 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 
         firstNode = GetFirstNode(firstNode, commonParent);
         lastNode = GetLastNode(lastNode, commonParent);
+      }
+    }
 
-      }
-      else
+    private static ITreeNode PrevNoWhitecpaceSibling(ITreeNode node)
+    {
+      var sibling = node.PrevSibling;
+      while(sibling != null)
       {
-        if (firstElement.FirstChild != null)
+        if(! (sibling is IWhitespaceNode))
         {
-          firstNode = firstElement.FirstChild;
-          lastNode = firstElement.LastChild;
+          return sibling;
         }
+        sibling = sibling.PrevSibling;
       }
+      return null;
+    }
+
+    private static bool HasNoWhitecpaceSibling(ITreeNode node)
+    {
+      var sibling = node.PrevSibling;
+      while(sibling != null)
+      {
+        if(! (sibling is IWhitespaceNode))
+        {
+          return true;
+        }
+        sibling = sibling.PrevSibling;
+      }
+
+      sibling = node.NextSibling;
+      while(sibling != null)
+      {
+        if( ! (sibling is IWhitespaceNode))
+        {
+          return true;
+        }
+        sibling = sibling.NextSibling;
+      }
+      return false;
     }
 
     private static ITreeNode GetLastNode(ITreeNode lastChild, ITreeNode commonParent)
