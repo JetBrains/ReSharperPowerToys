@@ -142,8 +142,8 @@ private optionEqDefinition
   ;
 
 optionStringValue
-	:
-	STRING_LITERAL
+  :
+    STRING_LITERAL
   ;
 
 private optionColonDefinition
