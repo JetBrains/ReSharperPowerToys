@@ -26,6 +26,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       var stage = new PsiIndentingStage(inTypingAssist);
       //List<FormattingRange> nodePairs = context.SequentialEnumNodes().Where(p => context.CanModifyInsideNodeRange(p.First, p.Last)).ToList();
       List<FormattingRange> nodePairs = context.GetNodePairs().Where(p => context.CanModifyInsideNodeRange(p.First, p.Last)).ToList();
+      //nodePairs.Add(new FormattingRange(null, context.FirstNode));
       IEnumerable<FormatResult<string>> indents = nodePairs.
         Select(range => new FormatResult<string>(range, stage.CalcIndent(new FormattingStageContext(range)))).
         Where(res => res.ResultValue != null);
@@ -40,17 +41,27 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     {
       CompositeElement parent = context.Parent;
 
-      ITreeNode rChild = context.RightChild;
-      if ((!context.LeftChild.HasLineFeedsTo(rChild)) && (!myInTypingAssist))
+      if (context.LeftChild != context.RightChild)
       {
-        return null;
+        ITreeNode rChild = context.RightChild;
+        if ((!context.LeftChild.HasLineFeedsTo(rChild)))
+        {
+          return null;
+        }
+
+        var psiTreeNode = context.Parent as IPsiTreeNode;
+
+        return psiTreeNode != null
+          ? psiTreeNode.Accept(_indentVisitor, context)
+          : _indentVisitor.VisitNode(parent, context);
+      }  else
+      {
+        var psiTreeNode = context.Parent as IPsiTreeNode;
+
+        return psiTreeNode != null
+          ? psiTreeNode.Accept(_indentVisitor, context)
+          : _indentVisitor.VisitNode(parent, context);        
       }
-
-      var psiTreeNode = context.Parent as IPsiTreeNode;
-
-      return psiTreeNode != null
-        ? psiTreeNode.Accept(_indentVisitor, context)
-        : _indentVisitor.VisitNode(parent, context);
     }
 
     [NotNull]

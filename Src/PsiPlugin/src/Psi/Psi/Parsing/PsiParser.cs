@@ -79,7 +79,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing
         result.AppendNewChild(errorElement);
       }
       tokenType = myLexer.TokenType;
-      while (tokenType != null && tokenType != TokenType.SEMICOLON && !IsInFollow(tokenType) && (! PsiTokenType.KEYWORDS.Contains(tokenType)))
+      while (tokenType != null && tokenType != TokenType.SEMICOLON && !IsInFollow(tokenType) && (! PsiTokenType.KEYWORDS.Contains(tokenType)) && ( tokenType != PsiTokenType.IDENTIFIER))
       {
         skip(errorElement);
         tokenType = myLexer.TokenType;
