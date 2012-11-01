@@ -5,7 +5,7 @@ using JetBrains.Text;
 
 namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing
 {
-  public partial class PsiLexerGenerated 
+  public partial class PsiLexerGenerated
   {
     protected static readonly Hashtable keywords = new Hashtable();
     protected static readonly Hashtable ourTokenTypeToText = new Hashtable();
@@ -145,6 +145,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing
       {
         myMakeDivide = MAKE_DIVIDE[currTokenType];
       }
+    }
+
+    protected int GetCurrentPosition()
+    {
+      return ((TokenPosition) CurrentPosition).YyBufferIndex;
     }
 
     #region Nested type: TokenPosition
