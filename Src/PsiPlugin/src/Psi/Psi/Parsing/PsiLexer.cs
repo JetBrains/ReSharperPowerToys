@@ -14,6 +14,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing
 
     private static readonly Dictionary<TokenNodeType, string> OurTokenTextMap = new Dictionary<TokenNodeType, string>();
     private static readonly Dictionary<TokenNodeType, string> OurKeywordTextMap = new Dictionary<TokenNodeType, string>();
+    private int myFakeEOF = -1;
 
 
     static PsiLexer()
@@ -102,6 +103,21 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing
     public PsiLexer(IBuffer buffer)
       : base(buffer)
     {
+    }
+
+    public override TokenNodeType _locateToken()
+    {
+      if (GetCurrentPosition() == myFakeEOF)
+      {
+        myFakeEOF = -1;
+        return null;
+      }
+      return base._locateToken();
+    }
+
+    public void SetFakeEOF(int eof)
+    {
+      myFakeEOF = eof;
     }
 
     private static ushort CalcHash(string str)

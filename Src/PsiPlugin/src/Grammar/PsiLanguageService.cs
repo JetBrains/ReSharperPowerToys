@@ -56,7 +56,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Grammar
 
     public override ILexer CreateFilteringLexer(ILexer lexer)
     {
-      return new FilteringPsiLexer(lexer);
+      var tokenBuffer = new TokenBuffer(lexer);
+      return new FilteringPsiLexer(tokenBuffer.CreateLexer());
     }
 
     public override IParser CreateParser(ILexer lexer, IPsiModule module, IPsiSourceFile sourceFile)
