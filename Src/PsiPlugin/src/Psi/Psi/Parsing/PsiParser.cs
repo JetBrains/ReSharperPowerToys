@@ -220,7 +220,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing
     private void AddMatchingChildren(CompositeElement result, ITreeNode element, int endLength, int currLength)
     {
       var compositeElement = element as CompositeElement;
-      if(compositeElement != null)
+      if((compositeElement != null) && (compositeElement.FindFirstTokenIn() != compositeElement.FindLastTokenIn()))
       {
         var newElement = TreeElementFactory.CreateCompositeElement(compositeElement.NodeType as CompositeNodeType);
         var child = compositeElement.FirstChild;

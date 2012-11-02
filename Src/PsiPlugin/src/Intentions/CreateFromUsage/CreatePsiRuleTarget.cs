@@ -56,7 +56,13 @@ namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
       }
 
 
-      myDeclaration = PsiElementFactory.GetInstance(myElement.GetPsiModule()).CreateRuleDeclaration(name, myHasBraceParameters, myVariableParameters);
+      if (name != "")
+      {
+        myDeclaration = PsiElementFactory.GetInstance(myElement.GetPsiModule()).CreateRuleDeclaration(name, myHasBraceParameters, myVariableParameters);
+      } else
+      {
+        myDeclaration = null;
+      }
 
       Anchor = myElement.GetContainingNode<IRuleDeclaration>();
     }
