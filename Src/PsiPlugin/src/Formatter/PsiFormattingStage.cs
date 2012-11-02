@@ -22,7 +22,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 
     private static PsiFormattingVisitor CreateFormattingVisitor(CodeFormattingContext context)
     {
-      IPsiSourceFile sourceFile = context.FirstNode.GetSourceFile();
+      IPsiSourceFile sourceFile = context.LastNode.GetSourceFile();
       if (sourceFile != null)
       {
         var projectFileTypeServices = Shell.Instance.GetComponent<IProjectFileTypeServices>();
