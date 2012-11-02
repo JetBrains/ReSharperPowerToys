@@ -1,4 +1,4 @@
-/* ${ACTION0:+c;} */
+/* ${ACTION0:+c} */
 a
 	:
 	b{caret}
