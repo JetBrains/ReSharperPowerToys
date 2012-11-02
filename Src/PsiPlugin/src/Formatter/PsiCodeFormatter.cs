@@ -104,6 +104,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
           if (node != null)
           {
             firstNode = PrevNoWhitecpaceSibling(node);
+            if(firstNode == null)
+            {
+              firstNode = node.FirstChild;
+            }
             lastNode = node;
           }
         }

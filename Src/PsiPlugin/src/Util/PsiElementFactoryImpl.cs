@@ -48,7 +48,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Util
       {
         braceParameters = " {ROLE, getter} ";
       }
-      var node = CreateParser(name + braceParameters + "\n" + ":" + "\n" + ";").ParsePsiFile(false) as IPsiFile;
+      var node = CreateParser(name + braceParameters + "\n" + ":" + "a\n" + ";").ParsePsiFile(false) as IPsiFile;
       if (node == null)
       {
         throw new ElementFactoryException(string.Format("Cannot create expression '{0}'", name + braceParameters + "\n" + ":" + "\n" + ";"));
