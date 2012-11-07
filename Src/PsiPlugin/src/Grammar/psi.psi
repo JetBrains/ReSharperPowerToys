@@ -1,4 +1,5 @@
-options { 
+options
+{
   parserPackage="JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing";
   parserClassName="PsiParserGenerated";
   psiInterfacePackageName="JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree";
@@ -25,7 +26,7 @@ options {
   customImplPackage="JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl";
   customInterfacePackage="JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree";
   "interfaceNamePrefix"="I";
-  "tokenElementClassFQName"="JetBrains.ReSharper.Psi.Tree.ITokenNode";   
+  "tokenElementClassFQName"="JetBrains.ReSharper.Psi.Tree.ITokenNode";
   "customImplSuffix"="";
   "objectClassFQName"="System.Object";
   tokenBitsetThreshold=4;
@@ -35,110 +36,126 @@ options {
 }
 
 
-errorhandling psiFile options {
-	stubBase="PsiFileElement";
+errorhandling psiFile
+options
+{
+  stubBase="PsiFileElement";
 }
-extras{
-	get {methodName = "Interfaces" path = <psiFile:PSI_INTERFACES> };
-	get {methodName = "Paths" path = <psiFile:PSI_PATHS> };
+extras
+{
+  get { methodName = "Interfaces" path = <psiFile:PSI_INTERFACES> } ;
+  get { methodName = "Paths" path = <psiFile:PSI_PATHS> } ;
 }
-	  :
-	  optionsDefinition?
-	  pathsDeclaration<PSI_PATHS>?
-	  ruleDeclaration*
-	  interfacesDefinition<PSI_INTERFACES>?
+  :
+    optionsDefinition?
+    pathsDeclaration<PSI_PATHS>?
+    ruleDeclaration*
+    interfacesDefinition<PSI_INTERFACES>?
   ;
 
 interfacesDefinition
-	:
-	INTERFACES
-	LBRACE
-	ruleDeclaration*
-	RBRACE
+  :
+    INTERFACES
+    LBRACE
+    ruleDeclaration*
+    RBRACE
   ;
 
 
 
 
 errorhandling ruleDeclaration
-extras{
-	get {methodName = "RuleName" path = <ruleDeclaration:PSI_RULE_NAME> };
-	get {methodName = "Extras" path = <ruleDeclaration:PSI_EXTRAS> };
-	get {methodName = "Parameters" path = <ruleDeclaration:PSI_PARAMETERS> };
-	get {methodName = "Body" path = <ruleDeclaration:PSI_BODY> };
+extras
+{
+  get { methodName = "RuleName" path = <ruleDeclaration:PSI_RULE_NAME> } ;
+  get { methodName = "Extras" path = <ruleDeclaration:PSI_EXTRAS> } ;
+  get { methodName = "Parameters" path = <ruleDeclaration:PSI_PARAMETERS> } ;
+  get { methodName = "Body" path = <ruleDeclaration:PSI_BODY> } ;
 }
-	: 
-	modifier*
-	ruleDeclaredName<PSI_RULE_NAME>
-	roleGetterParameter?
-	ruleBracketTypedParameters<PSI_PARAMETERS>?
-	optionsDefinition?
-	extrasDefinition<PSI_EXTRAS>?
-	COLON
-	ruleBody<PSI_BODY>
-	SEMICOLON
+  :
+    modifier*
+    ruleDeclaredName<PSI_RULE_NAME>
+    roleGetterParameter?
+    ruleBracketTypedParameters<PSI_PARAMETERS>?
+    optionsDefinition?
+    extrasDefinition<PSI_EXTRAS>?
+    COLON
+    ruleBody<PSI_BODY>
+    SEMICOLON
   ;
 
 
 
 errorhandling ruleBody
-	:
-	psiExpression*
+  :
+    psiExpression*
   ;
 
 modifier
-	:
-	ERRORHANDLING
-	| INTERFACE
-	| PRIVATE
-	| ABSTRACT
+  :
+    ERRORHANDLING
+    | INTERFACE
+    | PRIVATE
+    | ABSTRACT
   ;
 
 ruleDeclaredName
-	:
-	IDENTIFIER
+  :
+    IDENTIFIER
   ;
 
 ruleName
-	:
-	IDENTIFIER
+  :
+    IDENTIFIER
   ;
 
 errorhandling roleGetterParameter
-	:
-	LBRACE
-	((ROLE_KEYWORD | ROLE_KEYWORD_LOWER)
-	COMMA)?
-	GETTER
-	RBRACE
+  :
+    LBRACE
+    (
+      (
+        ROLE_KEYWORD
+        | ROLE_KEYWORD_LOWER
+      )
+      COMMA
+    )?
+    GETTER
+    RBRACE
   ;
 
 errorhandling optionsDefinition
-	:
-	OPTIONS
-	LBRACE
-	optionDefinition*
-	RBRACE
+  :
+    OPTIONS
+    LBRACE
+    optionDefinition*
+    RBRACE
   ;
 
 errorhandling optionDefinition
-extras{
-	get {methodName = "OptionName" path = <optionDefinition:PSI_OPTION_NAME> };
-	get {methodName = "OptionIdentifierValue" path = <optionDefinition:PSI_OPTION_IDENTIFIER_VALUE> };
-	get {methodName = "OptionStringValue" path = <optionDefinition:PSI_OPTION_STRING_VALUE> };
-	get {methodName = "OptionIntegerValue" path = <optionDefinition:PSI_OPTION_INTEGER_VALUE> };
+extras
+{
+  get { methodName = "OptionName" path = <optionDefinition:PSI_OPTION_NAME> } ;
+  get { methodName = "OptionIdentifierValue" path = <optionDefinition:PSI_OPTION_IDENTIFIER_VALUE> } ;
+  get { methodName = "OptionStringValue" path = <optionDefinition:PSI_OPTION_STRING_VALUE> } ;
+  get { methodName = "OptionIntegerValue" path = <optionDefinition:PSI_OPTION_INTEGER_VALUE> } ;
 }
-	:
-	optionName<PSI_OPTION_NAME>
-	(optionEqDefinition|
-	optionColonDefinition)?
-	SEMICOLON
+  :
+    optionName<PSI_OPTION_NAME>
+    (
+      optionEqDefinition
+      | optionColonDefinition
+    )?
+    SEMICOLON
   ;
 
 private optionEqDefinition
-	:
-	EQ
-	(IDENTIFIER<PSI_OPTION_IDENTIFIER_VALUE> | optionStringValue<PSI_OPTION_STRING_VALUE> | INTEGER_LITERAL<PSI_OPTION_INTEGER_VALUE>)
+  :
+    EQ
+    (
+      IDENTIFIER<PSI_OPTION_IDENTIFIER_VALUE>
+      | optionStringValue<PSI_OPTION_STRING_VALUE>
+      | INTEGER_LITERAL<PSI_OPTION_INTEGER_VALUE>
+    )
   ;
 
 optionStringValue
@@ -166,54 +183,60 @@ private optionColonDefinition
 
 
 optionName
-	:
-	IDENTIFIER
-	| STRING_LITERAL
+  :
+    IDENTIFIER
+    | STRING_LITERAL
   ;
 
 errorhandling extrasDefinition
-	:
-	EXTRAS
-	LBRACE
-	extraDefinition*
-	RBRACE
+  :
+    EXTRAS
+    LBRACE
+    extraDefinition*
+    RBRACE
   ;
 
 errorhandling extraDefinition
-extras{
-	get {methodName = "PathValue" path = <extraDefinition:PSI_PATH_VALUE> };
+extras
+{
+  get { methodName = "PathValue" path = <extraDefinition:PSI_PATH_VALUE> } ;
 }
-	:
-	GET
-	LBRACE
-	IDENTIFIER
-	EQ
-	STRING_LITERAL
-	IDENTIFIER
-	EQ
-	pathValue<PSI_PATH_VALUE>
-	(RETURN_TYPE
-	EQ
-	STRING_LITERAL)?
-	ISCACHED?
-	RBRACE
-	SEMICOLON
+  :
+    GET
+    LBRACE
+    IDENTIFIER
+    EQ
+    STRING_LITERAL
+    IDENTIFIER
+    EQ
+    pathValue<PSI_PATH_VALUE>
+    (
+      RETURN_TYPE
+      EQ
+      STRING_LITERAL
+    )?
+    ISCACHED?
+    RBRACE
+    SEMICOLON
   ;
 
 psiExpression
-	:
-	sequence choiceTail*
+  :
+    sequence
+    choiceTail*
   ;
 
 notChoiceExpression
-	:
-	predicated
-	| simpleExpression quantifier?
+  :
+    predicated
+    | simpleExpression
+    quantifier?
   ;
 
 choiceTail
-extras{
-  get {methodName = "Sequence" path = <choiceTail:PSI_SEQUENCE> };
+extras
+{
+  get { methodName = "Sequence" path = <choiceTail:PSI_SEQUENCE> } ;
 }
   :
     OR
@@ -230,7 +253,8 @@ quantifier
 predicated
   :
     EXCL
-    simpleExpression quantifier?
+    simpleExpression
+    quantifier?
     | AND
     variableName
     ruleParameters?
@@ -247,32 +271,40 @@ simpleExpression
   ;
 
 ruleNameUsage
-extras{
-  get {methodName = "Name" path = <ruleNameUsage:PSI_NAME> };
-  get {methodName = "Parameters" path = <ruleNameUsage:PSI_INVOCATION_PARAMETERS> };
+extras
+{
+  get { methodName = "Name" path = <ruleNameUsage:PSI_NAME> } ;
+  get { methodName = "Parameters" path = <ruleNameUsage:PSI_INVOCATION_PARAMETERS> } ;
 }
   :
     ruleName<PSI_NAME>
-    
     (
       BACK_QUOTE
       afterQuote
     )?
-    ruleParameters<PSI_INVOCATION_PARAMETERS> ?
+    ruleParameters<PSI_INVOCATION_PARAMETERS>?
   ;
 
 errorhandling listExpression
   :
     LIST_KEYWORD
-    (parenExpression | ruleNameUsage)
+    (
+      parenExpression
+      | ruleNameUsage
+    )
     SEP_KEYWORD
-    (parenExpression | ruleNameUsage)
+    (
+      parenExpression
+      | ruleNameUsage
+    )
   ;
 
 errorhandling ruleParameters
   :
-    ruleAngleParameters ruleBracketParameters?
-    | ruleBraceParameters ruleBracketParameters?
+    ruleAngleParameters
+    ruleBracketParameters?
+    | ruleBraceParameters
+    ruleBracketParameters?
     | ruleBracketParameters
   ;
 
@@ -281,15 +313,28 @@ errorhandling ruleBracketTypedParameters
     LBRACKET
     ruleName
     variableDeclaration
-    (COMMA ruleName variableDeclaration)*
+    (
+      COMMA
+      ruleName
+      variableDeclaration
+    )*
     RBRACKET
   ;
 
 ruleBracketParameters
   :
     LBRACKET
-    (NULL_KEYWORD | variableName)
-    (COMMA (NULL_KEYWORD | variableName))*
+    (
+      NULL_KEYWORD
+      | variableName
+    )
+    (
+      COMMA
+      (
+        NULL_KEYWORD
+        | variableName
+      )
+    )*
     RBRACKET
   ;
 
@@ -424,8 +469,9 @@ pathsDeclaration
   ;
 
 errorhandling pathDeclaration
-extras{
-  get {methodName = "PathName" path = <pathDeclaration:PSI_PATH_NAME> };
+extras
+{
+  get { methodName = "PathName" path = <pathDeclaration:PSI_PATH_NAME> } ;
 }
   :
     pathName<PSI_PATH_NAME>
@@ -443,19 +489,24 @@ pathValue
   :
     LT
     pathElement
-    (DIV
-pathElement)*
-    GT 
+    (
+      DIV
+      pathElement
+    )*
+    GT
   ;
 
 pathElement
-extras{
-  get {methodName = "RoleName" path = <pathElement:PSI_ROLE_NAME> };
+extras
+{
+  get { methodName = "RoleName" path = <pathElement:PSI_ROLE_NAME> } ;
 }
   :
     pathName
-    (COLON
-roleName<PSI_ROLE_NAME>)?
+    (
+      COLON
+      roleName<PSI_ROLE_NAME>
+    )?
   ;
 
 roleName
