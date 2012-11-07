@@ -78,7 +78,7 @@ namespace JetBrains.ReSharper.PsiPlugin.TypingAssist
           textControl.Caret.MoveTo(position, CaretVisualPlacement.DontScrollIfVisible);
         }
 
-        if (NeedAutoinsertSemicolon(lexer))
+        if (NeedAutoinsertSemicolon(textControl))
         {
           if (typingContext.EnsureWritable() != EnsureWritableResult.SUCCESS)
           {
@@ -92,20 +92,36 @@ namespace JetBrains.ReSharper.PsiPlugin.TypingAssist
             textControl.Document.InsertText(insertPos + 1, ";");
             textControl.Caret.MoveTo(insertPos + 1, CaretVisualPlacement.DontScrollIfVisible);
           }
-        }
 
-        // format statement
-        if (GetTypingAssistOption(textControl, TypingAssistOptions.FormatStatementOnSemicolonExpression))
-        {
-          DoFormatStatementOnColon(textControl);
+          // format statement
+          if (GetTypingAssistOption(textControl, TypingAssistOptions.FormatStatementOnSemicolonExpression))
+          {
+            DoFormatStatementOnColon(textControl);
+          }
         }
         return true;
       }  
 
     }
 
-    private bool NeedAutoinsertSemicolon(CachingLexer lexer)
+    private bool NeedAutoinsertSemicolon(ITextControl textControl)
     {
+      IFile file = CommitPsi(textControl);
+      int charPos = TextControlToLexer(textControl, textControl.Caret.Offset());
+      if (charPos < 0)
+      {
+        return false;
+      }
+
+      var tokenNode = file.FindTokenAt(textControl.Document, charPos - 1) as ITokenNode;
+
+      var parent = tokenNode.GetContainingNode<IPathElement>();
+
+      if(parent != null)
+      {
+        return false;
+      }
+
       return true;
     }
 
@@ -734,11 +750,29 @@ namespace JetBrains.ReSharper.PsiPlugin.TypingAssist
         }
       }
 
-      /*DocumentRange newPosition = tokenNode.GetDocumentRange();
+      DocumentRange newPosition = tokenNode.GetDocumentRange();
       if (newPosition.IsValid())
       {
         textControl.Caret.MoveTo(newPosition.TextRange.EndOffset, CaretVisualPlacement.DontScrollIfVisible);
-      }*/
+      }
+
+      var nextSibling = tokenNode.NextSibling;
+      while(nextSibling != null)
+      {
+        if(nextSibling is IRuleBody)
+        {
+          break;
+        }
+        nextSibling = nextSibling.NextSibling;
+      }
+      if(nextSibling is IRuleBody)
+      {
+        newPosition = nextSibling.GetDocumentRange();
+        if(newPosition.IsValid())
+        {
+          textControl.Caret.MoveTo(newPosition.TextRange.EndOffset, CaretVisualPlacement.DontScrollIfVisible);
+        }
+      }
     }
 
     private void DoFormatStatementOnSemicolon(ITextControl textControl)
