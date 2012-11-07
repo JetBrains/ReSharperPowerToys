@@ -41,9 +41,72 @@ namespace JetBrains.ReSharper.PsiPlugin.TypingAssist
       typingAssistManager.AddTypingHandler(lifetime, '(', this, HandleLeftBracketOrParenthTyped, IsTypingSmartParenthesisHandlerAvailable);
       typingAssistManager.AddTypingHandler(lifetime, ')', this, HandleRightBracketTyped, IsTypingSmartParenthesisHandlerAvailable);
       typingAssistManager.AddTypingHandler(lifetime, '[', this, HandleLeftBracketOrParenthTyped, IsTypingSmartParenthesisHandlerAvailable);
+      typingAssistManager.AddTypingHandler(lifetime, ':', this, HandleColonTyped, IsTypingSmartParenthesisHandlerAvailable);
       typingAssistManager.AddTypingHandler(lifetime, ';', this, HandleSemicolonTyped, IsTypingSmartParenthesisHandlerAvailable);
       typingAssistManager.AddTypingHandler(lifetime, '"', this, HandleQuoteTyped, IsTypingSmartParenthesisHandlerAvailable);
       typingAssistManager.AddActionHandler(lifetime, TextControlActions.ENTER_ACTION_ID, this, HandleEnterPressed, IsActionHandlerAvailabile);
+    }
+
+    private bool HandleColonTyped(ITypingContext typingContext)
+    {
+      ITextControl textControl = typingContext.TextControl;
+      if (typingContext.EnsureWritable() != EnsureWritableResult.SUCCESS)
+      {
+        return false;
+      }
+
+      using (CommandProcessor.UsingCommand("Smart :"))
+      {
+        TextControlUtil.DeleteSelection(textControl);
+
+        textControl.FillVirtualSpaceUntilCaret();
+        int charPos = TextControlToLexer(textControl, textControl.Caret.Offset());
+        CachingLexer lexer = GetCachingLexer(textControl);
+
+        if (charPos < 0 || !lexer.FindTokenAt(charPos) || lexer.TokenStart != charPos ||
+          lexer.TokenType != PsiTokenType.COLON)
+        {
+          typingContext.CallNext();
+        }
+        else
+        {
+          int position = charPos + 1;
+          if (position < 0)
+          {
+            return true;
+          }
+          textControl.Caret.MoveTo(position, CaretVisualPlacement.DontScrollIfVisible);
+        }
+
+        if (NeedAutoinsertSemicolon(lexer))
+        {
+          if (typingContext.EnsureWritable() != EnsureWritableResult.SUCCESS)
+          {
+            return true;
+          }
+
+          char c = typingContext.Char;
+          int insertPos = charPos;
+          if (insertPos >= 0)
+          {
+            textControl.Document.InsertText(insertPos + 1, ";");
+            textControl.Caret.MoveTo(insertPos + 1, CaretVisualPlacement.DontScrollIfVisible);
+          }
+        }
+
+        // format statement
+        if (GetTypingAssistOption(textControl, TypingAssistOptions.FormatStatementOnSemicolonExpression))
+        {
+          DoFormatStatementOnColon(textControl);
+        }
+        return true;
+      }  
+
+    }
+
+    private bool NeedAutoinsertSemicolon(CachingLexer lexer)
+    {
+      return true;
     }
 
     #region ITypingHandler Members
@@ -626,6 +689,56 @@ namespace JetBrains.ReSharper.PsiPlugin.TypingAssist
         }
         return true;
       }
+    }
+
+    private void DoFormatStatementOnColon(ITextControl textControl)
+    {
+      IFile file = CommitPsi(textControl);
+      if (file == null)
+      {
+        return;
+      }
+      int charPos = TextControlToLexer(textControl, textControl.Caret.Offset());
+      if (charPos < 0)
+      {
+        return;
+      }
+
+      var tokenNode = file.FindTokenAt(textControl.Document, charPos - 1) as ITokenNode;
+      if (tokenNode == null || tokenNode.GetTokenType() != PsiTokenType.COLON)
+      {
+        return;
+      }
+
+      var node = tokenNode.GetContainingNode<IRuleDeclaration>();
+
+      // do format if semicolon finished the statement
+      if (node == null)
+      {
+        return;
+      }
+
+      // Select the correct start node for formatting
+      ITreeNode startNode = node.FindFormattingRangeToLeft();
+      if (startNode == null)
+      {
+        startNode = node.FirstChild;
+      }
+
+      var codeFormatter = GetCodeFormatter(tokenNode);
+      using (PsiTransactionCookie.CreateAutoCommitCookieWithCachesUpdate(PsiServices, "Format code"))
+      {
+        using (WriteLockCookie.Create())
+        {
+          codeFormatter.Format(startNode, tokenNode, CodeFormatProfile.DEFAULT);
+        }
+      }
+
+      /*DocumentRange newPosition = tokenNode.GetDocumentRange();
+      if (newPosition.IsValid())
+      {
+        textControl.Caret.MoveTo(newPosition.TextRange.EndOffset, CaretVisualPlacement.DontScrollIfVisible);
+      }*/
     }
 
     private void DoFormatStatementOnSemicolon(ITextControl textControl)
