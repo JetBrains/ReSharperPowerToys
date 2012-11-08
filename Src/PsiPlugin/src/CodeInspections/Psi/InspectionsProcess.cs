@@ -57,10 +57,36 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi
       {
         if (ruleName.GetText().Equals(ruleDeclaration.DeclaredName))
         {
-          consumer.AddHighlighting(new LeftRecursionWarning(ruleName), File);
+          if (!IsCustomImpl(ruleDeclaration))
+          {
+            consumer.AddHighlighting(new LeftRecursionWarning(ruleName), File);
+          }
         }
       }
       base.VisitRuleDeclaration(ruleDeclaration, consumer);
+    }
+
+    private bool IsCustomImpl(IRuleDeclaration ruleDeclaration)
+    {
+      var options = ruleDeclaration.Options;
+      if(options == null)
+      {
+        return false;
+      }
+      var child = options.FirstChild;
+      while(child != null)
+      {
+        var optionDefinition = child as IOptionDefinition;
+        if(optionDefinition != null)
+        {
+          if(optionDefinition.OptionName.GetText() == "customParseFunction")
+          {
+            return true;
+          }
+        }
+        child = child.NextSibling;
+      }
+      return false;
     }
 
     public override void VisitPsiExpression(IPsiExpression psiExpression, IHighlightingConsumer consumer)

@@ -68,6 +68,7 @@ errorhandling ruleDeclaration
 extras
 {
   get { methodName = "RuleName" path = <ruleDeclaration:PSI_RULE_NAME> } ;
+  get { methodName = "Options" path = <ruleDeclaration:PSI_OPTIONS> } ;
   get { methodName = "Extras" path = <ruleDeclaration:PSI_EXTRAS> } ;
   get { methodName = "Parameters" path = <ruleDeclaration:PSI_PARAMETERS> } ;
   get { methodName = "Body" path = <ruleDeclaration:PSI_BODY> } ;
@@ -77,7 +78,7 @@ extras
     ruleDeclaredName<PSI_RULE_NAME>
     roleGetterParameter?
     ruleBracketTypedParameters<PSI_PARAMETERS>?
-    optionsDefinition?
+    optionsDefinition<PSI_OPTIONS>?
     extrasDefinition<PSI_EXTRAS>?
     COLON
     ruleBody<PSI_BODY>
