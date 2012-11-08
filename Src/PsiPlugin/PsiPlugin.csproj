@@ -323,6 +323,8 @@
     <Compile Include="src\Resolve\PsiVariableReference.cs" />
     <Compile Include="src\Resolve\RoleDeclaredElement.cs" />
     <Compile Include="src\Resolve\UnresolvedRuleInterfacesDeclaredElement.cs" />
+    <Compile Include="src\SelectEmbracingConstruct\PsiEmbracingConstructProvider.cs" />
+    <Compile Include="src\SelectEmbracingConstruct\PsiSelection.cs" />
     <Compile Include="src\Services\PsiDeclaredElementPresenter.cs" />
     <Compile Include="src\Resolve\PsiReferenceBase.cs">
       <SubType>Code</SubType>
