@@ -44,59 +44,51 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter
 
     private IList<IndentRange> BuildRanges(ITreeNode node)
     {
-      var range = Match(node);
-      if (range != null)
-      {
-        var ranges = BuildChildRanges(node);
-        range.AddChildRanges(ranges);
-        return new List<IndentRange> { range };
-      }
-      return BuildChildRanges(node);
-    }
-
-    private IndentRange Match(ITreeNode node)
-    {
-      IndentRange range = null;
-      foreach (var indentingRangeType in Formatter.IndentingRules)
-      {
-        if (indentingRangeType.Match(node))
-        {
-          LinkedList<ITreeNode> nodes = new LinkedList<ITreeNode>();
-          /*var token = node.GetFirstTokenIn();
-          token = token.GetPrevToken();
-          while((token != null) && (token.IsWhitespaceToken()))
-          {
-            token = token.GetPrevToken();
-            nodes.AddFirst(token);
-          }*/
-          nodes.AddLast(node);
-          range = new IndentRange(nodes.ToArray());
-        }
-      }
-      return range;
-    }
-
-    private IList<IndentRange> BuildChildRanges(ITreeNode node)
-    {
-      var child = node.FirstChild;
       IList<IndentRange> ranges = new List<IndentRange>();
-      while (child != null)
+
+      var child = node.FirstChild;
+      while(child != null)
       {
-        var childRanges = BuildChildRanges(child);
-        var range = Match(child);
-        if (range != null)
+        bool match = false;
+        foreach (var rule in Formatter.IndentingRules)
         {
-          range.AddChildRanges(childRanges);
-          ranges.Add(range);
+          var nextChild = Match(child, rule);
+          if(nextChild != child)
+          {
+            IList<ITreeNode> nodes = new List<ITreeNode>();
+            var tempNode = child;
+            while (tempNode != nextChild)
+            {
+              nodes.Add(tempNode);
+              tempNode = tempNode.NextSibling;
+            }
+            var range = new IndentRange(nodes.ToArray(), rule);
+            foreach (var treeNode in range.Nodes)
+            {
+              var childRanges = BuildRanges(treeNode);
+              range.AddChildRanges(childRanges);
+            }
+            ranges.Add(range);
+            child = nextChild;
+            match = true;
+            break;
+          }
         }
-        else
+        if(! match)
         {
-          ranges.AddRange(childRanges);
+          var childRange = BuildRanges(child);
+          ranges.AddRange(childRange);
+          child = child.NextSibling;
         }
-        child = child.NextSibling;
       }
       return ranges;
     }
+
+    private ITreeNode Match(ITreeNode child, IndentingRule rule)
+    {
+      return rule.Match(child);
+    }
+
 
     private string CalcIndent(FormattingStageContext formattingStageContext, IList<IndentRange> indentRanges, bool indent)
     {
@@ -109,7 +101,7 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter
       IndentRange range = null;
       foreach (var indentRange in indentRanges)
       {
-        if (indentRange.Contains(offset))
+        if (indentRange.ContainsNewLine(offset))
         {
           range = indentRange;
           break;
@@ -152,7 +144,7 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter
           //}
         }
       }
-      while ((token != null) && (indentRange.Contains(token.GetTreeEndOffset())))
+      while ((token != null) && (indentRange.ContainsNewLine(token.GetTreeEndOffset())))
       {
         if (token.GetTokenType() == NewLineType)
         {
@@ -168,7 +160,7 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter
       IndentRange range = null;
       foreach (var childrange in indentRange.ChildRanges)
       {
-        if (childrange.Contains(offset))
+        if (childrange.ContainsNewLine(offset))
         {
           range = childrange;
           break;
@@ -179,7 +171,7 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter
         bool containsInChildrange = false;
         foreach (var childRange in indentRange.ChildRanges)
         {
-          if (childRange.Contains(newLineOffset))
+          if (childRange.ContainsNewLine(newLineOffset))
           {
             containsInChildrange = true;
             break;

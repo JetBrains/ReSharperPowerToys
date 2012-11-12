@@ -14,7 +14,7 @@ using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter.Psi
 {
-  //[Language(typeof(PsiLanguage))]
+  [Language(typeof(PsiLanguage))]
   public class PsiResearchFormatter : FormatterResearchBase
   {
     private readonly PsiLanguageType myLanguage;
@@ -50,9 +50,8 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter.Psi
 
     private static readonly IEnumerable<IndentingRule> OurIndentingRules = new List<IndentingRule>()
       {
-        new IndentingRule(typeof(IRuleBody)),
-        new IndentingRule(typeof(IPsiExpression)),
-        new IndentingRule(typeof(ISequence))
+        new IndentingRule(typeof(IRuleDeclaration), ":", ";"),
+        new IndentingRule(typeof(IParenExpression), "(", ")")
       };
 
     public PsiResearchFormatter(PsiLanguageType language, ISettingsStore settingsStore, ISettingsOptimization settingsOptimization) : base(settingsStore)

@@ -6,32 +6,47 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter
   public class IndentingRule
   {
     private Type myParentType;
-    private Type myNodeType;
+    private string myLeftTokenText;
+    private string myRightTokenText;
+    private bool myInside;
 
-    public IndentingRule(Type nodeType)
+    public IndentingRule(Type parentType, string leftTokenText, string rightTokenText, bool inside = true)
     {
-      myNodeType = nodeType;
-      myParentType = null;
-    }
-
-    public IndentingRule(Type nodeType, Type parentType)
-    {
-      myNodeType = nodeType;
       myParentType = parentType;
+      myLeftTokenText = leftTokenText;
+      myRightTokenText = rightTokenText;
+      myInside = inside;
     }
 
-    public bool Match(ITreeNode node)
+    public bool Inside
     {
-      
-      if(myParentType != null)
+      get { return myInside; }
+    }
+
+    public ITreeNode Match(ITreeNode node)
+    {
+      if(!myParentType.IsInstanceOfType(node.Parent))
       {
-        if(!(myParentType.IsInstanceOfType(node.Parent)))
-        {
-          return false;
-        }
+        return node;
       }
 
-      return (myNodeType.IsInstanceOfType(node));
+      var currentNode = node;
+      if(currentNode.GetText() != myLeftTokenText)
+      {
+        return node;
+      }
+
+      currentNode = currentNode.NextSibling;
+
+      while((currentNode != null)){
+        if(currentNode.GetText() == myRightTokenText)
+        {
+          return currentNode.NextSibling;
+        }
+        currentNode = currentNode.NextSibling;
+      }
+
+      return node;
     }
   }
 }

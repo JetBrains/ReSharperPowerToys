@@ -9,11 +9,13 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter
   {
     private IndentRange myParent;
     private ITreeNode[] myNodes;
+    private readonly IndentingRule myRule;
     private IList<IndentRange> myChildRanges = new List<IndentRange>();  
 
-    public IndentRange(ITreeNode[] nodes)
+    public IndentRange(ITreeNode[] nodes, IndentingRule rule)
     {
       myNodes = nodes;
+      myRule = rule;
       Parent = null;
     }
 
@@ -33,6 +35,11 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter
       get { return myChildRanges; }
     }
 
+    public IndentingRule Rule
+    {
+      get { return myRule; }
+    }
+
     public void AddChildRanges(IEnumerable<IndentRange> ranges)
     {
       foreach (var indentRange in ranges)
@@ -47,6 +54,24 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter
       var firstNode = myNodes[0];
       var lastNode = myNodes[myNodes.Length - 1];
       return ((offset.Offset >= firstNode.GetTreeTextRange().StartOffset.Offset) && (offset.Offset < lastNode.GetTreeTextRange().EndOffset.Offset));
+    }
+
+    public bool ContainsNewLine(TreeOffset offset)
+    {
+      var firstNode = myNodes[0];
+      var lastNode = myNodes[myNodes.Length - 1];
+      if(myRule.Inside)
+      {
+        if (Nodes.Length > 2)
+        {
+          firstNode = myNodes[1];
+          lastNode = myNodes[myNodes.Length - 2];
+        } else
+        {
+          return false;
+        }
+      }
+      return ((offset.Offset >= firstNode.GetTreeTextRange().StartOffset.Offset) && (offset.Offset < lastNode.GetTreeTextRange().EndOffset.Offset));      
     }
   }
 }

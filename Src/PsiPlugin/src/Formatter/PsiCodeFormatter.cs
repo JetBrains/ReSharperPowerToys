@@ -11,7 +11,7 @@ using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
 
 namespace JetBrains.ReSharper.PsiPlugin.Formatter
 {
-  [Language(typeof (PsiLanguage))]
+  //[Language(typeof (PsiLanguage))]
   public class PsiCodeFormatter : CodeFormatterBase
   {
     private readonly PsiLanguage myLanguage;
