@@ -31,7 +31,7 @@ using JetBrains.Util;
 namespace JetBrains.ReSharper.PsiPlugin.TypingAssist
 {
   [SolutionComponent]
-  public class PsiTypingAssist : TypingAssistLanguageBase<PsiLanguage, PsiCodeFormatter>, ITypingHandler
+  public class PsiTypingAssist : TypingAssistLanguageBase<PsiLanguage, PsiResearchFormatter>, ITypingHandler
   {
     public PsiTypingAssist(Lifetime lifetime, ISolution solution, ISettingsStore settingsStore, CachingLexerService cachingLexerService, ICommandProcessor commandProcessor,
       ITypingAssistManager typingAssistManager, IPsiServices psiServices)
