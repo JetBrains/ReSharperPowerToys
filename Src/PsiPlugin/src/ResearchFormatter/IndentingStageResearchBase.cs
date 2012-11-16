@@ -134,15 +134,17 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter
       {
         prevToken = prevToken.GetPrevToken();
       }*/
-      if(prevToken != null)
+      while((prevToken != null) && (prevToken.IsWhitespaceToken()))
       {
         if(prevToken.GetTokenType() == NewLineType)
         {
           //if(indentRange.Contains(prevToken.GetTreeStartOffset()))
           //{
             newLineOffsets.Add(prevToken.GetTreeEndOffset());
+            break;
           //}
         }
+        prevToken = prevToken.GetPrevToken();
       }
       while ((token != null) && (indentRange.ContainsNewLine(token.GetTreeEndOffset())))
       {

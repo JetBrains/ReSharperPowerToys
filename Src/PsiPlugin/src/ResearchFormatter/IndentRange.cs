@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
+using JetBrains.ReSharper.PsiPlugin.ResearchFormatter.Psi;
 using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter
@@ -70,6 +71,13 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter
         {
           return false;
         }
+        return ((offset.Offset >= firstNode.GetTreeTextRange().StartOffset.Offset) && (offset.Offset < lastNode.GetTreeTextRange().EndOffset.Offset));
+      }
+      var token = firstNode.GetPreviousToken();
+      while((token != null) && (token.IsWhitespaceToken()))
+      {
+        firstNode = token;
+        token = token.GetPrevToken();
       }
       return ((offset.Offset >= firstNode.GetTreeTextRange().StartOffset.Offset) && (offset.Offset < lastNode.GetTreeTextRange().EndOffset.Offset));      
     }
