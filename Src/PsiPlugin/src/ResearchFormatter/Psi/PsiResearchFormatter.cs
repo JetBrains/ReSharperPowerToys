@@ -50,8 +50,9 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter.Psi
 
     private static readonly IEnumerable<IndentingRule> OurIndentingRules = new List<IndentingRule>()
       {
-        new IndentingRule(typeof(IRuleDeclaration), ":", ";"),
-        new IndentingRule(typeof(IParenExpression), "(", ")")
+        new BoundIndentingRule(typeof(IRuleDeclaration), ":", ";", false),
+        new BoundIndentingRule(typeof(IParenExpression), "(", ")"),
+        new IndentingSimpleRule(typeof(IRuleBody))
       };
 
     public PsiResearchFormatter(PsiLanguageType language, ISettingsStore settingsStore, ISettingsOptimization settingsOptimization) : base(settingsStore)
