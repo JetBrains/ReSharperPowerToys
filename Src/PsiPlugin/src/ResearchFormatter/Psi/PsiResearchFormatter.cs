@@ -37,6 +37,8 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter.Psi
         new FormattingRule(typeof(IPsiExpression),"\n"),
         new FormattingRule(typeof(IPsiFile),new[]{"\n","\n"}),
         new FormattingRule(typeof(IPsiFile), typeof(ICommentNode), typeof(ICommentNode),"\n"),
+        new FormattingRule(typeof(IInterfacesDefinition),new[]{"\n","\n"}),
+        new FormattingRule(typeof(IInterfacesDefinition), typeof(ICommentNode), typeof(ICommentNode),"\n"),
         new FormattingRule(typeof(ISequence),"\n"),
         new FormattingRule(typeof(IRuleDeclaration)," "),
         new FormattingRule(typeof(IExtrasDefinition),"\n"),
@@ -52,6 +54,7 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter.Psi
       {
         new BoundIndentingRule(typeof(IRuleDeclaration), ":", ";", false),
         new BoundIndentingRule(typeof(IParenExpression), "(", ")"),
+        new BoundIndentingRule(typeof(IInterfacesDefinition), "{", "}"),
         new IndentingSimpleRule(typeof(IRuleBody))
       };
 
