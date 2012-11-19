@@ -24,7 +24,8 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter
     {
       var indentRanges = BuildRanges(context);
       var nodePairs = context.SequentialEnumNodes().Where(p => context.CanModifyInsideNodeRange(p.First, p.Last)).ToList();
-      CalcIndents(indentRanges);
+      var parent = context.FirstNode.FindCommonParent(context.LastNode);
+      CalcIndents(indentRanges, GetIndent(parent));
       var indents = nodePairs.
         Select(range => new FormatResult<string>(range, CalcIndent(new FormattingStageContext(range), indentRanges, indent))).
         Where(res => res.ResultValue != null);
@@ -48,7 +49,8 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter
 
       if(range == null)
       {
-        return "";
+        var parent = formattingStageContext.LeftChild.FindCommonParent(formattingStageContext.RightChild);
+        return GetIndent(parent);
       }
       else
       {
@@ -83,11 +85,11 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter
       return range;
     }
 
-    private void CalcIndents(IList<IndentRange> indentRanges)
+    private void CalcIndents(IList<IndentRange> indentRanges, string parentIndent = "")
     {
       foreach (var indentRange in indentRanges)
       {
-        CalcIndents(indentRange);
+        CalcIndents(indentRange, parentIndent);
       }      
     }
 
