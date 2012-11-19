@@ -11,6 +11,7 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter
     private IndentRange myParent;
     private ITreeNode[] myNodes;
     private readonly IndentingRule myRule;
+    private string myIndent;
     private IList<IndentRange> myChildRanges = new List<IndentRange>();  
 
     public IndentRange(ITreeNode[] nodes, IndentingRule rule)
@@ -18,6 +19,7 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter
       myNodes = nodes;
       myRule = rule;
       Parent = null;
+      Indent = null;
     }
 
     public ITreeNode[] Nodes
@@ -39,6 +41,12 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter
     public IndentingRule Rule
     {
       get { return myRule; }
+    }
+
+    public string Indent
+    {
+      get { return myIndent; }
+      set { myIndent = value; }
     }
 
     public void AddChildRanges(IEnumerable<IndentRange> ranges)

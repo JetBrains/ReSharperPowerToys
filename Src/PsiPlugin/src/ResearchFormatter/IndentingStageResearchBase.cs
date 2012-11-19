@@ -24,6 +24,7 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter
     {
       var indentRanges = BuildRanges(context);
       var nodePairs = context.SequentialEnumNodes().Where(p => context.CanModifyInsideNodeRange(p.First, p.Last)).ToList();
+      CalcIndents(indentRanges);
       var indents = nodePairs.
         Select(range => new FormatResult<string>(range, CalcIndent(new FormattingStageContext(range), indentRanges, indent))).
         Where(res => res.ResultValue != null);
@@ -32,6 +33,124 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter
         indents,
         progress,
         res => MakeIndent(res.Range.Last, res.ResultValue));
+    }
+
+    private string CalcIndent(FormattingStageContext formattingStageContext, IList<IndentRange> indentRanges, bool indent)
+    {
+      ITreeNode rChild = formattingStageContext.RightChild;
+      if ((!HasLineFeedsTo(formattingStageContext.LeftChild, rChild)))
+      {
+        return null;
+      }
+      var offset = formattingStageContext.RightChild.GetTreeStartOffset();
+
+      var range = GetCurrentRange(offset, indentRanges);
+
+      if(range == null)
+      {
+        return "";
+      }
+      else
+      {
+        return range.Indent;
+      }
+    }
+
+    private IndentRange GetCurrentRange(TreeOffset offset, IEnumerable<IndentRange> indentRanges)
+    {
+      IndentRange range = null;
+      foreach (var indentRange in indentRanges)
+      {
+        if (indentRange.ContainsNewLine(offset))
+        {
+          range = GetCurrentRange(offset, indentRange);
+        }
+      }
+      return range;
+    }
+
+    private IndentRange GetCurrentRange(TreeOffset offset, IndentRange indentRange)
+    {
+      if(indentRange.ChildRanges.Count() == 0)
+      {
+        return indentRange;
+      }
+      var range = GetCurrentRange(offset, indentRange.ChildRanges);
+      if(range == null)
+      {
+        return indentRange;
+      }
+      return range;
+    }
+
+    private void CalcIndents(IList<IndentRange> indentRanges)
+    {
+      foreach (var indentRange in indentRanges)
+      {
+        CalcIndents(indentRange);
+      }      
+    }
+
+    private void CalcIndents(IndentRange indentRange, string parentIndent = "")
+    {
+      IList<TreeOffset> newLineOffsets = new List<TreeOffset>();
+      var token = indentRange.Nodes[0].GetFirstTokenIn();
+      var prevToken = token.GetPrevToken();
+      /*while ((prevToken != null) && (prevToken.GetTokenType() != NewLineType))
+      {
+        prevToken = prevToken.GetPrevToken();
+      }*/
+      while ((prevToken != null) && (prevToken.IsWhitespaceToken()))
+      {
+        if (prevToken.GetTokenType() == NewLineType)
+        {
+          //if(indentRange.Contains(prevToken.GetTreeStartOffset()))
+          //{
+          newLineOffsets.Add(prevToken.GetTreeEndOffset());
+          break;
+          //}
+        }
+        prevToken = prevToken.GetPrevToken();
+      }
+      while ((token != null) && (indentRange.ContainsNewLine(token.GetTreeEndOffset())))
+      {
+        if (token.GetTokenType() == NewLineType)
+        {
+          newLineOffsets.Add(token.GetTreeEndOffset());
+        }
+        token = token.GetNextToken();
+      }
+
+      bool hasOnlyParentnewLine = false;
+      foreach (var newLineOffset in newLineOffsets)
+      {
+        bool containsInChildrange = false;
+        foreach (var childRange in indentRange.ChildRanges)
+        {
+          if (childRange.ContainsNewLine(newLineOffset))
+          {
+            containsInChildrange = true;
+            break;
+          }
+        }
+        if (!containsInChildrange)
+        {
+          hasOnlyParentnewLine = true;
+          break;
+        }
+      }
+      string s = parentIndent;
+      if (hasOnlyParentnewLine)
+      {
+        s = parentIndent + StandardIndent;
+      }
+
+      indentRange.Indent = s;
+
+      foreach (var range in indentRange.ChildRanges)
+      {
+        CalcIndents(range, indentRange.Indent);
+      }
     }
 
     private IList<IndentRange> BuildRanges(CodeFormattingContext context)
@@ -85,114 +204,6 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter
     private ITreeNode Match(ITreeNode child, IndentingRule rule)
     {
       return rule.Match(child);
-    }
-
-
-    private string CalcIndent(FormattingStageContext formattingStageContext, IList<IndentRange> indentRanges, bool indent)
-    {
-      ITreeNode rChild = formattingStageContext.RightChild;
-      if ((!HasLineFeedsTo(formattingStageContext.LeftChild, rChild)))
-      {
-        return null;
-      }
-      var offset = formattingStageContext.RightChild.GetTreeStartOffset();
-      IndentRange range = null;
-      foreach (var indentRange in indentRanges)
-      {
-        if (indentRange.ContainsNewLine(offset))
-        {
-          range = indentRange;
-          break;
-        }
-      }
-      string parentIndent = "";
-      if (range == null)
-      {
-        parentIndent = GetIndent(formattingStageContext.Parent);
-        return parentIndent;
-      }
-      /*while(range.Parent != null)
-        {
-          range = range.Parent;
-        }*/
-      if (indent)
-      {
-        parentIndent = GetIndent(range.Nodes[0].Parent);
-      }
-      string selfIndent = CalcSelfIndent(range, offset);
-      return selfIndent;
-    }
-
-    private string CalcSelfIndent(IndentRange indentRange, TreeOffset offset)
-    {
-      IList<TreeOffset> newLineOffsets = new List<TreeOffset>();
-      var token = indentRange.Nodes[0].GetFirstTokenIn();
-      var prevToken = token.GetPrevToken();
-      /*while ((prevToken != null) && (prevToken.GetTokenType() != NewLineType))
-      {
-        prevToken = prevToken.GetPrevToken();
-      }*/
-      while((prevToken != null) && (prevToken.IsWhitespaceToken()))
-      {
-        if(prevToken.GetTokenType() == NewLineType)
-        {
-          //if(indentRange.Contains(prevToken.GetTreeStartOffset()))
-          //{
-            newLineOffsets.Add(prevToken.GetTreeEndOffset());
-            break;
-          //}
-        }
-        prevToken = prevToken.GetPrevToken();
-      }
-      while ((token != null) && (indentRange.ContainsNewLine(token.GetTreeEndOffset())))
-      {
-        if (token.GetTokenType() == NewLineType)
-        {
-          newLineOffsets.Add(token.GetTreeEndOffset());
-        }
-        token = token.GetNextToken();
-      }
-      if (newLineOffsets.Count == 0)
-      {
-        return "";
-      }
-      bool hasOnlyParentnewLine = false;
-      IndentRange range = null;
-      foreach (var childrange in indentRange.ChildRanges)
-      {
-        if (childrange.ContainsNewLine(offset))
-        {
-          range = childrange;
-          break;
-        }
-      }
-      foreach (var newLineOffset in newLineOffsets)
-      {
-        bool containsInChildrange = false;
-        foreach (var childRange in indentRange.ChildRanges)
-        {
-          if (childRange.ContainsNewLine(newLineOffset))
-          {
-            containsInChildrange = true;
-            break;
-          }
-        }
-        if (!containsInChildrange)
-        {
-          hasOnlyParentnewLine = true;
-          break;
-        }
-      }
-      string s = "";
-      if (hasOnlyParentnewLine)
-      {
-        s = StandardIndent;
-      }
-      if (range != null)
-      {
-        return s + CalcSelfIndent(range, offset);
-      }
-      return s;
     }
 
     private string GetIndent(ITreeNode treeNode)
