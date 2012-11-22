@@ -4,6 +4,7 @@ using JetBrains.ReSharper.Feature.Services.Bulbs;
 using JetBrains.ReSharper.Feature.Services.JavaScript.Bulbs;
 using JetBrains.ReSharper.Intentions.Extensibility;
 using JetBrains.ReSharper.Intentions.Extensibility.Menu;
+using JetBrains.ReSharper.Intentions.JavaScript.ContextActions;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CodeStyle;
 using JetBrains.TextControl;
@@ -11,12 +12,12 @@ using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter.JavaScript
 {
-  [ContextAction(Group = "JavaScript", Name = "format javascript", Description = "format javascript.", Priority = -1)]
+  [ContextAction(Group = JavaScriptContextActions.GroupID, Name = "format javascript", Description = "format javascript.", Priority = -1)]
   public class JavaScriptFormattingAction : IContextAction, IBulbAction
   {
-    private readonly JavaScriptContextActionDataProvider myProvider;
+    private readonly IJavaScriptContextActionDataProvider myProvider;
 
-    public JavaScriptFormattingAction(JavaScriptContextActionDataProvider provider)
+    public JavaScriptFormattingAction(IJavaScriptContextActionDataProvider provider)
     {
       myProvider = provider;
     }
@@ -49,6 +50,6 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter.JavaScript
       }
     }
 
-    public string Text { get { return "format psi"; } }
+    public string Text { get { return "format javascript"; } }
   }
 }
