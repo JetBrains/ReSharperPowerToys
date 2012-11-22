@@ -19,8 +19,6 @@ using JetBrains.ReSharper.PsiPlugin.Formatter;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
-using JetBrains.ReSharper.PsiPlugin.ResearchFormatter;
-using JetBrains.ReSharper.PsiPlugin.ResearchFormatter.Psi;
 using JetBrains.ReSharper.PsiPlugin.Util;
 using JetBrains.Text;
 using JetBrains.TextControl;
@@ -31,7 +29,7 @@ using JetBrains.Util;
 namespace JetBrains.ReSharper.PsiPlugin.TypingAssist
 {
   [SolutionComponent]
-  public class PsiTypingAssist : TypingAssistLanguageBase<PsiLanguage, PsiResearchFormatter>, ITypingHandler
+  public class PsiTypingAssist : TypingAssistLanguageBase<PsiLanguage, PsiCodeFormatter>, ITypingHandler
   {
     public PsiTypingAssist(Lifetime lifetime, ISolution solution, ISettingsStore settingsStore, CachingLexerService cachingLexerService, ICommandProcessor commandProcessor,
       ITypingAssistManager typingAssistManager, IPsiServices psiServices)

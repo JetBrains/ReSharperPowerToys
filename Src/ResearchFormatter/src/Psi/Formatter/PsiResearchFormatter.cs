@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using JetBrains.Application.Settings;
-using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CodeStyle;
 using JetBrains.ReSharper.Psi.Impl.CodeStyle;
@@ -9,14 +8,13 @@ using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
 
-namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter.Psi
+namespace JetBrains.ReSharper.ResearchFormatter.Psi
 {
-  [Language(typeof(PsiLanguage))]
+  //[Language(typeof(PsiLanguage))]
   public class PsiResearchFormatter : FormatterResearchBase
   {
     private readonly PsiLanguageType myLanguage;
     private readonly ISettingsOptimization mySettingsOptimization;
-    public static PsiResearchFormatter Instance;
 
 
 
@@ -67,7 +65,6 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter.Psi
     {
       myLanguage = language;
       mySettingsOptimization = settingsOptimization;
-      Instance = this;
     }
 
     #region Overrides of CodeFormatterBase
