@@ -85,6 +85,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.CSharp.dll</HintPath>
     </Reference>
+    <Reference Include="JetBrains.ReSharper.Feature.Services.JavaScript">
+      <HintPath>..\..\..\ReSharper\Main\bin\JetBrains.ReSharper.Feature.Services.JavaScript.dll</HintPath>
+    </Reference>
     <Reference Include="JetBrains.ReSharper.Feature.Services.Navigation">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Navigation.dll</HintPath>
     </Reference>
@@ -105,6 +108,9 @@
     </Reference>
     <Reference Include="JetBrains.ReSharper.Psi.CSharp">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Psi.CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Psi.JavaScript">
+      <HintPath>..\..\..\ReSharper\Main\bin\JetBrains.ReSharper.Psi.JavaScript.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Psi.Services">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Psi.Services.dll</HintPath>
@@ -172,6 +178,8 @@
     <Compile Include="src\Feature\Finding\GotoMember\PsiGotoFileMemberProvider.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="src\Feature\Services\Bulbs\PsiContextActionDataBuilder.cs" />
+    <Compile Include="src\Feature\Services\Bulbs\PsiContextActionDataProvider.cs" />
     <Compile Include="src\Feature\Services\FindUsages\PsiReferenceSearcher.cs" />
     <Compile Include="src\Feature\Services\FindUsages\PsiReferenceSearcherFactory.cs" />
     <Compile Include="src\Feature\Services\ParameterInfo\PsiParameterInfoCandidate.cs" />
@@ -300,6 +308,11 @@
     <Compile Include="src\ResearchFormatter\IndentRange.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="src\ResearchFormatter\JavaScript\JavaScriptFormattingAction.cs" />
+    <Compile Include="src\ResearchFormatter\JavaScript\JavaScriptFormattingStageResearch.cs" />
+    <Compile Include="src\ResearchFormatter\JavaScript\JavaScriptIndentingStageResearch.cs" />
+    <Compile Include="src\ResearchFormatter\JavaScript\JavaScriptResearchFormatter.cs" />
+    <Compile Include="src\ResearchFormatter\Psi\PsiFormattingAction.cs" />
     <Compile Include="src\ResearchFormatter\Psi\PsiFormattingStageResearch.cs">
       <SubType>Code</SubType>
     </Compile>
