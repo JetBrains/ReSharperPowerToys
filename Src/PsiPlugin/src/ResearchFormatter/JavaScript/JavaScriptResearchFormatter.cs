@@ -9,6 +9,7 @@ using JetBrains.ReSharper.Psi.Tree;
 
 namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter.JavaScript
 {
+  [Language(typeof(JavaScriptLanguage))]
   public class JavaScriptResearchFormatter : FormatterResearchBase
   {
     public static JavaScriptResearchFormatter Instance;

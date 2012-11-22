@@ -100,6 +100,9 @@
     <Reference Include="JetBrains.ReSharper.Intentions">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Intentions.dll</HintPath>
     </Reference>
+    <Reference Include="JetBrains.ReSharper.Intentions.JavaScript">
+      <HintPath>..\..\..\ReSharper\Main\bin\JetBrains.ReSharper.Intentions.JavaScript.dll</HintPath>
+    </Reference>
     <Reference Include="JetBrains.ReSharper.NewRefactorings">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.NewRefactorings.dll</HintPath>
     </Reference>
