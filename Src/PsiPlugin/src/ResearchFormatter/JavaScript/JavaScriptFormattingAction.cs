@@ -7,12 +7,13 @@ using JetBrains.ReSharper.Intentions.Extensibility.Menu;
 using JetBrains.ReSharper.Intentions.JavaScript.ContextActions;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CodeStyle;
+using JetBrains.ReSharper.Psi.ExtensionsAPI;
 using JetBrains.TextControl;
 using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter.JavaScript
 {
-  [ContextAction(Group = JavaScriptContextActions.GroupID, Name = "format javascript", Description = "format javascript.", Priority = -1)]
+  [ContextAction(Group = JavaScriptContextActions.GroupID, Name = "formatJavascript", Description = "format javascript.", Priority = -1)]
   public class JavaScriptFormattingAction : IContextAction, IBulbAction
   {
     private readonly IJavaScriptContextActionDataProvider myProvider;
@@ -41,11 +42,14 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter.JavaScript
       var nodeFirst = myProvider.PsiFile.FindTokenAt(new TreeOffset(startOffset));
       var nodeLast = myProvider.PsiFile.FindTokenAt(new TreeOffset(endOffset - 1));
       var psiServices = myProvider.PsiServices;
-      using (PsiTransactionCookie.CreateAutoCommitCookieWithCachesUpdate(psiServices, "Format code"))
+      using (new DisableCodeFormatter())
       {
-        using (WriteLockCookie.Create())
+        using (PsiTransactionCookie.CreateAutoCommitCookieWithCachesUpdate(psiServices, "Format code"))
         {
-          formatter.Format(nodeFirst, nodeLast, CodeFormatProfile.DEFAULT);
+          using (WriteLockCookie.Create())
+          {
+            formatter.Format(nodeFirst, nodeLast, CodeFormatProfile.DEFAULT);
+          }
         }
       }
     }

@@ -18,14 +18,14 @@ using JetBrains.Util;
 namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument.Psi
 {
   [GeneratedDocumentService(typeof(PsiProjectFileType))]
-  class CSharpFromPsiGeneratedDocumentService : IGeneratedDocumentService
+  class CSharpFromPsiGeneratedDocumentService : GeneratedDocumentServiceBase
   {
 
     public CSharpFromPsiGeneratedDocumentService(PsiProjectFileType psiProjectFileType)
     {
     }
 
-    public ICollection<PsiLanguageType> GetSecondaryPsiLanguageTypes(IProject project)
+    public override ICollection<PsiLanguageType> GetSecondaryPsiLanguageTypes(IProject project)
     {
       return new List<PsiLanguageType> { CSharpLanguage.Instance };
     }
@@ -35,7 +35,7 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument.Psi
       return (projectFileType is PsiProjectFileType);
     }
 
-    public ISecondaryDocumentGenerationResult Generate(PrimaryFileModificationInfo modificationInfo)
+    public override ISecondaryDocumentGenerationResult Generate(PrimaryFileModificationInfo modificationInfo)
     {
       var sourceFile = modificationInfo.SourceFile;
       var psiFile = modificationInfo.NewPsiFile as IPsiFile;
@@ -65,6 +65,7 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument.Psi
 
     public void ProcessChangeFromPrimaryToGenerated(TreeTextRange range, string oldText, string newText, ISecondaryRangeTranslator rangeTranslator, IFile file, IPsiTransactionAction transactionAction)
     {
+      base.ProcessChangeFromPrimaryToGenerated(range, oldText, newText, rangeTranslator, file, transactionAction);
     }
 
     public DocumentRange TryFindNavigationRangeInPrimaryDocument(ITreeNode element)
@@ -72,12 +73,12 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument.Psi
       return element.GetNavigationRange();
     }
 
-    public ISecondaryLexingProcess CreateSecondaryLexingService(ISolution solution, MixedLexer mixedLexer, IPsiSourceFile sourceFile = null)
+    public override ISecondaryLexingProcess CreateSecondaryLexingService(ISolution solution, MixedLexer mixedLexer, IPsiSourceFile sourceFile = null)
     {
       return null;
     }
 
-    public ILexerFactory LexerFactoryWithPreprocessor(PsiLanguageType primaryLanguage)
+    public override ILexerFactory LexerFactoryWithPreprocessor(PsiLanguageType primaryLanguage)
     {
       return new CSharpLexerFactory();
     }

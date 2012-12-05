@@ -5,13 +5,14 @@ using JetBrains.ReSharper.Intentions.Extensibility;
 using JetBrains.ReSharper.Intentions.Extensibility.Menu;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CodeStyle;
+using JetBrains.ReSharper.Psi.ExtensionsAPI;
 using JetBrains.ReSharper.PsiPlugin.Feature.Services.Bulbs;
 using JetBrains.TextControl;
 using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter.Psi
 {
-  [ContextAction(Group = "PSI", Name = "format psi", Description = "format psi.", Priority = -1)]
+  //[ContextAction(Group = "PSI", Name = "formatPSI", Description = "format psi.", Priority = -1)]
   public class PsiFormattingAction : IContextAction, IBulbAction
   {
     private readonly PsiContextActionDataProvider myProvider;
@@ -46,11 +47,14 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter.Psi
       var nodeFirst = myProvider.PsiFile.FindTokenAt(new TreeOffset(startOffset));
       var nodeLast = myProvider.PsiFile.FindTokenAt(new TreeOffset(endOffset - 1));
       var psiServices = myProvider.PsiServices;
-      using (PsiTransactionCookie.CreateAutoCommitCookieWithCachesUpdate(psiServices, "Format code"))
+      using (new DisableCodeFormatter())
       {
-        using (WriteLockCookie.Create())
+        using (PsiTransactionCookie.CreateAutoCommitCookieWithCachesUpdate(psiServices, "Format code"))
         {
-          formatter.Format(nodeFirst, nodeLast, CodeFormatProfile.DEFAULT);
+          using (WriteLockCookie.Create())
+          {
+            formatter.Format(nodeFirst, nodeLast, CodeFormatProfile.DEFAULT);
+          }
         }
       }
     }

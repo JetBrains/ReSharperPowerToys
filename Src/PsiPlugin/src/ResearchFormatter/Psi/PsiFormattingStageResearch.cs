@@ -4,9 +4,11 @@ using System.Linq;
 using JetBrains.Annotations;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 using JetBrains.ReSharper.Psi.Impl.CodeStyle;
+using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
+using JetBrains.Text;
 using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter.Psi
@@ -41,6 +43,11 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter.Psi
         }).ToArray();
     }
 
+    protected override ILexer GetLexer(string text)
+    {
+      return new PsiLexer(new StringBuffer(text));
+    }
+
     public static IWhitespaceNode CreateNewLine()
     {
       var buf = FormatterImplHelper.NewLineBuffer;
@@ -51,6 +58,21 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter.Psi
     public static IWhitespaceNode CreateSpace(string spaceText)
     {
       return (IWhitespaceNode)TreeElementFactory.CreateLeafElement(PsiTokenType.WHITE_SPACE, FormatterImplHelper.GetPooledWhitespace(spaceText), 0, spaceText.Length);
+    }
+
+    public override ITreeNode AsWhitespaceNode(ITreeNode node)
+    {
+      return node as IWhitespaceNode;
+    }
+
+    public override TokenNodeType NewLineType
+    {
+      get { return PsiTokenType.NEW_LINE; }
+    }
+
+    public override TokenNodeType WhiteSpaceType
+    {
+      get { return PsiTokenType.WHITE_SPACE; }
     }
   }
 }
