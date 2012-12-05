@@ -6,7 +6,9 @@ using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 using JetBrains.ReSharper.Psi.Impl.CodeStyle;
 using JetBrains.ReSharper.Psi.JavaScript.Parsing;
 using JetBrains.ReSharper.Psi.JavaScript.Tree;
+using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.ReSharper.Psi.Tree;
+using JetBrains.Text;
 using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter.JavaScript
@@ -41,6 +43,11 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter.JavaScript
       }).ToArray();
     }
 
+    protected override ILexer GetLexer(string text)
+    {
+      return new JavaScriptLexerImpl(new StringBuffer(text));
+    }
+
     public static IWhitespaceNode CreateNewLine()
     {
       var buf = FormatterImplHelper.NewLineBuffer;
@@ -51,6 +58,21 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter.JavaScript
     public static IWhitespaceNode CreateSpace(string spaceText)
     {
       return (IWhitespaceNode)TreeElementFactory.CreateLeafElement(JavaScriptTokenType.WHITE_SPACE, FormatterImplHelper.GetPooledWhitespace(spaceText), 0, spaceText.Length);
+    }
+
+    public override ITreeNode AsWhitespaceNode(ITreeNode node)
+    {
+      return node as IWhitespaceNode;
+    }
+
+    public override TokenNodeType NewLineType
+    {
+      get { return JavaScriptTokenType.NEW_LINE; }
+    }
+
+    public override TokenNodeType WhiteSpaceType
+    {
+      get { return JavaScriptTokenType.WHITE_SPACE; }
     }
   }
 }

@@ -2,6 +2,7 @@
 using System.Linq;
 using JetBrains.Application.Progress;
 using JetBrains.ReSharper.Psi.Impl.CodeStyle;
+using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.ReSharper.Psi.Tree;
 
 namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter
@@ -23,6 +24,7 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter
         return;
 
       var nodePairs = Context.HierarchicalEnumNodes().Where(p => Context.CanModifyInsideNodeRange(p.First, p.Last)).ToList();
+      //var nodePairs = Context.HierarchicalEnumNodes().ToList();
 
       var spaces = nodePairs.Select(
         range => new FormatResult<IEnumerable<string>>(range, CalcSpaces(new FormattingStageContext(range))));
@@ -70,9 +72,67 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter
 
       if (currentRule != null)
       {
-        return currentRule.Space;
+        return currentRule.Space(formattingStageContext, this);
       }
-      return new[] {" "};
+      if (IsTokensGlued(formattingStageContext))
+      {
+        return new[] {" "};
+      } else
+      {
+        return new[] {""};
+      }
+    }
+
+    private bool IsTokensGlued(FormattingStageContext formattingStageContext)
+    {
+      if(formattingStageContext.LeftChild.GetText() == "")
+      {
+        return false;
+      }
+      if (formattingStageContext.RightChild.GetText() == "")
+      {
+        return false;
+      }
+      var lexer = GetLexer(formattingStageContext);
+      return lexer.LookaheadToken(1) == null;
+    }
+
+    protected  ILexer GetLexer(FormattingStageContext formattingStageContext)
+    {
+      string s = "";
+      if (formattingStageContext.LeftChild.FirstChild == null)
+      {
+        s = formattingStageContext.LeftChild.GetText();
+      }
+      else
+      {
+        s = formattingStageContext.LeftChild.GetLastTokenIn().GetText();
+      }
+      if (formattingStageContext.RightChild.FirstChild == null)
+      {
+        s += formattingStageContext.RightChild.GetText();
+      }
+      else
+      {
+        s += formattingStageContext.RightChild.GetFirstTokenIn().GetText();
+      }
+      return GetLexer(s);
+    }
+
+    protected abstract ILexer GetLexer(string text);
+
+    public virtual TokenNodeType NewLineType { get; private set; }
+    public virtual TokenNodeType WhiteSpaceType { get; private set; }
+    public abstract ITreeNode AsWhitespaceNode(ITreeNode node);
+
+    public bool HasLineFeedsTo(ITreeNode fromNode, ITreeNode toNode)
+    {
+      return GetLineFeedsTo(fromNode, toNode).Any();
+    }
+
+    private IEnumerable<ITreeNode> GetLineFeedsTo(ITreeNode fromNode, ITreeNode toNode)
+    {
+      return fromNode.GetWhitespacesTo(toNode).Where(wsNode => (wsNode.GetTokenType() == NewLineType) && (AsWhitespaceNode(wsNode) != null));
     }
   }
 }

@@ -24,14 +24,26 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter.JavaScript
         new FormattingRule(typeof(IBlock), typeof(ICommentNode), typeof(ICommentNode),"\n"),
         new FormattingRule(typeof(IBlock),new[]{"\n"}),
         new FormattingRule(typeof(IDocCommentBlockNode),new[]{"\n"}),
-        new FormattingRuleBeforeToken(".",null),
-        new FormattingRuleAfterToken(".", null),
-        new FormattingRuleBeforeToken(";",null),
-        new FormattingRuleBeforeToken("(",null)
+        new FormattingRuleBeforeToken(".",""),
+        new FormattingRuleAfterToken(".", ""),
+        new FormattingRuleAfterToken(",", " "),
+        new FormattingRuleAfterToken(":", " "),
+        new FormattingRule(typeof(IBinaryExpression)," "),
+        new FormattingRuleBeforeToken(";",""),
+        new FormattingRuleBeforeToken("(",""),
+        new FormattingRuleAfterToken(typeof(IObjectPropertiesList),",", "\n"),
+        new FormattingRuleAfterToken(typeof(IObjectLiteral),"{", "\n"),
+        new FormattingRuleBeforeToken(typeof(IObjectLiteral),"}", "\n"),
+        new CustomNewLineFormattingRule(typeof(IFormalParameterList),typeof(ITokenNode), typeof(IFormalParameter)," "),
+        //new CustomNewLineFormattingRuleAfterToken(typeof(IFunctionExpression),"("," "),
+        //new CustomNewLineFormattingRuleBeforeToken(typeof(IFunctionExpression),")"," ")
       };
+
     private static readonly IEnumerable<IndentingRule> OurIndentingRules = new List<IndentingRule>()
       {
-        new BoundIndentingRule(typeof(IBlock),"{","}")
+        new BoundIndentingRule(typeof(IBlock),"{","}"),
+        new BoundIndentingRule(typeof(IFunctionExpression),"(",")"),
+        new BoundIndentingRule(typeof(IObjectLiteral), "{", "}")
       };
 
     public JavaScriptResearchFormatter(ISettingsStore settingsStore) : base(settingsStore)
