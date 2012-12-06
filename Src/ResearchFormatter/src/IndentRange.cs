@@ -11,7 +11,8 @@ namespace JetBrains.ReSharper.ResearchFormatter
     private ITreeNode[] myNodes;
     private readonly IndentingRule myRule;
     private string myIndent;
-    private IList<IndentRange> myChildRanges = new List<IndentRange>();  
+    private IList<IndentRange> myChildRanges = new List<IndentRange>();
+    private bool myHasNewLine;
 
     public IndentRange(ITreeNode[] nodes, IndentingRule rule)
     {
@@ -19,6 +20,7 @@ namespace JetBrains.ReSharper.ResearchFormatter
       myRule = rule;
       Parent = null;
       Indent = null;
+      myHasNewLine = false;
     }
 
     public ITreeNode[] Nodes
@@ -46,6 +48,12 @@ namespace JetBrains.ReSharper.ResearchFormatter
     {
       get { return myIndent; }
       set { myIndent = value; }
+    }
+
+    public bool HasNewLine
+    {
+      get { return myHasNewLine; }
+      set { myHasNewLine = value; }
     }
 
     public void AddChildRanges(IEnumerable<IndentRange> ranges)

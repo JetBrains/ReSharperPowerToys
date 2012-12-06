@@ -25,6 +25,7 @@ namespace JetBrains.ReSharper.ResearchFormatter
       var indentRanges = BuildRanges(context);
       var nodePairs = context.SequentialEnumNodes().Where(p => context.CanModifyInsideNodeRange(p.First, p.Last)).ToList();
       var parent = context.FirstNode.FindCommonParent(context.LastNode);
+      CollectNewLines(indentRanges);
       CalcIndents(indentRanges, GetIndent(parent));
       var indents = nodePairs.
         Select(range => new FormatResult<string>(range, CalcIndent(new FormattingStageContext(range), indentRanges, indent))).
@@ -34,6 +35,14 @@ namespace JetBrains.ReSharper.ResearchFormatter
         indents,
         progress,
         res => MakeIndent(res.Range.Last, res.ResultValue));
+    }
+
+    private void CollectNewLines(IList<IndentRange> indentRanges)
+    {
+      foreach (var indentRange in indentRanges)
+      {
+        CollectNewLines(indentRange);
+      }
     }
 
     private string CalcIndent(FormattingStageContext formattingStageContext, IList<IndentRange> indentRanges, bool indent)
@@ -95,22 +104,31 @@ namespace JetBrains.ReSharper.ResearchFormatter
 
     private void CalcIndents(IndentRange indentRange, string parentIndent = "")
     {
+      if(indentRange.HasNewLine)
+      {
+        indentRange.Indent = parentIndent + StandardIndent;
+      } else
+      {
+        indentRange.Indent = parentIndent;
+      }
+
+      foreach (var range in indentRange.ChildRanges)
+      {
+        CalcIndents(range, indentRange.Indent);
+      }
+    }
+
+    private void CollectNewLines(IndentRange indentRange)
+    {
       IList<TreeOffset> newLineOffsets = new List<TreeOffset>();
       var token = indentRange.Nodes[0].GetFirstTokenIn();
       var prevToken = token.GetPrevToken();
-      /*while ((prevToken != null) && (prevToken.GetTokenType() != NewLineType))
-      {
-        prevToken = prevToken.GetPrevToken();
-      }*/
       while ((prevToken != null) && (prevToken.IsWhitespaceToken()))
       {
         if (prevToken.GetTokenType() == NewLineType)
         {
-          //if(indentRange.Contains(prevToken.GetTreeStartOffset()))
-          //{
           newLineOffsets.Add(prevToken.GetTreeEndOffset());
           break;
-          //}
         }
         prevToken = prevToken.GetPrevToken();
       }
@@ -119,41 +137,13 @@ namespace JetBrains.ReSharper.ResearchFormatter
         if (token.GetTokenType() == NewLineType)
         {
           newLineOffsets.Add(token.GetTreeEndOffset());
+          var range = GetCurrentRange(token.GetTreeEndOffset(), indentRange);
+          range.HasNewLine = true;
         }
         token = token.GetNextToken();
       }
-
-      bool hasOnlyParentnewLine = false;
-      foreach (var newLineOffset in newLineOffsets)
-      {
-        bool containsInChildrange = false;
-        foreach (var childRange in indentRange.ChildRanges)
-        {
-          if (childRange.ContainsNewLine(newLineOffset))
-          {
-            containsInChildrange = true;
-            break;
-          }
-        }
-        if (!containsInChildrange)
-        {
-          hasOnlyParentnewLine = true;
-          break;
-        }
-      }
-      string s = parentIndent;
-      if (hasOnlyParentnewLine)
-      {
-        s = parentIndent + StandardIndent;
-      }
-
-      indentRange.Indent = s;
-
-      foreach (var range in indentRange.ChildRanges)
-      {
-        CalcIndents(range, indentRange.Indent);
-      }
     }
+
 
     private IList<IndentRange> BuildRanges(CodeFormattingContext context)
     {

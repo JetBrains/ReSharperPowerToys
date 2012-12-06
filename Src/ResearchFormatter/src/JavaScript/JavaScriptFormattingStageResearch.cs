@@ -4,20 +4,20 @@ using System.Linq;
 using JetBrains.Annotations;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 using JetBrains.ReSharper.Psi.Impl.CodeStyle;
+using JetBrains.ReSharper.Psi.JavaScript.Parsing;
+using JetBrains.ReSharper.Psi.JavaScript.Tree;
 using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.ReSharper.Psi.Tree;
-using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing;
-using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
 using JetBrains.Text;
 using JetBrains.Util;
 
-namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter.Psi
+namespace JetBrains.ReSharper.ResearchFormatter.JavaScript
 {
-  internal class PsiFormattingStageResearch : FormattingStageResearchBase
+  public class JavaScriptFormattingStageResearch : FormattingStageResearchBase
   {
     private readonly CodeFormattingContext myContext;
 
-    public PsiFormattingStageResearch(CodeFormattingContext context, FormatterResearchBase formatter) : base(formatter)
+    public JavaScriptFormattingStageResearch(CodeFormattingContext context, JavaScriptResearchFormatter javaScriptResearchFormatter) : base(javaScriptResearchFormatter)
     {
       myContext = context;
     }
@@ -33,31 +33,31 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter.Psi
         throw new ArgumentNullException("wsTexts");
 
       return wsTexts.Where(text => !text.IsEmpty()).Select(text =>
-        {
-          if (text.IsNewLine())
-            return CreateNewLine();
-          // consistency check (remove in release?)
-          if (!PsiLexer.IsWhitespace(text))
-            throw new ApplicationException("Inconsistent space structure");
-          return CreateSpace(text);
-        }).ToArray();
+      {
+        if (text.IsNewLine())
+          return CreateNewLine();
+        // consistency check (remove in release?)
+        if (!JavaScriptLexer.IsWhitespace(text))
+          throw new ApplicationException("Inconsistent space structure");
+        return CreateSpace(text);
+      }).ToArray();
     }
 
     protected override ILexer GetLexer(string text)
     {
-      return new PsiLexer(new StringBuffer(text));
+      return new JavaScriptLexerImpl(new StringBuffer(text));
     }
 
     public static IWhitespaceNode CreateNewLine()
     {
       var buf = FormatterImplHelper.NewLineBuffer;
-      return (IWhitespaceNode)TreeElementFactory.CreateLeafElement(PsiTokenType.NEW_LINE, buf, 0, buf.Length);
+      return (IWhitespaceNode)TreeElementFactory.CreateLeafElement(JavaScriptTokenType.NEW_LINE, buf, 0, buf.Length);
     }
 
     [NotNull]
     public static IWhitespaceNode CreateSpace(string spaceText)
     {
-      return (IWhitespaceNode)TreeElementFactory.CreateLeafElement(PsiTokenType.WHITE_SPACE, FormatterImplHelper.GetPooledWhitespace(spaceText), 0, spaceText.Length);
+      return (IWhitespaceNode)TreeElementFactory.CreateLeafElement(JavaScriptTokenType.WHITE_SPACE, FormatterImplHelper.GetPooledWhitespace(spaceText), 0, spaceText.Length);
     }
 
     public override ITreeNode AsWhitespaceNode(ITreeNode node)
@@ -67,12 +67,12 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter.Psi
 
     public override TokenNodeType NewLineType
     {
-      get { return PsiTokenType.NEW_LINE; }
+      get { return JavaScriptTokenType.NEW_LINE; }
     }
 
     public override TokenNodeType WhiteSpaceType
     {
-      get { return PsiTokenType.WHITE_SPACE; }
+      get { return JavaScriptTokenType.WHITE_SPACE; }
     }
   }
 }

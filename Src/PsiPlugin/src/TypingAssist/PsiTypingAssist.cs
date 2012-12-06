@@ -19,7 +19,6 @@ using JetBrains.ReSharper.PsiPlugin.Formatter;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
-using JetBrains.ReSharper.PsiPlugin.ResearchFormatter.Psi;
 using JetBrains.ReSharper.PsiPlugin.Util;
 using JetBrains.Text;
 using JetBrains.TextControl;

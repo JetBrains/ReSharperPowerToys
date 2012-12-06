@@ -293,38 +293,6 @@
     <Compile Include="src\Refactoring\Rename\PsiDerivedElementRename.cs" />
     <Compile Include="src\Refactoring\Rename\PsiPrimaryDeclaredElementForRenameProvider.cs" />
     <Compile Include="src\Refactoring\Rename\PsiRenamesFactory.cs" />
-    <Compile Include="src\ResearchFormatter\FormatterResearchBase.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="src\ResearchFormatter\FormattingStageResearchBase.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="src\ResearchFormatter\IFormattingRule.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="src\ResearchFormatter\IndentingRule.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="src\ResearchFormatter\IndentingStageResearchBase.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="src\ResearchFormatter\IndentRange.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="src\ResearchFormatter\JavaScript\JavaScriptFormattingAction.cs" />
-    <Compile Include="src\ResearchFormatter\JavaScript\JavaScriptFormattingStageResearch.cs" />
-    <Compile Include="src\ResearchFormatter\JavaScript\JavaScriptIndentingStageResearch.cs" />
-    <Compile Include="src\ResearchFormatter\JavaScript\JavaScriptResearchFormatter.cs" />
-    <Compile Include="src\ResearchFormatter\Psi\PsiFormattingAction.cs" />
-    <Compile Include="src\ResearchFormatter\Psi\PsiFormattingStageResearch.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="src\ResearchFormatter\Psi\PsiIndentingStageResearch.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="src\ResearchFormatter\Psi\PsiResearchFormatter.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="src\Resolve\OptionDeclaredElements.cs" />
     <Compile Include="src\Resolve\OptionPropertyDeclaredElement.cs" />
     <Compile Include="src\Resolve\PsiDeclaredElementType.cs" />
