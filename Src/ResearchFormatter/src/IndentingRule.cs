@@ -1,16 +1,17 @@
 using System;
+using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 using JetBrains.ReSharper.Psi.Tree;
 
 namespace JetBrains.ReSharper.ResearchFormatter
 {
   public class BoundIndentingRule : IndentingRule
   {
-    private Type myParentType;
+    private CompositeNodeType myParentType;
     private string myLeftTokenText;
     private string myRightTokenText;
     private bool myInside;
 
-    public BoundIndentingRule(Type parentType, string leftTokenText, string rightTokenText, bool inside = true)
+    public BoundIndentingRule(CompositeNodeType parentType, string leftTokenText, string rightTokenText, bool inside = true)
     {
       myParentType = parentType;
       myLeftTokenText = leftTokenText;
@@ -25,7 +26,8 @@ namespace JetBrains.ReSharper.ResearchFormatter
 
     public override ITreeNode Match(ITreeNode node)
     {
-      if(!myParentType.IsInstanceOfType(node.Parent))
+      var parent = node.Parent as CompositeElement;
+      if(!((parent != null) && (parent.NodeType == myParentType )))
       {
         return node;
       }
@@ -52,9 +54,9 @@ namespace JetBrains.ReSharper.ResearchFormatter
 
   public class IndentingSimpleRule : IndentingRule
   {
-    private Type myParentType;
+    private CompositeNodeType myParentType;
 
-    public IndentingSimpleRule(Type parentType)
+    public IndentingSimpleRule(CompositeNodeType parentType)
     {
       myParentType = parentType;
     }
@@ -68,12 +70,13 @@ namespace JetBrains.ReSharper.ResearchFormatter
 
     public override ITreeNode Match(ITreeNode node)
     {
-      if (!myParentType.IsInstanceOfType(node.Parent))
+      var parent = node.Parent as CompositeElement;
+      if (!((parent != null) && (parent.NodeType == myParentType)))
       {
         return node;
       }
       var currentNode = node.NextSibling;
-      while((currentNode != null) && (myParentType.IsInstanceOfType(currentNode.Parent)))
+      while(currentNode != null)
       {
         currentNode = currentNode.NextSibling;
       }

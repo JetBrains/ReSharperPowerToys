@@ -8,7 +8,6 @@ using JetBrains.ReSharper.PsiPlugin.Formatter;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.ReSharper.PsiPlugin.Lexer.Psi;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing;
-using JetBrains.ReSharper.PsiPlugin.ResearchFormatter.Psi;
 
 namespace JetBrains.ReSharper.PsiPlugin.Grammar
 {

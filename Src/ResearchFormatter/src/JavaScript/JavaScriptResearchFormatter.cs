@@ -4,11 +4,12 @@ using JetBrains.Application.Settings;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CodeStyle;
 using JetBrains.ReSharper.Psi.Impl.CodeStyle;
+using JetBrains.ReSharper.Psi.JavaScript.Impl.Tree;
 using JetBrains.ReSharper.Psi.JavaScript.LanguageImpl;
 using JetBrains.ReSharper.Psi.JavaScript.Tree;
 using JetBrains.ReSharper.Psi.Tree;
 
-namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter.JavaScript
+namespace JetBrains.ReSharper.ResearchFormatter.JavaScript
 {
   [Language(typeof(JavaScriptLanguage))]
   public class JavaScriptResearchFormatter : FormatterResearchBase
@@ -17,23 +18,23 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter.JavaScript
 
     private static readonly IEnumerable<IFormattingRule> OurFormattingRules = new List<IFormattingRule>()
       {
-        new FormattingRule(typeof(IJavaScriptFile),new[]{"\n","\n"}),
-        new FormattingRule(typeof(IJavaScriptFile), typeof(ICommentNode), typeof(ICommentNode),"\n"),
-        new FormattingRule(typeof(IJavaScriptFileSection),new[]{"\n","\n"}),
-        new FormattingRule(typeof(IJavaScriptFileSection), typeof(ICommentNode), typeof(ICommentNode),"\n"),
-        new FormattingRule(typeof(IBlock), typeof(ICommentNode), typeof(ICommentNode),"\n"),
-        new FormattingRule(typeof(IBlock),new[]{"\n"}),
-        new FormattingRule(typeof(IDocCommentBlockNode),new[]{"\n"}),
+        new FormattingRule(ElementType.JAVA_SCRIPT_FILE,new[]{"\n","\n"}),
+        //new FormattingRule(ElementType.JAVA_SCRIPT_FILE, typeof(ICommentNode), typeof(ICommentNode),"\n"),
+        new FormattingRule(ElementType.JAVA_SCRIPT_FILE_SECTION,new[]{"\n","\n"}),
+        //new FormattingRule(typeof(IJavaScriptFileSection), typeof(ICommentNode), typeof(ICommentNode),"\n"),
+        //new FormattingRule(typeof(IBlock), typeof(ICommentNode), typeof(ICommentNode),"\n"),
+        new FormattingRule(ElementType.BLOCK,new[]{"\n"}),
+        //new FormattingRule(typeof(IDocCommentBlockNode),new[]{"\n"}),
         new FormattingRuleBeforeToken(".",""),
         new FormattingRuleAfterToken(".", ""),
         new FormattingRuleAfterToken(",", " "),
         new FormattingRuleAfterToken(":", " "),
-        new FormattingRule(typeof(IBinaryExpression)," "),
+        new FormattingRule(ElementType.BINARY_EXPRESSION," "),
         new FormattingRuleBeforeToken(";",""),
         new FormattingRuleBeforeToken("(",""),
-        new FormattingRuleAfterToken(typeof(IObjectPropertiesList),",", "\n"),
-        new FormattingRuleAfterToken(typeof(IObjectLiteral),"{", "\n"),
-        new FormattingRuleBeforeToken(typeof(IObjectLiteral),"}", "\n"),
+        new FormattingRuleAfterToken(ElementType.OBJECT_PROPERTIES_LIST,",", "\n"),
+        new FormattingRuleAfterToken(ElementType.OBJECT_LITERAL,"{", "\n"),
+        new FormattingRuleBeforeToken(ElementType.OBJECT_LITERAL,"}", "\n"),
         new CustomNewLineFormattingRule(typeof(IFormalParameterList),typeof(ITokenNode), typeof(IFormalParameter)," "),
         //new CustomNewLineFormattingRuleAfterToken(typeof(IFunctionExpression),"("," "),
         //new CustomNewLineFormattingRuleBeforeToken(typeof(IFunctionExpression),")"," ")
@@ -41,9 +42,9 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter.JavaScript
 
     private static readonly IEnumerable<IndentingRule> OurIndentingRules = new List<IndentingRule>()
       {
-        new BoundIndentingRule(typeof(IBlock),"{","}"),
-        new BoundIndentingRule(typeof(IFunctionExpression),"(",")"),
-        new BoundIndentingRule(typeof(IObjectLiteral), "{", "}")
+        new BoundIndentingRule(ElementType.BLOCK,"{","}"),
+        new BoundIndentingRule(ElementType.FUNCTION_EXPRESSION,"(",")"),
+        new BoundIndentingRule(ElementType.OBJECT_LITERAL, "{", "}")
       };
 
     public JavaScriptResearchFormatter(ISettingsStore settingsStore) : base(settingsStore)

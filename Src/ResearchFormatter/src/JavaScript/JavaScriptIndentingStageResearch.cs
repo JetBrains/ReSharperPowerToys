@@ -6,7 +6,7 @@ using JetBrains.ReSharper.Psi.JavaScript.Tree;
 using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.ReSharper.Psi.Tree;
 
-namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter.JavaScript
+namespace JetBrains.ReSharper.ResearchFormatter.JavaScript
 {
   public class JavaScriptIndentingStageResearch : IndentingStageResearchBase
   {

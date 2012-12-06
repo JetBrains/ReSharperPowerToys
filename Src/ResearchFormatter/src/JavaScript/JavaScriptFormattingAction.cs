@@ -1,25 +1,24 @@
 ﻿using JetBrains.Application;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Bulbs;
+using JetBrains.ReSharper.Feature.Services.JavaScript.Bulbs;
 using JetBrains.ReSharper.Intentions.Extensibility;
 using JetBrains.ReSharper.Intentions.Extensibility.Menu;
+using JetBrains.ReSharper.Intentions.JavaScript.ContextActions;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CodeStyle;
 using JetBrains.ReSharper.Psi.ExtensionsAPI;
-using JetBrains.ReSharper.PsiPlugin.Feature.Services.Bulbs;
 using JetBrains.TextControl;
 using JetBrains.Util;
 
-namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter.Psi
+namespace JetBrains.ReSharper.ResearchFormatter.JavaScript
 {
-  //[ContextAction(Group = "PSI", Name = "formatPSI", Description = "format psi.", Priority = -1)]
-  public class PsiFormattingAction : IContextAction, IBulbAction
+  [ContextAction(Group = JavaScriptContextActions.GroupID, Name = "formatJavascript", Description = "format javascript.", Priority = -1)]
+  public class JavaScriptFormattingAction : IContextAction, IBulbAction
   {
-    private readonly PsiContextActionDataProvider myProvider;
+    private readonly IJavaScriptContextActionDataProvider myProvider;
 
-    #region Overrides of ContextActionBase
-
-    public PsiFormattingAction(PsiContextActionDataProvider provider)
+    public JavaScriptFormattingAction(IJavaScriptContextActionDataProvider provider)
     {
       myProvider = provider;
     }
@@ -35,13 +34,9 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter.Psi
       return myProvider.Selection.Length > 0;
     }
 
-    #endregion
-
-    #region Implementation of IBulbAction
-
     public void Execute(ISolution solution, ITextControl textControl)
     {
-      var formatter = PsiResearchFormatter.Instance;
+      var formatter = JavaScriptResearchFormatter.Instance;
       var startOffset = myProvider.Selection.StartOffset;
       var endOffset = myProvider.Selection.EndOffset;
       var nodeFirst = myProvider.PsiFile.FindTokenAt(new TreeOffset(startOffset));
@@ -59,8 +54,6 @@ namespace JetBrains.ReSharper.PsiPlugin.ResearchFormatter.Psi
       }
     }
 
-    public string Text { get { return "format psi"; } }
-
-    #endregion
+    public string Text { get { return "format javascript"; } }
   }
 }
