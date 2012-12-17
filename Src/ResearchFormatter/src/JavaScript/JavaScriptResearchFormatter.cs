@@ -6,6 +6,7 @@ using JetBrains.ReSharper.Psi.CodeStyle;
 using JetBrains.ReSharper.Psi.Impl.CodeStyle;
 using JetBrains.ReSharper.Psi.JavaScript.Impl.Tree;
 using JetBrains.ReSharper.Psi.JavaScript.LanguageImpl;
+using JetBrains.ReSharper.Psi.JavaScript.Parsing;
 using JetBrains.ReSharper.Psi.JavaScript.Tree;
 using JetBrains.ReSharper.Psi.Tree;
 
@@ -19,12 +20,10 @@ namespace JetBrains.ReSharper.ResearchFormatter.JavaScript
     private static readonly IEnumerable<IFormattingRule> OurFormattingRules = new List<IFormattingRule>()
       {
         new FormattingRule(ElementType.JAVA_SCRIPT_FILE,new[]{"\n","\n"}),
-        //new FormattingRule(ElementType.JAVA_SCRIPT_FILE, typeof(ICommentNode), typeof(ICommentNode),"\n"),
+        new FormattingRule(JavaScriptTokenType.END_OF_LINE_COMMENT, JavaScriptTokenType.END_OF_LINE_COMMENT,"\n"),
         new FormattingRule(ElementType.JAVA_SCRIPT_FILE_SECTION,new[]{"\n","\n"}),
-        //new FormattingRule(typeof(IJavaScriptFileSection), typeof(ICommentNode), typeof(ICommentNode),"\n"),
-        //new FormattingRule(typeof(IBlock), typeof(ICommentNode), typeof(ICommentNode),"\n"),
         new FormattingRule(ElementType.BLOCK,new[]{"\n"}),
-        //new FormattingRule(typeof(IDocCommentBlockNode),new[]{"\n"}),
+        new FormattingRule(JavaScriptTokenType.C_STYLE_COMMENT, new[]{"\n"}),
         new FormattingRuleBeforeToken(".",""),
         new FormattingRuleAfterToken(".", ""),
         new FormattingRuleAfterToken(",", " "),
@@ -33,9 +32,14 @@ namespace JetBrains.ReSharper.ResearchFormatter.JavaScript
         new FormattingRuleBeforeToken(";",""),
         new FormattingRuleBeforeToken("(",""),
         new FormattingRuleAfterToken(ElementType.OBJECT_PROPERTIES_LIST,",", "\n"),
+        new FormattingRuleAfterNode(JavaScriptTokenType.END_OF_LINE_COMMENT,"\n"),
+        new FormattingRuleBeforeNode(JavaScriptTokenType.END_OF_LINE_COMMENT,"\n"),
+        //new FormattingRule(ElementType.OBJECT_PROPERTIES_LIST,"\n"),
         new FormattingRuleAfterToken(ElementType.OBJECT_LITERAL,"{", "\n"),
         new FormattingRuleBeforeToken(ElementType.OBJECT_LITERAL,"}", "\n"),
-        new CustomNewLineFormattingRule(typeof(IFormalParameterList),typeof(ITokenNode), typeof(IFormalParameter)," "),
+        new CustomNewLineFormattingRule(ElementType.FUNCTION_EXPRESSION, "(", ")", JavaScriptTokenType.COMMA, ElementType.FORMAL_PARAMETER," "),
+        new CustomNewLineFormattingRule(ElementType.FUNCTION_EXPRESSION, "(", ")", JavaScriptTokenType.LPARENTH, ElementType.FORMAL_PARAMETER_LIST,""),
+        new CustomNewLineFormattingRule(ElementType.FUNCTION_EXPRESSION, "(", ")", ElementType.FORMAL_PARAMETER_LIST, JavaScriptTokenType.RPARENTH,""),
         //new CustomNewLineFormattingRuleAfterToken(typeof(IFunctionExpression),"("," "),
         //new CustomNewLineFormattingRuleBeforeToken(typeof(IFunctionExpression),")"," ")
       };
