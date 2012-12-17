@@ -16,13 +16,13 @@ namespace JetBrains.ReSharper.ResearchFormatter
 
   public class FormattingRule : IFormattingRule
   {
-    private CompositeNodeType myParentType;
-    private CompositeNodeType myLeftChildType;
-    private CompositeNodeType myRightChildType;
+    private NodeType myParentType;
+    private NodeType myLeftChildType;
+    private NodeType myRightChildType;
 
     private IEnumerable<string> mySpace;
 
-    public FormattingRule([NotNull] CompositeNodeType parent, CompositeNodeType leftChild, [NotNull]  CompositeNodeType rightChild, string space)
+    public FormattingRule([NotNull] NodeType parent, NodeType leftChild, [NotNull]  NodeType rightChild, string space)
     {
       myParentType = parent;
       myLeftChildType = leftChild;
@@ -30,7 +30,7 @@ namespace JetBrains.ReSharper.ResearchFormatter
       mySpace = new string[]{space};
     }
 
-    public FormattingRule([NotNull] CompositeNodeType parent, string space)
+    public FormattingRule([NotNull] NodeType parent, string space)
     {
       myParentType = parent;
       myLeftChildType = null;
@@ -38,7 +38,7 @@ namespace JetBrains.ReSharper.ResearchFormatter
       mySpace = new string[]{space};
     }
 
-    public FormattingRule([NotNull] CompositeNodeType leftChild, [NotNull]  CompositeNodeType rightChild, string space)
+    public FormattingRule([NotNull] NodeType leftChild, [NotNull]  NodeType rightChild, string space)
     {
       myParentType = null;
       myLeftChildType = leftChild;
@@ -46,7 +46,7 @@ namespace JetBrains.ReSharper.ResearchFormatter
       mySpace = new[] {space};
     }
 
-    public FormattingRule([NotNull] CompositeNodeType parent, CompositeNodeType leftChild, [NotNull]  CompositeNodeType rightChild, IEnumerable<string> space)
+    public FormattingRule([NotNull] NodeType parent, NodeType leftChild, [NotNull]  NodeType rightChild, IEnumerable<string> space)
     {
       myParentType = parent;
       myLeftChildType = leftChild;
@@ -54,7 +54,7 @@ namespace JetBrains.ReSharper.ResearchFormatter
       mySpace = space;
     }
 
-    public FormattingRule([NotNull] CompositeNodeType parent, IEnumerable<string> space)
+    public FormattingRule([NotNull] NodeType parent, IEnumerable<string> space)
     {
       myParentType = parent;
       myLeftChildType = null;
@@ -62,7 +62,7 @@ namespace JetBrains.ReSharper.ResearchFormatter
       mySpace = space;
     }
 
-    public FormattingRule([NotNull] CompositeNodeType leftChild, [NotNull]  CompositeNodeType rightChild, IEnumerable<string> space)
+    public FormattingRule([NotNull] NodeType leftChild, [NotNull]  NodeType rightChild, IEnumerable<string> space)
     {
       myParentType = null;
       myLeftChildType = leftChild;
@@ -86,7 +86,7 @@ namespace JetBrains.ReSharper.ResearchFormatter
       }
       if(myLeftChildType != null)
       {
-        var leftChild = context.LeftChild as CompositeElement;
+        var leftChild = context.LeftChild as TreeElement;
         if(!((leftChild != null) && ( leftChild.NodeType == myLeftChildType)))
         {
           return false;
@@ -94,7 +94,7 @@ namespace JetBrains.ReSharper.ResearchFormatter
       }
       if(myRightChildType!= null)
       {
-        var rightChild = context.RightChild as CompositeElement;
+        var rightChild = context.RightChild as TreeElement;
         if(!((rightChild != null) && (rightChild.NodeType == myRightChildType)))
         {
           return false;
@@ -130,7 +130,7 @@ namespace JetBrains.ReSharper.ResearchFormatter
 
   public class FormattingRuleAfterToken : IFormattingRule
   {
-    private CompositeNodeType myParentType;
+    private NodeType myParentType;
     private readonly string myTokenText;
     private IEnumerable<string> mySpace;
 
@@ -143,7 +143,7 @@ namespace JetBrains.ReSharper.ResearchFormatter
       mySpace = new[] {space};      
     }
 
-    public FormattingRuleAfterToken([NotNull] CompositeNodeType parent, string tokenText, string space)
+    public FormattingRuleAfterToken([NotNull] NodeType parent, string tokenText, string space)
     {
       myParentType = parent;
       myTokenText = tokenText;
@@ -202,7 +202,7 @@ namespace JetBrains.ReSharper.ResearchFormatter
 
   public class FormattingRuleBeforeToken : IFormattingRule
   {
-    private CompositeNodeType myParentType;
+    private NodeType myParentType;
     private readonly string myTokenText;
     private IEnumerable<string> mySpace;
 
@@ -215,7 +215,7 @@ namespace JetBrains.ReSharper.ResearchFormatter
       mySpace = new[] {space};      
     }
 
-    public FormattingRuleBeforeToken([NotNull] CompositeNodeType parent, string tokenText, string space)
+    public FormattingRuleBeforeToken([NotNull] NodeType parent, string tokenText, string space)
     {
       myParentType = parent;
       myTokenText = tokenText;
@@ -258,15 +258,24 @@ namespace JetBrains.ReSharper.ResearchFormatter
     #endregion
   }
 
-  /*public class FormattingRuleBeforeNode : IFormattingRule
+  public class FormattingRuleBeforeNode : IFormattingRule
   {
-    private readonly Type myType;
+    private readonly NodeType myType;
+    private readonly NodeType myParentType;
     private readonly IEnumerable<string> mySpace;
 
-    public FormattingRuleBeforeNode([NotNull] Type type, string space)
+    public FormattingRuleBeforeNode([NotNull] NodeType type, string space)
     {
       myType = type;
+      myParentType = null;
       mySpace = new[] {space};
+    }
+
+    public FormattingRuleBeforeNode([NotNull] NodeType parentType, [NotNull] NodeType type, string space)
+    {
+      myType = type;
+      myParentType = parentType;
+      mySpace = new[] { space };
     }
 
     #region Implementation of IFormattingRule
@@ -278,7 +287,15 @@ namespace JetBrains.ReSharper.ResearchFormatter
 
     public bool Match(FormattingStageContext context)
     {
-      return myType.IsInstanceOfType(context.RightChild);
+      if (myParentType != null)
+      {
+        if (context.Parent.NodeType != myParentType)
+        {
+          return false;
+        }
+      }
+      TreeElement rightChild = context.RightChild as TreeElement;
+      return (rightChild.NodeType == myType);
     }
 
     public int GetPriority()
@@ -291,13 +308,22 @@ namespace JetBrains.ReSharper.ResearchFormatter
 
   public class FormattingRuleAfterNode : IFormattingRule
   {
-    private readonly Type myType;
+    private readonly NodeType myType;
+    private readonly NodeType myParentType;
     private readonly IEnumerable<string> mySpace;
 
-    public FormattingRuleAfterNode([NotNull] Type type, string space)
+    public FormattingRuleAfterNode([NotNull]NodeType type, string space)
     {
       myType = type;
+      myParentType = null;
       mySpace = new[] {space};
+    }
+
+    public FormattingRuleAfterNode([NotNull] NodeType parentType, [NotNull] NodeType type, string space)
+    {
+      myType = type;
+      myParentType = parentType;
+      mySpace = new[] { space };
     }
 
     #region Implementation of IFormattingRule
@@ -309,7 +335,8 @@ namespace JetBrains.ReSharper.ResearchFormatter
 
     public bool Match(FormattingStageContext context)
     {
-      return myType.IsInstanceOfType(context.LeftChild);
+      var leftChild = context.LeftChild as TreeElement;
+      return (leftChild.NodeType == myType);
     }
 
     public int GetPriority()
@@ -318,27 +345,31 @@ namespace JetBrains.ReSharper.ResearchFormatter
     }
 
     #endregion
-  }*/
+  }
 
   public class CustomNewLineFormattingRule : IFormattingRule
   {
-    private Type myParentType;
-    private Type myLeftChildType;
-    private Type myRightChildType;
-    private Type mySingleLineParentType;
+    private NodeType myParentType;
+    private NodeType myLeftChildType;
+    private NodeType myRightChildType;
+    private NodeType mySingleLineParentType;
+    private readonly string myLeftText;
+    private readonly string myRightText;
 
     private IEnumerable<string> mySpace;
 
-    public CustomNewLineFormattingRule([NotNull] Type singleLineNode,[NotNull] Type parent, Type leftChild, [NotNull]  Type rightChild, string space)
+    public CustomNewLineFormattingRule([NotNull] NodeType singleLineNode, string leftText, string rightText,[NotNull] NodeType parent, NodeType leftChild, [NotNull]  NodeType rightChild, string space)
     {
       mySingleLineParentType = singleLineNode;
+      myLeftText = leftText;
+      myRightText = rightText;
       myParentType = parent;
       myLeftChildType = leftChild;
       myRightChildType = rightChild;
       mySpace = new string[]{space};
     }
 
-    public CustomNewLineFormattingRule([NotNull] Type singleLineNode, [NotNull] Type parent, string space)
+    public CustomNewLineFormattingRule([NotNull] NodeType singleLineNode, [NotNull] NodeType parent, string space)
     {
       mySingleLineParentType = singleLineNode;
       myParentType = parent;
@@ -347,16 +378,18 @@ namespace JetBrains.ReSharper.ResearchFormatter
       mySpace = new string[]{space};
     }
 
-    public CustomNewLineFormattingRule([NotNull] Type singleLineNode, [NotNull] Type leftChild, [NotNull]  Type rightChild, string space)
+    public CustomNewLineFormattingRule([NotNull] NodeType singleLineNode, string leftText, string rightText, [NotNull] NodeType leftChild, [NotNull]  NodeType rightChild, string space)
     {
       mySingleLineParentType = singleLineNode;
+      myLeftText = leftText;
+      myRightText = rightText;
       myParentType = null;
       myLeftChildType = leftChild;
       myRightChildType = rightChild;
       mySpace = new[] {space};
     }
 
-    public CustomNewLineFormattingRule([NotNull] Type singleLineNode, [NotNull] Type parent, Type leftChild, [NotNull]  Type rightChild, IEnumerable<string> space)
+    public CustomNewLineFormattingRule([NotNull] NodeType singleLineNode, [NotNull] NodeType parent, NodeType leftChild, [NotNull]  NodeType rightChild, IEnumerable<string> space)
     {
       mySingleLineParentType = singleLineNode;
       myParentType = parent;
@@ -365,7 +398,7 @@ namespace JetBrains.ReSharper.ResearchFormatter
       mySpace = space;
     }
 
-    public CustomNewLineFormattingRule([NotNull] Type singleLineNode, [NotNull] Type parent, IEnumerable<string> space)
+    public CustomNewLineFormattingRule([NotNull] NodeType singleLineNode, [NotNull] NodeType parent, IEnumerable<string> space)
     {
       mySingleLineParentType = singleLineNode;
       myParentType = parent;
@@ -374,7 +407,7 @@ namespace JetBrains.ReSharper.ResearchFormatter
       mySpace = space;
     }
 
-    public CustomNewLineFormattingRule([NotNull] Type singleLineNode, [NotNull] Type leftChild, [NotNull]  Type rightChild, IEnumerable<string> space)
+    public CustomNewLineFormattingRule([NotNull] NodeType singleLineNode, [NotNull] NodeType leftChild, [NotNull]  NodeType rightChild, IEnumerable<string> space)
     {
       mySingleLineParentType = singleLineNode;
       myParentType = null;
@@ -386,7 +419,7 @@ namespace JetBrains.ReSharper.ResearchFormatter
     public IEnumerable<string> Space(FormattingStageContext context, FormattingStageResearchBase stage)
     {
       ITreeNode parent = context.Parent;
-      while(parent != null && !mySingleLineParentType.IsInstanceOfType(parent))
+      while((parent as TreeElement) != null && !(mySingleLineParentType == (parent as TreeElement).NodeType))
       {
         parent = parent.Parent;
       }
@@ -394,11 +427,58 @@ namespace JetBrains.ReSharper.ResearchFormatter
       {
         return new[]{"\n"};
       }
-      if(stage.HasLineFeedsTo(parent.FirstChild, parent.LastChild))
+
+      ITreeNode firstToken;
+      ITreeNode lastToken;
+      FindFisrtAndLastTokenIn(parent, context, out firstToken, out lastToken);
+      if (firstToken != null && lastToken != null)
       {
-        return new[] {"\n"};
+        if (stage.HasLineFeedsTo(firstToken,lastToken))
+        {
+          return new[] {"\n"};
+        }
       }
       return mySpace;
+    }
+
+    private void FindFisrtAndLastTokenIn(ITreeNode parent, FormattingStageContext context, out ITreeNode firstToken, out ITreeNode lastToken)
+    {
+      var offset = context.RightChild.GetTreeStartOffset().Offset;
+      var child = parent.FirstChild;
+      firstToken = null;
+      lastToken = null;
+      while((child != null) && (child.GetTreeStartOffset().Offset <= offset))
+      {
+        child = child.NextSibling;
+      }
+
+      if(child != null)
+      {
+        child = child.PrevSibling;
+      }
+
+      var leftChild = child;
+      var rightChild = child;
+      while(leftChild != null)
+      {
+        if(leftChild.GetText() == myLeftText)
+        {
+          firstToken = leftChild;
+          break;
+        }
+        leftChild = leftChild.PrevSibling;
+      }
+
+      while(rightChild != null)
+      {
+        if(rightChild.GetText() == myRightText)
+        {
+          lastToken = rightChild;
+          break;
+        }
+        rightChild = rightChild.NextSibling;
+      }
+
     }
 
     public bool Match(FormattingStageContext context)
@@ -406,25 +486,27 @@ namespace JetBrains.ReSharper.ResearchFormatter
 
       if(myParentType != null)
       {
-        if(!(myParentType.IsInstanceOfType(context.Parent)))
+        if(myParentType != context.Parent.NodeType)
         {
           return false;
         }
       }
       if(myLeftChildType != null)
       {
-        if(!(myLeftChildType.IsInstanceOfType(context.LeftChild)))
+        if(!(myLeftChildType == (context.LeftChild as TreeElement).NodeType))
         {
           return false;
         }
       }
       if(myRightChildType!= null)
       {
-        if(!(myRightChildType.IsInstanceOfType(context.RightChild)))
+        if(!(myRightChildType == (context.RightChild as TreeElement).NodeType))
         {
           return false;
         }
       }
+
+
       return true;
     }
 
