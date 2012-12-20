@@ -47,8 +47,10 @@ namespace JetBrains.ReSharper.ResearchFormatter.JavaScript
     private static readonly IEnumerable<IndentingRule> OurIndentingRules = new List<IndentingRule>()
       {
         new BoundIndentingRule(ElementType.BLOCK,"{","}"),
-        new BoundIndentingRule(ElementType.FUNCTION_EXPRESSION,"(",")"),
-        new BoundIndentingRule(ElementType.OBJECT_LITERAL, "{", "}")
+        //new BoundIndentingRule(ElementType.FUNCTION_EXPRESSION,"(",")"),
+        new BoundIndentingRule(ElementType.OBJECT_LITERAL, "{", "}"),
+        new AlignmentIndentingRule(ElementType.FUNCTION_EXPRESSION,"(",")"),
+        new IndentingSimpleRule(ElementType.FORMAL_PARAMETER_LIST)
       };
 
     public JavaScriptResearchFormatter(ISettingsStore settingsStore) : base(settingsStore)

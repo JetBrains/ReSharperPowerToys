@@ -106,7 +106,19 @@ namespace JetBrains.ReSharper.ResearchFormatter
     {
       if(indentRange.HasNewLine)
       {
-        indentRange.Indent = parentIndent + StandardIndent;
+        if (indentRange.Rule is AlignmentIndentingRule)
+        {
+          int length = GetLineLength(indentRange.Nodes[0]);
+          indentRange.Indent = parentIndent;
+          for(int i = 0; i < length; ++i)
+          {
+            indentRange.Indent += " ";
+          }
+        }
+        else
+        {
+          indentRange.Indent = parentIndent + StandardIndent;
+        }
       } else
       {
         indentRange.Indent = parentIndent;
@@ -116,6 +128,19 @@ namespace JetBrains.ReSharper.ResearchFormatter
       {
         CalcIndents(range, indentRange.Indent);
       }
+    }
+
+    private int GetLineLength(ITreeNode treeNode)
+    {
+      var token = treeNode.GetFirstTokenIn();
+      int result = 0;
+      token = token.GetPrevToken();
+      while((token != null) && ( token.GetTokenType() != NewLineType))
+      {
+        result += token.GetTextLength();
+        token = token.GetPrevToken();
+      }
+      return result;
     }
 
     private void CollectNewLines(IndentRange indentRange)
