@@ -76,11 +76,63 @@ namespace JetBrains.ReSharper.ResearchFormatter
         return node;
       }
       var currentNode = node.NextSibling;
-      while(currentNode != null)
+      while (currentNode != null)
       {
         currentNode = currentNode.NextSibling;
       }
       return currentNode;
+    }
+
+    #endregion
+  }
+
+  public class AlignmentIndentingRule : IndentingRule
+  {
+    private NodeType myParentType;
+    private string myLeftTokenText;
+    private string myRightTokenText;
+    private bool myInside;
+
+    public AlignmentIndentingRule(NodeType parentType, string leftTokenText, string rightTokenText, bool inside = true)
+    {
+      myParentType = parentType;
+      myLeftTokenText = leftTokenText;
+      myRightTokenText = rightTokenText;
+      myInside = inside;
+    }
+    #region Overrides of IndentingRule
+
+    public override bool Inside
+    {
+      get { return false; }
+    }
+
+    public override ITreeNode Match(ITreeNode node)
+    {
+      var parent = node.Parent as CompositeElement;
+      if (!((parent != null) && (parent.NodeType == myParentType)))
+      {
+        return node;
+      }
+
+      var currentNode = node;
+      if (currentNode.GetText() != myLeftTokenText)
+      {
+        return node;
+      }
+
+      currentNode = currentNode.NextSibling;
+
+      while ((currentNode != null))
+      {
+        if (currentNode.GetText() == myRightTokenText)
+        {
+          return currentNode.NextSibling;
+        }
+        currentNode = currentNode.NextSibling;
+      }
+
+      return node;
     }
 
     #endregion
