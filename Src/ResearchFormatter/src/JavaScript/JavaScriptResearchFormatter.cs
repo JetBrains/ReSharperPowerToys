@@ -22,7 +22,7 @@ namespace JetBrains.ReSharper.ResearchFormatter.JavaScript
         new FormattingRule(ElementType.JAVA_SCRIPT_FILE,new[]{"\n","\n"}),
         new FormattingRule(JavaScriptTokenType.END_OF_LINE_COMMENT, JavaScriptTokenType.END_OF_LINE_COMMENT,"\n"),
         new FormattingRuleAfterNode(ElementType.EXPRESSION_STATEMENT,"\n"),
-        new FormattingRuleAfterNode(ElementType.JAVA_SCRIPT_FILE_SECTION, ElementType.EXPRESSION_STATEMENT,"\n"),
+        new FormattingRuleAfterNode(ElementType.JAVA_SCRIPT_FILE_SECTION, ElementType.EXPRESSION_STATEMENT,new[]{"\n","\n"}),
         new FormattingRuleAfterNode(ElementType.VARIABLE_STATEMENT,"\n"),
         new FormattingRuleAfterNode(ElementType.IF_STATEMENT,"\n"),
         new FormattingRuleAfterNode(ElementType.JAVA_SCRIPT_FILE_SECTION,ElementType.IF_STATEMENT,new[]{"\n","\n"}),
