@@ -326,6 +326,20 @@ namespace JetBrains.ReSharper.ResearchFormatter
       mySpace = new[] { space };
     }
 
+    public FormattingRuleAfterNode([NotNull]NodeType type, string[] space)
+    {
+      myType = type;
+      myParentType = null;
+      mySpace =  space;
+    }
+
+    public FormattingRuleAfterNode([NotNull] NodeType parentType, [NotNull] NodeType type, string[] space)
+    {
+      myType = type;
+      myParentType = parentType;
+      mySpace = space;
+    }
+
     #region Implementation of IFormattingRule
 
     public IEnumerable<string> Space(FormattingStageContext context, FormattingStageResearchBase stage)
@@ -348,7 +362,13 @@ namespace JetBrains.ReSharper.ResearchFormatter
 
     public int GetPriority()
     {
-      return 2;
+      if (myParentType == null)
+      {
+        return 2;
+      } else
+      {
+        return 3;
+      }
     }
 
     #endregion
