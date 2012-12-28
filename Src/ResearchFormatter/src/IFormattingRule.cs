@@ -336,6 +336,13 @@ namespace JetBrains.ReSharper.ResearchFormatter
     public bool Match(FormattingStageContext context)
     {
       var leftChild = context.LeftChild as TreeElement;
+      if(myParentType != null)
+      {
+        if(myParentType != context.Parent.NodeType)
+        {
+          return false;
+        }
+      }
       return (leftChild.NodeType == myType);
     }
 

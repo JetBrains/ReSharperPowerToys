@@ -9,19 +9,19 @@ namespace JetBrains.ReSharper.ResearchFormatter
     private CompositeNodeType myParentType;
     private string myLeftTokenText;
     private string myRightTokenText;
-    private bool myInside;
+    private readonly IndentType myIndentType;
 
-    public BoundIndentingRule(CompositeNodeType parentType, string leftTokenText, string rightTokenText, bool inside = true)
+    public BoundIndentingRule(CompositeNodeType parentType, string leftTokenText, string rightTokenText, IndentType indentType = IndentType.None)
     {
       myParentType = parentType;
       myLeftTokenText = leftTokenText;
       myRightTokenText = rightTokenText;
-      myInside = inside;
+      myIndentType = indentType;
     }
 
-    public override bool Inside
+    public override IndentType Inside
     {
-      get { return myInside; }
+      get { return myIndentType; }
     }
 
     public override ITreeNode Match(ITreeNode node)
@@ -55,17 +55,19 @@ namespace JetBrains.ReSharper.ResearchFormatter
   public class IndentingSimpleRule : IndentingRule
   {
     private CompositeNodeType myParentType;
+    private readonly IndentType myIndentType;
 
-    public IndentingSimpleRule(CompositeNodeType parentType)
+    public IndentingSimpleRule(CompositeNodeType parentType, IndentType indentType = IndentType.None)
     {
       myParentType = parentType;
+      myIndentType = indentType;
     }
 
     #region Overrides of IndentingRule
 
-    public override bool Inside
+    public override IndentType Inside
     {
-      get { return false; }
+      get { return myIndentType; }
     }
 
     public override ITreeNode Match(ITreeNode node)
@@ -93,18 +95,17 @@ namespace JetBrains.ReSharper.ResearchFormatter
     private string myRightTokenText;
     private bool myInside;
 
-    public AlignmentIndentingRule(NodeType parentType, string leftTokenText, string rightTokenText, bool inside = true)
+    public AlignmentIndentingRule(NodeType parentType, string leftTokenText, string rightTokenText)
     {
       myParentType = parentType;
       myLeftTokenText = leftTokenText;
       myRightTokenText = rightTokenText;
-      myInside = inside;
     }
     #region Overrides of IndentingRule
 
-    public override bool Inside
+    public override IndentType Inside
     {
-      get { return false; }
+      get { return IndentType.None; }
     }
 
     public override ITreeNode Match(ITreeNode node)
@@ -140,7 +141,15 @@ namespace JetBrains.ReSharper.ResearchFormatter
 
   public abstract class IndentingRule
   {
-    public abstract bool Inside { get;  }
+    public abstract IndentType Inside { get;  }
     public abstract ITreeNode Match(ITreeNode node);
+  }
+
+  public enum IndentType
+  {
+    Left,
+    Right,
+    Both,
+    None
   }
 }

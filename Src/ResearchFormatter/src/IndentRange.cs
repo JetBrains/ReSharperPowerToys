@@ -76,7 +76,7 @@ namespace JetBrains.ReSharper.ResearchFormatter
     {
       var firstNode = myNodes[0];
       var lastNode = myNodes[myNodes.Length - 1];
-      if(myRule.Inside)
+      if(myRule.Inside == IndentType.Both)
       {
         if (Nodes.Length > 2)
         {
@@ -87,6 +87,26 @@ namespace JetBrains.ReSharper.ResearchFormatter
           return false;
         }
         return ((offset.Offset >= firstNode.GetTreeTextRange().StartOffset.Offset) && (offset.Offset < lastNode.GetTreeTextRange().EndOffset.Offset));
+      } else if(myRule.Inside == IndentType.Right)
+      {
+        if (Nodes.Length > 1)
+        {
+          lastNode = myNodes[myNodes.Length - 2];
+        }
+        else
+        {
+          return false;
+        }        
+      } else if(myRule.Inside == IndentType.Left)
+      {
+        if (Nodes.Length > 1)
+        {
+          firstNode = myNodes[1];
+        }
+        else
+        {
+          return false;
+        }        
       }
       var token = firstNode.GetPreviousToken();
       while((token != null) && (token.IsWhitespaceToken()))
