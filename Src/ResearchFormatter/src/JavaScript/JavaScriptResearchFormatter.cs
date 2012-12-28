@@ -21,6 +21,16 @@ namespace JetBrains.ReSharper.ResearchFormatter.JavaScript
       {
         new FormattingRule(ElementType.JAVA_SCRIPT_FILE,new[]{"\n","\n"}),
         new FormattingRule(JavaScriptTokenType.END_OF_LINE_COMMENT, JavaScriptTokenType.END_OF_LINE_COMMENT,"\n"),
+        new FormattingRuleAfterNode(ElementType.EXPRESSION_STATEMENT,"\n"),
+        new FormattingRuleAfterNode(ElementType.VARIABLE_STATEMENT,"\n"),
+        new FormattingRuleAfterNode(ElementType.IF_STATEMENT,"\n"),
+        new FormattingRuleAfterNode(ElementType.WHILE_STATEMENT,"\n"),
+        new FormattingRuleAfterNode(ElementType.BREAK_STATEMENT,"\n"),
+        new FormattingRuleAfterNode(ElementType.CASE_CASE_CLAUSE,"\n"),
+        new FormattingRuleAfterNode(ElementType.CASE_CASE_CLAUSE, JavaScriptTokenType.COLON, "\n"),
+        new FormattingRuleAfterNode(ElementType.DEFAULT_CLAUSE, JavaScriptTokenType.COLON, "\n"),
+        new FormattingRuleAfterNode(JavaScriptTokenType.LBRACE,"\n"),
+        new FormattingRuleBeforeNode(JavaScriptTokenType.RBRACE,"\n"),
         new FormattingRule(ElementType.JAVA_SCRIPT_FILE_SECTION,new[]{"\n","\n"}),
         new FormattingRule(ElementType.BLOCK,new[]{"\n"}),
         new FormattingRule(JavaScriptTokenType.C_STYLE_COMMENT, new[]{"\n"}),
@@ -39,9 +49,7 @@ namespace JetBrains.ReSharper.ResearchFormatter.JavaScript
         new FormattingRuleBeforeToken(ElementType.OBJECT_LITERAL,"}", "\n"),
         new CustomNewLineFormattingRule(ElementType.FUNCTION_EXPRESSION, "(", ")", JavaScriptTokenType.COMMA, ElementType.FORMAL_PARAMETER," "),
         new CustomNewLineFormattingRule(ElementType.FUNCTION_EXPRESSION, "(", ")", JavaScriptTokenType.LPARENTH, ElementType.FORMAL_PARAMETER_LIST,""),
-        new CustomNewLineFormattingRule(ElementType.FUNCTION_EXPRESSION, "(", ")", ElementType.FORMAL_PARAMETER_LIST, JavaScriptTokenType.RPARENTH,""),
-        //new CustomNewLineFormattingRuleAfterToken(typeof(IFunctionExpression),"("," "),
-        //new CustomNewLineFormattingRuleBeforeToken(typeof(IFunctionExpression),")"," ")
+        new CustomNewLineFormattingRule(ElementType.FUNCTION_EXPRESSION, "(", ")", ElementType.FORMAL_PARAMETER_LIST, JavaScriptTokenType.RPARENTH,"")
       };
 
     private static readonly IEnumerable<IndentingRule> OurIndentingRules = new List<IndentingRule>()
@@ -49,8 +57,11 @@ namespace JetBrains.ReSharper.ResearchFormatter.JavaScript
         new BoundIndentingRule(ElementType.BLOCK,"{","}"),
         //new BoundIndentingRule(ElementType.FUNCTION_EXPRESSION,"(",")"),
         new BoundIndentingRule(ElementType.OBJECT_LITERAL, "{", "}"),
+        new BoundIndentingRule(ElementType.SWITCH_STATEMENT, "{", "}"),
         new AlignmentIndentingRule(ElementType.FUNCTION_EXPRESSION,"(",")"),
-        new IndentingSimpleRule(ElementType.FORMAL_PARAMETER_LIST)
+        new IndentingSimpleRule(ElementType.FORMAL_PARAMETER_LIST),
+        new IndentingSimpleRule(ElementType.CASE_CASE_CLAUSE, IndentType.Left),
+        new IndentingSimpleRule(ElementType.DEFAULT_CLAUSE, IndentType.Left)
       };
 
     public JavaScriptResearchFormatter(ISettingsStore settingsStore) : base(settingsStore)

@@ -23,7 +23,7 @@ namespace JetBrains.ReSharper.ResearchFormatter
     public void DoIndent(CodeFormattingContext context, IProgressIndicator progress, bool indent = false)
     {
       var indentRanges = BuildRanges(context);
-      var nodePairs = context.SequentialEnumNodes().Where(p => context.CanModifyInsideNodeRange(p.First, p.Last)).ToList();
+      var nodePairs = context.SequentialEnumNodes().Where(p => context.CanModifyInsideNodeRange(p.First, p.Last)).Where(p => HasLineFeedsTo(p.First, p.Last)).ToList();
       var parent = context.FirstNode.FindCommonParent(context.LastNode);
       CollectNewLines(indentRanges);
       CalcIndents(indentRanges, GetIndent(parent));
