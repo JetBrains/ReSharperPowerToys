@@ -68,14 +68,18 @@ namespace JetBrains.ReSharper.ResearchFormatter
     public bool Contains(TreeOffset offset)
     {
       var firstNode = myNodes[0];
-      var lastNode = myNodes[myNodes.Length - 1];
-      return ((offset.Offset >= firstNode.GetTreeTextRange().StartOffset.Offset) && (offset.Offset < lastNode.GetTreeTextRange().EndOffset.Offset));
-    }
-
-    public bool ContainsNewLine(TreeOffset offset)
-    {
-      var firstNode = myNodes[0];
-      var lastNode = myNodes[myNodes.Length - 1];
+      ITreeNode lastNode = myNodes[myNodes.Length - 1];
+      /*if (myRule is BoundIndentingRule)
+      {
+        if (Nodes.Length > 2)
+        {
+          lastNode = myNodes[myNodes.Length - 2];
+        }
+        else
+        {
+          return false;
+        }
+      }*/
       if(myRule.Inside == IndentType.Both)
       {
         if (Nodes.Length > 2)
@@ -108,6 +112,51 @@ namespace JetBrains.ReSharper.ResearchFormatter
           return false;
         }        
       }
+      var token = firstNode.GetPreviousToken();
+      while((token != null) && (token.IsWhitespaceToken()))
+      {
+        firstNode = token;
+        token = token.GetPrevToken();
+      }
+      return ((offset.Offset >= firstNode.GetTreeTextRange().StartOffset.Offset) && (offset.Offset < lastNode.GetTreeTextRange().EndOffset.Offset));      
+    }
+
+    public bool ContainsNewLine(TreeOffset offset)
+    {
+      var firstNode = myNodes[0];
+      var lastNode = myNodes[myNodes.Length - 1];
+      /*if(myRule.Inside == IndentType.Both)
+      {
+        if (Nodes.Length > 2)
+        {
+          firstNode = myNodes[1];
+          lastNode = myNodes[myNodes.Length - 2];
+        } else
+        {
+          return false;
+        }
+        return ((offset.Offset >= firstNode.GetTreeTextRange().StartOffset.Offset) && (offset.Offset < lastNode.GetTreeTextRange().EndOffset.Offset));
+      } else if(myRule.Inside == IndentType.Right)
+      {
+        if (Nodes.Length > 1)
+        {
+          lastNode = myNodes[myNodes.Length - 2];
+        }
+        else
+        {
+          return false;
+        }        
+      } else if(myRule.Inside == IndentType.Left)
+      {
+        if (Nodes.Length > 1)
+        {
+          firstNode = myNodes[1];
+        }
+        else
+        {
+          return false;
+        }        
+      }*/
       var token = firstNode.GetPreviousToken();
       while((token != null) && (token.IsWhitespaceToken()))
       {

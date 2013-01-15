@@ -76,7 +76,8 @@ namespace JetBrains.ReSharper.ResearchFormatter
       }
       if (IsTokensGlued(formattingStageContext))
       {
-        return new[] {" "};
+        //return new[] {" "};
+        return null;
       } else
       {
         return new[] {""};
