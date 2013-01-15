@@ -54,7 +54,7 @@ namespace JetBrains.ReSharper.ResearchFormatter
       }
       var offset = formattingStageContext.RightChild.GetTreeStartOffset();
 
-      var range = GetCurrentRange(offset, indentRanges);
+      var range = GetCurrentRangeForInsert(offset, indentRanges);
 
       if(range == null)
       {
@@ -65,6 +65,33 @@ namespace JetBrains.ReSharper.ResearchFormatter
       {
         return range.Indent;
       }
+    }
+
+    private IndentRange GetCurrentRangeForInsert(TreeOffset offset, IEnumerable<IndentRange> indentRanges)
+    {
+      IndentRange range = null;
+      foreach (var indentRange in indentRanges)
+      {
+        if (indentRange.Contains(offset))
+        {
+          range = GetCurrentRangeForInsert(offset, indentRange);
+        }
+      }
+      return range;
+    }
+
+    private IndentRange GetCurrentRangeForInsert(TreeOffset offset, IndentRange indentRange)
+    {
+      if (indentRange.ChildRanges.Count() == 0)
+      {
+        return indentRange;
+      }
+      var range = GetCurrentRangeForInsert(offset, indentRange.ChildRanges);
+      if (range == null)
+      {
+        return indentRange;
+      }
+      return range;
     }
 
     private IndentRange GetCurrentRange(TreeOffset offset, IEnumerable<IndentRange> indentRanges)

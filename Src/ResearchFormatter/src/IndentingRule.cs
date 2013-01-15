@@ -11,7 +11,7 @@ namespace JetBrains.ReSharper.ResearchFormatter
     private string myRightTokenText;
     private readonly IndentType myIndentType;
 
-    public BoundIndentingRule(CompositeNodeType parentType, string leftTokenText, string rightTokenText, IndentType indentType = IndentType.None)
+    public BoundIndentingRule(CompositeNodeType parentType, string leftTokenText, string rightTokenText, IndentType indentType = IndentType.Both)
     {
       myParentType = parentType;
       myLeftTokenText = leftTokenText;
@@ -146,6 +146,7 @@ namespace JetBrains.ReSharper.ResearchFormatter
   }
 
   public enum IndentType
+  //not to move bound of range - left, right, both, none
   {
     Left,
     Right,
