@@ -7,7 +7,6 @@ using JetBrains.ReSharper.Psi.Impl.CodeStyle;
 using JetBrains.ReSharper.Psi.JavaScript.Impl.Tree;
 using JetBrains.ReSharper.Psi.JavaScript.LanguageImpl;
 using JetBrains.ReSharper.Psi.JavaScript.Parsing;
-using JetBrains.ReSharper.Psi.JavaScript.Tree;
 using JetBrains.ReSharper.Psi.Tree;
 
 namespace JetBrains.ReSharper.ResearchFormatter.JavaScript
@@ -35,6 +34,7 @@ namespace JetBrains.ReSharper.ResearchFormatter.JavaScript
         new FormattingRuleBeforeNode(JavaScriptTokenType.RBRACE,"\n"),
         new FormattingRule(ElementType.JAVA_SCRIPT_FILE_SECTION,new[]{"\n","\n"}),
         new FormattingRule(ElementType.BLOCK,new[]{"\n"}),
+        new FormattingRule(ElementType.FUNCTION_EXPRESSION, JavaScriptTokenType.RPARENTH, ElementType.BLOCK, new[]{"\n"}),
         new FormattingRule(JavaScriptTokenType.C_STYLE_COMMENT, new[]{"\n"}),
         new FormattingRuleBeforeToken(".",""),
         new FormattingRuleAfterToken(".", ""),
