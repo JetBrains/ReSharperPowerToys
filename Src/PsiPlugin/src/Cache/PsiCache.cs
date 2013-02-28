@@ -31,7 +31,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
     private PsiPersistentCache<CachePair> myPersistentCache;
 
     public PsiCache(Lifetime lifetime,
-      IPsiServices psiServices,
       IShellLocks shellLocks,
       IPsiConfiguration psiConfiguration, IPersistentIndexManager persistentIdIndex)
     {

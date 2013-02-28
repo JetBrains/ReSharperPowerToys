@@ -237,4 +237,5 @@
   <PropertyGroup>
     <ParserGenOutputBase>$(MSBuildProjectDirectory)\src\Gen</ParserGenOutputBase>
   </PropertyGroup>
+  <Import Project="$(ReSharperSdkTargets)\Plugin.Tests.Targets" />
 </Project>
