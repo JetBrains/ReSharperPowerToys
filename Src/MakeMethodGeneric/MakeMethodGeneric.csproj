@@ -39,7 +39,7 @@
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.ComponentModel.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.Metadata">
-      <HintPath>..\..\..\..\ReSharper\Main\Bin\JetBrains.Platform.ReSharper.Metadata.dll</HintPath>
+      <HintPath>$(ReSharperSdkBinaries)\\ReSharper\Main\Bin\JetBrains.Platform.ReSharper.Metadata.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Feature.Services.Navigation">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Navigation.dll</HintPath>
