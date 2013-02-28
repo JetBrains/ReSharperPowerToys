@@ -55,7 +55,7 @@
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.IDE.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.Metadata">
-      <HintPath>..\..\..\..\ReSharper\Main\Bin\JetBrains.Platform.ReSharper.Metadata.dll</HintPath>
+      <HintPath>$(ReSharperSdkBinaries)\ReSharper\Main\Bin\JetBrains.Platform.ReSharper.Metadata.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.ProjectModel">
       <SpecificVersion>False</SpecificVersion>
