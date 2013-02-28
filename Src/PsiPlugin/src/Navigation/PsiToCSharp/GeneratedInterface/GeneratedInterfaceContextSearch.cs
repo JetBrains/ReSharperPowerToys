@@ -5,7 +5,7 @@ using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl;
 
 namespace JetBrains.ReSharper.PsiPlugin.Navigation.PsiToCSharp.GeneratedInterface
 {
-  [FeaturePart]
+  [ShellFeaturePart]
   public class GeneratedInterfaceContextSearch : GeneratedContextSearch<GeneratedInterfaceSearchRequest>
   {
     protected override GeneratedInterfaceSearchRequest CreateSearchRequest(IDataContext dataContext, IDeclaredElement declaredElement, IDeclaredElement initialTarget)

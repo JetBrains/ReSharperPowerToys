@@ -57,6 +57,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion
       get { return CodeCompletionType.AutomaticCompletion; }
     }
 
+    public bool ForceHideCompletion
+    {
+      get { return false; }
+    }
+
     public PsiLanguageType Language
     {
       get { return PsiLanguage.Instance; }

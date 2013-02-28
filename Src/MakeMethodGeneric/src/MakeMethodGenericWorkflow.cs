@@ -21,10 +21,12 @@ using JetBrains.Application.DataContext;
 using JetBrains.Application.Progress;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.Psi.Modules;
 using JetBrains.ReSharper.Psi.Naming;
 using JetBrains.ReSharper.Psi.Naming.Extentions;
 using JetBrains.ReSharper.Psi.Naming.Impl;
 using JetBrains.ReSharper.Psi.Naming.Settings;
+using JetBrains.ReSharper.Psi.Pointers;
 using JetBrains.ReSharper.Psi.Search;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Refactorings.Workflow;
@@ -160,7 +162,7 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
 
       IPsiModule module = method.Module;
 
-      IDeclaredType systemType = TypeFactory.CreateTypeByCLRName("System.Type", module);
+      var systemType = TypeFactory.CreateTypeByCLRName("System.Type", module, declarations[0].GetResolveContext());
 
       foreach (IParameter parameter in parameters)
         if (parameter.Type.Equals(systemType))

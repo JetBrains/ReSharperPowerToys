@@ -7,7 +7,7 @@ using JetBrains.ReSharper.Refactorings.RenameModel;
 
 namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
 {
-  [FeaturePart]
+  [ShellFeaturePart]
   public class PsiRenamesFactory : AtomicRenamesFactory
   {
     public override bool IsApplicable(IDeclaredElement declaredElement)

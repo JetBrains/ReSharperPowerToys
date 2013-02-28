@@ -44,7 +44,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Navigation.PsiToCSharp
       return false;
     }
 
-    public override bool IsApplicable(IDataContext dataContext)
+    public override bool IsContextApplicable(IDataContext dataContext)
     {
       var textControl = dataContext.GetData(TextControl.DataContext.DataConstants.TEXT_CONTROL);
       ISolution solution = dataContext.GetData(ProjectModel.DataContext.DataConstants.SOLUTION);

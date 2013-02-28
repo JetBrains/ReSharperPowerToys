@@ -18,9 +18,9 @@ using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Application;
 using JetBrains.Application.Progress;
-using JetBrains.DocumentManagers;
 using JetBrains.DocumentModel;
 using JetBrains.ProjectModel;
+using JetBrains.ReSharper.Feature.Services.Navigation.Occurences;
 using JetBrains.ReSharper.Feature.Services.Occurences;
 using JetBrains.ReSharper.Feature.Services.Search;
 using JetBrains.ReSharper.Feature.Services.Search.SearchRequests;
@@ -39,26 +39,23 @@ namespace JetBrains.ReSharper.PowerToys.FindText
     // Solution to search in
     // Case sensitivity flag
 
-    private readonly bool myCaseSensitive;
-    private readonly string mySearchString;
-    private readonly FindTextSearchFlags mySearchFlags;
-    private readonly DocumentManager myDocumentManager;
-    private readonly ISolution mySolution;
+    private readonly bool _caseSensitive;
+    private readonly string _searchString;
+    private readonly FindTextSearchFlags _searchFlags;
+    private readonly ISolution _solution;
 
-    public FindTextSearchRequest(ISolution solution, string searchString, bool caseSensitive,
-                                 FindTextSearchFlags searchFlags, DocumentManager documentManager)
+    public FindTextSearchRequest(ISolution solution, string searchString, bool caseSensitive, FindTextSearchFlags searchFlags)
     {
-      mySolution = solution;
-      mySearchFlags = searchFlags;
-      myDocumentManager = documentManager;
-      mySearchString = searchString;
-      myCaseSensitive = caseSensitive;
+      _solution = solution;
+      _searchFlags = searchFlags;
+      _searchString = searchString;
+      _caseSensitive = caseSensitive;
     }
 
     public override ICollection<IOccurence> Search(IProgressIndicator progressIndicator)
     {
       // Create and configure utility class, which will perform search
-      var searcher = new StringSearcher(mySearchString, myCaseSensitive);
+      var searcher = new StringSearcher(_searchString, _caseSensitive);
 
       // Fetch all projects for solution, start progress 
       ICollection<IProject> projects = Solution.GetAllProjects();
@@ -66,7 +63,7 @@ namespace JetBrains.ReSharper.PowerToys.FindText
       var items = new List<IOccurence>();
 
       // visit each project and collect occurences
-      var visitor = new ProjectTextSearcher(searcher, items, mySearchFlags, myDocumentManager, mySolution);
+      var visitor = new ProjectTextSearcher(searcher, items, _searchFlags, _solution);
       foreach (IProject project in projects)
       {
         progressIndicator.CurrentItemText = string.Format("Scanning project '{0}'", project.Name);
@@ -79,17 +76,17 @@ namespace JetBrains.ReSharper.PowerToys.FindText
 
     public override ICollection SearchTargets
     {
-      get { return new[] {string.Format("Text \"{0}\"", mySearchString)}; }
+      get { return new[] {string.Format("Text \"{0}\"", _searchString)}; }
     }
 
     public override ISolution Solution
     {
-      get { return mySolution; }
+      get { return _solution; }
     }
 
     public override string Title
     {
-      get { return string.Format("Text '{0}'", mySearchString); }
+      get { return string.Format("Text '{0}'", _searchString); }
     }
 
     #region ProjectTextSearcher Type
@@ -99,41 +96,40 @@ namespace JetBrains.ReSharper.PowerToys.FindText
     /// </summary>
     private class ProjectTextSearcher : RecursiveProjectVisitor
     {
-      private readonly DocumentManager myDocumentManager;
-      private readonly ISolution mySolution;
+      private readonly ISolution _solution;
+      private readonly List<IOccurence> _items;
+      private readonly StringSearcher _searcher;
+      private readonly FindTextSearchFlags _searchFlags;
 
-      private readonly List<IOccurence> myItems;
-
-      private readonly StringSearcher mySearcher;
-
-      private readonly FindTextSearchFlags mySearchFlags;
-
-      public ProjectTextSearcher(StringSearcher searcher, List<IOccurence> items, FindTextSearchFlags searchFlags, DocumentManager documentManager, ISolution solution)
+      public ProjectTextSearcher(StringSearcher searcher, List<IOccurence> items, FindTextSearchFlags searchFlags, ISolution solution)
       {
-        mySearcher = searcher;
-        mySearchFlags = searchFlags;
-        myItems = items;
-        myDocumentManager = documentManager;
-        mySolution = solution;
+        _searcher = searcher;
+        _searchFlags = searchFlags;
+        _items = items;
+        _solution = solution;
       }
 
       public override void VisitProjectFile(IProjectFile projectFile)
       {
         base.VisitProjectFile(projectFile);
+        var sourceFile = projectFile.ToSourceFile();
+        if (sourceFile == null)
+          return;
+
         using (ReadLockCookie.Create())
         {
-          // Obtain document for visited project file and find all text occurences
-          IDocument document = myDocumentManager.GetOrCreateDocument(projectFile);
+          // Obtain document for visited file and find all text occurences
+          var document = sourceFile.Document;
 
           // Obtain lexer for projectFile if needed
           ILexer lexer = null;
-          if (mySearchFlags != FindTextSearchFlags.All)
+          if (_searchFlags != FindTextSearchFlags.All)
           {
             // Content should be provided to the following call, because sometimes lexer depends on content
             // E.g. ASP with C# or VB script language
             IBuffer contentBuffer = document.Buffer;
             var factory = PsiProjectFileTypeCoordinator.Instance;
-            var lexerFactory = factory.CreateLexerFactory(mySolution, projectFile.LanguageType, contentBuffer, projectFile.ToSourceFile());
+            var lexerFactory = factory.CreateLexerFactory(_solution, projectFile.LanguageType, contentBuffer, sourceFile);
             if (lexerFactory != null)
             {
               lexer = lexerFactory.CreateLexer(contentBuffer);
@@ -141,10 +137,10 @@ namespace JetBrains.ReSharper.PowerToys.FindText
             }
           }
 
-          foreach (int offset in mySearcher.FindAll(document.Buffer))
+          foreach (int offset in _searcher.FindAll(document.Buffer))
           {
             // create TextualOccurence for each found text and add to collection
-            var textRange = new TextRange(offset, offset + mySearcher.Pattern.Length);
+            var textRange = new TextRange(offset, offset + _searcher.Pattern.Length);
 
             if (lexer != null)
             {
@@ -156,22 +152,22 @@ namespace JetBrains.ReSharper.PowerToys.FindText
             if (lexer != null && lexer.TokenType != null)
             {
               var tokentype = lexer.TokenType;
-              if ((mySearchFlags & FindTextSearchFlags.StringLiterals) == FindTextSearchFlags.None &&
+              if ((_searchFlags & FindTextSearchFlags.StringLiterals) == FindTextSearchFlags.None &&
                   tokentype.IsStringLiteral)
                 continue;
-              if ((mySearchFlags & FindTextSearchFlags.Comments) == FindTextSearchFlags.None && tokentype.IsComment)
+              if ((_searchFlags & FindTextSearchFlags.Comments) == FindTextSearchFlags.None && tokentype.IsComment)
                 continue;
-              if ((mySearchFlags & FindTextSearchFlags.Other) == FindTextSearchFlags.None &&
+              if ((_searchFlags & FindTextSearchFlags.Other) == FindTextSearchFlags.None &&
                   (!tokentype.IsComment && !tokentype.IsStringLiteral))
                 continue;
             }
             else
             {
-              if ((mySearchFlags & FindTextSearchFlags.Other) == FindTextSearchFlags.None)
+              if ((_searchFlags & FindTextSearchFlags.Other) == FindTextSearchFlags.None)
                 continue;
             }
             var options = new OccurencePresentationOptions();
-            myItems.Add(new EmptyTextualOccurence(projectFile, textRange, options));
+            _items.Add(new EmptyTextualOccurence(sourceFile, new DocumentRange(document, textRange), options));
           }
         }
       }

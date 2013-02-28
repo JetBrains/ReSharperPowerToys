@@ -33,7 +33,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Navigation
         return OccurenceUtil.CompareOccurences(occurence, occurence1, OccurencePresentationOptions.DefaultOptions);
       });
 
-      host.ShowResultsPopupMenu(context, occurencesList, descriptorBuilder, ProvideFeatureSpecificPresentationOptions(), true, title);
+      host.ShowContextPopupMenu(context, occurencesList, descriptorBuilder, ProvideFeatureSpecificPresentationOptions(), true, title);
     }
 
     protected override OccurencePresentationOptions? ProvideFeatureSpecificPresentationOptions()

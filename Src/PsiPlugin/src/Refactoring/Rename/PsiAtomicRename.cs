@@ -5,6 +5,7 @@ using JetBrains.Application;
 using JetBrains.Application.Progress;
 using JetBrains.ReSharper.Feature.Services.Util;
 using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.Psi.Pointers;
 using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
@@ -101,7 +102,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
         pi.Advance();
       }
 
-      psiServices.PsiManager.UpdateCaches();
+      psiServices.Caches.Update();
 
       IDeclaredElement newDeclaredElement;
       if (myDeclarations.Count > 0)

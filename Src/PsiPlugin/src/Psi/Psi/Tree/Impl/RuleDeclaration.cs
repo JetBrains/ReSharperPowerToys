@@ -13,6 +13,7 @@ using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing;
 using JetBrains.ReSharper.PsiPlugin.Resolve;
 using JetBrains.ReSharper.PsiPlugin.Util;
 using JetBrains.Util;
+using JetBrains.Util.Logging;
 
 namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl
 {
@@ -265,7 +266,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl
 
     private void UpdateInterfaces()
     {
-      ICollection<ITypeElement> interfaces = GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(myTreeInterfacesPackageName + "." + myInterfacePrefix + NameToCamelCase());
+      ICollection<ITypeElement> interfaces = GetPsiServices().Symbols.GetSymbolScope(GetPsiModule(), this.GetResolveContext(), false, true).GetTypeElementsByCLRName(myTreeInterfacesPackageName + "." + myInterfacePrefix + NameToCamelCase());
       foreach (ITypeElement declaredElement in interfaces)
       {
         myDerivedInterfaces.Add(declaredElement);
@@ -274,7 +275,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl
 
     private void UpdateClasses()
     {
-      ICollection<ITypeElement> classes = GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(myTreeClassesPackageName + "." + NameToCamelCase());
+      ICollection<ITypeElement> classes = GetPsiServices().Symbols.GetSymbolScope(GetPsiModule(), this.GetResolveContext(), false, true).GetTypeElementsByCLRName(myTreeClassesPackageName + "." + NameToCamelCase());
       foreach (ITypeElement declaredElement in classes)
       {
         myDerivedClasses.Add(declaredElement);

@@ -8,7 +8,7 @@ using JetBrains.ReSharper.PsiPlugin.Refactoring;
 
 namespace JetBrains.ReSharper.PsiPlugin.Navigation.CSharpToPsi
 {
-  [FeaturePart]
+  [ShellFeaturePart]
   public class CSharpToPsiContextSearch : ContextSearchBase<CSharpToPsiSearchRequest>
   {
     protected override CSharpToPsiSearchRequest CreateSearchRequest(IDataContext dataContext, IDeclaredElement declaredElement, IDeclaredElement initialTarget)
@@ -85,9 +85,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Navigation.CSharpToPsi
       return false;
     }
 
-    public override bool IsApplicable(IDataContext dataContext)
+    public override bool IsContextApplicable(IDataContext dataContext)
     {
-
       var textControl = dataContext.GetData(TextControl.DataContext.DataConstants.TEXT_CONTROL);
       ISolution solution = dataContext.GetData(ProjectModel.DataContext.DataConstants.SOLUTION);
 

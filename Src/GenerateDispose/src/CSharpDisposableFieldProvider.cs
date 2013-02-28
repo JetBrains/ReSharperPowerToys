@@ -20,6 +20,7 @@ using JetBrains.ReSharper.Feature.Services.Generate;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.CSharp.Util;
+using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PowerToys.GenerateDispose
@@ -43,7 +44,7 @@ namespace JetBrains.ReSharper.PowerToys.GenerateDispose
     private static ITypeElement GetDisposableInterface(IGeneratorContext context)
     {
       // retrieve ITypeElement for System.IDisposable interface, visible in current project
-      return TypeFactory.CreateTypeByCLRName("System.IDisposable", context.PsiModule).GetTypeElement();
+      return TypeFactory.CreateTypeByCLRName("System.IDisposable", context.PsiModule, context.Anchor.GetResolveContext()).GetTypeElement();
     }
 
     /// <summary>

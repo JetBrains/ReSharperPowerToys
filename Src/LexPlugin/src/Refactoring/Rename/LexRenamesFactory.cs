@@ -10,7 +10,7 @@ using JetBrains.Util;
 
 namespace JetBrains.ReSharper.LexPlugin.Refactoring.Rename
 {
-  [FeaturePart]
+  [ShellFeaturePart]
   public class LexRenamesFactory : AtomicRenamesFactory
   {
     public override bool IsApplicable(IDeclaredElement declaredElement)

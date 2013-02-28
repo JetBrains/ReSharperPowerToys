@@ -4,7 +4,6 @@ using JetBrains.Application;
 using JetBrains.Application.Progress;
 using JetBrains.DataFlow;
 using JetBrains.DocumentManagers.impl;
-using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
@@ -34,16 +33,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
     public PsiCache(Lifetime lifetime,
       IPsiServices psiServices,
       IShellLocks shellLocks,
-      CacheManager cacheManager,
       IPsiConfiguration psiConfiguration, IPersistentIndexManager persistentIdIndex)
     {
       myPsiConfiguration = psiConfiguration;
       myPersistentIdIndex = persistentIdIndex;
       myShellLocks = shellLocks;
-      //using (ReadLockCookie.Create())
-      //{
-        lifetime.AddBracket(() => cacheManager.RegisterCache(this), () => cacheManager.UnregisterCache(this));
-      //}
     }
 
     public object Load(IProgressIndicator progress, bool enablePersistence)
@@ -79,12 +73,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
         }) != LoadResult.OK)
 
 
-      {
-        // clear all...
-        ((ICache)this).Release();
-        return null;
-      }
-      return data;
+        return data;
+      return null;
     }
 
     public void MergeLoaded(object data)
@@ -204,7 +194,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
       }
     }
 
-    public void OnFileRemoved(IPsiSourceFile sourceFile)
+    public void Drop(IPsiSourceFile sourceFile)
     {
       myShellLocks.AssertWriteAccessAllowed();
 
@@ -267,27 +257,14 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
       }
     }
 
-    public void OnDocumentChange(ProjectFileDocumentCopyChange args)
+    public void OnDocumentChange(IPsiSourceFile sourceFile, ProjectFileDocumentCopyChange change)
     {
-      foreach (IPsiSourceFile sourceFile in args.ProjectFile.ToSourceFiles())
+      myShellLocks.AssertWriteAccessAllowed();
+      if (Accepts(sourceFile))
       {
         myShellLocks.AssertWriteAccessAllowed();
-        if (Accepts(sourceFile))
-        {
-          myShellLocks.AssertWriteAccessAllowed();
-          myDirtyFiles.Add(sourceFile);
-        }
+        myDirtyFiles.Add(sourceFile);
       }
-    }
-
-    public IEnumerable<IPsiSourceFile> OnProjectModelChange(ProjectModelChange change)
-    {
-      return EmptyList<IPsiSourceFile>.InstanceList;
-    }
-
-    public IEnumerable<IPsiSourceFile> OnPsiModulePropertiesChange(IPsiModule module)
-    {
-      return EmptyList<IPsiSourceFile>.InstanceList;
     }
 
     public void SyncUpdate(bool underTransaction)
@@ -325,7 +302,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
 
     private static bool Accepts(IPsiSourceFile sourceFile)
     {
-      return sourceFile.GetAllPossiblePsiLanguages().Any(x => x.Is<PsiLanguage>());
+      return sourceFile.IsLanguageSupported<PsiLanguage>();
     }
 
     public IEnumerable<IPsiSymbol> GetSymbols(string name)

@@ -4,6 +4,7 @@ using JetBrains.Application.Settings;
 using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.Psi.Files;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
 
@@ -36,9 +37,9 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi
     [CanBeNull]
     public static IPsiFile GetPsiFile(IPsiSourceFile sourceFile)
     {
-      PsiManager manager = PsiManager.GetInstance(sourceFile.GetSolution());
-      manager.AssertAllDocumentAreCommited();
-      return manager.GetPsiFile<PsiLanguage>(new DocumentRange(sourceFile.Document, 0)) as IPsiFile;
+      var psiServices = sourceFile.GetPsiServices();
+      psiServices.Files.AssertAllDocumentAreCommited();
+      return psiServices.Files.GetDominantPsiFile<PsiLanguage>(sourceFile) as IPsiFile;
     }
 
     protected bool IsSupported(IPsiSourceFile sourceFile)

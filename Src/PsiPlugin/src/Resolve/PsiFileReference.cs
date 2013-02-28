@@ -25,7 +25,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
 
     public override ResolveResultWithInfo Resolve(ISymbolTable symbolTable, IAccessContext context)
     {
-      return WebPathReferenceUtil.CheckResolveResut(this, base.Resolve(symbolTable, context));
+      return WebPathReferenceUtil.CheckResolveResult(this, base.Resolve(symbolTable, context));
     }
 
     public override ISymbolTable GetReferenceSymbolTable(bool useReferenceName)

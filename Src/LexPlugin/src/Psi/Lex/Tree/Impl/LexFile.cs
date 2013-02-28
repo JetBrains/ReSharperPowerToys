@@ -10,6 +10,7 @@ using JetBrains.ReSharper.LexPlugin.Grammar;
 using JetBrains.ReSharper.LexPlugin.Resolve;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve;
+using JetBrains.ReSharper.Psi.Files;
 using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Tree;
 

@@ -9,6 +9,7 @@ using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.CodeCleanup;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CodeStyle;
+using JetBrains.ReSharper.Psi.Files;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
 using JetBrains.Util;
@@ -62,8 +63,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
               var formatter = languageService.CodeFormatter;
               Assertion.Assert(formatter != null, "formatter != null");
 
-              PsiManager.GetInstance(sourceFile.GetSolution()).DoTransaction(
-                delegate
+              sourceFile.GetPsiServices().Transactions.Execute(
+                "Code cleanup", delegate
                 {
                   if (rangeMarkerMarker != null && rangeMarkerMarker.IsValid)
                   {
@@ -82,7 +83,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
                       CodeFormatProfile.DEFAULT,
                       pi);
                   }
-                }, "Code cleanup");
+                });
             }
           }
         }

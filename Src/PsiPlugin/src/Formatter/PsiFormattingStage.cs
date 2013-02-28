@@ -3,6 +3,7 @@ using System.Linq;
 using JetBrains.Application;
 using JetBrains.Application.Progress;
 using JetBrains.ProjectModel;
+using JetBrains.ProjectModel.FileTypes;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Impl.CodeStyle;
 using JetBrains.ReSharper.Psi.Tree;

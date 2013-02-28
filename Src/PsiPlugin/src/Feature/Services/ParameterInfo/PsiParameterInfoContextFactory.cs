@@ -5,6 +5,7 @@ using JetBrains.DocumentModel;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.ParameterInfo;
 using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.Psi.Files;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Completion;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
@@ -18,7 +19,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.ParameterInfo
     private static readonly char[] OurImportantChars = new[] { '[', ']' };
     private static readonly char[] OurChars = new[] { '[', ',' };
 
-    #region Implementation of IParameterInfoContextFactory
+    public bool IsIntellisenseEnabled(ISolution solution, IContextBoundSettingsStore contextBoundSettingsStore)
+    {
+      return true;
+    }
 
     public IParameterInfoContext CreateContext(ISolution solution, IDocument document, int caretOffset, int expectedLParenthOffset, char invocationChar, IContextBoundSettingsStore contextBoundSettingsStore)
     {
@@ -26,7 +30,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.ParameterInfo
         return null;
 
       var documentRange = new DocumentRange(document, caretOffset);
-      var file = solution.GetPsiServices().PsiManager.GetPsiFile<PsiLanguage>(documentRange);
+      var file = solution.GetPsiServices().GetPsiFile<PsiLanguage>(documentRange);
       if (file == null)
         return null;
 
@@ -70,7 +74,5 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.ParameterInfo
         return OurImportantChars;
       }
     }
-
-    #endregion
   }
 }

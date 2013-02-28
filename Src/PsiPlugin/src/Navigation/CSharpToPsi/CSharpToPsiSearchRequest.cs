@@ -9,6 +9,7 @@ using JetBrains.ReSharper.Feature.Services.Util;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.PsiPlugin.Refactoring;
 using JetBrains.Util;
+using JetBrains.Util.Logging;
 
 namespace JetBrains.ReSharper.PsiPlugin.Navigation.CSharpToPsi
 {

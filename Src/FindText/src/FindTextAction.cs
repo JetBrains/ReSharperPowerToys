@@ -59,7 +59,7 @@ namespace JetBrains.ReSharper.PowerToys.FindText
           return;
 
         // Create request, descriptor, perform search and show results 
-        searchRequest = new FindTextSearchRequest(solution, dialog.SearchString, dialog.CaseSensitive, dialog.SearchFlags, documentManager);
+        searchRequest = new FindTextSearchRequest(solution, dialog.SearchString, dialog.CaseSensitive, dialog.SearchFlags);
       }
 
       using (shellLocks.UsingReadLock())

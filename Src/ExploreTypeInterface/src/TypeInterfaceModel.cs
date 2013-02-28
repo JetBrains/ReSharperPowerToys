@@ -131,7 +131,7 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
 
       // Obtain ITypeElement for System.Object 
       // We don't want ToString(), GetHashCode(), GetType() and Equals() to pollute tree view
-      ITypeElement objectType = typeElement.Module.GetPredefinedType().Object.GetTypeElement();
+      ITypeElement objectType = typeElement.Module.GetPredefinedType(typeElement.ResolveContext).Object.GetTypeElement();
       var children = new List<DeclaredElementEnvoy<ITypeMember>>();
       foreach (string name in symbolTable.Names())
         foreach (ISymbolInfo info in symbolTable.GetSymbolInfos(name))

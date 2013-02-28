@@ -11,9 +11,11 @@ using JetBrains.ReSharper.Feature.Services.Options;
 using JetBrains.ReSharper.Feature.Services.TypingAssist;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CodeStyle;
+using JetBrains.ReSharper.Psi.Files;
 using JetBrains.ReSharper.Psi.Impl.CodeStyle;
 using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.ReSharper.Psi.Services;
+using JetBrains.ReSharper.Psi.Transactions;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Formatter;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
@@ -25,6 +27,7 @@ using JetBrains.TextControl;
 using JetBrains.TextControl.Actions;
 using JetBrains.TextControl.Util;
 using JetBrains.Util;
+using JetBrains.Util.Logging;
 
 namespace JetBrains.ReSharper.PsiPlugin.TypingAssist
 {
@@ -298,8 +301,8 @@ namespace JetBrains.ReSharper.PsiPlugin.TypingAssist
       {
         return;
       }
-
-      using (PsiManager.GetInstance(Solution).DocumentTransactionManager.CreateTransactionCookie(DefaultAction.Commit, "Typing assist"))
+      var services = Solution.GetPsiServices();
+      using (services.Transactions.DocumentTransactionManager.CreateTransactionCookie(DefaultAction.Commit, "Typing assist"))
       {
         // If the new line is empty, the do default indentation
         int lexerOffset = offset;
@@ -308,7 +311,7 @@ namespace JetBrains.ReSharper.PsiPlugin.TypingAssist
           textControl.Document.InsertText(lexerOffset, extraText);
         }
 
-        PsiServices.PsiManager.CommitAllDocuments();
+        services.Files.CommitAllDocuments();
         var file = projectItem.GetPsiFile<PsiLanguage>(new DocumentRange(textControl.Document, offset));
 
         if (file == null)

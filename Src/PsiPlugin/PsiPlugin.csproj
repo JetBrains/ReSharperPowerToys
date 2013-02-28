@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <ReSharperSdkTargets Condition=" '$(ReSharperSdkTargets)' == '' ">$(MSBuildExtensionsPath)\JetBrains\ReSharper.SDK\v7.0</ReSharperSdkTargets>
+    <ReSharperSdkTargets Condition=" '$(ReSharperSdkTargets)' == '' ">$(MSBuildExtensionsPath)\JetBrains\ReSharper.SDK\v8.0</ReSharperSdkTargets>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -54,6 +54,9 @@
     <Reference Include="JetBrains.Platform.ReSharper.IDE">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.IDE.dll</HintPath>
     </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.Metadata">
+      <HintPath>..\..\..\..\ReSharper\Main\Bin\JetBrains.Platform.ReSharper.Metadata.dll</HintPath>
+    </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.ProjectModel">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.ProjectModel.dll</HintPath>
@@ -86,7 +89,7 @@
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.CSharp.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Feature.Services.JavaScript">
-      <HintPath>..\..\..\ReSharper\Main\bin\JetBrains.ReSharper.Feature.Services.JavaScript.dll</HintPath>
+      <HintPath>$(ReSharperSdkBinaries)\ReSharper\Main\bin\JetBrains.ReSharper.Feature.Services.JavaScript.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Feature.Services.Navigation">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Navigation.dll</HintPath>
@@ -101,7 +104,7 @@
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Intentions.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Intentions.JavaScript">
-      <HintPath>..\..\..\ReSharper\Main\bin\JetBrains.ReSharper.Intentions.JavaScript.dll</HintPath>
+      <HintPath>$(ReSharperSdkBinaries)\\ReSharper\Main\bin\JetBrains.ReSharper.Intentions.JavaScript.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.ReSharper.NewRefactorings">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.NewRefactorings.dll</HintPath>
@@ -113,7 +116,7 @@
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Psi.CSharp.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Psi.JavaScript">
-      <HintPath>..\..\..\ReSharper\Main\bin\JetBrains.ReSharper.Psi.JavaScript.dll</HintPath>
+      <HintPath>$(ReSharperSdkBinaries)\\ReSharper\Main\bin\JetBrains.ReSharper.Psi.JavaScript.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Psi.Services">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Psi.Services.dll</HintPath>
@@ -192,7 +195,6 @@
     <Compile Include="src\Feature\Services\RearrangeCode\RearrangeableRuleDeclaration.cs" />
     <Compile Include="src\Formatter\IPsiCodeFormatterFactory.cs" />
     <Compile Include="src\Formatter\PsiCodeFormatterFactory.cs" />
-    <Compile Include="src\Formatter\PsiIndentCache.cs" />
     <Compile Include="src\Formatter\ReformatCode.cs" />
     <Compile Include="src\Formatter\PsiFormatterHelper.cs" />
     <Compile Include="src\Formatter\PsiFormattingStage.cs" />
@@ -211,7 +213,6 @@
     <Compile Include="src\Grammar\PsiProjectFileLanguageService.cs" />
     <Compile Include="src\Grammar\PsiLanguage.cs" />
     <Compile Include="src\Grammar\PsiProjectFileType.cs" />
-    <Compile Include="src\Grammar\PsiWordIndexProvider.cs" />
     <Compile Include="src\CodeInspections\Psi\InspectionsProcess.cs" />
     <Compile Include="src\CodeInspections\Psi\InspectionStage.cs" />
     <Compile Include="src\Intentions\CreateFromUsage\CreatePsiRuleContext.cs" />
@@ -349,12 +350,15 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(ReSharperSdkTargets)\Plugin.NoReferences.Targets" />
-  <Import Project="$(ReSharperSdkTools)\parserGen\ParserGen.Targets" />
   <Import Project="$(ReSharperSdkTools)\MSBuild\JetBrains.Build.Common.Targets" />
-  <Import Project="$(ReSharperSdkTools)\CsLex\CsLex.Targets" />
+  <Import Project="$(ReSharperSdkTools)\psiGen\psiGen.Targets" />
+  <Import Project="$(ReSharperSdkTools)\psiGen\CsLex.Targets" />
   <Target Name="BeforeBuild">
     <MakeDir Directories="$(MSBuildProjectDirectory)\obj" />
-    <Copy SourceFiles="$(ReSharperSdkTools)\parserGen\Unicode.lex" DestinationFolder="$(MSBuildProjectDirectory)\obj" />
+    <Copy SourceFiles="$(ReSharperSdkTools)\psiGen\Unicode.lex" DestinationFolder="$(MSBuildProjectDirectory)\obj" />
   </Target>
   <Import Project="$(ReSharperSdkTools)\MSBuild\JetBrains.Build.Platform.ThemedIconsConverter.Targets" />
+  <PropertyGroup>
+    <ParserGenOutputBase>$(MSBuildProjectDirectory)\src\Gen</ParserGenOutputBase>
+  </PropertyGroup>
 </Project>

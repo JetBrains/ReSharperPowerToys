@@ -318,7 +318,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl
     public void CollectDerivedElements(RuleDeclaration ruleDeclaration)
     {
       ICollection<ITypeElement> classes =
-        GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(
+        GetPsiServices().Symbols.GetSymbolScope(GetPsiModule(), this.GetResolveContext(), false, true).GetTypeElementsByCLRName(
           myParserPackageName + "." + myParserClassName);
       ICollection<ITypeElement> visitorClasses = CollectVisitorClasses();
       IEnumerator<ITypeElement> enumerator = classes.GetEnumerator();
@@ -331,20 +331,21 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl
     private ICollection<ITypeElement> CollectVisitorClasses()
     {
       ICollection<ITypeElement> visitorClasses = new List<ITypeElement>();
-      foreach (ITypeElement typeElement in GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(
+      var symbolScope = GetPsiServices().Symbols.GetSymbolScope(GetPsiModule(), this.GetResolveContext(), false, true);
+      foreach (ITypeElement typeElement in symbolScope.GetTypeElementsByCLRName(
         myTreeInterfacesPackageName + "." + myVisitorClassName))
       {
         visitorClasses.Add(typeElement);
       }
       ICollection<ITypeElement> visitorGenericClasses =
-        GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(
+        symbolScope.GetTypeElementsByCLRName(
           myTreeInterfacesPackageName + "." + myVisitorClassName + "`1");
       foreach (ITypeElement visitorGenericClass in visitorGenericClasses)
       {
         visitorClasses.Add(visitorGenericClass);
       }
       visitorGenericClasses =
-        GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(
+        symbolScope.GetTypeElementsByCLRName(
           myTreeInterfacesPackageName + "." + myVisitorClassName + "`2");
       foreach (ITypeElement visitorGenericClass in visitorGenericClasses)
       {
@@ -358,7 +359,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl
       myTokenTypeClassFqName = tokenTypeClassFQNameNode.GetText();
       myTokenTypeClassFqName = myTokenTypeClassFqName.Substring(1, myTokenTypeClassFqName.Length - 2);
       ICollection<ITypeElement> classes =
-        GetPsiServices().CacheManager.GetDeclarationsCache(GetPsiModule(), false, true).GetTypeElementsByCLRName(
+        GetPsiServices().Symbols.GetSymbolScope(GetPsiModule(), this.GetResolveContext(), false, true).GetTypeElementsByCLRName(
           myTokenTypeClassFqName);
       IEnumerator<ITypeElement> enumerator = classes.GetEnumerator();
       if (enumerator.MoveNext())

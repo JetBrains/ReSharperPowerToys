@@ -2,6 +2,7 @@ using JetBrains.Application;
 using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots;
 using JetBrains.TextControl;
+using EternalLifetime = JetBrains.DataFlow.EternalLifetime;
 
 namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
 {
@@ -26,11 +27,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
       if (hotspotSessionUi == null)
         SetCaretPosition(textControl, result);
       else
-        hotspotSessionUi.HotspotSession.Closed += (session, type) =>
-          {
-            if (type != TerminationType.Finished) return;
+        hotspotSessionUi.HotspotSession.Closed.Advise(EternalLifetime.Instance, args =>{
+            if (args.TerminationType != TerminationType.Finished) 
+              return;
             SetCaretPosition(textControl, result);
-          };
+          });
     }
 
     protected static void SetCaretPosition(ITextControl textControl, PsiIntentionResult result)

@@ -10,7 +10,6 @@ using JetBrains.ReSharper.Psi.Impl;
 using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Psi.Util;
-using JetBrains.ReSharper.Psi.Web.Paths;
 using JetBrains.ReSharper.Psi.Web.References;
 using JetBrains.ReSharper.Psi.Web.Util;
 using JetBrains.ReSharper.PsiPlugin.Cache;
@@ -135,18 +134,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
       FileSystemPath basePathBeforeMapping = GetBasePathBeforeMapping(pathReference);
       if (!basePathBeforeMapping.IsNullOrEmpty())
       {
-        IWebProjectPathMapping pathMapping = WebPathMappingManager.GetPathMapping(pathReference);
-        List<FileSystemPath> mappedPaths = pathMapping.GetAllPathPartsIn(basePathBeforeMapping).ToList();
-        if (mappedPaths.Any())
-        {
-          var mappedPathsTable = new SymbolTable(psiServices, folderQualifierInfo != null ? new SymbolTableDependencySet(folderQualifierInfo) : null);
-          foreach (FileSystemPath mappedPath in mappedPaths)
-          {
-            var declaredElement = new PathDeclaredElement(psiServices, mappedPath);
-            mappedPathsTable.AddSymbol(declaredElement, EmptySubstitution.INSTANCE, 1);
-          }
-          symbolTableByPath = symbolTableByPath.Merge(mappedPathsTable);
-        }
       }
 
       if (!includeHttpHandlers)

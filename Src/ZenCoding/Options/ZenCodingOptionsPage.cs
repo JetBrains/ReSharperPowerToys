@@ -24,6 +24,7 @@ using JetBrains.ReSharper.Features.Common.Options;
 using JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model;
 using JetBrains.Threading;
 using JetBrains.TreeModels;
+using JetBrains.UI.Components;
 using JetBrains.UI.CrossFramework;
 using JetBrains.UI.Icons;
 using JetBrains.UI.Options;
@@ -41,17 +42,19 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
     private readonly OptionsSettingsSmartContext mySettings;
     private readonly IThreading myThreading;
     private readonly IThemedIconManager myIconManager;
+    private readonly UIApplicationEnvironment _environmanet;
     private readonly SortedDictionary<int, FileAssociation> myFileAssociations;
 
     private readonly FileAssociationsTreeView myView;
     private readonly Expression<Func<ZenCodingSettings, IIndexedEntry<int, FileAssociation>>> myLambdaExpression;
 
-    public ZenCodingOptionsPage(Lifetime lifetime, OptionsSettingsSmartContext settings, IThreading threading, IThemedIconManager iconManager)
+    public ZenCodingOptionsPage(Lifetime lifetime, OptionsSettingsSmartContext settings, IThreading threading, IThemedIconManager iconManager, UIApplicationEnvironment environmanet)
     {
       myLifetime = lifetime;
       mySettings = settings;
       myThreading = threading;
       myIconManager = iconManager;
+      _environmanet = environmanet;
       myLambdaExpression = s => s.FileAssociations;
 
       InitializeComponent();
@@ -64,7 +67,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
 
       var model = BuildModel();
 
-      myView = new FileAssociationsTreeView(model, new FileAssociationViewController())
+      myView = new FileAssociationsTreeView(model, new FileAssociationViewController(environmanet), environmanet)
       {
         Presenter = new FileAssociationPresenter(),
         Dock = DockStyle.Fill
@@ -127,7 +130,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
 
     private void OpenEditor(FileAssociation association, Action<EditFileAssociationForm> onClose)
     {
-      using (var form = new EditFileAssociationForm(association))
+      using (var form = new EditFileAssociationForm(association, _environmanet))
       {
         if (form.ShowDialog(this) != DialogResult.OK)
           return;
