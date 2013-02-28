@@ -7,6 +7,7 @@ using JetBrains.ReSharper.Feature.Services.Intentions.DataProviders;
 using JetBrains.ReSharper.Intentions.CreateFromUsage;
 using JetBrains.ReSharper.Intentions.Extensibility;
 using JetBrains.ReSharper.Intentions.Extensibility.Menu;
+using JetBrains.ReSharper.Intentions.Extensibility.Menu.Ex;
 using JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi.Highlightings;
 using JetBrains.ReSharper.PsiPlugin.Resolve;
 using JetBrains.Util;
@@ -15,15 +16,10 @@ using JetBrains.Util.Lazy;
 namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
 {
   [QuickFix]
-  internal class CreatePsiRuleFromUsage : CreateFromUsageActionBase<CreatePsiRuleContext, ICreatePsiRuleIntention, PsiRuleReference>, IQuickFix
+  internal class CreatePsiRuleFromUsage : CreateFromUsageActionBase<CreatePsiRuleContext, PsiRuleReference>, IQuickFix
   {
     public CreatePsiRuleFromUsage(PsiUnresolvedRuleReferenceHighlighting error): base(error.Reference)
     {
-    }
-
-    protected override CreatePsiRuleContext GetContext()
-    {
-      return new CreatePsiRuleContext(GetTarget() as CreatePsiRuleTarget);
     }
 
     protected override ICreationTarget GetTarget()
@@ -34,7 +30,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
     protected override IEnumerable<IBulbAction> CreateBulbItems()
     {
       Debug.Assert(Reference != null, "Reference != null");
-      yield return new CreatePsiRuleItem(Lazy.Of(GetContext), string.Format("Create rule {0}", Reference.GetName()));
+      yield return new CreatePsiRuleItem(Lazy.Of(() => new CreatePsiRuleContext(GetTarget() as CreatePsiRuleTarget)), string.Format("Create rule {0}", Reference.GetName()));
     }
 
     public void CreateBulbItems(BulbMenu menu, Severity severity)

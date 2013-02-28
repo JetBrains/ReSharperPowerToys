@@ -5,6 +5,7 @@ using JetBrains.DataFlow;
 using JetBrains.ProjectModel;
 using JetBrains.ProjectModel.impl;
 using JetBrains.Util;
+using JetBrains.Util.Logging;
 using Microsoft.Build.Evaluation;
 using Microsoft.Build.Execution;
 using ILogger = Microsoft.Build.Framework.ILogger;

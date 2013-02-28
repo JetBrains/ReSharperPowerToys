@@ -19,6 +19,7 @@ using System.Windows.Forms;
 
 using JetBrains.Application;
 using JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model;
+using JetBrains.UI.Components;
 
 namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
 {
@@ -26,11 +27,11 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
   {
     readonly EditFileAssociationControl myEditor;
 
-    public EditFileAssociationForm(FileAssociation fileAssociation)
+    public EditFileAssociationForm(FileAssociation fileAssociation, UIApplicationEnvironment environment)
     {
       InitializeComponent();
 
-      myEditor = new EditFileAssociationControl(fileAssociation)
+      myEditor = new EditFileAssociationControl(fileAssociation, environment)
       {
         Dock = DockStyle.Fill
       };

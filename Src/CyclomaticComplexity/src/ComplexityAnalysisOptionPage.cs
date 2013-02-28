@@ -19,6 +19,7 @@ using JetBrains.DataFlow;
 using JetBrains.ReSharper.Features.Environment.Options.Inspections;
 using JetBrains.ReSharper.PowerToys.CyclomaticComplexity.resources;
 using JetBrains.UI.CommonControls.Fonts;
+using JetBrains.UI.Components;
 using JetBrains.UI.Options;
 using JetBrains.UI.Options.Helpers;
 
@@ -37,8 +38,8 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
     /// <summary>
     /// Creates new instance of ComplexityAnalysisOptionPage
     /// </summary>
-    public ComplexityAnalysisOptionPage(Lifetime lifetime, FontsManager fontsManager, OptionsSettingsSmartContext settings)
-      : base(lifetime, fontsManager, PID)
+    public ComplexityAnalysisOptionPage(Lifetime lifetime, UIApplicationEnvironment environment, OptionsSettingsSmartContext settings)
+      : base(lifetime, environment, PID)
     {
       myLifetime = lifetime;
       mySettings = settings;
@@ -57,7 +58,7 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
       Controls.Add(UI.Options.Helpers.Controls.Separator.DefaultHeight);
 
       // A horizontal stack of a text label and a spin-edit
-      Controls.Add(stack = new Controls.HorzStackPanel());
+      Controls.Add(stack = new Controls.HorzStackPanel(Environment));
       stack.Controls.Add(new Controls.Label(Stringtable.Options_ThresholdLabel)); // The first column of the stack
       stack.Controls.Add(spin = new Controls.Spin());
 

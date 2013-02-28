@@ -25,8 +25,6 @@ namespace JetBrains.ReSharper.LexPlugin.Completion
       mySettingsScalarEntry = settingsStore.Schema.GetScalarEntry((LexAutopopupEnabledSettingsKey key) => key.OnIdent);
     }
 
-    #region IAutomaticCodeCompletionStrategy Members
-
     public AutopopupType IsEnabledInSettings(IContextBoundSettingsStore settingsStore, ITextControl textControl)
     {
       return (AutopopupType) settingsStore.GetValue(mySettingsScalarEntry, null);
@@ -62,12 +60,15 @@ namespace JetBrains.ReSharper.LexPlugin.Completion
       get { return CodeCompletionType.AutomaticCompletion; }
     }
 
+    public bool ForceHideCompletion
+    {
+      get { return false; }
+    }
+
     public PsiLanguageType Language
     {
       get { return LexLanguage.Instance; }
     }
-
-    #endregion
 
     private static bool IsIdentStart(char c)
     {

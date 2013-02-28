@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using JetBrains.Application.Settings;
 using JetBrains.ProjectModel;
+using JetBrains.ProjectModel.FileTypes;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Psi;
 using JetBrains.Util;

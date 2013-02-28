@@ -18,6 +18,7 @@ using System;
 
 using JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model;
 using JetBrains.TreeModels;
+using JetBrains.UI.Components;
 using JetBrains.UI.RichText;
 using JetBrains.UI.TreeView;
 
@@ -28,7 +29,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
     TreeModelViewColumn myAssociationColumn;
     TreeModelViewColumn myPatternTypeColumn;
 
-    public FileAssociationsTreeView(TreeModel model, ITreeViewController controller) : base(model, controller)
+    public FileAssociationsTreeView(TreeModel model, ITreeViewController controller, UIApplicationEnvironment environment) : base(model, controller, environment)
     {
     }
 

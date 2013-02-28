@@ -12,6 +12,7 @@ using JetBrains.ReSharper.Feature.Services.LiveTemplates.LiveTemplates;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.Util;
+using JetBrains.Util.Logging;
 
 namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
 {
@@ -53,7 +54,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
       Debug.Assert(Shell.Instance.Invocator != null, "Shell.Instance.Invocator != null");
       Shell.Instance.Invocator.Dispatcher.AssertAccess();
 
-      Assertion.Assert(!PsiManager.GetInstance(solution).HasActiveTransaction, "PSI transaction is active");
       solution.GetComponent<SolutionDocumentTransactionManager>().AssertNotUnderTransaction();
 
       IFile file = myAnchor.GetContainingFile();
@@ -62,7 +62,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
 
       var infos = GetFieldInfos(newDeclaration, myHolders);
 
-      var textControl = EditorManager.GetInstance(solution).OpenProjectFile(item, true, TabOptions.DefaultTab);
+      var textControl = EditorManager.GetInstance(solution).OpenProjectFile(item, true);
       if (textControl == null)
       {
         if (Shell.Instance.IsInInternalMode || Shell.Instance.IsTestShell) Logger.Fail("textControl != null");

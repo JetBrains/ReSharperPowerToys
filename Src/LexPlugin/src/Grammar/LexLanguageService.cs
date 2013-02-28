@@ -3,6 +3,7 @@ using JetBrains.ReSharper.LexPlugin.Psi.Lex.Parsing;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Caches2;
 using JetBrains.ReSharper.Psi.Impl;
+using JetBrains.ReSharper.Psi.Modules;
 using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.ReSharper.Psi.Tree;
 
@@ -20,9 +21,9 @@ namespace JetBrains.ReSharper.LexPlugin.Grammar
       //myFormatter = formatter;
     }
 
-    public override IWordIndexLanguageProvider WordIndexLanguageProvider
+    public override bool IsCaseSensitive
     {
-      get { return new LexWordIndexProvider(); }
+      get { return true; }
     }
 
     public override ILanguageCacheProvider CacheProvider

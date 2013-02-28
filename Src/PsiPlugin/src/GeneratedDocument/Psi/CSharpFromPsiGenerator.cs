@@ -157,7 +157,7 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument.Psi
 
     private void AddClassesOption(IOptionDefinition optionDefinition, int endOffset, int startOffset, string optionValueText, int startInGenerated = 0)
     {
-      var classes = optionDefinition.GetPsiServices().CacheManager.GetDeclarationsCache(optionDefinition.GetPsiModule(), false, true).GetTypeElementsByCLRName(optionValueText);
+      var classes = optionDefinition.GetPsiServices().Symbols.GetSymbolScope(optionDefinition.GetPsiModule(), myFile.GetResolveContext(), false, true).GetTypeElementsByCLRName(optionValueText);
       if(classes.Count == 0)
       {
         string optionName = GetOptionNameWithoutQuotes(optionDefinition);
@@ -198,7 +198,7 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument.Psi
     {
       int dotIndex = optionValueText.LastIndexOf('.');
       var className = optionValueText.Substring(0, dotIndex);
-      var classes = optionDefinition.GetPsiServices().CacheManager.GetDeclarationsCache(optionDefinition.GetPsiModule(), false, true).GetTypeElementsByCLRName(className);
+      var classes = optionDefinition.GetPsiServices().Symbols.GetSymbolScope(optionDefinition.GetPsiModule(), myFile.GetResolveContext(), true, true).GetTypeElementsByCLRName(className);
       if (classes.Count == 0)
       {
         string optionName = GetOptionNameWithoutQuotes(optionDefinition);

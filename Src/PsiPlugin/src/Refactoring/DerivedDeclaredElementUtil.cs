@@ -3,6 +3,7 @@ using System.Linq;
 using JetBrains.DocumentModel;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.Psi.Files;
 using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Cache;
@@ -115,7 +116,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring
                 {
                   IPsiSourceFile sourceFile = packageName.SourceFile;
                   CollectionUtil.AddRange(
-                    classes, sourceFile.PsiModule.GetPsiServices().CacheManager.GetDeclarationsCache(sourceFile.PsiModule, false, true).
+                    classes, sourceFile.PsiModule.GetPsiServices().Symbols.GetSymbolScope(sourceFile.PsiModule, sourceFile.ResolveContext, false, true).
                       GetTypeElementsByCLRName(packageName.Value + "." + className.Value));
                 }
               }
@@ -223,8 +224,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring
       List<PsiOptionSymbol> visitorMetodPrefix = cache.GetOptionSymbols("\"visitMethodPrefix\"").ToList();
       List<PsiOptionSymbol> interfacesPackageName = cache.GetOptionSymbols("psiInterfacePackageName").ToList();
       var classes = new Dictionary<ITypeElement, IList<PsiOptionSymbol>>();
+
       foreach (PsiOptionSymbol visitorName in visitorClassName)
       {
+        IPsiSourceFile sourceFile = visitorName.SourceFile;
+        var symbolScope = sourceFile.GetPsiServices().Symbols.GetSymbolScope(sourceFile.PsiModule, sourceFile.ResolveContext, false, true);
         foreach (PsiOptionSymbol methodSuffix in visitorMetodSuffix)
         {
           foreach (PsiOptionSymbol methodPrefix in visitorMetodPrefix)
@@ -233,22 +237,21 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring
             {
               if ((visitorName.SourceFile == methodSuffix.SourceFile) && (methodPrefix.SourceFile == packageName.SourceFile) && (packageName.SourceFile == methodSuffix.SourceFile))
               {
-                IPsiSourceFile sourceFile = visitorName.SourceFile;
                 ICollection<ITypeElement> visitorClasses = new List<ITypeElement>();
-                ICollection<ITypeElement> visitorNotGenericClasses = sourceFile.GetPsiServices().CacheManager.GetDeclarationsCache(sourceFile.PsiModule, false, true).GetTypeElementsByCLRName(packageName.Value + "." + visitorName.Value);
+                ICollection<ITypeElement> visitorNotGenericClasses = symbolScope.GetTypeElementsByCLRName(packageName.Value + "." + visitorName.Value);
                 foreach (ITypeElement typeElement in visitorNotGenericClasses)
                 {
                   visitorClasses.Add(typeElement);
                 }
                 ICollection<ITypeElement> visitorGenericClasses =
-                  sourceFile.GetPsiServices().CacheManager.GetDeclarationsCache(sourceFile.PsiModule, false, true).GetTypeElementsByCLRName(
+                  symbolScope.GetTypeElementsByCLRName(
                     packageName.Value + "." + visitorName.Value + "`1");
                 foreach (ITypeElement visitorGenericClass in visitorGenericClasses)
                 {
                   visitorClasses.Add(visitorGenericClass);
                 }
                 visitorGenericClasses =
-                  sourceFile.GetPsiServices().CacheManager.GetDeclarationsCache(sourceFile.PsiModule, false, true).GetTypeElementsByCLRName(
+                  symbolScope.GetTypeElementsByCLRName(
                     packageName.Value + "." + visitorName.Value + "`2");
                 foreach (ITypeElement visitorGenericClass in visitorGenericClasses)
                 {

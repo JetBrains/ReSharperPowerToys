@@ -1,4 +1,6 @@
-﻿using JetBrains.Application.Settings;
+﻿using System;
+using JetBrains.Application.Settings;
+using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.Stages;
 using JetBrains.ReSharper.Psi;
@@ -10,7 +12,7 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi
   [FileStructureExplorer]
   public class PsiFileStructureExplorer : IFileStructureExplorer
   {
-    public IFileStructure Run(IDaemonProcess process, IPsiSourceFile psiSourceFile, IContextBoundSettingsStore settingsStore, IFile file)
+    public IFileStructure Run(Predicate<DocumentRange> isRangeInvalidated, IPsiSourceFile psiSourceFile, IContextBoundSettingsStore settingsStore, IFile file)
     {
       var psiFile = file as IPsiFile;
       if (psiFile == null)

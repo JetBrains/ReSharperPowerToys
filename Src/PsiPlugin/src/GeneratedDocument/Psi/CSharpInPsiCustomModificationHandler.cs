@@ -51,6 +51,11 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument.Psi
       action();
     }
 
+    public IUsingDirective HandleAddImport(IPsiServices psiServices, Func<IUsingDirective> action, ITreeNode generatedAnchor, bool before, IFile generatedFile)
+    {
+      return null;
+    }
+
     public IUsingDirective HandleAddImport(IPsiServices psiServices, Func<IUsingDirective> action, IUsingDirective generatedAnchor, bool before, IFile generatedFile)
     {
       return action();

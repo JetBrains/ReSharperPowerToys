@@ -4,11 +4,9 @@ using JetBrains.Application;
 using JetBrains.Application.Progress;
 using JetBrains.DataFlow;
 using JetBrains.DocumentManagers.impl;
-using JetBrains.ProjectModel;
 using JetBrains.ReSharper.LexPlugin.Grammar;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Caches;
-using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Psi.Util.Caches;
 using JetBrains.Util;
@@ -35,16 +33,11 @@ namespace JetBrains.ReSharper.LexPlugin.Cache
     public LexCache(Lifetime lifetime,
       IPsiServices psiServices,
       IShellLocks shellLocks,
-      CacheManager cacheManager,
       IPsiConfiguration psiConfiguration, IPersistentIndexManager persistentIdIndex)
     {
       myPsiConfiguration = psiConfiguration;
       myPersistentIdIndex = persistentIdIndex;
       myShellLocks = shellLocks;
-      //using (ReadLockCookie.Create())
-      //{
-        lifetime.AddBracket(() => cacheManager.RegisterCache(this), () => cacheManager.UnregisterCache(this));
-      //}
     }
 
     public object Load(IProgressIndicator progress, bool enablePersistence)
@@ -79,13 +72,8 @@ namespace JetBrains.ReSharper.LexPlugin.Cache
           }
         }) != LoadResult.OK)
 
-
-      {
-        // clear all...
-        ((ICache)this).Release();
-        return null;
-      }
-      return data;
+        return data;
+      return null;
     }
 
     public void MergeLoaded(object data)
@@ -228,7 +216,7 @@ namespace JetBrains.ReSharper.LexPlugin.Cache
       }
     }
 
-    public void OnFileRemoved(IPsiSourceFile sourceFile)
+    public void Drop(IPsiSourceFile sourceFile)
     {
       myShellLocks.AssertWriteAccessAllowed();
 
@@ -265,27 +253,6 @@ namespace JetBrains.ReSharper.LexPlugin.Cache
       }
     }
 
-    public object Build(IPsiAssembly assembly)
-    {
-      return null;
-    }
-
-    public void Merge(IPsiAssembly assembly, object part)
-    {
-    }
-
-    public void OnAssemblyRemoved(IPsiAssembly assembly)
-    {
-    }
-
-    public void OnSandBoxCreated(SandBox sandBox)
-    {
-    }
-
-    public void OnSandBoxPsiChange(ITreeNode elementContainingChanges)
-    {
-    }
-
     public void OnPsiChange(ITreeNode elementContainingChanges, PsiChangedElementType type)
     {
       if (elementContainingChanges != null)
@@ -299,27 +266,14 @@ namespace JetBrains.ReSharper.LexPlugin.Cache
       }
     }
 
-    public void OnDocumentChange(ProjectFileDocumentCopyChange args)
+    public void OnDocumentChange(IPsiSourceFile sourceFile, ProjectFileDocumentCopyChange change)
     {
-      foreach (IPsiSourceFile sourceFile in args.ProjectFile.ToSourceFiles())
+      myShellLocks.AssertWriteAccessAllowed();
+      if (Accepts(sourceFile))
       {
         myShellLocks.AssertWriteAccessAllowed();
-        if (Accepts(sourceFile))
-        {
-          myShellLocks.AssertWriteAccessAllowed();
-          myDirtyFiles.Add(sourceFile);
-        }
+        myDirtyFiles.Add(sourceFile);
       }
-    }
-
-    public IEnumerable<IPsiSourceFile> OnProjectModelChange(ProjectModelChange change)
-    {
-      return EmptyList<IPsiSourceFile>.InstanceList;
-    }
-
-    public IEnumerable<IPsiSourceFile> OnPsiModulePropertiesChange(IPsiModule module)
-    {
-      return EmptyList<IPsiSourceFile>.InstanceList;
     }
 
     public void SyncUpdate(bool underTransaction)
@@ -346,10 +300,6 @@ namespace JetBrains.ReSharper.LexPlugin.Cache
       }
     }
 
-    public void Release()
-    {
-    }
-
     public bool HasDirtyFiles
     {
       get { return !myDirtyFiles.IsEmpty(); }
@@ -357,7 +307,7 @@ namespace JetBrains.ReSharper.LexPlugin.Cache
 
     private static bool Accepts(IPsiSourceFile sourceFile)
     {
-      return sourceFile.GetAllPossiblePsiLanguages().Any(x => x.Is<LexLanguage>());
+      return sourceFile.IsLanguageSupported<LexLanguage>();
     }
 
     public IEnumerable<ILexSymbol> GetTokenSymbols(string name)

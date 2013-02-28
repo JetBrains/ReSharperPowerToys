@@ -20,6 +20,7 @@ using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
+using JetBrains.ReSharper.Psi.Files;
 
 namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
 {
@@ -37,7 +38,8 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
     public void Execute(Action<DaemonStageResult> commiter)
     {
       // Getting PSI (AST) for the file being highlighted
-      var file = myDaemonProcess.SourceFile.GetNonInjectedPsiFile<CSharpLanguage>() as ICSharpFile;
+      var sourceFile = myDaemonProcess.SourceFile;
+      var file = sourceFile.GetPsiServices().Files.GetDominantPsiFile<CSharpLanguage>(sourceFile) as ICSharpFile;
       if (file == null)
         return;
 

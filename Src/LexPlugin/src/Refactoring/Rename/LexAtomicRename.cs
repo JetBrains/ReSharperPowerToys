@@ -7,6 +7,7 @@ using JetBrains.Application.Progress;
 using JetBrains.ReSharper.Feature.Services.Util;
 using JetBrains.ReSharper.LexPlugin.Grammar;
 using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.Psi.Pointers;
 using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Refactorings;
@@ -42,7 +43,7 @@ namespace JetBrains.ReSharper.LexPlugin.Refactoring.Rename
       myDoNotShowBindingConflicts = doNotShowBindingConflicts;
       myElement = declaredElement;
       mySecondaryElements = new List<IDeclaredElementPointer<IDeclaredElement>>();
-      mySecondaryElements = RenameRefactoringService.Instance.GetRenameService(LexLanguage.Instance).GetSecondaryElements(declaredElement).Select(x => PsiManagerExtensions.CreateElementPointer<IDeclaredElement>(x)).ToList();
+      mySecondaryElements = RenameRefactoringService.Instance.GetRenameService(LexLanguage.Instance).GetSecondaryElements(declaredElement).Select(x => x.CreateElementPointer()).ToList();
       BuildDeclarations();
     }
 
@@ -100,7 +101,7 @@ namespace JetBrains.ReSharper.LexPlugin.Refactoring.Rename
         pi.Advance();
       }
 
-      psiServices.PsiManager.UpdateCaches();
+      psiServices.Caches.Update();
 
       IDeclaredElement newDeclaredElement;
       if (myDeclarations.Count > 0)

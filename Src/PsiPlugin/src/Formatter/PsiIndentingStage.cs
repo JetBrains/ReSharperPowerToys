@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using JetBrains.Application.Progress;
+using JetBrains.ReSharper.Psi.CodeStyle;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 using JetBrains.ReSharper.Psi.Impl.CodeStyle;
 using JetBrains.ReSharper.Psi.Tree;
@@ -9,6 +10,15 @@ using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
 
 namespace JetBrains.ReSharper.PsiPlugin.Formatter
 {
+
+  public class PsiIndentCache : IndentCache<ITreeNode>
+  {
+    public PsiIndentCache(ICodeFormatterImpl codeFormatter, AlignmentTabFillStyle tabFillStyle, GlobalFormatSettings formattingSettings)
+      : base(codeFormatter, null, tabFillStyle, formattingSettings)
+    {
+    }
+  }
+
   public class PsiIndentingStage
   {
     private readonly bool myInTypingAssist;
@@ -21,7 +31,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 
     public static void DoIndent(CodeFormattingContext context, IProgressIndicator progress, bool inTypingAssist)
     {
-      var indentCache = new PsiIndentCache();
+      var indentCache = new PsiIndentCache(context.CodeFormatter,
+        AlignmentTabFillStyle.USE_SPACES, new GlobalFormatSettings(true, 2));
       _indentVisitor = CreateIndentVisitor(indentCache, inTypingAssist);
       var stage = new PsiIndentingStage(inTypingAssist);
       //List<FormattingRange> nodePairs = context.SequentialEnumNodes().Where(p => context.CanModifyInsideNodeRange(p.First, p.Last)).ToList();

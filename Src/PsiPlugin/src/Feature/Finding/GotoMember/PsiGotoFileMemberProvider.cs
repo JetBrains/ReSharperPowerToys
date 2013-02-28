@@ -8,6 +8,7 @@ using JetBrains.ReSharper.Feature.Services.Goto;
 using JetBrains.ReSharper.Feature.Services.Occurences;
 using JetBrains.ReSharper.Feature.Services.Search;
 using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.Psi.Files;
 using JetBrains.ReSharper.PsiPlugin.Cache;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl;
 using JetBrains.Text;
@@ -15,11 +16,10 @@ using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Feature.Finding.GotoMember
 {
-  [FeaturePart]
+  [ShellFeaturePart]
   public class PsiGotoFileMemberProvider : IGotoFileMemberProvider
   {
-
-    public IEnumerable<MatchingInfo> FindMatchingInfos(IdentifierMatcher matcher, INavigationScope scope, CheckForInterrupt checkCancelled, GotoContext gotoContext)
+    public IEnumerable<MatchingInfo> FindMatchingInfos(IdentifierMatcher matcher, INavigationScope scope, GotoContext gotoContext, CheckForInterrupt checkForInterrupt)
     {
       var fileMemberScope = scope as FileMemberNavigationScope;
       if (fileMemberScope == null)
@@ -52,12 +52,12 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Finding.GotoMember
       return sourceFile.IsValid();
     }
 
-    public virtual bool IsApplicable(INavigationScope scope, GotoContext gotoContext)
+    public bool IsApplicable(INavigationScope scope, GotoContext gotoContext, IdentifierMatcher matcher)
     {
       return true;
     }
 
-    public IEnumerable<IOccurence> GetOccurencesByMatchingInfo(MatchingInfo navigationInfo, INavigationScope scope, GotoContext gotoContext)
+    public IEnumerable<IOccurence> GetOccurencesByMatchingInfo(MatchingInfo navigationInfo, INavigationScope scope, GotoContext gotoContext, CheckForInterrupt checkForInterrupt)
     {
       var fileMembersMap = gotoContext.GetData(PsiFileMembersMap.PsiFileMembersMapKey);
       if (fileMembersMap == null)
@@ -91,8 +91,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Finding.GotoMember
 
       var psiSymbols = GetPsiSourceFileTypeElements(primarySourceFile);
 
-      var psiManager = primarySourceFile.GetSolution().GetComponent<PsiManager>();
-      var psiFile = psiManager.GetPrimaryPsiFile(primarySourceFile) as PsiFile;
+      var services = primarySourceFile.GetPsiServices();
+      var psiFile = services.Files.GetPrimaryPsiFile(primarySourceFile) as PsiFile;
       var primaryMembers = new LinkedList<PsiFileMemberData>();
       foreach(var symbol in psiSymbols)
       {

@@ -9,6 +9,7 @@ using JetBrains.ReSharper.LexPlugin.Cache;
 using JetBrains.ReSharper.LexPlugin.Grammar;
 using JetBrains.ReSharper.LexPlugin.Psi.Lex.Tree;
 using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.Psi.Files;
 using JetBrains.ReSharper.Psi.Tree;
 
 namespace JetBrains.ReSharper.LexPlugin.Cache

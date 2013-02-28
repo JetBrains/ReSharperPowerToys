@@ -17,19 +17,16 @@
 using System.Drawing;
 using System.Windows.Forms;
 using JetBrains.ActionManagement;
-using JetBrains.Application;
 using JetBrains.Application.Settings;
 using JetBrains.DataFlow;
 using JetBrains.IDE.TreeBrowser;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Features.Browsing.Hierarchies.Actions;
 using JetBrains.ReSharper.Features.Common.TreePsiBrowser;
-using JetBrains.UI.Components.Theming;
+using JetBrains.UI.Components;
 using JetBrains.UI.Controls;
 using JetBrains.UI.Extensions;
-using JetBrains.UI.Icons;
 using JetBrains.UI.RichText;
-using JetBrains.UI.Theming;
 using JetBrains.UI.ToolWindowManagement;
 using JetBrains.Util;
 
@@ -38,40 +35,32 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
   [SolutionComponent]
   public class TypeInterfaceToolWindowRegistrar
   {
-    private readonly Lifetime myLifetime;
-    private readonly IShellLocks myLocks;
-    private readonly ISettingsStore mySettingsStore;
-    private readonly IActionBarManager myActionBarManager;
-    private readonly ITheming myTheming;
-    private readonly IThemedIconManager myThemedIconManager;
-    private readonly ToolWindowClass myToolWindowClass;
-    private IColorThemeManager myColorThemeManager;
+    private readonly Lifetime _lifetime;
+    private readonly ISettingsStore _settingsStore;
+    private readonly IActionBarManager _actionBarManager;
+    private readonly ToolWindowClass _toolWindowClass;
+    private readonly UIApplicationEnvironment _environment;
 
     public TypeInterfaceToolWindowRegistrar(Lifetime lifetime,
                                     ToolWindowManager toolWindowManager,
-                                    IShellLocks locks,
                                     ISettingsStore settingsStore,
                                     IActionManager actionManager,
                                     IActionBarManager actionBarManager,
                                     IShortcutManager shortcutManager,
                                     TypeInterfaceToolWindowDescriptor toolWindowDescriptor,
-                                    ITheming theming,
-                                    IThemedIconManager themedIconManager, IColorThemeManager colorThemeManager)
+                                    UIApplicationEnvironment environment)
     {
-      myLifetime = lifetime;
-      myLocks = locks;
-      mySettingsStore = settingsStore;
-      myActionBarManager = actionBarManager;
-      myTheming = theming;
-      myThemedIconManager = themedIconManager;
-      myColorThemeManager = colorThemeManager;
+      _lifetime = lifetime;
+      _settingsStore = settingsStore;
+      _actionBarManager = actionBarManager;
+      _environment = environment;
 
-      myToolWindowClass = toolWindowManager.Classes[toolWindowDescriptor];
-      myToolWindowClass.RegisterEmptyContent(
+      _toolWindowClass = toolWindowManager.Classes[toolWindowDescriptor];
+      _toolWindowClass.RegisterEmptyContent(
         lifetime,
         lt =>
           {
-            var emptyLabel = new RichTextLabel { BackColor = SystemColors.Control, Dock = DockStyle.Fill };
+            var emptyLabel = new RichTextLabel(environment) { BackColor = SystemColors.Control, Dock = DockStyle.Fill };
             emptyLabel.RichTextBlock.Add(new RichText("No hierarchies open", new TextStyle(FontStyle.Bold)));
             emptyLabel.RichTextBlock.Add(
               new RichText("Use " + actionManager.GetHowToExecuteAction(shortcutManager, typeof(BrowseTypeHierarchyAction)), TextStyle.Default));
@@ -83,10 +72,10 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
 
     public void Show(TreeModelBrowserDescriptor browserDescriptor)
     {
-      ToolWindowInstance instance = myToolWindowClass.RegisterInstance(
-        myLifetime,
+      ToolWindowInstance instance = _toolWindowClass.RegisterInstance(
+        _lifetime,
         StringUtil.MakeTitle(browserDescriptor.Title.Value), browserDescriptor.Image,
-        (lt, twi) => TreeModelBrowserPanelPsiWPF.SelectTreeImplementation(browserDescriptor, lt, myActionBarManager, myLocks, mySettingsStore, myColorThemeManager, myThemedIconManager));
+        (lt, twi) => TreeModelBrowserPanelPsiWPF.SelectTreeImplementation(_environment, browserDescriptor, lt, _actionBarManager, _settingsStore));
       instance.Lifetime.AddAction(() => browserDescriptor.LifetimeDefinition.Terminate());
       instance.EnsureControlCreated().Show();
     }

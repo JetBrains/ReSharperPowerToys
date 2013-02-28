@@ -21,6 +21,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using JetBrains.Application.Configuration;
 using JetBrains.Util;
+using JetBrains.Util.Logging;
 
 namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model
 {

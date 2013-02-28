@@ -9,6 +9,7 @@ using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.LexPlugin.Grammar;
 using JetBrains.ReSharper.LexPlugin.Psi.Lex.Tree;
 using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.Psi.Files;
 
 
 namespace JetBrains.ReSharper.LexPlugin.CodeInspections.Lex
@@ -40,9 +41,9 @@ namespace JetBrains.ReSharper.LexPlugin.CodeInspections.Lex
     [CanBeNull]
     public static ILexFile GetPsiFile(IPsiSourceFile sourceFile)
     {
-      PsiManager manager = PsiManager.GetInstance(sourceFile.GetSolution());
-      manager.AssertAllDocumentAreCommited();
-      return manager.GetPsiFile<LexLanguage>(new DocumentRange(sourceFile.Document, 0)) as ILexFile;
+      var psiServices = sourceFile.GetPsiServices();
+      psiServices.Files.AssertAllDocumentAreCommited();
+      return psiServices.Files.GetDominantPsiFile<LexLanguage>(sourceFile) as ILexFile;
     }
 
     protected bool IsSupported(IPsiSourceFile sourceFile)

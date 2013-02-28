@@ -19,6 +19,7 @@ using JetBrains.Application.DataContext;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Feature.Services.Util;
+using JetBrains.ReSharper.Psi.Files;
 using DataConstants = JetBrains.ReSharper.Psi.Services.DataConstants;
 using MessageBox = JetBrains.Util.MessageBox;
 using System.Linq;
@@ -43,7 +44,7 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
       // Get PsiManager for solution, from which we will obtain code elements
       var services = solution.GetPsiServices();
 
-      if (!services.PsiManager.AllDocumentsAreCommited)
+      if (!services.Files.AllDocumentsAreCommited)
         return;
 
       using (CommitCookie caches = CommitCookie.Commit(solution).WaitForCaches(this))

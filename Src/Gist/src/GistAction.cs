@@ -32,6 +32,7 @@ using JetBrains.UI.PopupWindowManager;
 using JetBrains.UI.RichText;
 using JetBrains.UI.Tooltips;
 using JetBrains.Util;
+using JetBrains.Util.Logging;
 using JetBrains.Util.Special;
 using System.Linq;
 using RestSharp;

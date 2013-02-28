@@ -113,7 +113,7 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
       Dictionary<IMethod, ITypeParameter> map = UpdateDeclarations(methods);
 
       // We have changed declarations. cashes should be updated)
-      PsiManager.GetInstance(Solution).UpdateCaches();
+      Solution.GetPsiServices().Caches.Update();
 
       // Process method usages one more time to insert correct type arguments to the call.
       using (var subPi = new SubProgressIndicator(pi, 1))

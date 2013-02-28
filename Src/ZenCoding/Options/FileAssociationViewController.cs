@@ -15,12 +15,15 @@
  */
 
 using JetBrains.TreeModels;
+using JetBrains.UI.Components;
 using JetBrains.UI.TreeView;
 
 namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
 {
   public class FileAssociationViewController : TreeViewController
   {
+    public FileAssociationViewController(UIApplicationEnvironment environment) : base(environment) {}
+
     public override bool ExpandNodeInitially(TreeModelNode modelNode)
     {
       return true;
