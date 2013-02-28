@@ -55,7 +55,7 @@
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.IDE.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.Metadata">
-      <HintPath>$(ReSharperSdkBinaries)\ReSharper\Main\Bin\JetBrains.Platform.ReSharper.Metadata.dll</HintPath>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.Metadata.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.ProjectModel">
       <SpecificVersion>False</SpecificVersion>
@@ -88,9 +88,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.CSharp.dll</HintPath>
     </Reference>
-    <Reference Include="JetBrains.ReSharper.Feature.Services.JavaScript">
-      <HintPath>$(ReSharperSdkBinaries)\ReSharper\Main\bin\JetBrains.ReSharper.Feature.Services.JavaScript.dll</HintPath>
-    </Reference>
     <Reference Include="JetBrains.ReSharper.Feature.Services.Navigation">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Navigation.dll</HintPath>
     </Reference>
@@ -103,9 +100,6 @@
     <Reference Include="JetBrains.ReSharper.Intentions">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Intentions.dll</HintPath>
     </Reference>
-    <Reference Include="JetBrains.ReSharper.Intentions.JavaScript">
-      <HintPath>$(ReSharperSdkBinaries)\\ReSharper\Main\bin\JetBrains.ReSharper.Intentions.JavaScript.dll</HintPath>
-    </Reference>
     <Reference Include="JetBrains.ReSharper.NewRefactorings">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.NewRefactorings.dll</HintPath>
     </Reference>
@@ -114,9 +108,6 @@
     </Reference>
     <Reference Include="JetBrains.ReSharper.Psi.CSharp">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Psi.CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.Psi.JavaScript">
-      <HintPath>$(ReSharperSdkBinaries)\\ReSharper\Main\bin\JetBrains.ReSharper.Psi.JavaScript.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Psi.Services">
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Psi.Services.dll</HintPath>
