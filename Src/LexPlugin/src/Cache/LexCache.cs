@@ -31,7 +31,6 @@ namespace JetBrains.ReSharper.LexPlugin.Cache
     private LexPersistentCache<CacheData> myPersistentCache;
 
     public LexCache(Lifetime lifetime,
-      IPsiServices psiServices,
       IShellLocks shellLocks,
       IPsiConfiguration psiConfiguration, IPersistentIndexManager persistentIdIndex)
     {
