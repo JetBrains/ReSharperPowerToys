@@ -57,7 +57,10 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
 
     public override RefactoringActionGroup ActionGroup
     {
-      get { throw new NotImplementedException(); }
+      get
+      {
+        return RefactoringActionGroup.Convert;
+      }
     }
 
     public override string HelpKeyword
@@ -133,7 +136,6 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
 
     public override void SuccessfulFinish(IProgressIndicator pi)
     {
-      throw new NotImplementedException();
     }
 
     private bool IsAvailableInternal(IDataContext context, out IParameter systemTypeParameter, out IMethod method)
