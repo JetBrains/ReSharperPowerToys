@@ -28,7 +28,7 @@ using JetBrains.UI;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyCompany("JetBrains s.r.o.")]
 [assembly: AssemblyProduct("ReSharper PowerToys")]
-[assembly: AssemblyCopyright("Copyright \u00A9 2006-2011 JetBrains s.r.o.")]
+[assembly: AssemblyCopyright("Copyright \u00A9 2006-2013 JetBrains s.r.o.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: AssemblyVersion("1.0.0.0")]

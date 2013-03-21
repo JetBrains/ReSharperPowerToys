@@ -38,7 +38,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="JetBrains.Platform.ReSharper.ComponentModel">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.ComponentModel.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net35\Newtonsoft.Json.dll</HintPath>
@@ -118,6 +120,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Gist.nuspec" />
   </ItemGroup>
   <Import Project="$(ReSharperSdkTargets)\Plugin.NoReferences.Targets" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
