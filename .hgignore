@@ -39,3 +39,4 @@ _ReSharper*/
 
 Src\PsiPlugin\src\Gen
 Src\LexPlugin\src\Gen
+Src/packages/
