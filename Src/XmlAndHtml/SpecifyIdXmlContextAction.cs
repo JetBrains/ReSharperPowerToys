@@ -19,6 +19,7 @@ using JetBrains.Application.Progress;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Bulbs;
 using JetBrains.ReSharper.Feature.Services.Xml.Bulbs;
+using JetBrains.ReSharper.Intentions.Extensibility;
 using JetBrains.ReSharper.Intentions.Xml.ContextActions;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Psi.Xml.Parsing;
@@ -37,10 +38,14 @@ namespace XmlAndHtml
     Name = "Specify Id",
     Description = "Creates an 'id' attribute for the selected tag of an XML document",
     Priority = 0)]
-  public class SpecifyIdXmlContextAction : XmlContextAction
+  public class SpecifyIdXmlContextAction : ContextActionBase
   {
+    private readonly XmlContextActionDataProvider myDataProvider;
+
     public SpecifyIdXmlContextAction(XmlContextActionDataProvider dataProvider)
-      : base(dataProvider) { }
+    {
+      myDataProvider = dataProvider;
+    }
 
     protected override Action<ITextControl> ExecutePsiTransaction(ISolution solution, IProgressIndicator progress)
     {
@@ -50,7 +55,7 @@ namespace XmlAndHtml
 
       IXmlElementFactory factory = XmlElementFactory.GetInstance(tagHeader);
 
-      IXmlAttribute idAttr = factory.CreateAttribute("id=\"\"", DataProvider.PsiServices, DataProvider.PsiModule);
+      IXmlAttribute idAttr = factory.CreateAttribute("id=\"\"", myDataProvider.PsiServices, myDataProvider.PsiModule);
       IXmlTag tag = tagHeader.GetContainingNode<IXmlTag>();
       if (tag == null)
         return null;
@@ -86,6 +91,6 @@ namespace XmlAndHtml
       return true;
     }
 
-    private IXmlTagHeader GetTagHeader() { return DataProvider.FindNodeAtCaret<IXmlTagHeader>(); }
+    private IXmlTagHeader GetTagHeader() { return myDataProvider.FindNodeAtCaret<IXmlTagHeader>(); }
   }
 }
