@@ -1,5 +1,6 @@
 ﻿using JetBrains.ReSharper.Feature.Services.CodeCompletion;
 using JetBrains.ReSharper.Feature.Services.CodeCompletion.Impl;
+using JetBrains.ReSharper.Feature.Services.CodeCompletion.Infrastructure;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
@@ -9,22 +10,28 @@ using JetBrains.ReSharper.PsiPlugin.Resolve;
 namespace JetBrains.ReSharper.PsiPlugin.Completion
 {
   [Language(typeof (PsiLanguage))]
-  internal class PsiCodeCompletionItemsProvider : ItemsProviderWithReference<PsiCodeCompletionContext, PsiReferenceBase, PsiFile>
+  internal class PsiCodeCompletionItemsProvider : ItemsProviderWithSymbolTable<PsiCodeCompletionContext, PsiReferenceBase, PsiFile>
   {
     protected override bool IsAvailable(PsiCodeCompletionContext context)
     {
-      if (!((context.BasicContext.CodeCompletionType == CodeCompletionType.BasicCompletion) || (context.BasicContext.CodeCompletionType == CodeCompletionType.AutomaticCompletion)))
-      {
-        return false;
-      }
+      var codeCompletionType = context.BasicContext.CodeCompletionType;
+      return (codeCompletionType == CodeCompletionType.BasicCompletion) ||
+             (codeCompletionType == CodeCompletionType.AutomaticCompletion);
+    }
 
-      IReference reference = context.ReparsedContext.Reference;
-      if (reference == null)
-      {
-        return false;
-      }
+    protected override TextLookupRanges EvaluateRanges(PsiCodeCompletionContext context)
+    {
+      return context.Ranges;
+    }
 
-      return true;
+    protected override PsiReferenceBase GetReference(PsiCodeCompletionContext context)
+    {
+      return context.ReparsedContext.Reference as PsiReferenceBase;
+    }
+
+    protected override ISymbolTable GetCompletionSymbolTable(PsiReferenceBase reference, PsiCodeCompletionContext context)
+    {
+      return reference.GetCompletionSymbolTable();
     }
   }
 }
