@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<actions>
+  <action id="GotoGeneratedClass" text="Go to generated class"/>
+  <action id="GotoGeneratedInterface" text="Go to generated interface"/>
+  <action id="GotoGeneratedMethod" text="Go to generated method"/>
+
+  <action id="GotoPsiRule" text="Go PSI rule"/>
+
+</actions>

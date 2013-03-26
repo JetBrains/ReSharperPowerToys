@@ -1,0 +1,16 @@
+|a|(0)
+	:
+	|b|(1)
+  ;
+
+|a|(2)
+	:
+	|c|(3)
+  ;
+
+
+---------------------------------------------------------
+(0): ReSharper Underlined Error Highlighting: Duplicate declaration
+(1): ReSharper Underlined Error Highlighting: Unresolved reference
+(2): ReSharper Underlined Error Highlighting: Duplicate declaration
+(3): ReSharper Underlined Error Highlighting: Unresolved reference
