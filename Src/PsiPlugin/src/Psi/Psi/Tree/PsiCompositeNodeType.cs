@@ -4,8 +4,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree
 {
   public abstract class PsiCompositeNodeType : CompositeNodeType
   {
-    protected PsiCompositeNodeType(string s)
-      : base(s)
+    protected PsiCompositeNodeType(string s, int index)
+      : base(s, index)
     {
     }
   }

@@ -255,8 +255,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing
 
     private abstract class PsiTokenNodeType : TokenNodeType, IPsiTokenNodeType
     {
+      private static int _index;
+
       protected PsiTokenNodeType(string s)
-        : base(s)
+        : base(s, _index++)
       {
       }
 

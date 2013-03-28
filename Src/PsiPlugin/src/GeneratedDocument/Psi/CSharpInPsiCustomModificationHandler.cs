@@ -92,7 +92,7 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument.Psi
       return true;
     }
 
-    public string GetSpecialElementType(DeclaredElementPresenterStyle presenter, IDeclaredElement declaredElement, ISubstitution substitution)
+    public string GetSpecialMethodType(DeclaredElementPresenterStyle presenter, IMethod method, ISubstitution substitution)
     {
       return null;
     }
