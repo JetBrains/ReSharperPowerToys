@@ -147,7 +147,7 @@ namespace JetBrains.ReSharper.LexPlugin.Psi.Lex.Parsing
         public static readonly NodeType Instance = new DummyNodeType();
 
         private DummyNodeType()
-          : base("DummyContainer")
+          : base("DummyContainer", 0)
         {
         }
 
