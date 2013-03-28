@@ -1,13 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Feature.Services.Bulbs;
 using JetBrains.ReSharper.Feature.Services.Intentions.DataProviders;
 using JetBrains.ReSharper.Intentions.CreateFromUsage;
 using JetBrains.ReSharper.Intentions.Extensibility;
 using JetBrains.ReSharper.Intentions.Extensibility.Menu;
-using JetBrains.ReSharper.Intentions.Extensibility.Menu.Ex;
 using JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi.Highlightings;
 using JetBrains.ReSharper.PsiPlugin.Resolve;
 using JetBrains.Util;
@@ -27,15 +24,15 @@ namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
       return new CreatePsiRuleTarget(Reference);
     }
 
-    protected override IEnumerable<IBulbAction> CreateBulbItems()
+    protected override IEnumerable<IBulbAction> CreateBulbActions()
     {
       Debug.Assert(Reference != null, "Reference != null");
       yield return new CreatePsiRuleItem(Lazy.Of(() => new CreatePsiRuleContext(GetTarget() as CreatePsiRuleTarget)), string.Format("Create rule {0}", Reference.GetName()));
     }
 
-    public void CreateBulbItems(BulbMenu menu, Severity severity)
+    IEnumerable<IntentionAction> IQuickFix.CreateBulbItems()
     {
-      menu.ArrangeQuickFixes(Items.Select(_ => Pair.Of(_, severity)));
+      return Items.ToQuickFixAction();
     }
 
     public bool IsAvailable(IUserDataHolder cache)
