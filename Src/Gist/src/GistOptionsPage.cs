@@ -24,6 +24,7 @@ using JetBrains.Application.DataContext;
 using JetBrains.Application.Settings;
 using JetBrains.DataFlow;
 using JetBrains.ReSharper.PowerToys.Gist.GitHub;
+using JetBrains.UI.Application;
 using JetBrains.UI.Components;
 using JetBrains.UI.CrossFramework;
 using JetBrains.UI.Options;
@@ -46,7 +47,7 @@ namespace JetBrains.ReSharper.PowerToys.Gist
     private readonly GitHubService myGitHubService;
     private readonly IDataContext myEmptyDataContext;
 
-    public GistOptionsPage([NotNull] Lifetime lifetime, UIApplicationEnvironment environment, DataContexts dataContexts, GitHubService gitHubService, OptionsSettingsSmartContext settings)
+    public GistOptionsPage([NotNull] Lifetime lifetime, UIApplication environment, DataContexts dataContexts, GitHubService gitHubService, OptionsSettingsSmartContext settings)
       : base(lifetime, environment, Pid)
     {
       if (lifetime == null)

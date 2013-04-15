@@ -155,7 +155,7 @@ namespace JetBrains.ReSharper.LexPlugin.Psi.Lex.Parsing
       private readonly string myPresentation;
 
       public GenericTokenNodeType(string s, string presentation = null)
-        : base(s, 0)
+        : base(s)
       {
         myPresentation = presentation;
       }
@@ -190,7 +190,7 @@ namespace JetBrains.ReSharper.LexPlugin.Psi.Lex.Parsing
     private sealed class IdentifierNodeType : LexTokenType.LexTokenNodeType
     {
       public IdentifierNodeType()
-        : base("IDENTIFIER", 1)
+        : base("IDENTIFIER")
       {
       }
 
@@ -229,7 +229,7 @@ namespace JetBrains.ReSharper.LexPlugin.Psi.Lex.Parsing
     private sealed class NewLineNodeType : LexTokenType.LexTokenNodeType
     {
       public NewLineNodeType()
-        : base("NEW_LINE", 2)
+        : base("NEW_LINE")
       {
       }
 
@@ -250,8 +250,9 @@ namespace JetBrains.ReSharper.LexPlugin.Psi.Lex.Parsing
 
     private abstract class LexTokenNodeType : TokenNodeType, ILexTokenNodeType
     {
-      protected LexTokenNodeType(string s, int index)
-        : base(s, index)
+      private static int _index;
+      protected LexTokenNodeType(string s)
+        : base(s, _index++)
       {
       }
 
@@ -303,7 +304,7 @@ namespace JetBrains.ReSharper.LexPlugin.Psi.Lex.Parsing
     private sealed class WhitespaceNodeType : LexTokenType.LexTokenNodeType
     {
       public WhitespaceNodeType()
-        : base("WHITE_SPACE", 3)
+        : base("WHITE_SPACE")
       {
       }
 

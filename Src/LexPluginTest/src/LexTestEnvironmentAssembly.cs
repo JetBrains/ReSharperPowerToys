@@ -8,7 +8,7 @@ using NUnit.Framework;
 using JetBrains.Threading;
 
 [SetUpFixture]
-public class PsiTestEnvironmentAssembly : ReSharperTestEnvironmentAssembly
+public class LexTestEnvironmentAssembly : ReSharperTestEnvironmentAssembly
 {
   /// <summary>
   /// Gets the assemblies to load into test environment.

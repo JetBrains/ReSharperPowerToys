@@ -17,6 +17,7 @@
 using System;
 
 using JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model;
+using JetBrains.UI.Application;
 using JetBrains.UI.CommonControls;
 using JetBrains.UI.Components;
 
@@ -26,11 +27,11 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
   {
     bool myUpdateCookie;
 
-    public EditFileAssociationControl(UIApplicationEnvironment environment) : base(environment)
+    public EditFileAssociationControl(UIApplication environment) : base(environment)
     {
     }
 
-    public EditFileAssociationControl(FileAssociation fileAssociation, UIApplicationEnvironment environment) : base(environment)
+    public EditFileAssociationControl(FileAssociation fileAssociation, UIApplication environment) : base(environment)
     {
       InitializeComponent();
 

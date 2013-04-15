@@ -31,7 +31,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
     }
 
 
-    private static FileSystemPath GetBasePathBeforeMapping(IQualifiableReference pathReference)
+    private static FileSystemPath GetBasePathBeforeMapping(IQualifiableReferenceWithGlobalSymbolTable pathReference)
     {
       IQualifier qualifier = pathReference.GetQualifier();
       if (qualifier == null)

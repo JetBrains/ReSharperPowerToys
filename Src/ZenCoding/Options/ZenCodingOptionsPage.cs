@@ -24,6 +24,7 @@ using JetBrains.ReSharper.Features.Common.Options;
 using JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model;
 using JetBrains.Threading;
 using JetBrains.TreeModels;
+using JetBrains.UI.Application;
 using JetBrains.UI.Components;
 using JetBrains.UI.CrossFramework;
 using JetBrains.UI.Icons;
@@ -42,13 +43,13 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
     private readonly OptionsSettingsSmartContext mySettings;
     private readonly IThreading myThreading;
     private readonly IThemedIconManager myIconManager;
-    private readonly UIApplicationEnvironment _environmanet;
+    private readonly UIApplication _environmanet;
     private readonly SortedDictionary<int, FileAssociation> myFileAssociations;
 
     private readonly FileAssociationsTreeView myView;
     private readonly Expression<Func<ZenCodingSettings, IIndexedEntry<int, FileAssociation>>> myLambdaExpression;
 
-    public ZenCodingOptionsPage(Lifetime lifetime, OptionsSettingsSmartContext settings, IThreading threading, IThemedIconManager iconManager, UIApplicationEnvironment environmanet)
+    public ZenCodingOptionsPage(Lifetime lifetime, OptionsSettingsSmartContext settings, IThreading threading, IThemedIconManager iconManager, UIApplication environmanet)
     {
       myLifetime = lifetime;
       mySettings = settings;

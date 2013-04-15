@@ -87,7 +87,8 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument.Psi
       return method.Body;
     }
 
-    public bool PreferQualifiedReference(IQualifiableReference reference)
+
+    public bool PreferQualifiedReference(IQualifiableReferenceWithGlobalSymbolTable reference)
     {
       return true;
     }

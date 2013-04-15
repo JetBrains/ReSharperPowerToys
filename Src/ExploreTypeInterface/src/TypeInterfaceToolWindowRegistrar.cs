@@ -23,6 +23,7 @@ using JetBrains.IDE.TreeBrowser;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Features.Browsing.Hierarchies.Actions;
 using JetBrains.ReSharper.Features.Common.TreePsiBrowser;
+using JetBrains.UI.Application;
 using JetBrains.UI.Components;
 using JetBrains.UI.Controls;
 using JetBrains.UI.Extensions;
@@ -39,7 +40,7 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
     private readonly ISettingsStore _settingsStore;
     private readonly IActionBarManager _actionBarManager;
     private readonly ToolWindowClass _toolWindowClass;
-    private readonly UIApplicationEnvironment _environment;
+    private readonly UIApplication _environment;
 
     public TypeInterfaceToolWindowRegistrar(Lifetime lifetime,
                                     ToolWindowManager toolWindowManager,
@@ -48,7 +49,7 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
                                     IActionBarManager actionBarManager,
                                     IShortcutManager shortcutManager,
                                     TypeInterfaceToolWindowDescriptor toolWindowDescriptor,
-                                    UIApplicationEnvironment environment)
+                                    UIApplication environment)
     {
       _lifetime = lifetime;
       _settingsStore = settingsStore;

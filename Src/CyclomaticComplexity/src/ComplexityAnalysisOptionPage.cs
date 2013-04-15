@@ -18,6 +18,7 @@ using JetBrains.Application.Settings;
 using JetBrains.DataFlow;
 using JetBrains.ReSharper.Features.Environment.Options.Inspections;
 using JetBrains.ReSharper.PowerToys.CyclomaticComplexity.resources;
+using JetBrains.UI.Application;
 using JetBrains.UI.CommonControls.Fonts;
 using JetBrains.UI.Components;
 using JetBrains.UI.Options;
@@ -38,7 +39,7 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
     /// <summary>
     /// Creates new instance of ComplexityAnalysisOptionPage
     /// </summary>
-    public ComplexityAnalysisOptionPage(Lifetime lifetime, UIApplicationEnvironment environment, OptionsSettingsSmartContext settings)
+    public ComplexityAnalysisOptionPage(Lifetime lifetime, UIApplication environment, OptionsSettingsSmartContext settings)
       : base(lifetime, environment, PID)
     {
       myLifetime = lifetime;
