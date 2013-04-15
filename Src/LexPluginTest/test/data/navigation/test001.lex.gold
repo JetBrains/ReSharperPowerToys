@@ -1,0 +1,61 @@
+-------------- offset 8 line 2 col 5 --------------------
++++ JetBrains.ReSharper.Features.Finding.FindUsages.GotoUsagesProvider navigation provider results +++
+Immediate result: Occurence's dump:
+TO: [O] <YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> {|NEW_LINE_PAIR|} { currTokenType = makeToken (LexTokenType.NEW_LINE); return currTokenType; } RANGE: (118,131) @ test001.lex
+Occurence's type:
+Occurence
+Occurence's kinds:
+Other
+Occurence's navigation result. Opened file: test001.lex
+------------------
+%%
+
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> {|CARET|NEW_LINE_PAIR} { currTokenType = makeToken (LexTokenType.NEW_LINE); return currTokenType; }
+
+------------------
+
++++ JetBrains.ReSharper.Features.Finding.Usages.FindUsagesAdvancedProvider navigation provider results +++
+Immediate result: Occurence's dump:
+TO: [O] <YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> {|NEW_LINE_PAIR|} { currTokenType = makeToken (LexTokenType.NEW_LINE); return currTokenType; } RANGE: (118,131) @ test001.lex
+Occurence's type:
+Occurence
+Occurence's kinds:
+Other
+Occurence's navigation result. Opened file: test001.lex
+------------------
+%%
+
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> {|CARET|NEW_LINE_PAIR} { currTokenType = makeToken (LexTokenType.NEW_LINE); return currTokenType; }
+
+------------------
+
++++ JetBrains.ReSharper.Features.Finding.Usages.FindUsagesProvider navigation provider results +++
+Immediate result: Occurence's dump:
+TO: [O] <YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> {|NEW_LINE_PAIR|} { currTokenType = makeToken (LexTokenType.NEW_LINE); return currTokenType; } RANGE: (118,131) @ test001.lex
+Occurence's type:
+Occurence
+Occurence's kinds:
+Other
+Occurence's navigation result. Opened file: test001.lex
+------------------
+%%
+
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> {|CARET|NEW_LINE_PAIR} { currTokenType = makeToken (LexTokenType.NEW_LINE); return currTokenType; }
+
+------------------
+
++++ JetBrains.ReSharper.Features.Finding.Usages.HighlightUsagesProvider navigation provider results +++
+Immediate result: Occurence's dump:
+TO: [O] <YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> {|NEW_LINE_PAIR|} { currTokenType = makeToken (LexTokenType.NEW_LINE); return currTokenType; } RANGE: (118,131) @ test001.lex
+Occurence's type:
+Occurence
+Occurence's kinds:
+Other
+Occurence's navigation result. Opened file: test001.lex
+------------------
+%%
+
+<YYINITIAL,YY_IN_BRACE_BLOCK,YY_IN_PAREN_EXPRESSION> {|CARET|NEW_LINE_PAIR} { currTokenType = makeToken (LexTokenType.NEW_LINE); return currTokenType; }
+
+------------------
+
