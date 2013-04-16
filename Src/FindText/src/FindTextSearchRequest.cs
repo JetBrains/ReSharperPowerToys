@@ -165,9 +165,9 @@ namespace JetBrains.ReSharper.PowerToys.FindText
             {
               if ((_searchFlags & FindTextSearchFlags.Other) == FindTextSearchFlags.None)
                 continue;
-            }
+            }           
             var options = new OccurencePresentationOptions();
-            _items.Add(new EmptyTextualOccurence(sourceFile, new DocumentRange(document, textRange), options));
+            _items.Add(new RangeOccurence(sourceFile, new DocumentRange(document, textRange), OccurenceType.TextualOccurence, options));
           }
         }
       }
