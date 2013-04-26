@@ -13,7 +13,7 @@ using JetBrains.Util.Lazy;
 namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
 {
   [QuickFix]
-  internal class CreatePsiRuleFromUsage : CreateFromUsageActionBase<CreatePsiRuleContext, PsiRuleReference>, IQuickFix
+  internal class CreatePsiRuleFromUsage : CreateFromUsageActionBase<PsiRuleReference>, IQuickFix
   {
     public CreatePsiRuleFromUsage(PsiUnresolvedRuleReferenceHighlighting error): base(error.Reference)
     {
