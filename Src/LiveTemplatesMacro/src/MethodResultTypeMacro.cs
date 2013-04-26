@@ -25,28 +25,32 @@ using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PowerToys.LiveTemplatesMacro
 {
-  [Macro("LiveTemplatesMacro.MethodResultTypeMacro",
+  [MacroDefinition("LiveTemplatesMacro.MethodResultTypeMacro",
     ShortDescription = "Result type of containing method",
     LongDescription = "Obtains the result type of the containing method it is used in")]
-  public class MethodResultTypeMacro : IMacro
+  public class MethodResultTypeMacro : IMacroDefinition
   {
-    public string GetPlaceholder(IDocument document)
+    public string GetPlaceholder(IDocument document, IEnumerable<IMacroParameterValue> parameters)
     {
-      return "a";      
+      return "a";
     }
 
-    public bool HandleExpansion(IHotspotContext context, IList<string> arguments)
+    public ParameterInfo[] Parameters
     {
-      return false;
+      get { return EmptyArray<ParameterInfo>.Instance; }
     }
+  }
 
-    public HotspotItems GetLookupItems(IHotspotContext context, IList<string> arguments)
+  [MacroImplementation(Definition = typeof(MethodResultTypeMacro))]
+  public class MethodResultTypeMacroImpl : SimpleMacroImplementation
+  {
+    public override HotspotItems GetLookupItems(IHotspotContext context)
     {
-      var textControl = context.SessionContext.TextControl;
-      if (textControl == null)
+      var document = context.ExpressionRange.Document;
+      if (document == null)
         return null;
 
-      var method = TextControlToPsi.GetContainingTypeOrTypeMember(context.SessionContext.Solution, textControl) as IMethod;
+      var method = TextControlToPsi.GetContainingTypeOrTypeMember(context.SessionContext.Solution, document, context.ExpressionRange.StartOffsetRange().TextRange.StartOffset) as IMethod;
       if (method != null)
       {
         var lookupItems = new List<ILookupItem>();
@@ -59,15 +63,7 @@ namespace JetBrains.ReSharper.PowerToys.LiveTemplatesMacro
 
       return null;
     }
-
-    public string EvaluateQuickResult(IHotspotContext context, IList<string> arguments)
-    {
-      return null;
-    }
-
-    public ParameterInfo[] Parameters
-    {
-      get { return EmptyArray<ParameterInfo>.Instance; }
-    }
   }
+
+
 }
