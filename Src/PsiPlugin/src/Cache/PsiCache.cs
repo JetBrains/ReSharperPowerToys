@@ -7,6 +7,7 @@ using JetBrains.DocumentManagers.impl;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
+using JetBrains.ReSharper.Psi.Files;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Psi.Util.Caches;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
@@ -301,7 +302,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Cache
 
     private static bool Accepts(IPsiSourceFile sourceFile)
     {
-      return sourceFile.IsLanguageSupported<PsiLanguage>();
+      return sourceFile.GetDominantLanguages().OfType<PsiLanguage>().Any();
     }
 
     public IEnumerable<IPsiSymbol> GetSymbols(string name)

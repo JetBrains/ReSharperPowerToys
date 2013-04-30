@@ -48,6 +48,7 @@
     <Compile Include="src\CurrentFilePathMacro.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="src\MethodResultTypeMacroImpl.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ReadMe.txt" />
