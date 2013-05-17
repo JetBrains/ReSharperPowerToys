@@ -23,10 +23,10 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi
     {
       new RecursiveElementProcessor(node =>
       {
-        if (node is IPsiCommentNode)
-        {
-          ProcessComment(node.GetTreeStartOffset(), ((IPsiCommentNode)node).CommentText);
-        }
+        var commentNode = node as IPsiCommentNode;
+        if (commentNode != null)
+          ProcessComment(commentNode, commentNode.CommentText);
+
       }).Process(myFile);
 
       CloseAllRanges(myFile);
