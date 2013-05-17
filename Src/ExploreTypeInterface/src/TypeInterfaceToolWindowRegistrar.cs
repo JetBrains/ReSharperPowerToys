@@ -17,6 +17,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using JetBrains.ActionManagement;
+using JetBrains.Application;
 using JetBrains.Application.Settings;
 using JetBrains.DataFlow;
 using JetBrains.IDE.TreeBrowser;
@@ -41,6 +42,7 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
     private readonly IActionBarManager _actionBarManager;
     private readonly ToolWindowClass _toolWindowClass;
     private readonly UIApplication _environment;
+    private readonly ChangeManager _changeManager;
 
     public TypeInterfaceToolWindowRegistrar(Lifetime lifetime,
                                     ToolWindowManager toolWindowManager,
@@ -49,12 +51,13 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
                                     IActionBarManager actionBarManager,
                                     IShortcutManager shortcutManager,
                                     TypeInterfaceToolWindowDescriptor toolWindowDescriptor,
-                                    UIApplication environment)
+                                    UIApplication environment, ChangeManager changeManager)
     {
       _lifetime = lifetime;
       _settingsStore = settingsStore;
       _actionBarManager = actionBarManager;
       _environment = environment;
+      _changeManager = changeManager;
 
       _toolWindowClass = toolWindowManager.Classes[toolWindowDescriptor];
       _toolWindowClass.RegisterEmptyContent(
@@ -76,7 +79,7 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
       ToolWindowInstance instance = _toolWindowClass.RegisterInstance(
         _lifetime,
         StringUtil.MakeTitle(browserDescriptor.Title.Value), browserDescriptor.Image,
-        (lt, twi) => TreeModelBrowserPanelPsiWPF.SelectTreeImplementation(_environment, browserDescriptor, lt, _actionBarManager, _settingsStore));
+        (lt, twi) => TreeModelBrowserPanelPsiWPF.SelectTreeImplementation(_environment, browserDescriptor, lt, _actionBarManager, _settingsStore, _changeManager));
       instance.Lifetime.AddAction(() => browserDescriptor.LifetimeDefinition.Terminate());
       instance.EnsureControlCreated().Show();
     }
