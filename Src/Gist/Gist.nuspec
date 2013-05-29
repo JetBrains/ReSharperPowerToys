@@ -12,6 +12,9 @@
     <description>With this ReSharper PowerToy you can easily and transparently publish your code snippets on Gist.</description>
     <copyright>Copyright &#x00A9; 2006-2013 JetBrains s.r.o.</copyright>
     <tags>PowerToys GitHub</tags>
+    <dependencies>
+      <dependency id="ReSharper" version="8.0" />
+    </dependencies>
   </metadata>
   <files>
     <file src="bin\$Configuration$\" target="ReSharper\v8.0\" />

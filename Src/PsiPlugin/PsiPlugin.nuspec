@@ -10,6 +10,9 @@
     <description>ReSharper PSI Plugin</description>
     <copyright>Copyright &#x00A9; 2006-2013 JetBrains s.r.o.</copyright>
     <tags>PowerToys PSI</tags>
+    <dependencies>
+      <dependency id="ReSharper" version="8.0" />
+    </dependencies>
   </metadata>
   <files>
     <file src="bin\" target="ReSharper\v8.0\" />
