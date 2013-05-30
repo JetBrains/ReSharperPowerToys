@@ -22,6 +22,8 @@ using JetBrains.ReSharper.Feature.Services.Xml.Bulbs;
 using JetBrains.ReSharper.Intentions.Extensibility;
 using JetBrains.ReSharper.Intentions.Xml.ContextActions;
 using JetBrains.ReSharper.Psi.Tree;
+using JetBrains.ReSharper.Psi.Xml;
+using JetBrains.ReSharper.Psi.Xml.Impl.Tree;
 using JetBrains.ReSharper.Psi.Xml.Parsing;
 using JetBrains.ReSharper.Psi.Xml.Tree;
 using JetBrains.TextControl;
@@ -53,12 +55,13 @@ namespace XmlAndHtml
       if (tagHeader == null)
         return null;
 
-      IXmlElementFactory factory = XmlElementFactory.GetInstance(tagHeader);
-
-      IXmlAttribute idAttr = factory.CreateAttribute("id=\"\"", myDataProvider.PsiServices, myDataProvider.PsiModule);
-      IXmlTag tag = tagHeader.GetContainingNode<IXmlTag>();
+      IXmlTag tag = XmlTagNavigator.GetByTagHeader(tagHeader);
       if (tag == null)
         return null;
+
+      var factory = XmlElementFactory<XmlLanguage>.GetByNodeLanguage(tagHeader);
+
+      IXmlAttribute idAttr = factory.CreateAttributeForTag(tag, "id=\"\"");
 
       tag.AddAttributeBefore(idAttr, null);
 
