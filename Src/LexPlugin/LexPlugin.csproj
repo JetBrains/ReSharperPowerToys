@@ -260,7 +260,9 @@
     <CsLex Include="src\Psi\Lex\Parsing\lex.lex" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="LexPlugin.nuspec" />
+    <None Include="LexPlugin.nuspec">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="src\Gen\Lex.timestamp" />
   </ItemGroup>
   <ItemGroup>
