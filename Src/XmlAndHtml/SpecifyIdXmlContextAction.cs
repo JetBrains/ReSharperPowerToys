@@ -20,9 +20,7 @@ using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Bulbs;
 using JetBrains.ReSharper.Feature.Services.Xml.Bulbs;
 using JetBrains.ReSharper.Intentions.Extensibility;
-using JetBrains.ReSharper.Intentions.Xml.ContextActions;
 using JetBrains.ReSharper.Psi.Tree;
-using JetBrains.ReSharper.Psi.Xml;
 using JetBrains.ReSharper.Psi.Xml.Impl.Tree;
 using JetBrains.ReSharper.Psi.Xml.Parsing;
 using JetBrains.ReSharper.Psi.Xml.Tree;
@@ -59,7 +57,7 @@ namespace XmlAndHtml
       if (tag == null)
         return null;
 
-      var factory = XmlElementFactory<XmlLanguage>.GetByNodeLanguage(tagHeader);
+      XmlElementFactory factory = XmlElementFactory.GetInstance(tag);
 
       IXmlAttribute idAttr = factory.CreateAttributeForTag(tag, "id=\"\"");
 
