@@ -16,7 +16,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
   {
     private readonly PsiLanguage myLanguage;
 
-    public PsiCodeFormatter(Lifetime lifetime, PsiLanguage language, ISettingsStore settingsStore, ISettingsOptimization settingsOptimization)
+    public PsiCodeFormatter(Lifetime lifetime, PsiLanguage language,
+      ISettingsStore settingsStore, ISettingsOptimization settingsOptimization)
       : base(settingsStore)
     {
       myLanguage = language;
@@ -42,12 +43,20 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       return PsiFormatterHelper.CreateSpace(" ");
     }
 
-    public override ITreeNode[] CreateSpace(string indent, ITreeNode rightNonSpace, ITreeNode replacedSpace)
+    public override ITreeNode CreateSpace(string indent, ITreeNode replacedSpace)
     {
-      return new ITreeNode[] { PsiFormatterHelper.CreateSpace(indent) };
+      return PsiFormatterHelper.CreateSpace(indent);
     }
 
-    public override ITreeRange Format(ITreeNode firstElement, ITreeNode lastElement, CodeFormatProfile profile, IProgressIndicator pi, IContextBoundSettingsStore overrideSettingsStore = null)
+    public override ITreeNode CreateNewLine()
+    {
+      return PsiFormatterHelper.CreateNewLine();
+    }
+
+    public override ITreeRange Format(
+      ITreeNode firstElement, ITreeNode lastElement,
+      CodeFormatProfile profile, IProgressIndicator pi,
+      IContextBoundSettingsStore overrideSettingsStore = null)
     {
       ITreeNode firstNode;
       ITreeNode lastNode;
@@ -80,7 +89,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       return new TreeRange(firstElement, lastElement);
     }
 
-    private static void GetFirstAndLastNode(ITreeNode firstElement, ITreeNode lastElement, out ITreeNode firstNode, out ITreeNode lastNode)
+    private static void GetFirstAndLastNode(
+      ITreeNode firstElement, ITreeNode lastElement,
+      out ITreeNode firstNode, out ITreeNode lastNode)
     {
       firstNode = firstElement;
       lastNode = lastElement;
@@ -193,12 +204,14 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       return firstNode;
     }
 
-    public override void FormatInsertedNodes(ITreeNode nodeFirst, ITreeNode nodeLast, bool formatSurround)
+    public override void FormatInsertedNodes(
+      ITreeNode nodeFirst, ITreeNode nodeLast, bool formatSurround)
     {
       Format(nodeFirst, nodeLast, CodeFormatProfile.GENERATOR, null);
     }
 
-    public override ITreeRange FormatInsertedRange(ITreeNode nodeFirst, ITreeNode nodeLast, ITreeRange origin)
+    public override ITreeRange FormatInsertedRange(
+      ITreeNode nodeFirst, ITreeNode nodeLast, ITreeRange origin)
     {
       Format(nodeFirst, nodeLast, CodeFormatProfile.GENERATOR, null);
       return new TreeRange(nodeFirst, nodeLast);
@@ -209,26 +222,17 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       FormatInsertedNodes(newNode, newNode, false);
     }
 
-    public override void FormatDeletedNodes(ITreeNode parent, ITreeNode prevNode, ITreeNode nextNode)
+    public override void FormatDeletedNodes(
+      ITreeNode parent, ITreeNode prevNode, ITreeNode nextNode)
     {
-      Format(
-        prevNode,
-        nextNode,
-        CodeFormatProfile.GENERATOR,
-        null);
+      Format(prevNode, nextNode, CodeFormatProfile.GENERATOR, null);
     }
   }
 
   public class PsiCodeFormattingContext : CodeFormattingContext
   {
-    public PsiCodeFormattingContext(PsiCodeFormatter psiCodeFormatter, ITreeNode firstNode, ITreeNode lastNode)
-      : base(psiCodeFormatter, firstNode, lastNode)
-    {
-    }
-
-    protected override bool CanModifyNode(ITreeNode element, NodeModificationType nodeModificationType)
-    {
-      return true;
-    }
+    public PsiCodeFormattingContext(
+      PsiCodeFormatter psiCodeFormatter, ITreeNode firstNode, ITreeNode lastNode)
+      : base(psiCodeFormatter, firstNode, lastNode) { }
   }
 }

@@ -5,21 +5,15 @@ using JetBrains.ReSharper.Psi.ExtensionsAPI.Caches2;
 using JetBrains.ReSharper.Psi.Impl;
 using JetBrains.ReSharper.Psi.Modules;
 using JetBrains.ReSharper.Psi.Parsing;
-using JetBrains.ReSharper.Psi.Tree;
 
 namespace JetBrains.ReSharper.LexPlugin.Grammar
 {
   [Language(typeof (LexLanguage))]
   public class LexLanguageService : LanguageService
   {
-    //private readonly LexCodeFormatter myFormatter;
-
-    public LexLanguageService(PsiLanguageType LexLanguageType, IConstantValueService constantValueService)
-      : base(LexLanguageType, constantValueService)
-
-    {
-      //myFormatter = formatter;
-    }
+    public LexLanguageService(
+      PsiLanguageType lexLanguageType, IConstantValueService constantValueService)
+      : base(lexLanguageType, constantValueService) { }
 
     public override bool IsCaseSensitive
     {
@@ -41,11 +35,6 @@ namespace JetBrains.ReSharper.LexPlugin.Grammar
       get { return DefaultTypePresenter.Instance; }
     }
 
-   /*public override ICodeFormatter CodeFormatter
-    {
-      get { return myFormatter; }
-    }*/
-
     public override ILexerFactory GetPrimaryLexerFactory()
     {
       return LexLexerFactory.Instance;
@@ -56,18 +45,11 @@ namespace JetBrains.ReSharper.LexPlugin.Grammar
       return new FilteringLexLexer(lexer);
     }
 
-    public override IParser CreateParser(ILexer lexer, IPsiModule module, IPsiSourceFile sourceFile)
+    public override IParser CreateParser(
+      ILexer lexer, IPsiModule module, IPsiSourceFile sourceFile)
     {
       return new Parser(lexer, sourceFile);
     }
-
-    public override bool IsFilteredNode(ITreeNode node)
-    {
-      var tokenNode = node as ITokenNode;
-      return tokenNode != null && SimpleFilteringLexer.IS_WHITESPACE(tokenNode.GetTokenType());
-    }
-
-    #region Nested type: Parser
 
     private class Parser : LexParser
     {
@@ -77,7 +59,5 @@ namespace JetBrains.ReSharper.LexPlugin.Grammar
         SourceFile = sourceFile;
       }
     }
-
-    #endregion
   }
 }

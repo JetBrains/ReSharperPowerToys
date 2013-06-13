@@ -15,10 +15,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Grammar
   public class PsiLanguageService : LanguageService
   {
     private readonly PsiCodeFormatter myFormatter;
-   
-    public PsiLanguageService(PsiLanguageType psiLanguageType, IConstantValueService constantValueService, PsiCodeFormatter formatter)
-      : base(psiLanguageType, constantValueService)
 
+    public PsiLanguageService(PsiLanguageType psiLanguageType,
+      IConstantValueService constantValueService, PsiCodeFormatter formatter)
+      : base(psiLanguageType, constantValueService)
     {
       myFormatter = formatter;
     }
@@ -59,15 +59,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Grammar
       return new FilteringPsiLexer(tokenBuffer.CreateLexer());
     }
 
-    public override IParser CreateParser(ILexer lexer, IPsiModule module, IPsiSourceFile sourceFile)
+    public override IParser CreateParser(
+      ILexer lexer, IPsiModule module, IPsiSourceFile sourceFile)
     {
       return new Parser(lexer, sourceFile);
-    }
-
-    public override bool IsFilteredNode(ITreeNode node)
-    {
-      var tokenNode = node as ITokenNode;
-      return tokenNode != null && SimpleFilteringLexer.IS_WHITESPACE(tokenNode.GetTokenType());
     }
 
     private class Parser : PsiParser

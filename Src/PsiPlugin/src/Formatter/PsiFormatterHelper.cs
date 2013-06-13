@@ -22,10 +22,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
 
     public static void ReplaceSpaces(ITreeNode leftNode, ITreeNode rightNode, IEnumerable<string> wsTexts)
     {
-      if (wsTexts == null)
-      {
-        return;
-      }
+      if (wsTexts == null) return;
+
       FormatterImplHelper.ReplaceSpaces(leftNode, rightNode, wsTexts.CreateWhitespaces());
     }
 
@@ -33,33 +31,37 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
     private static IWhitespaceNode[] CreateWhitespaces([NotNull] this IEnumerable<string> wsTexts)
     {
       if (wsTexts == null)
-      {
         throw new ArgumentNullException("wsTexts");
+
+      var nodes = new List<IWhitespaceNode>();
+      foreach (var text in wsTexts)
+      {
+        if (text.IsEmpty()) continue;
+
+        if (text.IsNewLine()) nodes.Add(CreateNewLine());
+        else
+        {
+          // consistency check (remove in release?)
+          if (!PsiLexer.IsWhitespace(text))
+            throw new ApplicationException("Inconsistent space structure");
+
+          nodes.Add(CreateSpace(text));
+        }
       }
 
-      return wsTexts.Where(text => !text.IsEmpty()).Select(text =>
-      {
-        if (text.IsNewLine())
-        {
-          return CreateNewLine("\r\n");
-        }
-        // consistency check (remove in release?)
-        if (!PsiLexer.IsWhitespace(text))
-        {
-          throw new ApplicationException("Inconsistent space structure");
-        }
-        return CreateSpace(text);
-      }).ToArray();
+      return nodes.ToArray();
     }
 
-    public static IWhitespaceNode CreateNewLine(string text)
+    public static IWhitespaceNode CreateNewLine()
     {
-      return new NewLine(text);
+      return new NewLine(Environment.NewLine);
     }
 
     private static IEnumerable<IWhitespaceNode> GetLineFeedsTo(this ITreeNode fromNode, ITreeNode toNode)
     {
-      return fromNode.GetWhitespacesTo(toNode).Where(wsNode => (wsNode.GetTokenType() == PsiTokenType.NEW_LINE) && (wsNode is IWhitespaceNode)).Cast<IWhitespaceNode>();
+      return fromNode.GetWhitespacesTo(toNode)
+        .Where(wsNode => (wsNode.GetTokenType() == PsiTokenType.NEW_LINE) && (wsNode is IWhitespaceNode))
+        .Cast<IWhitespaceNode>();
     }
 
     public static void MakeIndent(this ITreeNode indentNode, string indent)
@@ -67,11 +69,14 @@ namespace JetBrains.ReSharper.PsiPlugin.Formatter
       var lastSpace = indentNode.PrevSibling as IWhitespaceNode;
       if (lastSpace != null && lastSpace.GetTokenType() != PsiTokenType.NEW_LINE)
       {
-        ITreeNode firstSpace = lastSpace.LeftWhitespaces().TakeWhile(ws => ws.GetTokenType() != PsiTokenType.NEW_LINE).LastOrDefault() ?? lastSpace;
+        ITreeNode firstSpace = lastSpace.LeftWhitespaces()
+          .TakeWhile(ws => ws.GetTokenType() != PsiTokenType.NEW_LINE).LastOrDefault() ?? lastSpace;
         Debug.Assert(firstSpace != null, "firstSpace != null");
         if (firstSpace != lastSpace)
         {
-          while ((firstSpace != null) && (firstSpace.GetTokenType() != PsiTokenType.NEW_LINE) && (firstSpace.GetNextToken() != lastSpace))
+          while ((firstSpace != null)
+            && (firstSpace.GetTokenType() != PsiTokenType.NEW_LINE)
+            && (firstSpace.GetNextToken() != lastSpace))
           {
             firstSpace = firstSpace.GetNextToken();
           }

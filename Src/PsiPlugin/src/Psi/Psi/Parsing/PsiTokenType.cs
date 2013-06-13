@@ -233,10 +233,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing
 
     private sealed class NewLineNodeType : PsiTokenNodeType
     {
-      public NewLineNodeType()
-        : base("NEW_LINE")
-      {
-      }
+      public NewLineNodeType() : base("NEW_LINE") { }
 
       public override string TokenRepresentation
       {
@@ -310,18 +307,18 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing
     private sealed class WhitespaceNodeType : PsiTokenNodeType
     {
       public WhitespaceNodeType()
-        : base("WHITE_SPACE")
-      {
-      }
+        : base("WHITE_SPACE") { }
 
       public override string TokenRepresentation
       {
         get { return " "; }
       }
 
-      public override LeafElementBase Create(IBuffer buffer, TreeOffset startOffset, TreeOffset endOffset)
+      public override LeafElementBase Create(
+        IBuffer buffer, TreeOffset startOffset, TreeOffset endOffset)
       {
-        return new Whitespace(buffer.GetText(new TextRange(startOffset.Offset, endOffset.Offset)));
+        return new Whitespace(
+          buffer.GetText(new TextRange(startOffset.Offset, endOffset.Offset)));
       }
     }
 
