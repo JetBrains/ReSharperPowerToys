@@ -70,10 +70,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Completion
           var insertRange = new TextRange(tokenRange.TextRange.StartOffset, selectionRange.TextRange.EndOffset);
           var replaceRange = new TextRange(tokenRange.TextRange.StartOffset, Math.Max(tokenRange.TextRange.EndOffset, selectionRange.TextRange.EndOffset));
 
-          return new TextLookupRanges(insertRange, false, replaceRange);
+          return new TextLookupRanges(insertRange, replaceRange);
         }
       }
-      return new TextLookupRanges(TextRange.InvalidRange, false, TextRange.InvalidRange);
+
+      return new TextLookupRanges(TextRange.InvalidRange, TextRange.InvalidRange);
     }
   }
 }

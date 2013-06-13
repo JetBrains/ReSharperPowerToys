@@ -1,5 +1,4 @@
-﻿using System;
-using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
+﻿using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing;
 
 namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl
@@ -13,8 +12,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl
       myText = text;
     }
 
-    #region IWhitespaceNode Members
-
     public override int GetTextLength()
     {
       return myText.Length;
@@ -25,9 +22,12 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl
       return myText;
     }
 
-    #endregion
+    public override bool IsFiltered()
+    {
+      return true;
+    }
 
-    public override String ToString()
+    public override string ToString()
     {
       return base.ToString() + " spaces:" + "\"" + GetText() + "\"";
     }
@@ -35,10 +35,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl
 
   internal sealed class Whitespace : WhitespaceBase
   {
-    public Whitespace(string text)
-      : base(text)
-    {
-    }
+    public Whitespace(string text) : base(text) { }
 
     public override NodeType NodeType
     {
@@ -48,10 +45,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl
 
   internal class NewLine : WhitespaceBase
   {
-    public NewLine(string text)
-      : base(text)
-    {
-    }
+    public NewLine(string text) : base(text) { }
 
     public override NodeType NodeType
     {

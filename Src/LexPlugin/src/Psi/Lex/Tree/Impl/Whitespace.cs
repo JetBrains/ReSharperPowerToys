@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using JetBrains.ReSharper.LexPlugin.Psi.Lex.Parsing;
+﻿using JetBrains.ReSharper.LexPlugin.Psi.Lex.Parsing;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 
 namespace JetBrains.ReSharper.LexPlugin.Psi.Lex.Tree.Impl
@@ -16,8 +12,6 @@ namespace JetBrains.ReSharper.LexPlugin.Psi.Lex.Tree.Impl
       myText = text;
     }
 
-    #region IWhitespaceNode Members
-
     public override int GetTextLength()
     {
       return myText.Length;
@@ -28,9 +22,12 @@ namespace JetBrains.ReSharper.LexPlugin.Psi.Lex.Tree.Impl
       return myText;
     }
 
-    #endregion
+    public override bool IsFiltered()
+    {
+      return true;
+    }
 
-    public override String ToString()
+    public override string ToString()
     {
       return base.ToString() + " spaces:" + "\"" + GetText() + "\"";
     }
@@ -38,10 +35,7 @@ namespace JetBrains.ReSharper.LexPlugin.Psi.Lex.Tree.Impl
 
   internal sealed class Whitespace : WhitespaceBase
   {
-    public Whitespace(string text)
-      : base(text)
-    {
-    }
+    public Whitespace(string text) : base(text) { }
 
     public override NodeType NodeType
     {
@@ -51,10 +45,7 @@ namespace JetBrains.ReSharper.LexPlugin.Psi.Lex.Tree.Impl
 
   internal class NewLine : WhitespaceBase
   {
-    public NewLine(string text)
-      : base(text)
-    {
-    }
+    public NewLine(string text) : base(text) { }
 
     public override NodeType NodeType
     {
