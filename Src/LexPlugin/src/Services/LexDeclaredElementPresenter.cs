@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using JetBrains.ReSharper.LexPlugin.Psi.Lex.Tree;
+﻿using JetBrains.ReSharper.LexPlugin.Psi.Lex.Tree;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Resolve;
 
@@ -23,12 +19,12 @@ namespace JetBrains.ReSharper.LexPlugin.Services
 
     public string Format(ParameterKind parameterKind)
     {
-      throw new NotImplementedException();
+      return string.Empty;
     }
 
     public string Format(AccessRights accessRights)
     {
-      throw new NotImplementedException();
+      return string.Empty;
     }
   }
 }
