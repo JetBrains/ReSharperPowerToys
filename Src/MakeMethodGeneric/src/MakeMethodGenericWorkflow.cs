@@ -40,10 +40,10 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
   {
     private readonly SearchDomainFactory mySearchDomainFactory;
 
-    public MakeMethodGenericWorkflow(ISolution solution, string actionId, SearchDomainFactory searchDomainFactory)
+    public MakeMethodGenericWorkflow(ISolution solution, string actionId)
       : base(solution, actionId)
     {
-      mySearchDomainFactory = searchDomainFactory;
+      mySearchDomainFactory = solution.GetComponent<SearchDomainFactory>();
     }
 
     [NotNull]

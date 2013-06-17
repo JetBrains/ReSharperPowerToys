@@ -7,8 +7,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Services
 {
   internal class PsiDeclaredElementPresenter : IDeclaredElementPresenter
   {
-    #region IDeclaredElementPresenter Members
-
     public string Format(DeclaredElementPresenterStyle style, IDeclaredElement element, ISubstitution substitution, out DeclaredElementPresenterMarking marking)
     {
       marking = new DeclaredElementPresenterMarking();
@@ -22,14 +20,12 @@ namespace JetBrains.ReSharper.PsiPlugin.Services
 
     public string Format(ParameterKind parameterKind)
     {
-      throw new NotImplementedException();
+      return string.Empty;
     }
 
     public string Format(AccessRights accessRights)
     {
-      throw new NotImplementedException();
+      return string.Empty;
     }
-
-    #endregion
   }
 }
