@@ -3,6 +3,7 @@ using JetBrains.Application;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 using JetBrains.ReSharper.Psi.Parsing;
+using JetBrains.ReSharper.Psi.Util;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl;
 using JetBrains.Text;
@@ -16,8 +17,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing
     private readonly ILexer myLexer;
     private new readonly DataIntern<string> myWhitespaceIntern = new DataIntern<string>();
 
-    private PsiMissingTokensInserter(ILexer lexer, ITokenOffsetProvider offsetProvider, SeldomInterruptChecker interruptChecker)
-      : base(offsetProvider, interruptChecker)
+    private PsiMissingTokensInserter(ILexer lexer, ITokenOffsetProvider offsetProvider, SeldomInterruptChecker interruptChecker, ITokenIntern intern)
+      : base(offsetProvider, interruptChecker, intern)
     {
       myLexer = lexer;
     }
@@ -80,7 +81,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing
       return TreeElementFactory.CreateLeafElement(myLexer);
     }
 
-    public static void Run(TreeElement node, ILexer lexer, ITokenOffsetProvider offsetProvider, bool trimTokens, SeldomInterruptChecker interruptChecker)
+    public static void Run(TreeElement node, ILexer lexer, ITokenOffsetProvider offsetProvider, bool trimTokens, SeldomInterruptChecker interruptChecker, ITokenIntern intern)
     {
       Assertion.Assert(node.parent == null, "node.parent == null");
 
@@ -90,7 +91,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing
         return;
       }
 
-      var inserter = new PsiMissingTokensInserter(lexer, offsetProvider, interruptChecker);
+      var inserter = new PsiMissingTokensInserter(lexer, offsetProvider, interruptChecker, intern);
       lexer.Start();
 
       if (trimTokens)

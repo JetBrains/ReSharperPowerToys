@@ -5,15 +5,21 @@ using JetBrains.ReSharper.Psi.ExtensionsAPI.Caches2;
 using JetBrains.ReSharper.Psi.Impl;
 using JetBrains.ReSharper.Psi.Modules;
 using JetBrains.ReSharper.Psi.Parsing;
+using JetBrains.ReSharper.Psi.Util;
 
 namespace JetBrains.ReSharper.LexPlugin.Grammar
 {
   [Language(typeof (LexLanguage))]
   public class LexLanguageService : LanguageService
   {
+    private CommonIdentifierIntern myCommonIdentifierIntern;
+
     public LexLanguageService(
-      PsiLanguageType lexLanguageType, IConstantValueService constantValueService)
-      : base(lexLanguageType, constantValueService) { }
+      PsiLanguageType lexLanguageType, IConstantValueService constantValueService, CommonIdentifierIntern commonIdentifierIntern)
+      : base(lexLanguageType, constantValueService)
+    {
+      myCommonIdentifierIntern = commonIdentifierIntern;
+    }
 
     public override bool IsCaseSensitive
     {
@@ -48,13 +54,13 @@ namespace JetBrains.ReSharper.LexPlugin.Grammar
     public override IParser CreateParser(
       ILexer lexer, IPsiModule module, IPsiSourceFile sourceFile)
     {
-      return new Parser(lexer, sourceFile);
+      return new Parser(lexer, sourceFile, myCommonIdentifierIntern);
     }
 
     private class Parser : LexParser
     {
-      public Parser(ILexer lexer, IPsiSourceFile sourceFile)
-        : base(lexer)
+      public Parser(ILexer lexer, IPsiSourceFile sourceFile, CommonIdentifierIntern commonIdentifierIntern)
+        : base(lexer, commonIdentifierIntern)
       {
         SourceFile = sourceFile;
       }

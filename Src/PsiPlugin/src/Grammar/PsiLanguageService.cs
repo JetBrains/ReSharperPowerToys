@@ -5,6 +5,7 @@ using JetBrains.ReSharper.Psi.Impl;
 using JetBrains.ReSharper.Psi.Modules;
 using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.ReSharper.Psi.Tree;
+using JetBrains.ReSharper.Psi.Util;
 using JetBrains.ReSharper.PsiPlugin.Formatter;
 using JetBrains.ReSharper.PsiPlugin.Lexer.Psi;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing;
@@ -15,12 +16,14 @@ namespace JetBrains.ReSharper.PsiPlugin.Grammar
   public class PsiLanguageService : LanguageService
   {
     private readonly PsiCodeFormatter myFormatter;
+    private CommonIdentifierIntern myCommonIdentifierIntern;
 
     public PsiLanguageService(PsiLanguageType psiLanguageType,
-      IConstantValueService constantValueService, PsiCodeFormatter formatter)
+      IConstantValueService constantValueService, PsiCodeFormatter formatter, CommonIdentifierIntern commonIdentifierIntern)
       : base(psiLanguageType, constantValueService)
     {
       myFormatter = formatter;
+      myCommonIdentifierIntern = commonIdentifierIntern;
     }
 
     public override bool IsCaseSensitive
@@ -62,13 +65,13 @@ namespace JetBrains.ReSharper.PsiPlugin.Grammar
     public override IParser CreateParser(
       ILexer lexer, IPsiModule module, IPsiSourceFile sourceFile)
     {
-      return new Parser(lexer, sourceFile);
+      return new Parser(lexer, sourceFile, myCommonIdentifierIntern);
     }
 
     private class Parser : PsiParser
     {
-      public Parser(ILexer lexer, IPsiSourceFile sourceFile)
-        : base(lexer)
+      public Parser(ILexer lexer, IPsiSourceFile sourceFile, CommonIdentifierIntern commonIdentifierIntern)
+        : base(lexer, commonIdentifierIntern)
       {
         SourceFile = sourceFile;
       }

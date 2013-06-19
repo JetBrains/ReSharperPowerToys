@@ -8,6 +8,7 @@ using JetBrains.ReSharper.LexPlugin.Psi.Lex.Tree.Impl;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 using JetBrains.ReSharper.Psi.Parsing;
+using JetBrains.ReSharper.Psi.Util;
 using JetBrains.Text;
 using JetBrains.Util;
 using JetBrains.Util.DataStructures;
@@ -17,10 +18,10 @@ namespace JetBrains.ReSharper.LexPlugin.Psi.Lex.Parsing
   internal sealed class LexMissingTokensInserter : MissingTokenInserterBase
   {
     private readonly ILexer myLexer;
-    private new readonly DataIntern<string> myWhitespaceIntern = new DataIntern<string>();
+    //private new readonly DataIntern<string> myWhitespaceIntern = new DataIntern<string>();
 
-    private LexMissingTokensInserter(ILexer lexer, ITokenOffsetProvider offsetProvider, SeldomInterruptChecker interruptChecker)
-      : base(offsetProvider, interruptChecker)
+    private LexMissingTokensInserter(ILexer lexer, ITokenOffsetProvider offsetProvider, SeldomInterruptChecker interruptChecker, ITokenIntern intern)
+      : base(offsetProvider, interruptChecker, intern)
     {
       myLexer = lexer;
     }
@@ -83,7 +84,7 @@ namespace JetBrains.ReSharper.LexPlugin.Psi.Lex.Parsing
       return TreeElementFactory.CreateLeafElement(myLexer);
     }
 
-    public static void Run(TreeElement node, ILexer lexer, ITokenOffsetProvider offsetProvider, bool trimTokens, SeldomInterruptChecker interruptChecker)
+    public static void Run(TreeElement node, ILexer lexer, ITokenOffsetProvider offsetProvider, bool trimTokens, SeldomInterruptChecker interruptChecker, ITokenIntern intern)
     {
       Assertion.Assert(node.parent == null, "node.parent == null");
 
@@ -93,7 +94,7 @@ namespace JetBrains.ReSharper.LexPlugin.Psi.Lex.Parsing
         return;
       }
 
-      var inserter = new LexMissingTokensInserter(lexer, offsetProvider, interruptChecker);
+      var inserter = new LexMissingTokensInserter(lexer, offsetProvider, interruptChecker, intern);
       lexer.Start();
 
       if (trimTokens)
