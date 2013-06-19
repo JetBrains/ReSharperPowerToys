@@ -5,6 +5,7 @@ using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.ReSharper.Psi.Tree;
+using JetBrains.ReSharper.Psi.Util;
 using JetBrains.ReSharper.PsiPlugin.Lexer.Psi;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl;
 using JetBrains.Util;
@@ -14,13 +15,16 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing
   internal class PsiParser : PsiParserGenerated, IPsiParser
   {
     private readonly SeldomInterruptChecker myCheckForInterrupt;
+    private readonly CommonIdentifierIntern myCommonIdentifierIntern;
     private readonly ILexer myOriginalLexer;
     protected IPsiSourceFile SourceFile;
+    private ITokenIntern myTokenIntern;
 
-    public PsiParser(ILexer lexer)
+    public PsiParser(ILexer lexer, CommonIdentifierIntern commonIdentifierIntern)
     {
       myCheckForInterrupt = new SeldomInterruptChecker();
       myOriginalLexer = lexer;
+      myCommonIdentifierIntern = commonIdentifierIntern;
       var tokenBuffer = new TokenBuffer(lexer);
       myLexer = new FilteringPsiLexer(tokenBuffer.CreateLexer());
       myLexer.Start();
@@ -30,27 +34,35 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing
 
     public IFile ParseFile()
     {
-      var file = (IFile)parsePsiFile();
-      InsertMissingTokens((TreeElement)file, false);
-      return file;
+      return myCommonIdentifierIntern.DoWithIdentifierIntern(intern =>
+      {
+        myTokenIntern = intern;
+        var file = (PsiFile)parsePsiFile();
+        InsertMissingTokens(file, false, intern);
+        myTokenIntern = null;
+        return file;
+      });
     }
 
     public TreeElement ParseStatement()
     {
-      return PrepareElement(base.parseRuleDeclaration(), true);
+      return myCommonIdentifierIntern.DoWithIdentifierIntern(intern =>
+      {
+        return PrepareElement(base.parseRuleDeclaration(), true, intern);
+      });
     }
 
     #endregion
 
-    private TreeElement PrepareElement(TreeElement compositeElement, bool trimMissingTokens)
+    private TreeElement PrepareElement(TreeElement compositeElement, bool trimMissingTokens, ITokenIntern intern)
     {
-        InsertMissingTokens(compositeElement, trimMissingTokens);
+        InsertMissingTokens(compositeElement, trimMissingTokens, intern);
       return compositeElement;
     }
 
-    private void InsertMissingTokens(TreeElement result, bool trimMissingTokens)
+    private void InsertMissingTokens(TreeElement result, bool trimMissingTokens, ITokenIntern intern)
     {
-      PsiMissingTokensInserter.Run(result, myOriginalLexer, this, trimMissingTokens, myCheckForInterrupt);
+      PsiMissingTokensInserter.Run(result, myOriginalLexer, this, trimMissingTokens, myCheckForInterrupt, intern);
     }
 
     protected override TreeElement createToken()
