@@ -93,7 +93,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring
     public static IDeclaredElement GetPrimaryDeclaredElementForMethod(IMethod declaredElement)
     {
       string methodName = declaredElement.ShortName;
-      if ("parse".Equals(methodName.Substring(0, "parse".Length)))
+      if ((methodName.Length > "parse".Length) && ("parse".Equals(methodName.Substring(0, "parse".Length))))
       {
         string ruleName = methodName.Substring("parse".Length, methodName.Length - "parse".Length);
         var cache = declaredElement.GetPsiServices().Solution.GetComponent<PsiCache>();
