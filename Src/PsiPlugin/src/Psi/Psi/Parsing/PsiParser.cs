@@ -37,7 +37,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing
       return myCommonIdentifierIntern.DoWithIdentifierIntern(intern =>
       {
         myTokenIntern = intern;
-        var file = (PsiFile)parsePsiFile();
+        var file = (PsiFile) parsePsiFile();
         InsertMissingTokens(file, false, intern);
         myTokenIntern = null;
         return file;
@@ -46,17 +46,14 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing
 
     public TreeElement ParseStatement()
     {
-      return myCommonIdentifierIntern.DoWithIdentifierIntern(intern =>
-      {
-        return PrepareElement(base.parseRuleDeclaration(), true, intern);
-      });
+      return myCommonIdentifierIntern.DoWithIdentifierIntern(intern => { return PrepareElement(base.parseRuleDeclaration(), true, intern); });
     }
 
     #endregion
 
     private TreeElement PrepareElement(TreeElement compositeElement, bool trimMissingTokens, ITokenIntern intern)
     {
-        InsertMissingTokens(compositeElement, trimMissingTokens, intern);
+      InsertMissingTokens(compositeElement, trimMissingTokens, intern);
       return compositeElement;
     }
 
@@ -92,12 +89,12 @@ namespace JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing
         result.AppendNewChild(errorElement);
       }
       tokenType = myLexer.TokenType;
-      while (tokenType != null && tokenType != TokenType.SEMICOLON && !IsInFollow(tokenType) && (! PsiTokenType.KEYWORDS.Contains(tokenType)) && ( tokenType != PsiTokenType.IDENTIFIER))
+      while (tokenType != null && tokenType != TokenType.SEMICOLON && !IsInFollow(tokenType) && (! PsiTokenType.KEYWORDS.Contains(tokenType)) && (tokenType != PsiTokenType.IDENTIFIER))
       {
         skip(errorElement);
         tokenType = myLexer.TokenType;
       }
-      return result;     
+      return result;
     }
 
     protected override CompositeElement handleErrorInRuleDeclaration(CompositeElement result, SyntaxError error)
