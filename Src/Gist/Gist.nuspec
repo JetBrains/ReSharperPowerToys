@@ -17,6 +17,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\$Configuration$\" target="ReSharper\v8.0\" />
+    <file src="bin\$Configuration$\" target="ReSharper\v8.0\plugins\" />
   </files>
 </package>
