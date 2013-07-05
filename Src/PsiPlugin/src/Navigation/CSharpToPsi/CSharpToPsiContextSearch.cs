@@ -88,7 +88,13 @@ namespace JetBrains.ReSharper.PsiPlugin.Navigation.CSharpToPsi
     public override bool IsContextApplicable(IDataContext dataContext)
     {
       var textControl = dataContext.GetData(TextControl.DataContext.DataConstants.TEXT_CONTROL);
-      ISolution solution = dataContext.GetData(ProjectModel.DataContext.DataConstants.SOLUTION);
+      var solution = dataContext.GetData(ProjectModel.DataContext.DataConstants.SOLUTION);
+
+      if (textControl == null)
+        return false;
+
+      if (solution == null)
+        return false;
 
       var token = TextControlToPsi.GetSourceTokenAtCaret(solution, textControl);
       if ((token.Parent is IReferenceName) || token.Parent is IClassDeclaration || token.Parent is IConstructorDeclaration || token.Parent is IMethodDeclaration || token.Parent is IInterfaceDeclaration)
