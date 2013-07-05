@@ -1,0 +1,73 @@
+<GotoClassTestBase>
+  <GotoClassTestBase.GotoByNameMenuItems filter="" flags="SolutionOnly">
+    <JetPopupMenuItem Mnemonic="Null" Style="Enabled" Icon="Composite(PsiSymbolTypicalSizePlaceholder, PsiSymbolTypicalSizePlaceholder, PsiRule)" Key="JetBrains.ReSharper.Feature.Services.Occurences.DeclaredElementOccurence">
+      <JetPopupMenuItem.DisplayName>
+        <RichText Text="b">
+          <RichText.Parts>
+            <RichString Length="1">
+              <RichString.Style>
+                <TextStyle FontStyle="Regular" ForegroundColor="Color [Empty]" BackgroundColor="Color [Empty]" Effect="None" EffectColor="Color [Empty]" />
+              </RichString.Style>
+            </RichString>
+          </RichText.Parts>
+        </RichText>
+      </JetPopupMenuItem.DisplayName>
+      <JetPopupMenuItem.ShortcutText>
+        <RichText Text="">
+          <RichText.Parts />
+        </RichText>
+      </JetPopupMenuItem.ShortcutText>
+      <JetPopupMenuItem.TooltipText>
+        <RichText Text="">
+          <RichText.Parts />
+        </RichText>
+      </JetPopupMenuItem.TooltipText>
+    </JetPopupMenuItem>
+    <JetPopupMenuItem Mnemonic="Null" Style="Enabled" Icon="Composite(PsiSymbolTypicalSizePlaceholder, PsiSymbolTypicalSizePlaceholder, PsiRule)" Key="JetBrains.ReSharper.Feature.Services.Occurences.DeclaredElementOccurence">
+      <JetPopupMenuItem.DisplayName>
+        <RichText Text="c">
+          <RichText.Parts>
+            <RichString Length="1">
+              <RichString.Style>
+                <TextStyle FontStyle="Regular" ForegroundColor="Color [Empty]" BackgroundColor="Color [Empty]" Effect="None" EffectColor="Color [Empty]" />
+              </RichString.Style>
+            </RichString>
+          </RichText.Parts>
+        </RichText>
+      </JetPopupMenuItem.DisplayName>
+      <JetPopupMenuItem.ShortcutText>
+        <RichText Text="">
+          <RichText.Parts />
+        </RichText>
+      </JetPopupMenuItem.ShortcutText>
+      <JetPopupMenuItem.TooltipText>
+        <RichText Text="">
+          <RichText.Parts />
+        </RichText>
+      </JetPopupMenuItem.TooltipText>
+    </JetPopupMenuItem>
+    <JetPopupMenuItem Mnemonic="Null" Style="Enabled" Icon="Composite(PsiSymbolTypicalSizePlaceholder, Class, ModifiersInternal)" Key="JetBrains.ReSharper.Feature.Services.Occurences.DeclaredElementOccurence">
+      <JetPopupMenuItem.DisplayName>
+        <RichText Text="ZZZ_Generated_Class">
+          <RichText.Parts>
+            <RichString Length="19">
+              <RichString.Style>
+                <TextStyle FontStyle="Regular" ForegroundColor="Color [Empty]" BackgroundColor="Color [Empty]" Effect="None" EffectColor="Color [Empty]" />
+              </RichString.Style>
+            </RichString>
+          </RichText.Parts>
+        </RichText>
+      </JetPopupMenuItem.DisplayName>
+      <JetPopupMenuItem.ShortcutText>
+        <RichText Text="">
+          <RichText.Parts />
+        </RichText>
+      </JetPopupMenuItem.ShortcutText>
+      <JetPopupMenuItem.TooltipText>
+        <RichText Text="">
+          <RichText.Parts />
+        </RichText>
+      </JetPopupMenuItem.TooltipText>
+    </JetPopupMenuItem>
+  </GotoClassTestBase.GotoByNameMenuItems>
+</GotoClassTestBase>

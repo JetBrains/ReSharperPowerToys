@@ -1,0 +1,180 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ReSharperSdkTargets Condition=" '$(ReSharperSdkTargets)' == '' ">$(MSBuildExtensionsPath)\JetBrains\ReSharper.SDK\v8.0</ReSharperSdkTargets>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{93A4303F-33C9-4AB9-ABE0-124E1F0A5079}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>JetBrains.ReSharper.ResearchFormatter</RootNamespace>
+    <AssemblyName>JetBrains.ReSharper.ResearchFormatter</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <PsiLanguageName>Psi</PsiLanguageName>
+    <ProductHomeDir>$(MSBuildProjectDirectory)</ProductHomeDir>
+    <TargetFrameworkProfile />
+    <ParserGenOutputBase>$(MSBuildProjectDirectory)\src\Gen</ParserGenOutputBase>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin</OutputPath>
+    <DefineConstants>TRACE;DEBUG;JET_MODE_ASSERT</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="JetBrains.Platform.CommonServices">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.CommonServices.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.ComponentModel">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.ComponentModel.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.DocumentManager">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.DocumentManager.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.DocumentModel">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.DocumentModel.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.IDE">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.IDE.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.ProjectModel">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.ProjectModel.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.Shell">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.Shell.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.TextControl">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.TextControl.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.UI">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.Util">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.Platform.ReSharper.Util.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Daemon">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Daemon.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Daemon.Engine">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Daemon.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Feature.Services">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Feature.Services.CSharp">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Feature.Services.JavaScript">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.JavaScript.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Feature.Services.Navigation">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Feature.Services.Navigation.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Features.Common">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Features.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Features.Finding">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Features.Finding.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Intentions">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Intentions.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Intentions.JavaScript">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Intentions.JavaScript.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.NewRefactorings">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.NewRefactorings.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Psi">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Psi.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Psi.CSharp">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Psi.CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Psi.JavaScript">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Psi.JavaScript.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Psi.Services">
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Psi.Services.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Psi.Web">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Psi.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Resources">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ReSharperSdkBinaries)\JetBrains.ReSharper.Resources.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Build" />
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.XML" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="src\FormatterResearchBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="src\FormattingStageResearchBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="src\IFormattingRule.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="src\IndentingRule.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="src\IndentingStageResearchBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="src\IndentRange.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="src\JavaScript\JavaScriptFormattingAction.cs" />
+    <Compile Include="src\JavaScript\JavaScriptFormattingStageResearch.cs" />
+    <Compile Include="src\JavaScript\JavaScriptIndentingStageResearch.cs" />
+    <Compile Include="src\JavaScript\JavaScriptResearchFormatter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PsiPlugin\PsiPlugin.csproj">
+      <Project>{F412CECA-91A8-4175-85A2-E7F7B72F30CE}</Project>
+      <Name>PsiPlugin</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\resources\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(ReSharperSdkTargets)\Plugin.NoReferences.Targets" />
+  <Import Project="$(ReSharperSdkTools)\MSBuild\JetBrains.Build.Common.Targets" />
+  <Target Name="BeforeBuild">
+  </Target>
+  <Import Project="$(ReSharperSdkTools)\MSBuild\JetBrains.Build.Platform.ThemedIconsConverter.Targets" />
+</Project>

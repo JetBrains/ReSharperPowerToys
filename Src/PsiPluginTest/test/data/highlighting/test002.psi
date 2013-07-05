@@ -1,0 +1,11 @@
+a
+	:
+	!(#id : identifier)
+	b[id]
+  ;
+
+b
+	:
+	c
+  ;
+

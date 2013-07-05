@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<actions>
+  <insert group-id="ReSharper" position="last">
+    <action-group id="PowerToys" text="Power Toys" shared="true">
+      <action id="PowerToys.Gist" text="Gist" shortcut="Shift+Alt+G" image="gist" />
+    </action-group>
+  </insert>
+  <!--  Doesn't work currently -->
+  <insert group-id="SolutionItemHead" position="last">
+    <action-ref id="PowerToys.Gist" />
+  </insert>
+</actions>
+

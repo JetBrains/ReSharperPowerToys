@@ -1,0 +1,320 @@
+Language: PsiLanguageType:Lex
+ILexFile
+  IDefinitionBlock
+    LexTokenType+PercpercTokenElement(type:PERCPERC, text:%%)
+    NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+    NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+    NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+    ITokenDeclaration
+      ITokenDeclaredName
+        Identifier(type:IDENTIFIER, text:NULL_CHAR)
+      LexTokenType+EqTokenElement(type:EQ, text:=)
+      IUnicodeChar
+        Identifier(type:IDENTIFIER, text:\u0000)
+    NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+    NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+    ITokenDeclaration
+      ITokenDeclaredName
+        Identifier(type:IDENTIFIER, text:DECIMAL_DIGIT)
+      LexTokenType+EqTokenElement(type:EQ, text:=)
+      IFirstLexingExpression
+        IFirstLexingExpressionItem
+          ISimpleSequence
+            IRegexp
+              LexTokenType+LbracketTokenElement(type:LBRACKET, text:[)
+              IRegexpBody
+                IBasic_reg_exp
+                  IRE_expression
+                    ISimple_RE
+                      INondupl_RE
+                        IRegexpList
+                          IRegexpListItem
+                            IDigitInterval
+                              LexGenericToken(type:INTEGER_LITERAL, text:0)
+                              LexTokenType+MinusTokenElement(type:MINUS, text:-)
+                              LexGenericToken(type:INTEGER_LITERAL, text:9)
+              LexTokenType+RbracketTokenElement(type:RBRACKET, text:])
+    NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+    NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+    ITokenDeclaration
+      ITokenDeclaredName
+        Identifier(type:IDENTIFIER, text:HEX_DIGIT)
+      LexTokenType+EqTokenElement(type:EQ, text:=)
+      IFirstLexingExpression
+        IFirstLexingExpressionItem
+          ISimpleSequence
+            IParenExpression
+              LexTokenType+LparenthTokenElement(type:LPARENTH, text:()
+              ILexingExpression
+                ISequence
+                  ISimpleExpression
+                    ITokenTypeUsage
+                      LexTokenType+LbraceTokenElement(type:LBRACE, text:{)
+                      ITokenTypeName
+                        Identifier(type:IDENTIFIER, text:DECIMAL_DIGIT)
+                      LexTokenType+RbraceTokenElement(type:RBRACE, text:})
+                IChoiceTail
+                  LexTokenType+OrTokenElement(type:OR, text:|)
+                  ISequence
+                    ISimpleExpression
+                      IRegexp
+                        LexTokenType+LbracketTokenElement(type:LBRACKET, text:[)
+                        IRegexpBody
+                          IBasic_reg_exp
+                            IRE_expression
+                              ISimple_RE
+                                INondupl_RE
+                                  IRegexpList
+                                    IRegexpListItem
+                                      IInterval
+                                        Identifier(type:IDENTIFIER, text:A)
+                                        LexTokenType+MinusTokenElement(type:MINUS, text:-)
+                                        Identifier(type:IDENTIFIER, text:Fa)
+                                        LexTokenType+MinusTokenElement(type:MINUS, text:-)
+                                        Identifier(type:IDENTIFIER, text:f)
+                        LexTokenType+RbracketTokenElement(type:RBRACKET, text:])
+              LexTokenType+RparenthTokenElement(type:RPARENTH, text:))
+    NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+    NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+    ITokenDeclaration
+      ITokenDeclaredName
+        Identifier(type:IDENTIFIER, text:INTEGER_TYPE_SUFFIX)
+      LexTokenType+EqTokenElement(type:EQ, text:=)
+      IFirstLexingExpression
+        IFirstLexingExpressionItem
+          ISimpleSequence
+            IParenExpression
+              LexTokenType+LparenthTokenElement(type:LPARENTH, text:()
+              ILexingExpression
+                ISequence
+                  ISimpleExpression
+                    IRegexp
+                      LexTokenType+LbracketTokenElement(type:LBRACKET, text:[)
+                      IRegexpBody
+                        IBasic_reg_exp
+                          IRE_expression
+                            ISimple_RE
+                              INondupl_RE
+                                IRegexpList
+                                  IRegexpListItem
+                                    IInterval
+                                      Identifier(type:IDENTIFIER, text:UuLl)
+                      LexTokenType+RbracketTokenElement(type:RBRACKET, text:])
+                IChoiceTail
+                  LexTokenType+OrTokenElement(type:OR, text:|)
+                  ISequence
+                    ISimpleExpression
+                      Identifier(type:IDENTIFIER, text:UL)
+                IChoiceTail
+                  LexTokenType+OrTokenElement(type:OR, text:|)
+                  ISequence
+                    ISimpleExpression
+                      Identifier(type:IDENTIFIER, text:Ul)
+                IChoiceTail
+                  LexTokenType+OrTokenElement(type:OR, text:|)
+                  ISequence
+                    ISimpleExpression
+                      Identifier(type:IDENTIFIER, text:uL)
+                IChoiceTail
+                  LexTokenType+OrTokenElement(type:OR, text:|)
+                  ISequence
+                    ISimpleExpression
+                      Identifier(type:IDENTIFIER, text:ul)
+                IChoiceTail
+                  LexTokenType+OrTokenElement(type:OR, text:|)
+                  ISequence
+                    ISimpleExpression
+                      Identifier(type:IDENTIFIER, text:LU)
+                IChoiceTail
+                  LexTokenType+OrTokenElement(type:OR, text:|)
+                  ISequence
+                    ISimpleExpression
+                      Identifier(type:IDENTIFIER, text:lU)
+                IChoiceTail
+                  LexTokenType+OrTokenElement(type:OR, text:|)
+                  ISequence
+                    ISimpleExpression
+                      Identifier(type:IDENTIFIER, text:Lu)
+                IChoiceTail
+                  LexTokenType+OrTokenElement(type:OR, text:|)
+                  ISequence
+                    ISimpleExpression
+                      Identifier(type:IDENTIFIER, text:lu)
+              LexTokenType+RparenthTokenElement(type:RPARENTH, text:))
+    NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+    NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+    ITokenDeclaration
+      ITokenDeclaredName
+        Identifier(type:IDENTIFIER, text:SINGLE_CHARACTER)
+      LexTokenType+EqTokenElement(type:EQ, text:=)
+      IFirstLexingExpression
+        IFirstLexingExpressionItem
+          ISimpleSequence
+            IRegexp
+              LexTokenType+LbracketTokenElement(type:LBRACKET, text:[)
+              IRegexpBody
+                IBasic_reg_exp
+                  LexTokenType+XorTokenElement(type:XOR, text:^)
+                  IRE_expression
+                    ISimple_RE
+                      INondupl_RE
+                        LexTokenType+QuoteTokenElement(type:QUOTE, text:\')
+                      INondupl_RE
+                        LexTokenType+BackSlashTokenElement(type:BACK_SLASH, text:\\)
+                      INondupl_RE
+                        IRegexpList
+                          IRegexpListItem
+                            IInterval
+                              Identifier(type:IDENTIFIER, text:\u0085\u2028\u2029\u000D\u000A)
+              LexTokenType+RbracketTokenElement(type:RBRACKET, text:])
+    NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+    NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+    ITokenDeclaration
+      ITokenDeclaredName
+        Identifier(type:IDENTIFIER, text:LOWER_CASE_LETTER_CHARACTER)
+      Whitespace(type:WHITE_SPACE, text: ) spaces:" "
+      LexTokenType+EqTokenElement(type:EQ, text:=)
+      Whitespace(type:WHITE_SPACE, text: ) spaces:" "
+      IFirstLexingExpression
+        IFirstLexingExpressionItem
+          ISimpleSequence
+            IParenExpression
+              LexTokenType+LparenthTokenElement(type:LPARENTH, text:()
+              ILexingExpression
+                ISequence
+                  ISimpleExpression
+                    LexGenericToken(type:STRING_LITERAL, text:"a")
+                IChoiceTail
+                  LexTokenType+OrTokenElement(type:OR, text:|)
+                  ISequence
+                    ISimpleExpression
+                      LexGenericToken(type:STRING_LITERAL, text:"b")
+                IChoiceTail
+                  LexTokenType+OrTokenElement(type:OR, text:|)
+                  ISequence
+                    ISimpleExpression
+                      LexGenericToken(type:STRING_LITERAL, text:"c")
+                IChoiceTail
+                  LexTokenType+OrTokenElement(type:OR, text:|)
+                  ISequence
+                    ISimpleExpression
+                      LexGenericToken(type:STRING_LITERAL, text:"d")
+                IChoiceTail
+                  LexTokenType+OrTokenElement(type:OR, text:|)
+                  ISequence
+                    ISimpleExpression
+                      LexGenericToken(type:STRING_LITERAL, text:"e")
+                IChoiceTail
+                  LexTokenType+OrTokenElement(type:OR, text:|)
+                  ISequence
+                    ISimpleExpression
+                      LexGenericToken(type:STRING_LITERAL, text:"f")
+                IChoiceTail
+                  LexTokenType+OrTokenElement(type:OR, text:|)
+                  ISequence
+                    ISimpleExpression
+                      LexGenericToken(type:STRING_LITERAL, text:"g")
+                IChoiceTail
+                  LexTokenType+OrTokenElement(type:OR, text:|)
+                  ISequence
+                    ISimpleExpression
+                      LexGenericToken(type:STRING_LITERAL, text:"h")
+                IChoiceTail
+                  LexTokenType+OrTokenElement(type:OR, text:|)
+                  ISequence
+                    ISimpleExpression
+                      LexGenericToken(type:STRING_LITERAL, text:"i")
+                IChoiceTail
+                  LexTokenType+OrTokenElement(type:OR, text:|)
+                  ISequence
+                    ISimpleExpression
+                      LexGenericToken(type:STRING_LITERAL, text:"j")
+                IChoiceTail
+                  LexTokenType+OrTokenElement(type:OR, text:|)
+                  ISequence
+                    ISimpleExpression
+                      LexGenericToken(type:STRING_LITERAL, text:"k")
+                IChoiceTail
+                  LexTokenType+OrTokenElement(type:OR, text:|)
+                  ISequence
+                    ISimpleExpression
+                      LexGenericToken(type:STRING_LITERAL, text:"l")
+                IChoiceTail
+                  LexTokenType+OrTokenElement(type:OR, text:|)
+                  ISequence
+                    ISimpleExpression
+                      LexGenericToken(type:STRING_LITERAL, text:"m")
+                IChoiceTail
+                  LexTokenType+OrTokenElement(type:OR, text:|)
+                  ISequence
+                    ISimpleExpression
+                      LexGenericToken(type:STRING_LITERAL, text:"n")
+                IChoiceTail
+                  LexTokenType+OrTokenElement(type:OR, text:|)
+                  ISequence
+                    ISimpleExpression
+                      LexGenericToken(type:STRING_LITERAL, text:"o")
+                IChoiceTail
+                  LexTokenType+OrTokenElement(type:OR, text:|)
+                  ISequence
+                    ISimpleExpression
+                      LexGenericToken(type:STRING_LITERAL, text:"p")
+                IChoiceTail
+                  LexTokenType+OrTokenElement(type:OR, text:|)
+                  ISequence
+                    ISimpleExpression
+                      LexGenericToken(type:STRING_LITERAL, text:"q")
+                IChoiceTail
+                  LexTokenType+OrTokenElement(type:OR, text:|)
+                  ISequence
+                    ISimpleExpression
+                      LexGenericToken(type:STRING_LITERAL, text:"r")
+                IChoiceTail
+                  LexTokenType+OrTokenElement(type:OR, text:|)
+                  ISequence
+                    ISimpleExpression
+                      LexGenericToken(type:STRING_LITERAL, text:"s")
+                IChoiceTail
+                  LexTokenType+OrTokenElement(type:OR, text:|)
+                  ISequence
+                    ISimpleExpression
+                      LexGenericToken(type:STRING_LITERAL, text:"t")
+                IChoiceTail
+                  LexTokenType+OrTokenElement(type:OR, text:|)
+                  ISequence
+                    ISimpleExpression
+                      LexGenericToken(type:STRING_LITERAL, text:"u")
+                IChoiceTail
+                  LexTokenType+OrTokenElement(type:OR, text:|)
+                  ISequence
+                    ISimpleExpression
+                      LexGenericToken(type:STRING_LITERAL, text:"v")
+                IChoiceTail
+                  LexTokenType+OrTokenElement(type:OR, text:|)
+                  ISequence
+                    ISimpleExpression
+                      LexGenericToken(type:STRING_LITERAL, text:"w")
+                IChoiceTail
+                  LexTokenType+OrTokenElement(type:OR, text:|)
+                  ISequence
+                    ISimpleExpression
+                      LexGenericToken(type:STRING_LITERAL, text:"x")
+                IChoiceTail
+                  LexTokenType+OrTokenElement(type:OR, text:|)
+                  ISequence
+                    ISimpleExpression
+                      LexGenericToken(type:STRING_LITERAL, text:"y")
+                IChoiceTail
+                  LexTokenType+OrTokenElement(type:OR, text:|)
+                  ISequence
+                    ISimpleExpression
+                      LexGenericToken(type:STRING_LITERAL, text:"z")
+              LexTokenType+RparenthTokenElement(type:RPARENTH, text:))
+    NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+    NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+    NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+    LexTokenType+PercpercTokenElement(type:PERCPERC, text:%%)
+  ILexingBlock
+  NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+  NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+

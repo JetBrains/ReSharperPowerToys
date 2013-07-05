@@ -1,0 +1,15 @@
+a
+	:
+	!(#id : |identifier|(0))
+	b[id]
+  ;
+
+b
+	:
+	|c|(1)
+  ;
+
+
+---------------------------------------------------------
+(0): ReSharper Underlined Error Highlighting: Unresolved reference
+(1): ReSharper Underlined Error Highlighting: Unresolved reference

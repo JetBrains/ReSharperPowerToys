@@ -1,0 +1,74 @@
+Language: PsiLanguageType:Lex
+ILexFile
+  NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+  IDefinitionBlock
+    LexTokenType+PercTokenElement(type:PERC, text:%)
+    IStateDeclaration
+      LexTokenType+StateKeywordTokenElement(type:STATE_KEYWORD, text:state)
+      Whitespace(type:WHITE_SPACE, text: ) spaces:" "
+      IStateDeclaredName
+        Identifier(type:IDENTIFIER, text:YY_IN_BRACE_BLOCK)
+  NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+  NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+  NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+  NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+  ILexingBlock
+    IMakeTokenBlock
+      IState
+        LexTokenType+LtTokenElement(type:LT, text:<)
+        IStateName
+          Identifier(type:IDENTIFIER, text:YYINITIAL)
+        LexTokenType+CommaTokenElement(type:COMMA, text:,)
+        IStateName
+          Identifier(type:IDENTIFIER, text:YY_IN_BRACE_BLOCK)
+        LexTokenType+CommaTokenElement(type:COMMA, text:,)
+        IStateName
+          Identifier(type:IDENTIFIER, text:YY_IN_PAREN_EXPRESSION)
+        LexTokenType+GtTokenElement(type:GT, text:>)
+      Whitespace(type:WHITE_SPACE, text: ) spaces:" "
+      IParsingStatement
+        IParseSequense
+          IParseItem
+            ICsharpOrToken
+              LexTokenType+LbraceTokenElement(type:LBRACE, text:{)
+              ITokenTypeName
+                Identifier(type:IDENTIFIER, text:NEW_LINE_PAIR)
+              LexTokenType+RbraceTokenElement(type:RBRACE, text:})
+          Whitespace(type:WHITE_SPACE, text: ) spaces:" "
+          IParseItem
+            ICsharpOrToken
+              LexTokenType+LbraceTokenElement(type:LBRACE, text:{)
+              Whitespace(type:WHITE_SPACE, text: ) spaces:" "
+              ICSharpBlock
+                ICsharpIdentifier
+                  Identifier(type:IDENTIFIER, text:currTokenType)
+                Whitespace(type:WHITE_SPACE, text: ) spaces:" "
+                ICSharpToken
+                  LexTokenType+EqTokenElement(type:EQ, text:=)
+                Whitespace(type:WHITE_SPACE, text: ) spaces:" "
+                ICSharpToken
+                  Identifier(type:IDENTIFIER, text:makeToken)
+                Whitespace(type:WHITE_SPACE, text: ) spaces:" "
+                ICSharpToken
+                  LexTokenType+LparenthTokenElement(type:LPARENTH, text:()
+                ICSharpToken
+                  Identifier(type:IDENTIFIER, text:LexTokenType)
+                ICSharpToken
+                  LexTokenType+DotTokenElement(type:DOT, text:.)
+                ICSharpToken
+                  Identifier(type:IDENTIFIER, text:NEW_LINE)
+                ICSharpToken
+                  LexTokenType+RparenthTokenElement(type:RPARENTH, text:))
+                ICSharpToken
+                  LexTokenType+SemicolonTokenElement(type:SEMICOLON, text:;)
+                Whitespace(type:WHITE_SPACE, text: ) spaces:" "
+                ICsharpKeyword
+                  LexTokenType+ReturnKeywordTokenElement(type:RETURN_KEYWORD, text:return)
+                Whitespace(type:WHITE_SPACE, text: ) spaces:" "
+                ICSharpToken
+                  Identifier(type:IDENTIFIER, text:currTokenType)
+                ICSharpToken
+                  LexTokenType+SemicolonTokenElement(type:SEMICOLON, text:;)
+              Whitespace(type:WHITE_SPACE, text: ) spaces:" "
+              LexTokenType+RbraceTokenElement(type:RBRACE, text:})
+
