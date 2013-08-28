@@ -2,5 +2,5 @@
 
 //[assembly: AssemblyTitle("ReSharper PSI Plugin")]
 
-[assembly: PluginVendor("JetBrains s.r.o.")]
+[assembly: PluginVendor("JetBrains")]
 [assembly: PluginDescription("ReSharper PSI Plugin")]

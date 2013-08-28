@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2007-2011 JetBrains s.r.o.
+ * Copyright 2007-2011 JetBrains
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,9 +27,9 @@ using JetBrains.UI;
 [assembly: AssemblyTitle("ReSharper PowerToys: ZenCoding")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("Visual Studio 2008")]
-[assembly: AssemblyCompany("JetBrains s.r.o.")]
+[assembly: AssemblyCompany("JetBrains")]
 [assembly: AssemblyProduct("ReSharper PowerToys")]
-[assembly: AssemblyCopyright("Copyright \u00A9 2006-2010 JetBrains s.r.o. 2009 Einar Egilsson (ZenCodingEngine). 2009 Sergey Chikuyonok (ZenCoding Library)")]
+[assembly: AssemblyCopyright("Copyright \u00A9 2006-2010 JetBrains 2009 Einar Egilsson (ZenCodingEngine). 2009 Sergey Chikuyonok (ZenCoding Library)")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: AssemblyVersion("1.0.0.0")]
@@ -38,7 +38,7 @@ using JetBrains.UI;
 [assembly: Guid("1F813F92-B59B-43A4-AAB4-7E1CE19019D0")]
 
 [assembly: PluginTitle("ReSharper PowerToys: ZenCoding")]
-[assembly: PluginVendor("JetBrains s.r.o.")]
+[assembly: PluginVendor("JetBrains")]
 [assembly: PluginDescription("ZenCoding")]
 
 [assembly: ActionsXml("JetBrains.ReSharper.PowerToys.ZenCoding.resources.actions.xml")]

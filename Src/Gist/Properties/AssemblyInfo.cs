@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2007-2011 JetBrains s.r.o.
+ * Copyright 2007-2011 JetBrains
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,9 +26,9 @@ using JetBrains.UI;
 
 [assembly: AssemblyTitle("ReSharper PowerToys: Gist")]
 [assembly: AssemblyDescription("")]
-[assembly: AssemblyCompany("JetBrains s.r.o.")]
+[assembly: AssemblyCompany("JetBrains")]
 [assembly: AssemblyProduct("ReSharper PowerToys")]
-[assembly: AssemblyCopyright("Copyright \u00A9 2006-2013 JetBrains s.r.o.")]
+[assembly: AssemblyCopyright("Copyright \u00A9 2006-2013 JetBrains")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: AssemblyVersion("1.0.0.0")]
@@ -37,7 +37,7 @@ using JetBrains.UI;
 [assembly: Guid("04800884-1E07-41ED-A664-6454C7EA5456")]
 
 [assembly: PluginTitle("ReSharper PowerToys: Gist")]
-[assembly: PluginVendor("JetBrains s.r.o.")]
+[assembly: PluginVendor("JetBrains")]
 [assembly: PluginDescription("Publish code snippets on Gist (https://gist.github.com/)")]
 
 [assembly: ActionsXml("JetBrains.ReSharper.PowerToys.Gist.resources.actions.xml")]

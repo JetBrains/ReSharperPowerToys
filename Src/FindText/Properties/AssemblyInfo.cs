@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2007-2011 JetBrains s.r.o.
+ * Copyright 2007-2011 JetBrains
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,9 +25,9 @@ using JetBrains.Application.PluginSupport;
 
 [assembly: AssemblyTitle("ReSharper PowerToys: Find Text")]
 [assembly: AssemblyDescription("")]
-[assembly: AssemblyCompany("JetBrains s.r.o.")]
+[assembly: AssemblyCompany("JetBrains")]
 [assembly: AssemblyProduct("ReSharper PowerToys")]
-[assembly: AssemblyCopyright("Copyright \u00A9 2006-2011 JetBrains s.r.o. All rights reserved.")]
+[assembly: AssemblyCopyright("Copyright \u00A9 2006-2011 JetBrains All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: AssemblyVersion("3.0.0.0")]
@@ -35,6 +35,6 @@ using JetBrains.Application.PluginSupport;
 [assembly: ComVisible(false)]
 [assembly: Guid("5f1e5e77-2329-46f6-a95d-58018b440dcb")]
 [assembly: PluginTitle("ReSharper PowerToys: FindText")]
-[assembly: PluginVendor("JetBrains s.r.o.")]
+[assembly: PluginVendor("JetBrains")]
 [assembly: PluginDescription("Search text in solution and display it in Find Results view")]
 [assembly: ActionsXml("JetBrains.ReSharper.PowerToys.FindText.resources.actions.xml")]

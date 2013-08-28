@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2007-2011 JetBrains s.r.o.
+ * Copyright 2007-2011 JetBrains
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,9 +24,9 @@ using JetBrains.Application.PluginSupport;
 [assembly: AssemblyTitle("XmlAndHtml")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("JetBrains s.r.o.")]
+[assembly: AssemblyCompany("JetBrains")]
 [assembly: AssemblyProduct("XmlAndHtml")]
-[assembly: AssemblyCopyright("Copyright © JetBrains s.r.o. 2011")]
+[assembly: AssemblyCopyright("Copyright © JetBrains 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -52,5 +52,5 @@ using JetBrains.Application.PluginSupport;
 [assembly: AssemblyFileVersion("1.0.1.0")]
 
 [assembly: PluginTitle("ReSharper PowerToys: XmlAndHtml")]
-[assembly: PluginVendor("JetBrains s.r.o.")]
+[assembly: PluginVendor("JetBrains")]
 [assembly: PluginDescription("XmlAndHtml")]
