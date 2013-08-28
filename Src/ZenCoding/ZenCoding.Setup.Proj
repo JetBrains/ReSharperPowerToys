@@ -18,7 +18,7 @@
 		<ReSharperVersion2>5.0</ReSharperVersion2>
 		
 		<!-- Plugin vendor name. -->
-		<CompanyName>JetBrains Inc</CompanyName>
+		<CompanyName>JetBrains</CompanyName>
 		
 		<!-- Upgrade code for the plugin. -->
 		<!-- Should be unique for each of the plugins, but should not change within the plugin lifetime. All of the plugin versions should feature the same Upgrade Code. -->
