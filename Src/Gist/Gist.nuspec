@@ -4,13 +4,13 @@
     <id>PowerToys.Gist</id>
     <version>1.0.0.0</version>
     <title>ReSharper PowerToys: Gist</title>
-    <authors>JetBrains s.r.o., Slava Trenogin</authors>
+    <authors>JetBrains, Slava Trenogin</authors>
     <licenseUrl>http://resharperpowertoys.codeplex.com/license</licenseUrl>
     <projectUrl>http://resharperpowertoys.codeplex.com/wikipage?title=Gist&amp;referringTitle=Documentation</projectUrl>
     <iconUrl>http://resharper-plugins.jetbrains.com/Content/Images/packageReSharper.png</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>With this ReSharper PowerToy you can easily and transparently publish your code snippets on Gist.</description>
-    <copyright>Copyright &#x00A9; 2006-2013 JetBrains s.r.o.</copyright>
+    <copyright>Copyright &#x00A9; 2006-2013 JetBrains</copyright>
     <tags>PowerToys GitHub</tags>
     <dependencies>
       <dependency id="ReSharper" version="8.0" />

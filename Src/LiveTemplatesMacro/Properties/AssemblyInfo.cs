@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2011 JetBrains s.r.o.
+ * Copyright 2007-2011 JetBrains
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,13 +25,13 @@ using JetBrains.Application.PluginSupport;
 
 [assembly: AssemblyTitle("ReSharper PowerToys: Current File Path Macro")]
 [assembly: AssemblyDescription("")]
-[assembly: AssemblyCompany("JetBrains s.r.o.")]
+[assembly: AssemblyCompany("JetBrains")]
 [assembly: AssemblyProduct("ReSharper PowerToys")]
-[assembly: AssemblyCopyright("Copyright \u00A9 2006-2011 JetBrains s.r.o. All rights reserved.")]
+[assembly: AssemblyCopyright("Copyright \u00A9 2006-2011 JetBrains All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: AssemblyVersion("3.0.0.0")]
 [assembly: AssemblyFileVersion("3.0.0.0")]
 [assembly: PluginTitle("ReSharper PowerToys: Current File Path Macro")]
-[assembly: PluginVendor("JetBrains s.r.o.")]
+[assembly: PluginVendor("JetBrains")]
 [assembly: PluginDescription("Adds LiveTemplate macro which expands to current file path.")]

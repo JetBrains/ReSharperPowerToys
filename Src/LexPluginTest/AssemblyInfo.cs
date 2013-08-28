@@ -1,5 +1,5 @@
 ﻿using JetBrains.Application.PluginSupport;
 
 //[assembly: AssemblyTitle("ReSharper PSI Plugin")]
-[assembly: PluginVendor("JetBrains s.r.o.")]
+[assembly: PluginVendor("JetBrains")]
 [assembly: PluginDescription("ReSharper Lex Plugin")]
