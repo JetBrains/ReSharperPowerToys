@@ -1,0 +1,97 @@
+-------------- offset 9 line 3 col 3 --------------------
++++ JetBrains.ReSharper.Features.Finding.GoToDeclaration.GotoDeclarationProvider navigation provider results +++
+Immediate result: Occurence's dump:
+TO: [O] private |bb| RANGE: (27,29) @ test002.psi
+Occurence's type:
+TextualOccurence
+Occurence's kinds:
+Other
+Occurence's navigation result. Opened file: test002.psi
+------------------
+  ;
+
+private |CARET|bb
+	:
+	c
+------------------
+
++++ JetBrains.ReSharper.Features.Finding.FindUsages.GotoUsagesProvider navigation provider results +++
+Immediate result: Occurence's dump:
+TO: [O] |bb| RANGE: (8,10) @ test002.psi
+Occurence's type:
+Occurence
+Occurence's kinds:
+Other
+Occurence's navigation result. Opened file: test002.psi
+------------------
+a
+	:
+	|CARET|bb
+  ;
+
+------------------
+
++++ JetBrains.ReSharper.Features.Finding.GoToImplementation.GotoImplementationProvider navigation provider results +++
+Immediate result: Occurence's dump:
+TO: [O] private |bb| RANGE: (27,29) @ test002.psi
+Occurence's type:
+TextualOccurence
+Occurence's kinds:
+Other
+Occurence's navigation result. Opened file: test002.psi
+------------------
+  ;
+
+private |CARET|bb
+	:
+	c
+------------------
+
++++ JetBrains.ReSharper.Features.Finding.Usages.FindUsagesAdvancedProvider navigation provider results +++
+Immediate result: Occurence's dump:
+TO: [O] |bb| RANGE: (8,10) @ test002.psi
+Occurence's type:
+Occurence
+Occurence's kinds:
+Other
+Occurence's navigation result. Opened file: test002.psi
+------------------
+a
+	:
+	|CARET|bb
+  ;
+
+------------------
+
++++ JetBrains.ReSharper.Features.Finding.Usages.FindUsagesProvider navigation provider results +++
+Immediate result: Occurence's dump:
+TO: [O] |bb| RANGE: (8,10) @ test002.psi
+Occurence's type:
+Occurence
+Occurence's kinds:
+Other
+Occurence's navigation result. Opened file: test002.psi
+------------------
+a
+	:
+	|CARET|bb
+  ;
+
+------------------
+
++++ JetBrains.ReSharper.Features.Finding.Usages.HighlightUsagesProvider navigation provider results +++
+Immediate result: Occurence's dump:
+TO: [O] |bb| RANGE: (8,10) @ test002.psi
+Occurence's type:
+Occurence
+Occurence's kinds:
+Other
+Occurence's navigation result. Opened file: test002.psi
+------------------
+a
+	:
+	|CARET|bb
+  ;
+
+------------------
+

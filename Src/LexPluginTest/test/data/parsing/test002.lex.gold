@@ -1,0 +1,48 @@
+Language: PsiLanguageType:Lex
+ILexFile
+  IDefinitionBlock
+    LexTokenType+PercpercTokenElement(type:PERCPERC, text:%%)
+    NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+    NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+    LexTokenType+PercTokenElement(type:PERC, text:%)
+    IEncodingDefinition
+      Identifier(type:IDENTIFIER, text:unicode)
+    NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+    NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+    LexTokenType+PercTokenElement(type:PERC, text:%)
+    IInitBlock
+      LexTokenType+InitKeywordTokenElement(type:INIT_KEYWORD, text:init)
+      LexTokenType+LbraceTokenElement(type:LBRACE, text:{)
+      NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+      Whitespace(type:WHITE_SPACE, text:   ) spaces:"   "
+      ICSharpBlock
+        ICSharpToken
+          Identifier(type:IDENTIFIER, text:currTokenType)
+        Whitespace(type:WHITE_SPACE, text: ) spaces:" "
+        ICSharpToken
+          LexTokenType+EqTokenElement(type:EQ, text:=)
+        Whitespace(type:WHITE_SPACE, text: ) spaces:" "
+        ICsharpKeyword
+          LexTokenType+NullKeywordTokenElement(type:NULL_KEYWORD, text:null)
+        ICSharpToken
+          LexTokenType+SemicolonTokenElement(type:SEMICOLON, text:;)
+      NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+      LexTokenType+PercTokenElement(type:PERC, text:%)
+      LexTokenType+InitKeywordTokenElement(type:INIT_KEYWORD, text:init)
+      LexTokenType+RbraceTokenElement(type:RBRACE, text:})
+    NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+    NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+    LexTokenType+PercTokenElement(type:PERC, text:%)
+    IBraceBlock
+      LexTokenType+LbraceTokenElement(type:LBRACE, text:{)
+      NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+      NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+      LexTokenType+PercTokenElement(type:PERC, text:%)
+      LexTokenType+RbraceTokenElement(type:RBRACE, text:})
+    NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+    NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+    LexTokenType+PercpercTokenElement(type:PERCPERC, text:%%)
+  ILexingBlock
+  NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+  NewLine(type:NEW_LINE, text:\n) spaces:"\n"
+

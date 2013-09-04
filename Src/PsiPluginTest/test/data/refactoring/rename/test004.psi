@@ -1,0 +1,5 @@
+a
+	:
+	!(#i{caret}d : identifier)
+	bb[id]
+  ;

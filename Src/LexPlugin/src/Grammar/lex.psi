@@ -1,0 +1,742 @@
+options
+{
+  parserPackage="JetBrains.ReSharper.LexPlugin.Psi.Lex.Parsing";
+  parserClassName="LexParserGenerated";
+  psiInterfacePackageName="JetBrains.ReSharper.LexPlugin.Psi.Lex.Tree";
+  psiStubsPackageName="JetBrains.ReSharper.LexPlugin.Psi.Lex.Tree.Impl";
+  psiStubsBaseClass="LexCompositeElement";
+  tokenTypePrefix="";
+  parserTargetSubdir="Parsing/Lex";
+  psiInterfacesTargetSubdir="Psi/Lex/Tree";
+  psiStubsTargetSubdir="Psi/Lex/Tree/Impl";
+  elementTypePrefix="";
+  visitorClassName="TreeNodeVisitor";
+  visitorMethodSuffix="";
+  testTargetSubdir="Psi/Test/Lex";
+  disableReflection;
+  separateHierarchies;
+  "treeElementClassFQName"="JetBrains.ReSharper.Psi.ExtensionsAPI.Tree.TreeElement";
+  "compositeElementClassFQName"="LexCompositeElement";
+  "psiElementVisitorClassFQName"="JetBrains.ReSharper.LexPlugin.Psi.Lex.Tree.TreeNodeVisitor";
+  "tokenTypeClassFQName"="JetBrains.ReSharper.LexPlugin.Psi.Lex.Parsing.LexTokenType";
+  "visitMethodPrefix"="Visit";
+  "lexerClassName"="JetBrains.ReSharper.Psi.Parsing.ILexer";
+  "psiClassesPrefix"="";
+  "psiElementClassFQName"="JetBrains.ReSharper.LexPlugin.Psi.Lex.Tree.ILexTreeNode";
+  customImplPackage="JetBrains.ReSharper.LexPlugin.Psi.Lex.Tree.Impl";
+  customInterfacePackage="JetBrains.ReSharper.LexPlugin.Psi.Lex.Tree";
+  "interfaceNamePrefix"="I";
+  "tokenElementClassFQName"="JetBrains.ReSharper.Psi.Tree.ITokenNode";
+  "customImplSuffix"="";
+  "objectClassFQName"="System.Object";
+  tokenBitsetThreshold=4;
+  elementTypeBaseClass="JetBrains.ReSharper.LexPlugin.Psi.Lex.Tree.LexCompositeNodeType";
+  parserMessagesClass="JetBrains.ReSharper.LexPlugin.Psi.Lex.Parsing.ParserMessages";
+  generateWorkingPsi;
+}
+
+errorhandling lexFile
+options
+{
+  stubBase="LexFileElement";
+}
+extras{
+	get {methodName = "DefinitionBlock" path = <lexFile:LEX_DEFINITION> };
+}
+  :
+    usingList?
+    definitionBlock<LEX_DEFINITION>
+    lexingBlock
+  ;
+
+errorhandling usingList
+  :
+    usingItem*
+  ;
+
+errorhandling usingItem
+  :
+    USING_KEYWORD
+    cSharpNamespace
+    SEMICOLON
+  ;
+
+cSharpNamespace
+  :
+    cSharpNamespaceName
+    (DOT cSharpNamespaceName)*
+  ;
+
+cSharpNamespaceName
+  :
+    IDENTIFIER
+  ;
+
+
+errorhandling definitionBlock
+  :
+    PERCPERC?
+    (
+      (
+        PERC
+        (
+          encodingDefinition
+          | initBlock
+          | braceBlock
+          | lexerOption
+          | includeStatement
+          | stateDeclaration
+        )
+      )
+      | tokenDeclaration
+    )*
+    PERCPERC?
+  ;
+
+stateDeclaration
+extras{
+  get {methodName = "StateName" path = <stateDeclaration:LEX_STATENAME> };
+}
+  :
+    STATE_KEYWORD
+    stateDeclaredName<LEX_STATENAME>
+  ;
+
+stateDeclaredName
+  :
+    IDENTIFIER
+  ;
+
+encodingDefinition
+  :
+    IDENTIFIER
+  ;
+
+initBlock
+  :
+    INIT_KEYWORD
+    LBRACE
+    cSharpBlock
+    PERC
+    INIT_KEYWORD
+    RBRACE
+  ;
+
+braceBlock
+  :
+    LBRACE
+    cSharpBlock?
+    PERC
+    RBRACE
+  ;
+
+errorhandling lexerOption
+  :
+    (namespaceLexerOption
+| classLexerOption
+| classModifierLexerOption
+| implementsLexerOption
+| functionLexerOption
+| functionModifierLexerOption
+| typeLexerOption
+| eofvalLexerOption)
+  ;
+
+namespaceLexerOption
+extras{
+  get {methodName = "Namespace" path = <namespaceLexerOption:LEX_NAMESPACE> };
+}
+  :
+    NAMESPACE_KEYWORD
+    cSharpNamespace<LEX_NAMESPACE>
+  ;
+
+classLexerOption
+  :
+    CLASS_KEYWORD
+    cSharpClassName
+  ;
+
+classModifierLexerOption
+  :
+    PUBLIC_KEYWORD
+  ;
+
+implementsLexerOption
+  :
+    IMPLEMENTS_KEYWORD
+    cSharpClassName
+  ;
+
+functionLexerOption
+  :
+    FUNCTION_KEYWORD
+    functionName
+  ;
+
+functionName
+  :
+    IDENTIFIER
+  ;
+
+functionModifierLexerOption
+  :
+    VIRTUAL_KEYWORD
+  ;
+
+typeLexerOption
+  :
+    TYPE_KEYWORD
+    cSharpClassName
+  ;
+
+cSharpClassName
+  :
+    IDENTIFIER
+  ;
+
+eofvalLexerOption
+  :
+    EOFVAL_KEYWORD
+    LBRACE
+    cSharpBlock
+    PERC
+    EOFVAL_KEYWORD
+    RBRACE
+  ;
+
+errorhandling tokenDeclaration
+extras{
+  get {methodName = "TokenName" path = <tokenDeclaration:LEX_TOKENNAME> };
+}
+  :
+    tokenDeclaredName<LEX_TOKENNAME>
+    EQ
+    (firstLexingExpression | unicodeChar)
+  ;
+
+firstLexingExpression
+  :
+    (
+      firstLexingExpressionItem
+    )
+    (
+      OR
+      firstLexingExpressionItem
+    )*
+  ;
+
+firstLexingExpressionItem
+  :
+    simpleSequence
+  ;
+
+simpleSequence
+  :
+    ((tokenTypeUsage | STRING_LITERAL | parenExpression | QUOTE | BACK_SLASH | BACK_QUOTE | SHARP | DOUBLE_QUOTE | regexp | SIMPLE_QUOTE | SIMPLE_BACK_SLASH specialChar | AT) qualifier?)*
+  ;
+
+tokenDeclaredName
+  :
+    IDENTIFIER
+  ;
+
+char
+  :
+    BACK_SLASH 
+    specialChar
+    | unicodeChar
+  ;
+
+unicodeChar
+  :
+    IDENTIFIER
+  ;
+
+specialChar
+  :
+    (BACK_SLASH | BACK_QUOTE | AT | QUOTE | SHARP | DIV | DOUBLE_QUOTE | PERC | ASTERISK | QUEST | DOUBLE_QUEST | RPARENTH | LPARENTH | LBRACKET | RBRACKET | LBRACE | RBRACE)
+  ;
+
+charId
+  :
+    IDENTIFIER
+  ;
+
+lexingExpression
+  :
+    sequence choiceTail*
+  ;
+
+choiceTail
+  :
+    OR
+    sequence
+  ;
+
+sequence
+  :
+    simpleExpression+
+  ;
+
+simpleExpression
+  :
+    (STRING_LITERAL | INTEGER_LITERAL | tokenTypeUsage | parenExpression | regexp | IDENTIFIER | quotedChar | BACK_SLASH | QUOTE | DOUBLE_QUOTE | AT | LT (EXCL MINUSMINUS| GT)? | GT | MINUS | MINUSMINUS | EQ | PERC | COLON |  SHARP | DIV | EXCL | DOUBLE_COLON | DOT | SEMICOLON | SIMPLE_QUOTE | AND SHARP? IDENTIFIER? SEMICOLON?)
+    qualifier?
+  ;
+
+qualifier
+  :
+    ASTERISK
+    | QUEST
+    | PLUS
+  ;
+
+tokenTypeUsage
+  :
+    LBRACE
+    tokenTypeName
+    RBRACE
+  ;
+
+tokenTypeName
+  :
+    IDENTIFIER
+  ;
+
+parenExpression
+  :
+    LPARENTH
+    lexingExpression
+    RPARENTH
+  ;
+
+regexp
+  :
+    LBRACKET
+    regexpBody
+    RBRACKET
+  ;
+
+regexpBody
+  :
+    basic_reg_exp
+  ;
+
+//http://pubs.opengroup.org/onlinepubs/007908799/xbd/re.html
+/* --------------------------------------------
+   Basic Regular Expression
+   --------------------------------------------
+*/
+basic_reg_exp
+  :
+    RE_expression DOLLAR?
+    | XOR RE_expression? DOLLAR?
+  ;
+RE_expression
+  :
+    DOLLAR IDENTIFIER?
+    | simple_RE+
+  ;
+simple_RE
+  :
+    nondupl_RE+
+//RE_dupl_symbol?
+  ;
+nondupl_RE
+  :
+    (
+      SIMPLE_BACK_SLASH
+      ( /*LPARENTH
+        RE_expression
+        BACK_SLASH
+        RPARENTH
+        | LPARENTH
+        BACK_SLASH
+        RPARENTH
+        |*/
+        INTEGER_LITERAL
+        | specialChar
+        | IDENTIFIER
+      )?
+      | regexpList
+      | RPARENTH
+      | BACK_SLASH
+      | QUOTE
+      | DOUBLE_QUOTE
+      | SHARP
+      | GT
+      | LT GT?
+      | MINUS
+      | DIV
+      | PERC
+      | AND
+      | AT
+      | STRING_LITERAL
+      | SIMPLE_QUOTE
+      | ASTERISK
+      | DOT
+      | COLON
+      | SEMICOLON
+    )
+  ;
+
+regexpList
+  :
+    regexpListItem*
+  ;
+
+backRef
+  :
+    BACK_SLASH
+    INTEGER_LITERAL
+  ;
+
+errorhandling regexpListItem
+  :
+//ORD_CHAR
+    (quotedChar
+    | DOT
+    | PLUS
+    | MINUS
+    | bracket_expression
+    | interval
+    | digitInterval
+    | tokenTypeUsage)
+    qualifier?
+  ;
+
+digitInterval
+  :
+    INTEGER_LITERAL
+    (
+      MINUS
+      INTEGER_LITERAL
+    )*
+  ;
+
+interval
+  :
+    IDENTIFIER
+    (
+      MINUS
+      IDENTIFIER
+    )*
+  ;
+
+quotedChar
+  :
+    SIMPLE_BACK_SLASH
+    (
+      XOR
+      | DOT
+      | ASTERISK
+      | DOLLAR
+      | SHARP
+      | DIV
+      | AT
+      | PERC
+      | IDENTIFIER
+      | DOUBLE_QUEST
+      | RPARENTH
+      | LPARENTH
+      | RBRACKET
+      | LBRACE
+      | RBRACE
+    )?
+  ;
+
+RE_dupl_symbol
+  :
+    ASTERISK
+    | BACK_SLASH
+    LBRACE
+    INTEGER_LITERAL
+    BACK_SLASH
+    RBRACE
+    | BACK_SLASH
+    LBRACE
+    INTEGER_LITERAL
+    COMMA
+    BACK_SLASH
+    RBRACE
+    | BACK_SLASH
+    LBRACE
+    INTEGER_LITERAL
+    COMMA
+    INTEGER_LITERAL
+    BACK_SLASH
+    RBRACE
+  ;
+
+/* --------------------------------------------
+   Bracket Expression
+   -------------------------------------------
+*/
+bracket_expression
+  :
+    LBRACKET
+    matching_list
+    RBRACKET
+    | LBRACKET
+    nonmatching_list
+    RBRACKET
+  ;
+matching_list
+  :
+    bracket_list
+  ;
+nonmatching_list
+  :
+    XOR
+    bracket_list
+  ;
+bracket_list
+  :
+    follow_list
+    | follow_list
+    MINUS
+  ;
+follow_list
+  :
+    expression_term
+    | follow_list
+    expression_term
+  ;
+expression_term
+  :
+    single_expression
+    | range_expression
+  ;
+single_expression
+  :
+    end_range
+    | character_class
+    | equivalence_class
+  ;
+range_expression
+  :
+    start_range
+    end_range
+    | start_range
+    MINUS
+  ;
+start_range
+  :
+    end_range
+    MINUS
+  ;
+end_range
+  :
+    coll_elem
+    collating_symbol
+  ;
+
+coll_elem
+  :
+//todo
+    IDENTIFIER
+  ;
+collating_symbol
+  :
+    LBRACKET DOT
+    coll_elem
+    DOT RBRACKET
+    | LBRACKET DOT
+    meta_char
+    DOT RBRACKET
+  ;
+
+meta_char
+  :
+//todo
+    IDENTIFIER
+  ;
+equivalence_class
+  :
+    LBRACKET EQ
+    coll_elem
+    EQ RBRACKET
+  ;
+character_class
+  :
+    LBRACKET COLON
+    regExpClass
+    COLON RBRACKET
+  ;
+
+regExpClass
+  :
+    IDENTIFIER
+  ;
+
+///////////////////////////////////////////////////
+
+errorhandling includeStatement
+extras{
+  get {methodName = "PathId" path = <includeStatement:LEX_PATHID> };
+}
+  :
+    INCLUDE_KEYWORD
+    pathId<LEX_PATHID>
+  ;
+
+pathId
+  :
+    (pathElement)
+    ((DIV | SIMPLE_BACK_SLASH) pathElement)*
+    DOT
+    fileExt
+  ;
+
+pathElement
+  :
+    (DOT DOT | DOT | IDENTIFIER)
+  ;
+
+
+fileExt
+  :
+    IDENTIFIER
+  ;
+
+errorhandling lexingBlock
+  :
+    (makeTokenBlock | PERC includeStatement)*
+  ;
+
+makeTokenBlock
+  :
+    state
+    parsingStatement
+  ;
+
+parsingStatement
+  :
+    parseSequense
+    (
+      OR
+      parseSequense
+    )*
+  ;
+
+
+
+parseSequense
+  :
+    parseItem+
+  ;
+
+parseItem
+  :
+    (
+      STRING_LITERAL
+      | DOT
+      | regexp
+      | parenExpression
+      | csharpOrToken
+	  | AT
+    )
+    qualifier?
+  ;
+
+csharpOrToken
+  :
+    LBRACE cSharpBlock RBRACE
+  ;
+
+state
+  :
+    LT
+    stateName
+    (COMMA stateName)*
+    GT
+  ;
+
+stateName
+  :
+    IDENTIFIER
+  ;
+
+
+//////////from csharp.psi
+
+errorhandling cSharpBlock
+  :
+    (cSharpToken | csharpIdentifier | csharpKeyword | csharpBraceExpression)*
+  ;
+
+csharpBraceExpression
+  :
+    LBRACE
+    cSharpBlock
+    RBRACE
+  ;
+
+cSharpToken
+  :    IDENTIFIER?
+| INTEGER_LITERAL
+| SIMPLE_QUOTE
+| STRING_LITERAL
+| NAMESPACE_KEYWORD
+| PUBLIC_KEYWORD
+| USING_KEYWORD
+| VIRTUAL_KEYWORD
+| LPARENTH
+| RPARENTH
+| LBRACKET
+| RBRACKET
+| SEMICOLON
+| COMMA
+| DOT
+| EQ
+| GT
+| LT
+| EXCL
+| TILDE
+| QUEST
+| COLON
+| PLUS
+| MINUS
+| ASTERISK
+| DIV
+| AND
+| OR
+| XOR
+| EQEQ
+| LE
+| GE
+| NE
+| ANDAND
+| OROR
+| PLUSPLUS
+| MINUSMINUS
+| LTLT
+| GTGT
+| PLUSEQ
+| MINUSEQ
+| ASTERISKEQ
+| DIVEQ
+| ANDEQ
+| OREQ
+| XOREQ
+| PERCEQ
+| LTLTEQ
+| GTGTEQ
+| ARROW
+| DOUBLE_QUEST
+| DOUBLE_COLON
+| SHARP
+| LAMBDA_ARROW
+  ;
+
+csharpIdentifier
+  :
+    IDENTIFIER
+  ;
+
+csharpKeyword
+  :
+    RETURN_KEYWORD
+    | NULL_KEYWORD
+  ;

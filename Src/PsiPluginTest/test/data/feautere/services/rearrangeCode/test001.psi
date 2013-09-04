@@ -1,0 +1,11 @@
+// ${DIRECTION:Down}
+
+a{caret}
+  :
+    b
+  ;
+
+b
+  :
+    c
+  ;
