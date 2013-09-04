@@ -2,7 +2,7 @@
 <actions>
   <insert group-id="ReSharper" position="last">
     <action-group id="PowerToys" text="Power Toys" shared="true">
-      <action id="PowerToys.Gist" text="Gist" shortcut="Shift+Alt+G" image="gist" />
+      <action id="PowerToys.Gist" text="Gist" shortcut="Shift+Alt+G" />
     </action-group>
   </insert>
   <!--  Doesn't work currently -->
