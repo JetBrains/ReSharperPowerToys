@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
-using JetBrains.ReSharper.Feature.Services.Search;
-using JetBrains.ReSharper.Feature.Services.Search.SearchRequests;
-using JetBrains.ReSharper.Features.Common.Occurences;
-using JetBrains.ReSharper.Features.Finding.Search;
+﻿using System;
+using System.Collections.Generic;
+using JetBrains.ReSharper.Feature.Services.Navigation;
+using JetBrains.ReSharper.Feature.Services.Navigation.Search;
+using JetBrains.ReSharper.Feature.Services.Navigation.Search.SearchRequests;
+using JetBrains.ReSharper.Feature.Services.Tree.SectionsManagement;
 using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Navigation.CSharpToPsi
@@ -31,6 +32,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Navigation.CSharpToPsi
       else
         title = string.Format("No psi rules found");
       return title;
+    }
+
+    protected override Func<SearchRequest, SearchDescriptor> GetDescriptorFactory()
+    {
+      return request => new GotoPsiRuleDescriptor(request, request.Search());
     }
   }
 }

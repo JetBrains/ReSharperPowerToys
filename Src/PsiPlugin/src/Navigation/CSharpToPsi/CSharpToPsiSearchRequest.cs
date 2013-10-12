@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Application.Progress;
 using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Feature.Services.Search;
-using JetBrains.ReSharper.Feature.Services.Search.SearchRequests;
+using JetBrains.ReSharper.Feature.Services.Navigation.Search;
+using JetBrains.ReSharper.Feature.Services.Navigation.Search.SearchRequests;
 using JetBrains.ReSharper.Feature.Services.Util;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.PsiPlugin.Refactoring;
@@ -15,8 +15,8 @@ namespace JetBrains.ReSharper.PsiPlugin.Navigation.CSharpToPsi
 {
   public class CSharpToPsiSearchRequest : SearchRequest
   {
-    private DeclaredElementEnvoy<IDeclaredElement> myTarget;
-    private ISolution mySolution;
+    private readonly DeclaredElementEnvoy<IDeclaredElement> myTarget;
+    private readonly ISolution mySolution;
     private string myCachedTitle;
 
     public CSharpToPsiSearchRequest(IDeclaredElement declaredElement)

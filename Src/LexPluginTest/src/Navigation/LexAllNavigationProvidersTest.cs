@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using JetBrains.ReSharper.IntentionsTests.Navigation;
+﻿using JetBrains.ReSharper.IntentionsTests.Navigation;
 using NUnit.Framework;
 
 namespace LexPluginTest.Navigation
@@ -11,21 +10,7 @@ namespace LexPluginTest.Navigation
       get { return "..\\..\\navigation"; }
     }
 
-    protected override List<WhatToDump> DumpOptions
-    {
-      get
-      {
-        return new List<WhatToDump>(new[]
-          {
-            WhatToDump.MenuItemPresentation,
-            WhatToDump.NavigationResult,
-            WhatToDump.OccurenceDump,
-            WhatToDump.NavigationProvider,
-            WhatToDump.OccurenceType,
-            WhatToDump.OccurenceKind
-          });
-      }
-    }
+    protected override WhatToDump DumpOptions { get { return WhatToDump.All; } }
 
     [Test]
     public void test001()

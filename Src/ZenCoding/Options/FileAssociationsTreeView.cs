@@ -15,12 +15,14 @@
  */
 
 using System;
-
+using JetBrains.ActionManagement;
+using JetBrains.Application.Interop.NativeHook;
 using JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model;
 using JetBrains.TreeModels;
 using JetBrains.UI.Application;
 using JetBrains.UI.Components;
 using JetBrains.UI.RichText;
+using JetBrains.UI.Tooltips;
 using JetBrains.UI.TreeView;
 
 namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
@@ -30,7 +32,8 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
     TreeModelViewColumn myAssociationColumn;
     TreeModelViewColumn myPatternTypeColumn;
 
-    public FileAssociationsTreeView(TreeModel model, ITreeViewController controller, UIApplication environment) : base(model, controller, environment)
+    public FileAssociationsTreeView(TreeModel model, ITreeViewController controller, IUIApplication environment, ITooltipManager tooltipManager, IWindowsHookManager windowsHookManager, IActionManager actionManager)
+      : base(model, controller, environment, tooltipManager, windowsHookManager, actionManager)
     {
     }
 

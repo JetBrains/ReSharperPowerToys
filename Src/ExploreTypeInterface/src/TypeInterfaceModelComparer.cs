@@ -15,7 +15,7 @@
  */
 
 using System;
-using JetBrains.ReSharper.Features.Shared.TreePsiBrowser;
+using JetBrains.ReSharper.Feature.Services.Util.Comparers;
 using JetBrains.ReSharper.Psi;
 
 namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
