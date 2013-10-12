@@ -1,6 +1,5 @@
 using System;
 using JetBrains.Application.Settings;
-using JetBrains.Application.Threading;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.Stages;
 using JetBrains.ReSharper.Psi;
@@ -32,7 +31,7 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi
         commiter(new DaemonStageResult(consumer.Highlightings) { Layer = 1 });
       };
 
-      using (IMultiCoreFibers fibers = DaemonProcess.CreateFibers())
+      using (var fibers = DaemonProcess.CreateFibers())
       {
         // highlgiht global space
         //if (DaemonProcess.FullRehighlightingRequired)

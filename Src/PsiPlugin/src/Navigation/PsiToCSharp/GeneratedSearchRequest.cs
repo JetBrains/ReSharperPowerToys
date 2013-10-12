@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using JetBrains.Application.Progress;
 using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Feature.Services.Search;
-using JetBrains.ReSharper.Feature.Services.Search.SearchRequests;
+using JetBrains.ReSharper.Feature.Services.Navigation.Search;
+using JetBrains.ReSharper.Feature.Services.Navigation.Search.SearchRequests;
 using JetBrains.ReSharper.Feature.Services.Util;
 using JetBrains.ReSharper.Psi;
 using JetBrains.Util;

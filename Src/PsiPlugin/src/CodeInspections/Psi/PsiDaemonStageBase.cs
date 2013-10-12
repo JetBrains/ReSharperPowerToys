@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using JetBrains.Annotations;
 using JetBrains.Application.Settings;
-using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Files;
@@ -38,7 +37,7 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi
     public static IPsiFile GetPsiFile(IPsiSourceFile sourceFile)
     {
       var psiServices = sourceFile.GetPsiServices();
-      psiServices.Files.AssertAllDocumentAreCommited();
+      psiServices.Files.AssertAllDocumentAreCommitted();
       return psiServices.Files.GetDominantPsiFile<PsiLanguage>(sourceFile) as IPsiFile;
     }
 
