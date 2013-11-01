@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using JetBrains.ReSharper.Feature.Services.Navigation;
 using JetBrains.ReSharper.Feature.Services.Navigation.Search;
 using JetBrains.ReSharper.Feature.Services.Navigation.Search.SearchRequests;
+using JetBrains.ReSharper.Feature.Services.Tree;
 using JetBrains.ReSharper.Feature.Services.Tree.SectionsManagement;
 using JetBrains.Util;
 
@@ -62,7 +63,7 @@ namespace JetBrains.ReSharper.PowerToys.FindText
       return title;
     }
 
-    protected override Func<SearchRequest, SearchDescriptor> GetDescriptorFactory()
+    protected override Func<SearchRequest, OccurenceBrowserDescriptor> GetDescriptorFactory()
     {
       return request => new FindTextDescriptor(request, request.Search());
     }
