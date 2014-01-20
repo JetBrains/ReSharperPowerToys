@@ -2,6 +2,7 @@
 using JetBrains.Application.DataContext;
 using JetBrains.ReSharper.Feature.Services;
 using JetBrains.ReSharper.Feature.Services.ContextNavigation;
+using JetBrains.ReSharper.Feature.Services.Navigation.ContextNavigation;
 using JetBrains.ReSharper.Feature.Services.Navigation.Search;
 using JetBrains.ReSharper.Features.Finding.ExecutionHosting;
 
@@ -30,9 +31,9 @@ namespace JetBrains.ReSharper.PsiPlugin.Navigation.PsiToCSharp.GeneratedClass
       }
     }
 
-    protected override GotoGeneratedDescriptor CreateSearchDescriptor(GeneratedClassSearchRequest searchRequest, ICollection<IOccurence> occurences)
+    protected override GotoGeneratedDescriptor CreateSearchDescriptor(GeneratedClassSearchRequest searchRequest, ICollection<IOccurence> occurrences)
     {
-      return new GotoGeneratedDescriptor(searchRequest, occurences);
+      return new GotoGeneratedDescriptor(searchRequest, occurrences);
     }
   }
 }

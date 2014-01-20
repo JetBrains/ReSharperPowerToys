@@ -16,7 +16,7 @@
 
 using JetBrains.Application.Settings;
 using JetBrains.DataFlow;
-using JetBrains.ReSharper.Features.Common.Options;
+using JetBrains.ReSharper.Feature.Services.OptionPages;
 using JetBrains.UI.Controls;
 using JetBrains.UI.CrossFramework;
 using JetBrains.UI.Options;

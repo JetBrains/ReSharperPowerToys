@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-using JetBrains.Application;
+using JetBrains.UI.Application;
 using JetBrains.UI.ToolWindowManagement;
 
 namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
@@ -25,8 +25,8 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
     VisibilityPersistenceScope = ToolWindowVisibilityPersistenceScope.Solution,
     Type = ToolWindowType.MultiInstance)]
     public class TypeInterfaceToolWindowDescriptor : ToolWindowDescriptor {
-    public TypeInterfaceToolWindowDescriptor(IApplicationDescriptor applicationDescriptor)
-      : base(applicationDescriptor)
+    public TypeInterfaceToolWindowDescriptor(IWindowBranding branding)
+      : base(branding)
     {
     }
   }

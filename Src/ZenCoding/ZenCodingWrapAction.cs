@@ -119,7 +119,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
                   return;
 
                 int insertPoint;
-                IProjectFile projectFile = textControl.GetProjectFile(solution);
+                IProjectFile projectFile = textControl.ToProjectFile(solution);
                 string expanded = GetEngine(solution).WrapWithAbbreviation
                   (abbr, textControl.Document.GetText(selection),GetDocTypeForFile(projectFile), out insertPoint);
                 CheckAndIndent(solution, projectFile, textControl, selection, expanded, insertPoint);

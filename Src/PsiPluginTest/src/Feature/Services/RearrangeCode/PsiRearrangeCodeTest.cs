@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using JetBrains.ReSharper.Feature.Services.RearrangeCode.Tests;
+﻿using JetBrains.ReSharper.Feature.Services.Tests.FeatureServices.RearrangeCode;
 using NUnit.Framework;
 
 namespace PsiPluginTest.Feature.Services.RearrangeCode

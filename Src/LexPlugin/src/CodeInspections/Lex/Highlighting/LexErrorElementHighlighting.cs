@@ -1,23 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using JetBrains.DocumentModel;
-using JetBrains.ReSharper.Daemon;
-using JetBrains.ReSharper.Daemon.Impl;
+﻿using JetBrains.DocumentModel;
+using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi.Tree;
-using JetBrains.UI.Resources;
-
 
 [assembly: RegisterConfigurableSeverity("SyntaxError", null, HighlightingGroupIds.LanguageUsage, "Syntax Error", @"
           Syntax error", Severity.ERROR, false, Internal = false)]
 namespace JetBrains.ReSharper.LexPlugin.CodeInspections.Lex.Highlighting
 {
   [ConfigurableSeverityHighlighting("SyntaxError", "Lex", OverlapResolve = OverlapResolveKind.ERROR, ToolTipFormatString = Error)]
-  public class LexErrorElementHighlighting : IHighlightingWithRange, ICustomAttributeIdHighlighting
+  public class LexErrorElementHighlighting : ICustomAttributeIdHighlighting
   {
     private const string Error = "Syntax error";
-    private const string AtributeId = HighlightingAttributeIds.ERROR_ATTRIBUTE;
+    private const string OurAttributeId = HighlightingAttributeIds.ERROR_ATTRIBUTE;
     private readonly ITreeNode myElement;
 
     public LexErrorElementHighlighting(ITreeNode element)
@@ -25,16 +18,10 @@ namespace JetBrains.ReSharper.LexPlugin.CodeInspections.Lex.Highlighting
       myElement = element;
     }
 
-    #region ICustomAttributeIdHighlighting Members
-
     public string AttributeId
     {
-      get { return AtributeId; }
+      get { return OurAttributeId; }
     }
-
-    #endregion
-
-    #region IHighlightingWithRange Members
 
     public bool IsValid()
     {
@@ -60,7 +47,5 @@ namespace JetBrains.ReSharper.LexPlugin.CodeInspections.Lex.Highlighting
     {
       return myElement.GetNavigationRange();
     }
-
-    #endregion
   }
 }

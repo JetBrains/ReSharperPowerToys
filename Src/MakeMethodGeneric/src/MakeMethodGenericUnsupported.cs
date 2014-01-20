@@ -15,12 +15,12 @@
  */
 
 using JetBrains.ProjectModel;
+using JetBrains.ReSharper.Feature.Services.Refactorings;
 using JetBrains.ReSharper.PowerToys.MakeMethodGeneric.Impl;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Refactorings.Conflicts;
-using JetBrains.ReSharper.Refactorings.Workflow;
 
 namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
 {

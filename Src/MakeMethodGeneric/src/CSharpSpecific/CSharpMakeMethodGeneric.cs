@@ -17,6 +17,7 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using JetBrains.ProjectModel;
+using JetBrains.ReSharper.Feature.Services.Refactorings;
 using JetBrains.ReSharper.PowerToys.MakeMethodGeneric.Impl;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp;
@@ -26,7 +27,6 @@ using JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve;
 using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Refactorings.Conflicts;
-using JetBrains.ReSharper.Refactorings.Workflow;
 
 namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric.CSharpSpecific
 {
@@ -61,7 +61,7 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric.CSharpSpecific
       if (type == null || !type.CanUseExplicitly(invocation))
       {
         Driver.AddConflict(ReferenceConflict.CreateError(
-          reference, "Arguemnt of {0} is not valid 'typeof' expression.", "usage"));
+          reference, "Argument of {0} is not valid 'typeof' expression.", "usage"));
         return null;
       }
 
@@ -91,7 +91,7 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric.CSharpSpecific
       {
         var parameterDeclarations = methodDeclaration.ParameterDeclarations;
         if (index < parameterDeclarations.Count)
-          methodDeclaration.RemoveParameterDeclaration((IRegularParameterDeclaration)parameterDeclarations[index]);
+          methodDeclaration.RemoveParameterDeclaration(parameterDeclarations[index]);
       }
     }
 
@@ -155,7 +155,7 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric.CSharpSpecific
       IList<ICSharpArgument> arguments = invocation.Arguments;
       if (isExtensionMethod)
       {
-        // special treatment of extention methods.
+        // special treatment of extension methods.
         if (parameterIndex == 0)
         {
           return ((IReferenceExpression) invocation.InvokedExpression).QualifierExpression;

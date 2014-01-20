@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using JetBrains.Annotations;
 using JetBrains.Application.Settings;
-using JetBrains.ReSharper.Daemon;
+using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.LexPlugin.Grammar;
 using JetBrains.ReSharper.LexPlugin.Psi.Lex.Tree;
 using JetBrains.ReSharper.Psi;

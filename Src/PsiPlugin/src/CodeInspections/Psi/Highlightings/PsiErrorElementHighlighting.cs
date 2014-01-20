@@ -1,6 +1,5 @@
 using JetBrains.DocumentModel;
-using JetBrains.ReSharper.Daemon;
-using JetBrains.ReSharper.Daemon.Impl;
+using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi.Tree;
 
 [assembly: RegisterConfigurableSeverity("SyntaxError", null, HighlightingGroupIds.LanguageUsage, "Syntax Error", @"
@@ -9,10 +8,10 @@ using JetBrains.ReSharper.Psi.Tree;
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi.Highlightings
 {
   [ConfigurableSeverityHighlighting("SyntaxError", "PSI", OverlapResolve = OverlapResolveKind.ERROR, ToolTipFormatString = Error)]
-  internal class PsiErrorElementHighlighting : IHighlightingWithRange, ICustomAttributeIdHighlighting
+  internal class PsiErrorElementHighlighting : ICustomAttributeIdHighlighting
   {
     private const string Error = "Syntax error";
-    private const string AtributeId = HighlightingAttributeIds.ERROR_ATTRIBUTE;
+    private const string OurAttributeId = HighlightingAttributeIds.ERROR_ATTRIBUTE;
     private readonly ITreeNode myElement;
 
     public PsiErrorElementHighlighting(ITreeNode element)
@@ -24,12 +23,12 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi.Highlightings
 
     public string AttributeId
     {
-      get { return AtributeId; }
+      get { return OurAttributeId; }
     }
 
     #endregion
 
-    #region IHighlightingWithRange Members
+    #region IHighlighting Members
 
     public bool IsValid()
     {

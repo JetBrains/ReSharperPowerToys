@@ -17,7 +17,7 @@
 using System.Windows.Forms;
 using JetBrains.Application.Progress;
 using JetBrains.DataFlow;
-using JetBrains.ReSharper.Refactorings.Workflow;
+using JetBrains.ReSharper.Feature.Services.Refactorings;
 using JetBrains.UI.CrossFramework;
 
 namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric

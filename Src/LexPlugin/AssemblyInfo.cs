@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using JetBrains.ActionManagement;
 using JetBrains.Application.PluginSupport;
 
 [assembly: AssemblyTitle("ReSharper Lex Plugin")]

@@ -2,10 +2,10 @@ using System;
 using JetBrains.Application.Progress;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Intentions;
-using JetBrains.ReSharper.Feature.Services.Intentions.DataProviders;
 using JetBrains.ReSharper.Intentions.CreateFromUsage;
 using JetBrains.ReSharper.Intentions.Util;
 using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.Psi.Util;
 using JetBrains.TextControl;
 using JetBrains.Util;
 

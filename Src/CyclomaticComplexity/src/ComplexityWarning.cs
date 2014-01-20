@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-using JetBrains.ReSharper.Daemon;
+using JetBrains.DocumentModel;
+using JetBrains.ReSharper.Feature.Services.Daemon;
+using JetBrains.ReSharper.Psi.CSharp.Tree;
+using JetBrains.ReSharper.Psi.Tree;
 
 namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
 {
@@ -24,11 +27,18 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
   [StaticSeverityHighlighting(Severity.WARNING, "CSharpInfo")]
   public class ComplexityWarning : IHighlighting
   {
+    private readonly ICSharpFunctionDeclaration myDeclaration;
     private readonly string myTooltip;
 
-    public ComplexityWarning(string toolTip)
+    public ComplexityWarning(ICSharpFunctionDeclaration declaration, string toolTip)
     {
+      myDeclaration = declaration;
       myTooltip = toolTip;
+    }
+
+    public DocumentRange CalculateRange()
+    {
+      return myDeclaration.GetNameDocumentRange();
     }
 
     public string ToolTip
@@ -48,7 +58,7 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
 
     public bool IsValid()
     {
-      return true;
+      return myDeclaration.IsValid();
     }
   }
 }

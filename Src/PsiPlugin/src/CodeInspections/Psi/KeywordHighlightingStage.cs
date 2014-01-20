@@ -2,8 +2,7 @@
 using System.Linq;
 using JetBrains.Annotations;
 using JetBrains.Application.Settings;
-using JetBrains.ReSharper.Daemon;
-using JetBrains.ReSharper.Daemon.Stages;
+using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi.Highlightings;

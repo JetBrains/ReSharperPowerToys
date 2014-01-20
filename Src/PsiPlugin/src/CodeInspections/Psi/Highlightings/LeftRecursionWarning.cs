@@ -1,7 +1,6 @@
 using System;
 using JetBrains.DocumentModel;
-using JetBrains.ReSharper.Daemon;
-using JetBrains.ReSharper.Daemon.Impl;
+using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi.Tree;
 
 [assembly: RegisterConfigurableSeverity("LeftRecursion", null, HighlightingGroupIds.LanguageUsage, "Left Recursion", @"
@@ -10,9 +9,9 @@ using JetBrains.ReSharper.Psi.Tree;
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi.Highlightings
 {
   [ConfigurableSeverityHighlighting("LeftRecursion", "PSI", OverlapResolve = OverlapResolveKind.WARNING, ToolTipFormatString = "Left Recursion")]
-  internal class LeftRecursionWarning : IHighlightingWithRange, ICustomAttributeIdHighlighting
+  internal class LeftRecursionWarning : ICustomAttributeIdHighlighting
   {
-    private const string AtributeId = HighlightingAttributeIds.WARNING_ATTRIBUTE;
+    private const string OurAttributeId = HighlightingAttributeIds.WARNING_ATTRIBUTE;
     private readonly ITreeNode myElement;
     private readonly string myError = "Left Recursion";
 
@@ -27,16 +26,10 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi.Highlightings
       myError = message;
     }
 
-    #region ICustomAttributeIdHighlighting Members
-
     public string AttributeId
     {
-      get { return AtributeId; }
+      get { return OurAttributeId; }
     }
-
-    #endregion
-
-    #region IHighlightingWithRange Members
 
     public bool IsValid()
     {
@@ -62,7 +55,5 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi.Highlightings
     {
       return myElement.GetNavigationRange();
     }
-
-    #endregion
   }
 }

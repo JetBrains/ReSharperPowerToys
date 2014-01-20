@@ -1,7 +1,6 @@
 using System;
 using JetBrains.Application.Settings;
-using JetBrains.ReSharper.Daemon;
-using JetBrains.ReSharper.Daemon.Stages;
+using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.Util;
@@ -22,25 +21,25 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi
     }
 
 
-    public override void Execute(Action<DaemonStageResult> commiter)
+    public override void Execute(Action<DaemonStageResult> committer)
     {
       Action globalHighlighter = () =>
       {
         var consumer = new DefaultHighlightingConsumer(this, mySettingsStore);
         File.ProcessThisAndDescendants(new GlobalProcessor(this, consumer));
-        commiter(new DaemonStageResult(consumer.Highlightings) { Layer = 1 });
+        committer(new DaemonStageResult(consumer.Highlightings) { Layer = 1 });
       };
 
       using (var fibers = DaemonProcess.CreateFibers())
       {
-        // highlgiht global space
+        // highlight global space
         //if (DaemonProcess.FullRehighlightingRequired)
         fibers.EnqueueJob(globalHighlighter);
       }
 
       // remove all old highlightings
       //if (DaemonProcess.FullRehighlightingRequired)
-      commiter(new DaemonStageResult(EmptyArray<HighlightingInfo>.Instance));
+      committer(new DaemonStageResult(EmptyArray<HighlightingInfo>.Instance));
     }
 
     #region Nested type: GlobalProcessor

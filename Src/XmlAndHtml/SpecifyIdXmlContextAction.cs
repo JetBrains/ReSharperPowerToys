@@ -17,7 +17,7 @@
 using System;
 using JetBrains.Application.Progress;
 using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Feature.Services.Bulbs;
+using JetBrains.ReSharper.Feature.Services.ContextActions;
 using JetBrains.ReSharper.Feature.Services.Xml.Bulbs;
 using JetBrains.ReSharper.Intentions.Extensibility;
 using JetBrains.ReSharper.Psi.Tree;
@@ -63,7 +63,7 @@ namespace XmlAndHtml
 
       tag.AddAttributeBefore(idAttr, null);
 
-      // continuation to do after transaction commited
+      // continuation to do after transaction committed
       return textControl =>
         // move cursor inside new created id attribute
         textControl.Caret.MoveTo(idAttr.Value.GetDocumentRange().TextRange.StartOffset, CaretVisualPlacement.Generic);
@@ -85,8 +85,8 @@ namespace XmlAndHtml
         return false;
 
       // check if the attribute is already there (case-insensitive)
-      IXmlAttribute idAtt = tagHeader.GetAttribute(attr => StringComparer.OrdinalIgnoreCase.Equals(attr.AttributeName, "id"));
-      if (idAtt != null)
+      IXmlAttribute idAttr = tagHeader.GetAttribute(attr => StringComparer.OrdinalIgnoreCase.Equals(attr.AttributeName, "id"));
+      if (idAttr != null)
         return false;
 
       return true;

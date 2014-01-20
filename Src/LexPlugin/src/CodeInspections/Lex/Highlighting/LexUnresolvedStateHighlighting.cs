@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using JetBrains.DocumentModel;
-using JetBrains.ReSharper.Daemon;
-using JetBrains.ReSharper.Daemon.Impl;
+﻿using JetBrains.DocumentModel;
+using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.LexPlugin.Psi.Lex.Tree;
 using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Tree;
@@ -15,11 +10,11 @@ using JetBrains.ReSharper.Psi.Tree;
 namespace JetBrains.ReSharper.LexPlugin.CodeInspections.Lex.Highlighting
 {
   [ConfigurableSeverityHighlighting("UnresolvedState", "Lex", OverlapResolve = OverlapResolveKind.ERROR, ToolTipFormatString = Error)]
-  class LexUnresolvedStateHighlighting : IHighlightingWithRange
+  class LexUnresolvedStateHighlighting : IHighlighting
   {
     private const string Error = "Unresolved reference";
     private readonly ITreeNode myElement;
-    private IReference myReference;
+    private readonly IReference myReference;
 
     public LexUnresolvedStateHighlighting(IStateName element)
     {
@@ -28,8 +23,6 @@ namespace JetBrains.ReSharper.LexPlugin.CodeInspections.Lex.Highlighting
       myReference = element.StateNameReference;
 
     }
-
-    #region IHighlightingWithRange Members
 
     public bool IsValid()
     {
@@ -55,8 +48,6 @@ namespace JetBrains.ReSharper.LexPlugin.CodeInspections.Lex.Highlighting
     {
       return myElement.GetNavigationRange();
     }
-
-    #endregion
 
     public IReference Reference
     {

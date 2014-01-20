@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using JetBrains.ReSharper.Feature.Services.Intentions.DataProviders;
 using JetBrains.ReSharper.Psi.Tree;
+using JetBrains.ReSharper.Psi.Util;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl;

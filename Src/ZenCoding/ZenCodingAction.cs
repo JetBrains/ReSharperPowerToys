@@ -21,9 +21,9 @@ using JetBrains.Application.DataContext;
 using JetBrains.DocumentModel.Transactions;
 using JetBrains.Interop.WinApi;
 using JetBrains.ProjectModel;
+using JetBrains.ReSharper.Features.Browsing.Bookmarks;
 using JetBrains.TextControl;
 using JetBrains.Util;
-using JetBrains.ReSharper.Features.Browsing.Bookmarks;
 
 namespace JetBrains.ReSharper.PowerToys.ZenCoding
 {
@@ -68,7 +68,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding
           }
 
           int insertPoint;
-          var projectFile = textControl.GetProjectFile(solution);
+          var projectFile = textControl.ToProjectFile(solution);
           var expanded = GetEngine(solution).ExpandAbbreviation(abbr, GetDocTypeForFile(projectFile), out insertPoint);
           CheckAndIndent(solution, projectFile, textControl, abbrRange, expanded, insertPoint);
         }

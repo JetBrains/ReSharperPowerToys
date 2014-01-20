@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using JetBrains.ReSharper.Daemon;
+using JetBrains.ReSharper.Feature.Services.Daemon;
 
 namespace JetBrains.ReSharper.LexPlugin.CodeInspections.Lex
 {
@@ -20,7 +17,7 @@ namespace JetBrains.ReSharper.LexPlugin.CodeInspections.Lex
       get { return myDaemonProcess; }
     }
 
-    public void Execute(Action<DaemonStageResult> commiter)
+    public void Execute(Action<DaemonStageResult> committer)
     {
     }
   }

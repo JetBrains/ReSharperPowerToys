@@ -18,17 +18,14 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Application.Progress;
 using JetBrains.ProjectModel;
+using JetBrains.ReSharper.Feature.Services.OverridesSupport;
+using JetBrains.ReSharper.Feature.Services.Refactorings;
 using JetBrains.ReSharper.PowerToys.MakeMethodGeneric.Impl;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Search;
 using JetBrains.ReSharper.Psi.Tree;
-using JetBrains.ReSharper.Refactorings;
 using JetBrains.ReSharper.Refactorings.Common;
-using JetBrains.ReSharper.Refactorings.Conflicts;
-using JetBrains.ReSharper.Refactorings.OverridesSupport;
-using JetBrains.ReSharper.Refactorings.Rename;
-using JetBrains.ReSharper.Refactorings.Workflow;
 
 namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
 {
@@ -50,7 +47,7 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
     public IParameter Parameter { get; private set; }
 
     /// <summary>
-    /// This code changes PSI documents. It is executed usder PSI transaction, Command cookies, Reentrancy guard ets. 
+    /// This code changes PSI documents. It is executed under PSI transaction, Command cookies, Reentrancy guard etc. 
     /// All documents are committed (PSI is valid). 
     /// </summary>
     public override bool Execute(IProgressIndicator pi)
@@ -109,7 +106,7 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
       using (var subPi = new SubProgressIndicator(pi, 1))
         ProcessParameterUsages(referencesToParameter, subPi);
 
-      // Remove parameters from method declarations and insert new type parmeter. Map contains method -> new type parameter relation. 
+      // Remove parameters from method declarations and insert new type parameter. Map contains method -> new type parameter relation. 
       Dictionary<IMethod, ITypeParameter> map = UpdateDeclarations(methods);
 
       // We have changed declarations. cashes should be updated)
@@ -131,7 +128,7 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
              select parameters[index];
     }
 
-    private List<IMethod> ScanHierarchyConflicts(IEnumerable<HierarchyMember> hierarchyMembers)
+    private ICollection<IMethod> ScanHierarchyConflicts(IEnumerable<HierarchyMember> hierarchyMembers)
     {
       var members = new List<IMethod>();
       var provider = new MakeGenericHierarchyConflictTextProvider();
@@ -164,7 +161,7 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
       pi.Start(references.Count);
       foreach (IReference reference in references)
       {
-        // reference can be invalid if previous changes affected it's element. It is unlikely to be occured...
+        // reference can be invalid if previous changes affected it's element. It is unlikely to be occurred...
         if (reference.IsValid())
           // process reference with language specific implementation...
           Exec[reference.GetTreeNode().Language].ProcessParameterReference(reference);
@@ -237,7 +234,7 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
 
     /// <summary>
     /// Create language specific part of refactoring.
-    /// Filter your languare specific service and instantiate part...
+    /// Filter your language specific service and instantiate part...
     /// </summary>
     protected override MakeMethodGenericBase CreateRefactoring(IRefactoringLanguageService service)
     {
