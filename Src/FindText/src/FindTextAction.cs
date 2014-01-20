@@ -21,6 +21,7 @@ using JetBrains.Application.DataContext;
 using JetBrains.Application.Settings;
 using JetBrains.DocumentManagers;
 using JetBrains.ProjectModel;
+using JetBrains.ReSharper.Feature.Services.Occurences.Presentation;
 using JetBrains.ReSharper.Features.Common.FindResultsBrowser;
 using JetBrains.ReSharper.Psi;
 using JetBrains.UI.Application;

@@ -16,10 +16,13 @@
 
 using JetBrains.ActionManagement;
 using JetBrains.Application.DataContext;
+using JetBrains.Application.Interop.NativeHook;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Feature.Services.Util;
 using JetBrains.ReSharper.Psi.Files;
+using JetBrains.UI.Application;
+using JetBrains.UI.Tooltips;
 using DataConstants = JetBrains.ReSharper.Psi.Services.DataConstants;
 using MessageBox = JetBrains.Util.MessageBox;
 using System.Linq;
@@ -44,7 +47,7 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
       // Get PsiManager for solution, from which we will obtain code elements
       var services = solution.GetPsiServices();
 
-      if (!services.Files.AllDocumentsAreCommited)
+      if (!services.Files.AllDocumentsAreCommitted)
         return;
 
       using (CommitCookie caches = CommitCookie.Commit(solution).WaitForCaches(this))
@@ -62,7 +65,7 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
 
         // Create descriptor and ask TreeModelBrowser to show it in the HierarchyResults view. 
         // Same view, where type hierarchy is shown
-        var descriptor = new TypeInterfaceDescriptor(typeElement, instanceOnly);
+        var descriptor = new TypeInterfaceDescriptor(typeElement, instanceOnly, solution, context.GetComponent<IUIApplication>(), context.GetComponent<ITooltipManager>(), context.GetComponent<IWindowsHookManager>(), context.GetComponent<IActionManager>());
         var windowRegistrar = solution.GetComponent<TypeInterfaceToolWindowRegistrar>();
         windowRegistrar.Show(descriptor);
       }

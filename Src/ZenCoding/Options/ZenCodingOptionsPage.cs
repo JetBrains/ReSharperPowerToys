@@ -18,6 +18,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Windows.Forms;
+using JetBrains.ActionManagement;
+using JetBrains.Application.Interop.NativeHook;
 using JetBrains.Application.Settings.Store;
 using JetBrains.DataFlow;
 using JetBrains.ReSharper.Features.Common.Options;
@@ -25,13 +27,13 @@ using JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model;
 using JetBrains.Threading;
 using JetBrains.TreeModels;
 using JetBrains.UI.Application;
-using JetBrains.UI.Components;
 using JetBrains.UI.CrossFramework;
 using JetBrains.UI.Icons;
 using JetBrains.UI.Options;
 using System.Linq;
 using JetBrains.Application.Settings;
 using JetBrains.UI.Resources;
+using JetBrains.UI.Tooltips;
 
 namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
 {
@@ -43,19 +45,19 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
     private readonly OptionsSettingsSmartContext mySettings;
     private readonly IThreading myThreading;
     private readonly IThemedIconManager myIconManager;
-    private readonly UIApplication _environmanet;
+    private readonly UIApplication _environment;
     private readonly SortedDictionary<int, FileAssociation> myFileAssociations;
 
     private readonly FileAssociationsTreeView myView;
     private readonly Expression<Func<ZenCodingSettings, IIndexedEntry<int, FileAssociation>>> myLambdaExpression;
 
-    public ZenCodingOptionsPage(Lifetime lifetime, OptionsSettingsSmartContext settings, IThreading threading, IThemedIconManager iconManager, UIApplication environmanet)
+    public ZenCodingOptionsPage(Lifetime lifetime, OptionsSettingsSmartContext settings, IThreading threading, IThemedIconManager iconManager, UIApplication environment, ITooltipManager tooltipManager, IWindowsHookManager windowsHookManager, IActionManager actionManager)
     {
       myLifetime = lifetime;
       mySettings = settings;
       myThreading = threading;
       myIconManager = iconManager;
-      _environmanet = environmanet;
+      _environment = environment;
       myLambdaExpression = s => s.FileAssociations;
 
       InitializeComponent();
@@ -68,7 +70,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
 
       var model = BuildModel();
 
-      myView = new FileAssociationsTreeView(model, new FileAssociationViewController(environmanet), environmanet)
+      myView = new FileAssociationsTreeView(model, new FileAssociationViewController(environment), environment, tooltipManager, windowsHookManager, actionManager)
       {
         Presenter = new FileAssociationPresenter(),
         Dock = DockStyle.Fill
@@ -131,7 +133,7 @@ namespace JetBrains.ReSharper.PowerToys.ZenCoding.Options
 
     private void OpenEditor(FileAssociation association, Action<EditFileAssociationForm> onClose)
     {
-      using (var form = new EditFileAssociationForm(association, _environmanet))
+      using (var form = new EditFileAssociationForm(association, _environment))
       {
         if (form.ShowDialog(this) != DialogResult.OK)
           return;

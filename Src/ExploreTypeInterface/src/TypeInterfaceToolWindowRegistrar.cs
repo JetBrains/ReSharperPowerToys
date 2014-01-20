@@ -17,15 +17,13 @@
 using System.Drawing;
 using System.Windows.Forms;
 using JetBrains.ActionManagement;
-using JetBrains.Application;
-using JetBrains.Application.Settings;
+using JetBrains.Application.Interop.NativeHook;
 using JetBrains.DataFlow;
 using JetBrains.IDE.TreeBrowser;
 using JetBrains.ProjectModel;
+using JetBrains.ReSharper.Feature.Services.Occurences.Presentation.TreePsiBrowser;
 using JetBrains.ReSharper.Features.Browsing.Hierarchies.Actions;
-using JetBrains.ReSharper.Features.Common.TreePsiBrowser;
 using JetBrains.UI.Application;
-using JetBrains.UI.Components;
 using JetBrains.UI.Controls;
 using JetBrains.UI.Extensions;
 using JetBrains.UI.RichText;
@@ -38,26 +36,24 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
   public class TypeInterfaceToolWindowRegistrar
   {
     private readonly Lifetime _lifetime;
-    private readonly ISettingsStore _settingsStore;
     private readonly IActionBarManager _actionBarManager;
     private readonly ToolWindowClass _toolWindowClass;
-    private readonly UIApplication _environment;
-    private readonly ChangeManager _changeManager;
+    private readonly IUIApplication _environment;
+    private readonly IWindowsHookManager _windowsHookManager;
 
     public TypeInterfaceToolWindowRegistrar(Lifetime lifetime,
                                     ToolWindowManager toolWindowManager,
-                                    ISettingsStore settingsStore,
                                     IActionManager actionManager,
                                     IActionBarManager actionBarManager,
                                     IShortcutManager shortcutManager,
                                     TypeInterfaceToolWindowDescriptor toolWindowDescriptor,
-                                    UIApplication environment, ChangeManager changeManager)
+                                    IUIApplication environment,
+                                    IWindowsHookManager windowsHookManager)
     {
       _lifetime = lifetime;
-      _settingsStore = settingsStore;
       _actionBarManager = actionBarManager;
       _environment = environment;
-      _changeManager = changeManager;
+      _windowsHookManager = windowsHookManager;
 
       _toolWindowClass = toolWindowManager.Classes[toolWindowDescriptor];
       _toolWindowClass.RegisterEmptyContent(
@@ -79,7 +75,7 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
       ToolWindowInstance instance = _toolWindowClass.RegisterInstance(
         _lifetime,
         StringUtil.MakeTitle(browserDescriptor.Title.Value), browserDescriptor.Image,
-        (lt, twi) => TreeModelBrowserPanelPsiWPF.SelectTreeImplementation(_environment, browserDescriptor, lt, _actionBarManager, _settingsStore, _changeManager));
+        (lt, twi) => new TreeModelBrowserPanelPsiWPF(browserDescriptor, lt, _actionBarManager, _environment, _windowsHookManager));
       instance.Lifetime.AddAction(() => browserDescriptor.LifetimeDefinition.Terminate());
       instance.EnsureControlCreated().Show();
     }

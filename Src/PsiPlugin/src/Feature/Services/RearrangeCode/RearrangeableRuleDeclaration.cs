@@ -2,7 +2,6 @@
 using JetBrains.Application;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.RearrangeCode;
-using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.ExtensionsAPI;
 using JetBrains.ReSharper.Psi.Services;
 using JetBrains.ReSharper.Psi.Transactions;
@@ -10,6 +9,7 @@ using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl;
 using JetBrains.TextControl;
+using IWhitespaceNode = JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.IWhitespaceNode;
 
 namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.RearrangeCode
 {

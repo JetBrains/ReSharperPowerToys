@@ -1,8 +1,10 @@
 ﻿using System;
+using JetBrains.Application.Settings;
 using JetBrains.DocumentModel;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp;
+using JetBrains.ReSharper.Psi.CSharp.CodeStyle.FormatSettings;
 using JetBrains.ReSharper.Psi.CSharp.Impl.CustomHandlers;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve;
@@ -18,6 +20,11 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument.Psi
     public bool IsToAddImportsToDeepestScope(ITreeNode context)
     {
       return false;
+    }
+
+    public ThisQualifierStyle GetThisQualifierStyle(ITreeNode context)
+    {
+      return context.GetSettingsStore().GetValue(CSharpCustomModificationHandlerDummy.ThisQualifierStyleAccessor);
     }
 
     public bool CanRemoveUsing(IDocument document, IUsingDirective usingDirective)
@@ -71,8 +78,7 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument.Psi
       action();
     }
 
-    public ITreeNode FixupAnchorForAddingTypeMember(IPsiServices psiServices, IFile generatedFile, ITreeNode anchor, bool willInsertBefore,
-                                 ITreeNode classDeclaration)
+    public ITreeNode FixupAnchorForAddingTypeMember(IPsiServices psiServices, IFile generatedFile, ITreeNode anchor, bool willInsertBefore, ITreeNode classDeclaration)
     {
       return anchor;
     }
@@ -98,8 +104,7 @@ namespace JetBrains.ReSharper.PsiPlugin.GeneratedDocument.Psi
       return null;
     }
 
-    public ITreeRange HandleChangeStatements(IPsiServices psiServices, ITreeRange rangeBeforeChange, Func<ITreeRange> changeAction,
-      bool strict)
+    public ITreeRange HandleChangeStatements(IPsiServices psiServices, ITreeRange rangeBeforeChange, Func<ITreeRange> changeAction, bool strict)
     {
       return changeAction();
     }

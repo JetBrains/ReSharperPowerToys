@@ -15,13 +15,17 @@
  */
 
 using System.Drawing;
+using JetBrains.ActionManagement;
+using JetBrains.Application.Interop.NativeHook;
 using JetBrains.CommonControls;
 using JetBrains.IDE.TreeBrowser;
+using JetBrains.ProjectModel;
+using JetBrains.ReSharper.Feature.Services.Tree;
 using JetBrains.ReSharper.Feature.Services.Util;
-using JetBrains.ReSharper.Features.Common.TreePsiBrowser;
-using JetBrains.ReSharper.Features.Shared.TreePsiBrowser;
 using JetBrains.ReSharper.Psi;
 using JetBrains.TreeModels;
+using JetBrains.UI.Application;
+using JetBrains.UI.Tooltips;
 using JetBrains.UI.TreeView;
 using JetBrains.Util;
 
@@ -46,7 +50,8 @@ namespace JetBrains.ReSharper.PowerToys.ExploreTypeInterface
     private TypeInterfaceModel myModel;
     private DeclaredElementEnvoy<ITypeElement> myTypeElementEnvoy;
 
-    public TypeInterfaceDescriptor(ITypeElement typeElement, bool instanceOnly) : base(typeElement.GetSolution())
+    public TypeInterfaceDescriptor(ITypeElement typeElement, bool instanceOnly, ISolution solution, IUIApplication uiApplication, ITooltipManager tooltipManager, IWindowsHookManager windowsHookManager, IActionManager actionManager)
+      : base(solution, uiApplication, tooltipManager, windowsHookManager, actionManager)
     {
       AutoExpandSingleChild = true;
       myInstanceOnly = instanceOnly;

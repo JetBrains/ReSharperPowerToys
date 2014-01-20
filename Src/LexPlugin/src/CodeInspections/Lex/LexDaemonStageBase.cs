@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using JetBrains.Annotations;
 using JetBrains.Application.Settings;
-using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.LexPlugin.Grammar;
 using JetBrains.ReSharper.LexPlugin.Psi.Lex.Tree;
@@ -42,7 +38,7 @@ namespace JetBrains.ReSharper.LexPlugin.CodeInspections.Lex
     public static ILexFile GetPsiFile(IPsiSourceFile sourceFile)
     {
       var psiServices = sourceFile.GetPsiServices();
-      psiServices.Files.AssertAllDocumentAreCommited();
+      psiServices.Files.AssertAllDocumentAreCommitted();
       return psiServices.Files.GetDominantPsiFile<LexLanguage>(sourceFile) as ILexFile;
     }
 

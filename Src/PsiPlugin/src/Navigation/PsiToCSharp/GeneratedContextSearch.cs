@@ -1,7 +1,7 @@
 ﻿using JetBrains.Application.DataContext;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.ContextNavigation.ContextSearches.BaseSearches;
-using JetBrains.ReSharper.Feature.Services.Search.SearchRequests;
+using JetBrains.ReSharper.Feature.Services.Navigation.Search.SearchRequests;
 using JetBrains.ReSharper.Psi.Services;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl;
@@ -32,7 +32,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Navigation.PsiToCSharp
       {
         var reference = (token.Parent as IPathName).RuleNameReference;
         var declaredElement = reference.Resolve().DeclaredElement;
-        ruleDeclaration = declaredElement as RuleDeclaration;        
+        ruleDeclaration = declaredElement as RuleDeclaration;
       }
       if (ruleDeclaration != null)
       {

@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using JetBrains.Annotations;
-using JetBrains.Application;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Goto;
+using JetBrains.ReSharper.Feature.Services.Navigation.Search;
 using JetBrains.ReSharper.Feature.Services.Occurences;
-using JetBrains.ReSharper.Feature.Services.Search;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Files;
 using JetBrains.ReSharper.PsiPlugin.Cache;
@@ -19,7 +19,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Finding.GotoMember
   [ShellFeaturePart]
   public class PsiGotoFileMemberProvider : IGotoFileMemberProvider
   {
-    public IEnumerable<MatchingInfo> FindMatchingInfos(IdentifierMatcher matcher, INavigationScope scope, GotoContext gotoContext, CheckForInterrupt checkForInterrupt)
+    public IEnumerable<MatchingInfo> FindMatchingInfos(IdentifierMatcher matcher, INavigationScope scope, GotoContext gotoContext, Func<bool> checkForInterrupt)
     {
       var fileMemberScope = scope as FileMemberNavigationScope;
       if (fileMemberScope == null)
@@ -57,7 +57,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Finding.GotoMember
       return true;
     }
 
-    public IEnumerable<IOccurence> GetOccurencesByMatchingInfo(MatchingInfo navigationInfo, INavigationScope scope, GotoContext gotoContext, CheckForInterrupt checkForInterrupt)
+    public IEnumerable<IOccurence> GetOccurencesByMatchingInfo(MatchingInfo navigationInfo, INavigationScope scope, GotoContext gotoContext, Func<bool> checkForInterrupt)
     {
       var fileMembersMap = gotoContext.GetData(PsiFileMembersMap.PsiFileMembersMapKey);
       if (fileMembersMap == null)
