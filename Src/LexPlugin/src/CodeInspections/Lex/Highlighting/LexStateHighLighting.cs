@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using JetBrains.DocumentModel;
-using JetBrains.ReSharper.Daemon;
-using JetBrains.ReSharper.Daemon.Impl;
+﻿using JetBrains.DocumentModel;
+using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi.Tree;
 
 [assembly: RegisterConfigurableSeverity("State", null, HighlightingGroupIds.LanguageUsage, "State", @"
@@ -13,7 +8,7 @@ using JetBrains.ReSharper.Psi.Tree;
 namespace JetBrains.ReSharper.LexPlugin.CodeInspections.Lex.Highlighting
 {
   [ConfigurableSeverityHighlighting("State", "Lex", OverlapResolve = OverlapResolveKind.NONE, ToolTipFormatString = "State")]
-  public class LexStateHighlighting : ICustomAttributeIdHighlighting, IHighlightingWithRange
+  public class LexStateHighlighting : ICustomAttributeIdHighlighting
   {
     private const string Attribute = HighlightingAttributeIds.FIELD_IDENTIFIER_ATTRIBUTE;
     private readonly ITreeNode myElement;
@@ -22,8 +17,6 @@ namespace JetBrains.ReSharper.LexPlugin.CodeInspections.Lex.Highlighting
     {
       myElement = element;
     }
-
-    #region ICustomAttributeIdHighlighting Members
 
     public bool IsValid()
     {
@@ -50,15 +43,9 @@ namespace JetBrains.ReSharper.LexPlugin.CodeInspections.Lex.Highlighting
       get { return Attribute; }
     }
 
-    #endregion
-
-    #region IHighlightingWithRange Members
-
     public DocumentRange CalculateRange()
     {
       return myElement.GetNavigationRange();
     }
-
-    #endregion
   }
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-using JetBrains.ReSharper.Refactorings.Conflicts;
+using JetBrains.ReSharper.Feature.Services.Refactorings;
 
 namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric.Impl
 {
@@ -22,17 +22,17 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric.Impl
   {
     public override string WillAlsoOverride()
     {
-      return "Converted {0} also overrides {1} that will not be gererified. Please resolve conflict manually.";
+      return "Converted {0} also overrides {1} that will not be generified. Please resolve conflict manually.";
     }
 
     public override string WillAlsoImplement()
     {
-      return "Converted {0} also implements {1} that will not be gererified. Please resolve conflict manually.";
+      return "Converted {0} also implements {1} that will not be generified. Please resolve conflict manually.";
     }
 
     public override string QuasiImplements()
     {
-      return "Converted {0} is quasi implemented by {1} that will not be gererified. Please resolve conflict manually.";
+      return "Converted {0} is quasi implemented by {1} that will not be generified. Please resolve conflict manually.";
     }
   }
 }

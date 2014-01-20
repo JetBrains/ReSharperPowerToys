@@ -17,7 +17,7 @@
 using System;
 using JetBrains.Application.Progress;
 using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Feature.Services.Bulbs;
+using JetBrains.ReSharper.Feature.Services.ContextActions;
 using JetBrains.ReSharper.Feature.Services.Html.Bulbs;
 using JetBrains.ReSharper.Intentions.Extensibility;
 using JetBrains.ReSharper.Psi.Html.Parsing;
@@ -67,7 +67,7 @@ namespace XmlAndHtml
       ITagAttribute idAttr = dummy.Attributes.Single();
       tagHeader.AddAttributeBefore(idAttr, null);
 
-      // continuation to do after transaction commited
+      // continuation to do after transaction committed
       return textControl => 
         // move cursor inside new created id attribute
         textControl.Caret.MoveTo(idAttr.ValueElement.GetDocumentRange().TextRange.StartOffset, CaretVisualPlacement.Generic);

@@ -1,6 +1,5 @@
 using JetBrains.DocumentModel;
-using JetBrains.ReSharper.Daemon;
-using JetBrains.ReSharper.Daemon.Impl;
+using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi.Tree;
 
 [assembly: RegisterConfigurableSeverity("Repeated Choice", null, HighlightingGroupIds.LanguageUsage, "Repeated Choice", @"
@@ -9,10 +8,10 @@ using JetBrains.ReSharper.Psi.Tree;
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi.Highlightings
 {
   [ConfigurableSeverityHighlighting("Repeated Choice", "PSI", OverlapResolve = OverlapResolveKind.NONE, ToolTipFormatString = "Repeated Choice")]
-  internal class RepeatedChoiceWarning : IHighlightingWithRange, ICustomAttributeIdHighlighting
+  internal class RepeatedChoiceWarning : ICustomAttributeIdHighlighting
   {
     private const string Error = "Repeated Choice";
-    private const string AtributeId = HighlightingAttributeIds.WARNING_ATTRIBUTE;
+    private const string OurAttributeId = HighlightingAttributeIds.WARNING_ATTRIBUTE;
     private readonly ITreeNode myElement;
 
     public RepeatedChoiceWarning(ITreeNode element)
@@ -20,16 +19,10 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi.Highlightings
       myElement = element;
     }
 
-    #region ICustomAttributeIdHighlighting Members
-
     public string AttributeId
     {
-      get { return AtributeId; }
+      get { return OurAttributeId; }
     }
-
-    #endregion
-
-    #region IHighlightingWithRange Members
 
     public bool IsValid()
     {
@@ -55,7 +48,5 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi.Highlightings
     {
       return myElement.GetNavigationRange();
     }
-
-    #endregion
   }
 }

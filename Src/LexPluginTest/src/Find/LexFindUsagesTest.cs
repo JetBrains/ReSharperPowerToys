@@ -1,8 +1,8 @@
 ﻿using System;
 using JetBrains.ReSharper.Psi.Search;
+using JetBrains.ReSharper.PsiTests.find;
 using JetBrains.ReSharper.TestFramework;
 using NUnit.Framework;
-using FindUsagesTestBase = JetBrains.ReSharper.Psi.Find.Test.FindUsagesTestBase;
 
 namespace LexPluginTest.Find
 {

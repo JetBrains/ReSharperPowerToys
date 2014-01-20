@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using JetBrains.ProjectModel.Properties;
 using JetBrains.ProjectModel.Properties.Common;
-using JetBrains.ReSharper.Daemon.Test;
+using JetBrains.ReSharper.FeaturesTestFramework.Daemon;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
 using NUnit.Framework;

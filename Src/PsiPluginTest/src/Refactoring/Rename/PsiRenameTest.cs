@@ -1,6 +1,6 @@
 ﻿using System;
+using JetBrains.ReSharper.Refactorings.Test;
 using NUnit.Framework;
-using JetBrains.ReSharper.Refactorings;
 
 namespace PsiPluginTest.Refactoring.Rename
 {

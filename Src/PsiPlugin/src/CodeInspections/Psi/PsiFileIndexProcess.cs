@@ -1,6 +1,6 @@
 ﻿using System;
 using JetBrains.Application.Settings;
-using JetBrains.ReSharper.Daemon;
+using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi;
 
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi
@@ -12,9 +12,9 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi
     {
     }
 
-    public override void Execute(Action<DaemonStageResult> commiter)
+    public override void Execute(Action<DaemonStageResult> committer)
     {
-      HighlightInFile((file, consumer) => file.ProcessDescendants(this, consumer), commiter);
+      HighlightInFile((file, consumer) => file.ProcessDescendants(this, consumer), committer);
     }
   }
 }

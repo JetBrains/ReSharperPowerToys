@@ -16,7 +16,7 @@
 
 using System;
 using JetBrains.Application.Progress;
-using JetBrains.ReSharper.Daemon;
+using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
@@ -35,7 +35,7 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
       myThreshold = threshold;
     }
 
-    public void Execute(Action<DaemonStageResult> commiter)
+    public void Execute(Action<DaemonStageResult> committer)
     {
       // Getting PSI (AST) for the file being highlighted
       var sourceFile = myDaemonProcess.SourceFile;
@@ -52,7 +52,7 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
         throw new ProcessCancelledException();
 
       // Commit the result into document
-      commiter(new DaemonStageResult(elementProcessor.Highlightings));
+      committer(new DaemonStageResult(elementProcessor.Highlightings));
     }
 
     public IDaemonProcess DaemonProcess

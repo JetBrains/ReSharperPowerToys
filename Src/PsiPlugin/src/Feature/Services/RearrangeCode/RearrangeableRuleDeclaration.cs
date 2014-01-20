@@ -22,8 +22,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.RearrangeCode
       myRuleDeclaration = declaration;
     }
 
-    #region Overrides of RearrangeableElement
-
     public override bool CanMove(Direction direction)
     {
       bool hasNewLine = false;
@@ -125,8 +123,6 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.RearrangeCode
     {
       get { return Direction.Up | Direction.Down; }
     }
-
-    #endregion
   }
 
   [RearrangeableElementType]

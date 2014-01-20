@@ -1,5 +1,5 @@
 ﻿using System;
-using JetBrains.ReSharper.Feature.Services.Tests.CSharp.FeatureServices.CodeCompletion;
+using JetBrains.ReSharper.FeaturesTestFramework.Completion;
 using JetBrains.ReSharper.TestFramework;
 using NUnit.Framework;
 

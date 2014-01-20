@@ -1,9 +1,8 @@
 using System.Collections.Generic;
+using JetBrains.ReSharper.Feature.Services.Refactorings.Specific.Rename;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl;
-using JetBrains.ReSharper.Refactorings.Rename;
-using JetBrains.ReSharper.Refactorings.RenameModel;
 
 namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
 {

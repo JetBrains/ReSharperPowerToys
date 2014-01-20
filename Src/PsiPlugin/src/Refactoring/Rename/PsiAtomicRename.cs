@@ -3,6 +3,8 @@ using System.Linq;
 using JetBrains.Annotations;
 using JetBrains.Application;
 using JetBrains.Application.Progress;
+using JetBrains.ReSharper.Feature.Services.Refactorings;
+using JetBrains.ReSharper.Feature.Services.Refactorings.Specific.Rename;
 using JetBrains.ReSharper.Feature.Services.Util;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Pointers;
@@ -11,13 +13,6 @@ using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl;
 using JetBrains.ReSharper.PsiPlugin.Resolve;
-using JetBrains.ReSharper.Refactorings;
-using JetBrains.ReSharper.Refactorings.Conflicts;
-using JetBrains.ReSharper.Refactorings.Conflicts.New;
-using JetBrains.ReSharper.Refactorings.Rename;
-using JetBrains.ReSharper.Refactorings.RenameModel;
-using JetBrains.ReSharper.Refactorings.Util;
-using JetBrains.ReSharper.Refactorings.Workflow;
 using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
@@ -77,7 +72,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
       }
     }
 
-    public override void Rename(RenameRefactoring executer, IProgressIndicator pi, bool hasConflictsWithDeclarations, IRefactoringDriver driver)
+    public override void Rename(IRenameRefactoring executer, IProgressIndicator pi, bool hasConflictsWithDeclarations, IRefactoringDriver driver)
     {
       BuildDeclarations();
 
@@ -204,7 +199,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Refactoring.Rename
       }
     }
 
-    private static DeclaredElementInstance GetSubst(IDeclaredElement element, RenameRefactoring executer)
+    private static DeclaredElementInstance GetSubst(IDeclaredElement element, IRenameRefactoring executer)
     {
       return executer.Workflow.LanguageSpecific[element.PresentationLanguage].GetSubst(element);
     }

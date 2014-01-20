@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using JetBrains.ReSharper.Feature.Services.Bulbs;
-using JetBrains.ReSharper.Feature.Services.Intentions.DataProviders;
+using JetBrains.ReSharper.Feature.Services.Intentions;
+using JetBrains.ReSharper.Feature.Services.QuickFixes;
 using JetBrains.ReSharper.Intentions.CreateFromUsage;
-using JetBrains.ReSharper.Intentions.Extensibility;
-using JetBrains.ReSharper.Intentions.Extensibility.Menu;
 using JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi.Highlightings;
 using JetBrains.ReSharper.PsiPlugin.Resolve;
 using JetBrains.Util;
 using JetBrains.Util.Lazy;
+using ICreationTarget = JetBrains.ReSharper.Psi.Util.ICreationTarget;
 
 namespace JetBrains.ReSharper.PsiPlugin.Intentions.CreateFromUsage
 {

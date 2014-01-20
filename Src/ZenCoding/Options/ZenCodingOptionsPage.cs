@@ -22,7 +22,7 @@ using JetBrains.ActionManagement;
 using JetBrains.Application.Interop.NativeHook;
 using JetBrains.Application.Settings.Store;
 using JetBrains.DataFlow;
-using JetBrains.ReSharper.Features.Common.Options;
+using JetBrains.ReSharper.Feature.Services.OptionPages;
 using JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model;
 using JetBrains.Threading;
 using JetBrains.TreeModels;

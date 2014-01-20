@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using JetBrains.ReSharper.Feature.Services.Refactorings.Specific.Rename;
 using JetBrains.ReSharper.LexPlugin.Grammar;
 using JetBrains.ReSharper.LexPlugin.Resolve;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Refactorings.Rename;
-using JetBrains.ReSharper.Refactorings.RenameModel;
-using JetBrains.Util;
 
 namespace JetBrains.ReSharper.LexPlugin.Refactoring.Rename
 {

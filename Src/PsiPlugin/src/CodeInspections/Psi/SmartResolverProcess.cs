@@ -1,5 +1,5 @@
 using System;
-using JetBrains.ReSharper.Daemon;
+using JetBrains.ReSharper.Feature.Services.Daemon;
 
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi
 {
@@ -12,17 +12,13 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi
       myDaemonProcess = daemonProcess;
     }
 
-    #region IDaemonStageProcess Members
-
     public IDaemonProcess DaemonProcess
     {
       get { return myDaemonProcess; }
     }
 
-    public void Execute(Action<DaemonStageResult> commiter)
+    public void Execute(Action<DaemonStageResult> committer)
     {
     }
-
-    #endregion
   }
 }

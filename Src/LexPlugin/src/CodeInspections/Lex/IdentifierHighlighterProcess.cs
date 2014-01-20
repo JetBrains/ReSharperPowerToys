@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using JetBrains.Application.Settings;
+﻿using JetBrains.Application.Settings;
 using JetBrains.DocumentModel;
-using JetBrains.ReSharper.Daemon;
-using JetBrains.ReSharper.Daemon.Stages;
+using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.LexPlugin.CodeInspections.Lex.Highlighting;
 using JetBrains.ReSharper.LexPlugin.Psi.Lex.Tree;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve;

@@ -1,4 +1,4 @@
-﻿using JetBrains.ReSharper.Feature.Services.Intentions.DataProviders;
+﻿using JetBrains.ReSharper.Psi.Util;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
 
 namespace JetBrains.ReSharper.PsiPlugin.Intentions

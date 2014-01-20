@@ -15,7 +15,7 @@
  */
 
 using JetBrains.ActionManagement;
-using JetBrains.ReSharper.Refactorings.Workflow;
+using JetBrains.ReSharper.Feature.Services.Refactorings;
 using JetBrains.UI.RichText;
 
 namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric

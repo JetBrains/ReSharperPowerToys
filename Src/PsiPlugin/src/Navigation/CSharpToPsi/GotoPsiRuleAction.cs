@@ -1,5 +1,5 @@
 ﻿using JetBrains.ActionManagement;
-using JetBrains.ReSharper.Features.Finding.NavigateFromHere;
+using JetBrains.ReSharper.Feature.Services.Navigation.ContextNavigation;
 
 namespace JetBrains.ReSharper.PsiPlugin.Navigation.CSharpToPsi
 {

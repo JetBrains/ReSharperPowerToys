@@ -16,11 +16,9 @@
 
 using JetBrains.Application.Settings;
 using JetBrains.DataFlow;
-using JetBrains.ReSharper.Features.Environment.Options.Inspections;
+using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.PowerToys.CyclomaticComplexity.resources;
 using JetBrains.UI.Application;
-using JetBrains.UI.CommonControls.Fonts;
-using JetBrains.UI.Components;
 using JetBrains.UI.Options;
 using JetBrains.UI.Options.Helpers;
 

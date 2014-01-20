@@ -1,6 +1,5 @@
 using JetBrains.DocumentModel;
-using JetBrains.ReSharper.Daemon;
-using JetBrains.ReSharper.Daemon.Impl;
+using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi.Tree;
 
 [assembly: RegisterConfigurableSeverity("Keyword", null, HighlightingGroupIds.LanguageUsage, "Keyword", @"
@@ -9,17 +8,15 @@ using JetBrains.ReSharper.Psi.Tree;
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi.Highlightings
 {
   [ConfigurableSeverityHighlighting("Keyword", "PSI", OverlapResolve = OverlapResolveKind.NONE, ToolTipFormatString = "Keyword")]
-  internal class PsiKeywordHighlighting : ICustomAttributeIdHighlighting, IHighlightingWithRange
+  internal class PsiKeywordHighlighting : ICustomAttributeIdHighlighting
   {
-    private const string AtributeId = HighlightingAttributeIds.CONSTANT_IDENTIFIER_ATTRIBUTE;
+    private const string OurAttributeId = HighlightingAttributeIds.CONSTANT_IDENTIFIER_ATTRIBUTE;
     private readonly ITreeNode myElement;
 
     public PsiKeywordHighlighting(ITreeNode element)
     {
       myElement = element;
     }
-
-    #region ICustomAttributeIdHighlighting Members
 
     public bool IsValid()
     {
@@ -43,18 +40,12 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi.Highlightings
 
     public string AttributeId
     {
-      get { return AtributeId; }
+      get { return OurAttributeId; }
     }
-
-    #endregion
-
-    #region IHighlightingWithRange Members
 
     public DocumentRange CalculateRange()
     {
       return myElement.GetNavigationRange();
     }
-
-    #endregion
   }
 }

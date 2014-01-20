@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using JetBrains.Application.Progress;
 using JetBrains.Application.Settings;
-using JetBrains.ReSharper.Daemon;
-using JetBrains.ReSharper.Daemon.Stages;
+using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.LexPlugin.Psi.Lex.Tree;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
@@ -42,7 +38,7 @@ namespace JetBrains.ReSharper.LexPlugin.CodeInspections.Lex
       get { return myDaemonProcess; }
     }
 
-    public abstract void Execute(Action<DaemonStageResult> commiter);
+    public abstract void Execute(Action<DaemonStageResult> committer);
 
     #endregion
 
@@ -85,11 +81,11 @@ namespace JetBrains.ReSharper.LexPlugin.CodeInspections.Lex
 
     #endregion
 
-    protected void HighlightInFile(Action<ILexFile, IHighlightingConsumer> fileHighlighter, Action<DaemonStageResult> commiter)
+    protected void HighlightInFile(Action<ILexFile, IHighlightingConsumer> fileHighlighter, Action<DaemonStageResult> committer)
     {
       var consumer = new DefaultHighlightingConsumer(this, mySettingsStore);
       fileHighlighter(File, consumer);
-      commiter(new DaemonStageResult(consumer.Highlightings));
+      committer(new DaemonStageResult(consumer.Highlightings));
     }
   }
 }

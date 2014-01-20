@@ -15,10 +15,10 @@
  */
 
 using System.Collections.Generic;
-using JetBrains.ReSharper.Daemon;
+using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.ControlFlow;
-using JetBrains.ReSharper.Psi.ControlFlow.CSharp;
+using JetBrains.ReSharper.Psi.CSharp.ControlFlow;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.Tree;
 
@@ -67,8 +67,8 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
     /// </summary>
     private static int CalcCyclomaticComplexity(ICSharpFunctionDeclaration declaration)
     {
-      ICSharpControlFlowGraf graf = CSharpControlFlowBuilder.Build(declaration);
-      HashSet<IControlFlowRib> ribs = GetRibs(graf);
+      ICSharpControlFlowGraf graph = CSharpControlFlowBuilder.Build(declaration);
+      HashSet<IControlFlowRib> ribs = GetRibs(graph);
       int nodes = GetNodesCount(ribs);
 
       return ribs.Count - nodes + 2;
@@ -95,10 +95,10 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
       return nodes.Count + (hasDstNull ? 1 : 0) + (hasSrcNull ? 1 : 0);
     }
 
-    private static HashSet<IControlFlowRib> GetRibs(ICSharpControlFlowGraf graf)
+    private static HashSet<IControlFlowRib> GetRibs(ICSharpControlFlowGraf graph)
     {
       var ribs = new HashSet<IControlFlowRib>();
-      foreach(ICSharpControlFlowElement element in graf.AllElements)
+      foreach(ICSharpControlFlowElement element in graph.AllElements)
       {
         foreach(IControlFlowRib rib in element.Exits)
           ribs.Add(rib);
@@ -121,11 +121,11 @@ namespace JetBrains.ReSharper.PowerToys.CyclomaticComplexity
       int cyclomatic = CalcCyclomaticComplexity(declaration);
 
       // Placing highlighting
-      if(cyclomatic > myThreshold)
+      if (cyclomatic > myThreshold)
       {
         string message = string.Format("Member has cyclomatic complexity of {0} ({1}%)", cyclomatic, (int)(cyclomatic * 100.0 / myThreshold));
-        var warning = new ComplexityWarning(message);
-        myHighlightings.Add(new HighlightingInfo(declaration.GetNameDocumentRange(), warning));
+        var warning = new ComplexityWarning(declaration, message);
+        myHighlightings.Add(new HighlightingInfo(warning.CalculateRange(), warning));
       }
     }
 

@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Application.Settings;
 using JetBrains.DocumentModel;
-using JetBrains.ReSharper.Daemon;
-using JetBrains.ReSharper.Daemon.Stages;
+using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Files;
 using JetBrains.ReSharper.Psi.Tree;
@@ -30,9 +29,9 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi
       VisitFile(process.SourceFile.GetPsiFile<PsiLanguage>(new DocumentRange(process.SourceFile.Document, 0)) as IPsiFile);
     }
 
-    public override void Execute(Action<DaemonStageResult> commiter)
+    public override void Execute(Action<DaemonStageResult> committer)
     {
-      HighlightInFile((file, consumer) => file.ProcessDescendants(this, consumer), commiter);
+      HighlightInFile((file, consumer) => file.ProcessDescendants(this, consumer), committer);
     }
 
     public override void VisitRuleDeclaredName(IRuleDeclaredName ruleDeclaredName, IHighlightingConsumer consumer)

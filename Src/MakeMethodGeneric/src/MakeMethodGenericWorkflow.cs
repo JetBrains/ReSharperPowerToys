@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using JetBrains.Application.DataContext;
 using JetBrains.Application.Progress;
 using JetBrains.ProjectModel;
+using JetBrains.ReSharper.Feature.Services.Refactorings;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Modules;
 using JetBrains.ReSharper.Psi.Naming;
@@ -29,7 +29,6 @@ using JetBrains.ReSharper.Psi.Naming.Settings;
 using JetBrains.ReSharper.Psi.Pointers;
 using JetBrains.ReSharper.Psi.Search;
 using JetBrains.ReSharper.Psi.Tree;
-using JetBrains.ReSharper.Refactorings.Workflow;
 using System.Linq;
 
 namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
@@ -94,7 +93,7 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
     }
 
     /// <summary>
-    /// Execution of refatoring starts here. Data from context is initialized. 
+    /// Execution of refactoring starts here. Data from context is initialized. 
     /// </summary>
     public override bool Initialize(IDataContext context)
     {
@@ -178,7 +177,7 @@ namespace JetBrains.ReSharper.PowerToys.MakeMethodGeneric
 
     /// <summary>
     /// Last step of refactoring. This code is executed when all changes are made and PSI transaction is committed.
-    /// Usal actions here are: project model changes (e.g. file rename), textual changes in documents. 
+    /// Usual actions here are: project model changes (e.g. file rename), textual changes in documents.
     /// </summary>
     public override bool PostExecute(IProgressIndicator progressIndicator)
     {

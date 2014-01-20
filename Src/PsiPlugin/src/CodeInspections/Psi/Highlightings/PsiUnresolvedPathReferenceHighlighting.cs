@@ -1,6 +1,5 @@
 ﻿using JetBrains.DocumentModel;
-using JetBrains.ReSharper.Daemon;
-using JetBrains.ReSharper.Daemon.Impl;
+using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl;
@@ -10,11 +9,11 @@ using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl;
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi.Highlightings
 {
   [ConfigurableSeverityHighlighting("UnresolvedReference", "PSI", OverlapResolve = OverlapResolveKind.ERROR, ToolTipFormatString = Error)]
-  internal class PsiUnresolvedPathReferenceHighlighting : IHighlightingWithRange
+  internal class PsiUnresolvedPathReferenceHighlighting : IHighlighting
   {
     private const string Error = "Unresolved reference";
     private readonly ITreeNode myElement;
-    private IReference myReference;
+    private readonly IReference myReference;
 
     public PsiUnresolvedPathReferenceHighlighting(PathName element)
     {
@@ -23,8 +22,6 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi.Highlightings
       myReference = element.Reference;
 
     }
-
-    #region IHighlightingWithRange Members
 
     public bool IsValid()
     {
@@ -50,8 +47,6 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi.Highlightings
     {
       return myElement.GetNavigationRange();
     }
-
-    #endregion
 
     public IReference Reference
     {

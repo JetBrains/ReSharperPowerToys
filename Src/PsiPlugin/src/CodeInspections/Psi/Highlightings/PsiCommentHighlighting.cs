@@ -1,6 +1,5 @@
 using JetBrains.DocumentModel;
-using JetBrains.ReSharper.Daemon;
-using JetBrains.ReSharper.Daemon.Impl;
+using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi.Tree;
 
 [assembly: RegisterConfigurableSeverity("Comment", null, HighlightingGroupIds.LanguageUsage, "Comment", @"
@@ -9,18 +8,15 @@ using JetBrains.ReSharper.Psi.Tree;
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi.Highlightings
 {
   [ConfigurableSeverityHighlighting("Comment", "PSI", OverlapResolve = OverlapResolveKind.NONE, ToolTipFormatString = "Comment")]
-  internal class PsiCommentHighlighting : ICustomAttributeIdHighlighting, IHighlightingWithRange
+  internal class PsiCommentHighlighting : ICustomAttributeIdHighlighting
   {
-    private const string AtributeId = HighlightingAttributeIds.JAVA_SCRIPT_XML_DOC_TAG;
+    private const string OurAttributeId = HighlightingAttributeIds.JAVA_SCRIPT_XML_DOC_TAG;
     private readonly ITreeNode myNode;
 
     public PsiCommentHighlighting(ITreeNode node)
     {
       myNode = node;
     }
-
-    #region ICustomAttributeIdHighlighting Members
-
     public bool IsValid()
     {
       return true;
@@ -43,18 +39,12 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi.Highlightings
 
     public string AttributeId
     {
-      get { return AtributeId; }
+      get { return OurAttributeId; }
     }
-
-    #endregion
-
-    #region IHighlightingWithRange Members
 
     public DocumentRange CalculateRange()
     {
       return myNode.GetDocumentRange();
     }
-
-    #endregion
   }
 }

@@ -4,12 +4,12 @@ using System.Linq;
 using JetBrains.Application.DataContext;
 using JetBrains.ReSharper.Feature.Services;
 using JetBrains.ReSharper.Feature.Services.ContextNavigation.ContextSearches;
+using JetBrains.ReSharper.Feature.Services.Navigation;
+using JetBrains.ReSharper.Feature.Services.Navigation.ContextNavigation;
 using JetBrains.ReSharper.Feature.Services.Navigation.Search;
 using JetBrains.ReSharper.Feature.Services.Navigation.Search.SearchRequests;
 using JetBrains.ReSharper.Feature.Services.Occurences;
 using JetBrains.ReSharper.Feature.Services.Tree;
-using JetBrains.ReSharper.Features.Common.Occurences.ExecutionHosting;
-using JetBrains.ReSharper.Features.Finding.NavigateFromHere;
 
 namespace JetBrains.ReSharper.PsiPlugin.Navigation
 {
@@ -22,18 +22,18 @@ namespace JetBrains.ReSharper.PsiPlugin.Navigation
     {
     }
 
-    protected override void ShowResults(IDataContext context, INavigationExecutionHost host, TSearchRequest searchRequest, ICollection<IOccurence> occurences, Func<TDescriptor> descriptorBuilder)
+    protected override void ShowResults(IDataContext context, INavigationExecutionHost host, TSearchRequest searchRequest, ICollection<IOccurence> occurrences, Func<TDescriptor> descriptorBuilder)
     {
-      var occurencesList = occurences.ToList();
-      occurencesList.Sort((occurence, occurence1) =>
+      var occurrencesList = occurrences.ToList();
+      occurrencesList.Sort((occurrence, occurrence1) =>
       {
-        var result = searchRequest.CompareOccurences(occurence, occurence1);
+        var result = searchRequest.CompareOccurences(occurrence, occurrence1);
         if (result != 0)
           return result;
-        return OccurenceUtil.CompareOccurences(occurence, occurence1, OccurencePresentationOptions.DefaultOptions);
+        return OccurenceUtil.CompareOccurences(occurrence, occurrence1, OccurencePresentationOptions.DefaultOptions);
       });
 
-      host.ShowContextPopupMenu(context, occurencesList, descriptorBuilder, ProvideFeatureSpecificPresentationOptions(searchRequest), true, searchRequest.Title);
+      host.ShowContextPopupMenu(context, occurrencesList, descriptorBuilder, ProvideFeatureSpecificPresentationOptions(searchRequest), true, searchRequest.Title);
     }
 
     protected override OccurencePresentationOptions? ProvideFeatureSpecificPresentationOptions(TSearchRequest searchRequest)

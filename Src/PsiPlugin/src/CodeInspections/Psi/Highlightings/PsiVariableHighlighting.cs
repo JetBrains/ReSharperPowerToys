@@ -1,6 +1,5 @@
 using JetBrains.DocumentModel;
-using JetBrains.ReSharper.Daemon;
-using JetBrains.ReSharper.Daemon.Impl;
+using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi.Tree;
 
 [assembly: RegisterConfigurableSeverity("Variable", null, HighlightingGroupIds.LanguageUsage, "Variable", @"
@@ -9,17 +8,15 @@ using JetBrains.ReSharper.Psi.Tree;
 namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi.Highlightings
 {
   [ConfigurableSeverityHighlighting("Variable", "PSI", OverlapResolve = OverlapResolveKind.NONE, ToolTipFormatString = "Variable")]
-  internal class PsiVariableHighlighting : ICustomAttributeIdHighlighting, IHighlightingWithRange
+  internal class PsiVariableHighlighting : ICustomAttributeIdHighlighting
   {
-    private const string AtributeId = HighlightingAttributeIds.LOCAL_VARIABLE_IDENTIFIER_ATTRIBUTE;
+    private const string OurAttributeId = HighlightingAttributeIds.LOCAL_VARIABLE_IDENTIFIER_ATTRIBUTE;
     private readonly ITreeNode myElement;
 
     public PsiVariableHighlighting(ITreeNode element)
     {
       myElement = element;
     }
-
-    #region ICustomAttributeIdHighlighting Members
 
     public bool IsValid()
     {
@@ -43,18 +40,12 @@ namespace JetBrains.ReSharper.PsiPlugin.CodeInspections.Psi.Highlightings
 
     public string AttributeId
     {
-      get { return AtributeId; }
+      get { return OurAttributeId; }
     }
-
-    #endregion
-
-    #region IHighlightingWithRange Members
 
     public DocumentRange CalculateRange()
     {
       return myElement.GetNavigationRange();
     }
-
-    #endregion
   }
 }

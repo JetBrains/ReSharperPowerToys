@@ -1,4 +1,4 @@
-﻿using JetBrains.ReSharper.PsiTests.parsing;
+﻿using JetBrains.ReSharper.TestFramework;
 using NUnit.Framework;
 
 namespace LexPluginTest.Parsing
