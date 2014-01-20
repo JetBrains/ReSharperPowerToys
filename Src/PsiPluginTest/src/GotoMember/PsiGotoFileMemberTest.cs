@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using JetBrains.ReSharper.Feature.Services.Search;
+﻿using System.IO;
+using JetBrains.ReSharper.Feature.Services.Navigation.Search;
 using JetBrains.ReSharper.FeaturesTests.Finding.GotoFileMember;
 using NUnit.Framework;
 

@@ -15,7 +15,7 @@
  */
 
 using JetBrains.CommonControls;
-using JetBrains.ReSharper.Features.Shared.TreePsiBrowser;
+using JetBrains.ReSharper.Feature.Services.Tree;
 using JetBrains.ReSharper.PowerToys.ZenCoding.Options.Model;
 using JetBrains.TreeModels;
 using JetBrains.UI.RichText;

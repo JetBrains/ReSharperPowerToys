@@ -7,9 +7,9 @@ using JetBrains.ReSharper.Psi.ExtensionsAPI;
 using JetBrains.ReSharper.Psi.Impl.CodeStyle;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Parsing;
-using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl;
 using JetBrains.Util;
+using IWhitespaceNode = JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.IWhitespaceNode;
 
 namespace JetBrains.ReSharper.PsiPlugin.Formatter
 {

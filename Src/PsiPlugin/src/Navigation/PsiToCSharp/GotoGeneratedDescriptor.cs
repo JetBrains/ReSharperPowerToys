@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
-using JetBrains.ReSharper.Feature.Services.Search;
-using JetBrains.ReSharper.Feature.Services.Search.SearchRequests;
-using JetBrains.ReSharper.Features.Common.Occurences;
-using JetBrains.ReSharper.Features.Finding.Search;
+﻿using System;
+using System.Collections.Generic;
+using JetBrains.ReSharper.Feature.Services.Navigation;
+using JetBrains.ReSharper.Feature.Services.Navigation.Search;
+using JetBrains.ReSharper.Feature.Services.Navigation.Search.SearchRequests;
+using JetBrains.ReSharper.Feature.Services.Tree;
+using JetBrains.ReSharper.Feature.Services.Tree.SectionsManagement;
 using JetBrains.Util;
 
 namespace JetBrains.ReSharper.PsiPlugin.Navigation.PsiToCSharp
@@ -31,6 +33,11 @@ namespace JetBrains.ReSharper.PsiPlugin.Navigation.PsiToCSharp
       else
         title = string.Format("No generated classes found");
       return title;
+    }
+
+    protected override Func<SearchRequest, OccurenceBrowserDescriptor> GetDescriptorFactory()
+    {
+      return request => new GotoGeneratedDescriptor(request, request.Search());
     }
   }
 }
