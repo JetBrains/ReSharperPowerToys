@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using JetBrains.ReSharper.Feature.Services.ParameterInfo;
 using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Psi.Util;
 using JetBrains.ReSharper.PsiPlugin.Grammar;
 using JetBrains.ReSharper.PsiPlugin.Psi.Psi.Tree.Impl;
@@ -66,8 +67,7 @@ namespace JetBrains.ReSharper.PsiPlugin.Feature.Services.ParameterInfo
       foreach (RuleDeclaration parameter in parameters)
       {
         paramDescriptions[i] = XmlDocRichTextPresenter.Run(
-          XMLDocUtil.ExtractParameterSummary(null, parameter.ShortName),
-          parameter.GetPsiModule(), false, PsiLanguage.Instance);
+          XMLDocUtil.ExtractParameterSummary(null, parameter.ShortName), false, PsiLanguage.Instance, parameter.GetPsiModule(), parameter.GetResolveContext());
         i++;
       }
 
