@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2007-2011 JetBrains
+ * Copyright 2007-2014 JetBrains
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ using JetBrains.Application.PluginSupport;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("JetBrains")]
 [assembly: AssemblyProduct("XmlAndHtml")]
-[assembly: AssemblyCopyright("Copyright © JetBrains 2011")]
+[assembly: AssemblyCopyright("Copyright \u00A9 2006-2014 JetBrains All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
