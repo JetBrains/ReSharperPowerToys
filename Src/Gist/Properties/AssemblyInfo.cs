@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2007-2011 JetBrains
+ * Copyright 2007-2014 JetBrains
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ using JetBrains.UI;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyCompany("JetBrains")]
 [assembly: AssemblyProduct("ReSharper PowerToys")]
-[assembly: AssemblyCopyright("Copyright \u00A9 2006-2013 JetBrains")]
+[assembly: AssemblyCopyright("Copyright \u00A9 2006-2014 JetBrains All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: AssemblyVersion("1.0.0.0")]
