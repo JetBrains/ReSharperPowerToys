@@ -129,9 +129,10 @@ namespace JetBrains.ReSharper.PsiPlugin.Resolve
         return table;
       }
 
-      FileSystemPath rootPath = (qualifier == null) ? websiteRoot : FileSystemPath.Empty;
-      ISymbolTable symbolTableByPath = PathReferenceUtil.GetSymbolTableByPath(basePath, psiServices, basePath.Directory, rootPath, true);
-      FileSystemPath basePathBeforeMapping = GetBasePathBeforeMapping(pathReference);
+      var rootPath = (qualifier == null) ? websiteRoot : FileSystemPath.Empty;
+      var referenceContext = new PathReferenceContext(psiServices, basePath, rootPath, basePath.Directory);
+      var symbolTableByPath = PathReferenceUtil.GetSymbolTableByPath(referenceContext, true);
+      var basePathBeforeMapping = GetBasePathBeforeMapping(pathReference);
       if (!basePathBeforeMapping.IsNullOrEmpty())
       {
       }
