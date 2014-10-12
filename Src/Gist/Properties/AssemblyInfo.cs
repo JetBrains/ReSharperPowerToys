@@ -25,14 +25,14 @@ using JetBrains.UI;
 // associated with an assembly.
 
 [assembly: AssemblyTitle("ReSharper PowerToys: Gist")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("With this ReSharper PowerToy you can easily and transparently publish your code snippets on Gist.")]
 [assembly: AssemblyCompany("JetBrains")]
 [assembly: AssemblyProduct("ReSharper PowerToys")]
 [assembly: AssemblyCopyright("Copyright \u00A9 2006-2014 JetBrains All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("8.2")]
+[assembly: AssemblyFileVersion("8.2")]
 [assembly: ComVisible(false)]
 [assembly: Guid("04800884-1E07-41ED-A664-6454C7EA5456")]
 
